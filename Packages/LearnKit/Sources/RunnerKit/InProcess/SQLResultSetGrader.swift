@@ -103,6 +103,7 @@ public struct SQLResultSetGrader: Sendable {
         switch failure {
         case .toolchainMissing(let hint): "툴체인 없음: \(hint)"
         case .wallClockExceeded(let seconds): "\(seconds)초 안에 끝나지 않았습니다"
+        case .cpuExceeded(let seconds): "CPU 시간 \(seconds)초를 다 썼습니다 — 쿼리가 너무 무겁습니다"
         case .memoryExceeded(let megabytes): "메모리 상한 \(megabytes)MB 초과"
         case .cancelled: "실행이 취소되었습니다"
         case .backend(let message): message

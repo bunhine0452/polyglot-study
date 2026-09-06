@@ -8,8 +8,8 @@ public struct MistakeNote: Hashable, Sendable, Codable {
     public var lessonID: LessonID?
     public var title: String
     public var body: String
-    public var createdAt: EpochMilliseconds
-    public var updatedAt: EpochMilliseconds
+    public var createdAt: EpochMillis
+    public var updatedAt: EpochMillis
 
     public init(
         id: MistakeNoteID? = nil,
@@ -19,8 +19,8 @@ public struct MistakeNote: Hashable, Sendable, Codable {
         lessonID: LessonID? = nil,
         title: String,
         body: String,
-        createdAt: EpochMilliseconds,
-        updatedAt: EpochMilliseconds
+        createdAt: EpochMillis,
+        updatedAt: EpochMillis
     ) {
         self.id = id
         self.cardID = cardID

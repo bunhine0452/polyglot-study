@@ -30,7 +30,13 @@ let package = Package(
             dependencies: ["LearnCore", .product(name: "GRDB", package: "GRDB.swift")],
             swiftSettings: coreSettings
         ),
-        .target(name: "LearnScheduling", dependencies: ["LearnCore"], swiftSettings: coreSettings),
+        .target(
+            name: "LearnScheduling",
+            dependencies: ["LearnCore"],
+            // 벤더링 근거 문서. 소스 트리 옆에 있어야 의미가 있으므로 타깃에서 제외만 한다.
+            exclude: ["Vendor/FSRS/VENDORING.md"],
+            swiftSettings: coreSettings
+        ),
         // 사용자 코드에 rlimit 을 거는 exec 래퍼. `preSpawnProcessConfigurator` 는 부모에서
         // 돌기 때문에 setrlimit 을 거기서 부르면 앱 자신에게 걸린다 — 그래서 별도 헬퍼가 필요하다.
         .executableTarget(name: "learn-launcher"),
@@ -45,7 +51,14 @@ let package = Package(
         ),
         .testTarget(name: "LearnCoreTests", dependencies: ["LearnCore"], swiftSettings: coreSettings),
         .testTarget(name: "LearnPersistenceTests", dependencies: ["LearnPersistence"], swiftSettings: coreSettings),
-        .testTarget(name: "LearnSchedulingTests", dependencies: ["LearnScheduling"], swiftSettings: coreSettings),
+        .testTarget(
+            name: "LearnSchedulingTests",
+            dependencies: ["LearnScheduling"],
+            // 골든 픽스처는 `Bundle.module` 로 읽는다. `.copy` 라서 번들 안에서도
+            // `Fixtures/` 디렉터리 구조가 그대로 유지된다.
+            resources: [.copy("Fixtures")],
+            swiftSettings: coreSettings
+        ),
         .testTarget(name: "RunnerKitTests", dependencies: ["RunnerKit"], swiftSettings: coreSettings),
     ]
 )

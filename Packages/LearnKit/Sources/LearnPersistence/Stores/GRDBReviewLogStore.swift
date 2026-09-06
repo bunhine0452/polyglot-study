@@ -76,13 +76,13 @@ struct GRDBReviewLogStore: ReviewLogStore {
         }
     }
 
-    func count(from: EpochMilliseconds, to: EpochMilliseconds) async throws -> Int {
+    func count(from: EpochMillis, to: EpochMillis) async throws -> Int {
         try await writer.readMapped { db in
             // 반열린 구간 [from, to). 인덱스 idx_review_log_reviewed_at 를 탄다.
             try Int.fetchOne(
                 db,
                 sql: "SELECT COUNT(*) FROM review_log WHERE reviewed_at >= ? AND reviewed_at < ?",
-                arguments: [from, to]
+                arguments: [from.sqlValue, to.sqlValue]
             ) ?? 0
         }
     }

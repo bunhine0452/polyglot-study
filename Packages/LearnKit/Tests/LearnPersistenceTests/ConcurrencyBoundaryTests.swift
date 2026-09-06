@@ -98,7 +98,7 @@ struct ConcurrencyBoundaryTests {
             for index in 0..<40 {
                 group.addTask {
                     try await store.append(
-                        Fixture.reviewEntry(card: "card-\(index % 4)", at: Int64(index))
+                        Fixture.reviewEntry(card: "card-\(index % 4)", at: index)
                     )
                 }
             }
@@ -119,7 +119,7 @@ struct ConcurrencyBoundaryTests {
 
         try await withThrowingTaskGroup(of: Void.self) { group in
             for index in 0..<20 {
-                group.addTask { try await log.append(Fixture.reviewEntry(at: Int64(index))) }
+                group.addTask { try await log.append(Fixture.reviewEntry(at: index)) }
                 group.addTask { _ = try await cards.dueCards(
                     languageID: .python, dueAtOrBefore: .max, limit: 10
                 ) }

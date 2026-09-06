@@ -22,7 +22,7 @@ public struct FSRSReviewScheduler: ReviewScheduler {
     private let engine: FSRS
 
     public var schedulerID: String { Self.identifier }
-    public var parameterSetID: String { parameters.identifier }
+    public var parameterSetID: ParameterSetID { ParameterSetID(parameters.identifier) }
 
     /// - Throws: `ReviewSchedulingError.unsupportedAlgorithm` — `w` 가 21개가 아니거나
     ///   학습 스텝이 비어 있는 경우. `ReviewSchedulingError.fuzzNotSealed` — 어떤 경로로든
@@ -126,7 +126,7 @@ public struct FSRSReviewScheduler: ReviewScheduler {
                 stateBefore: card.phase,
                 elapsedDays: elapsedDays(from: card.lastReviewedAt, to: now),
                 scheduledDays: card.scheduledDays,
-                reviewDurationMS: reviewDurationMS,
+                reviewDurationMS: reviewDurationMS ?? 0,
                 schedulerID: schedulerID,
                 parameterSetID: parameterSetID,
                 source: .cram
@@ -157,7 +157,7 @@ public struct FSRSReviewScheduler: ReviewScheduler {
             elapsedDays: Int(item.log.elapsedDays.rounded()),
             // 이 리뷰가 **새로 잡은** 간격. 학습 스텝으로 넘어갔으면 0.
             scheduledDays: state.scheduledDays,
-            reviewDurationMS: reviewDurationMS,
+            reviewDurationMS: reviewDurationMS ?? 0,
             schedulerID: schedulerID,
             parameterSetID: parameterSetID,
             source: source
@@ -220,7 +220,7 @@ public struct FSRSReviewScheduler: ReviewScheduler {
         var card = initialState(for: cardID, createdAt: first.reviewedAt).vendorCard
         var applied = 0
         var skipped = 0
-        var derivedFromLogID: Int64?
+        var derivedFromLogID: ReviewLogID?
 
         for entry in ordered {
             guard entry.affectsSchedule else {
@@ -237,7 +237,7 @@ public struct FSRSReviewScheduler: ReviewScheduler {
                 throw wrapEngineError(error, cardID: cardID)
             }
             applied += 1
-            derivedFromLogID = entry.logID
+            derivedFromLogID = entry.id
         }
 
         let state = CardSchedulingState(

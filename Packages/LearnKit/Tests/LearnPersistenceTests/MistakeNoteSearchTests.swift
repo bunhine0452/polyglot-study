@@ -77,7 +77,7 @@ struct MistakeNoteSearchTests {
         // 수정 — 옛 본문으로는 더 이상 안 나오고 새 본문으로 나와야 한다.
         var note = try #require(await store.note(id: id))
         note.body = "고쳐 쓴 본문 텍스트"
-        note.updatedAt = Fixture.epoch + Fixture.day
+        note.updatedAt = Fixture.days(1)
         try await store.update(note)
 
         #expect(try await store.search("처음 본문", limit: 10).isEmpty, "옛 본문이 인덱스에 남아 있다")

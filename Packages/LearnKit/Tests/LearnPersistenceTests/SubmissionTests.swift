@@ -71,12 +71,9 @@ struct SubmissionTests {
     @Test("presenter CHECK 도메인이 GradeResult.Presenter rawValue 4종과 정확히 일치한다")
     func presenterDomainMatchesEnum() throws {
         let harness = try TestDatabase(.inMemory)
-        let domain = try Self.checkDomain(named: "chk_submission_presenter", in: harness.database)
+        let domain = try SchemaDomain.literals(of: "chk_submission_presenter", in: harness.database)
 
-        // GradeResult.Presenter 는 CaseIterable 이 아니라 여기서 손으로 나열한다.
-        // (이 목록이 낡으면 아래 "저장/조회" 테스트가 잡아준다.)
-        let presenters: [GradeResult.Presenter] = [.console, .table, .browser, .registers]
-        #expect(domain == Set(presenters.map(\.rawValue)))
+        #expect(domain == Set(GradeResult.Presenter.allCases.map(\.rawValue)))
         #expect(domain.count == 4)
     }
 
@@ -84,11 +81,11 @@ struct SubmissionTests {
     func backendAndFailureDomainsMatchEnums() throws {
         let harness = try TestDatabase(.inMemory)
         #expect(
-            try Self.checkDomain(named: "chk_submission_runner_backend", in: harness.database)
+            try SchemaDomain.literals(of: "chk_submission_runner_backend", in: harness.database)
                 == Set(RunnerBackend.allCases.map(\.rawValue))
         )
         #expect(
-            try Self.checkDomain(named: "chk_submission_failure_kind", in: harness.database)
+            try SchemaDomain.literals(of: "chk_submission_failure_kind", in: harness.database)
                 == Set(SubmissionFailureKind.allCases.map(\.rawValue))
         )
     }
@@ -96,8 +93,7 @@ struct SubmissionTests {
     @Test("네 프리젠터 전부 저장·조회된다", arguments: DatabaseFlavor.allCases)
     func allPresentersRoundTrip(flavor: DatabaseFlavor) async throws {
         let harness = try TestDatabase(flavor)
-        let presenters: [GradeResult.Presenter] = [.console, .table, .browser, .registers]
-        for (index, presenter) in presenters.enumerated() {
+        for (index, presenter) in GradeResult.Presenter.allCases.enumerated() {
             var record = Fixture.submission(block: index, passed: true)
             record.presenter = presenter
             let id = try await harness.database.submissionStore.record(record)
@@ -243,31 +239,5 @@ struct SubmissionTests {
             """)
         #expect(plan.contains { $0.contains("idx_submission_lesson_block") }, "\(plan)")
         #expect(!plan.contains { $0.contains("SCAN") }, "\(plan)")
-    }
-
-    // MARK: - 도우미
-
-    /// 골든 스키마에서 CHECK 제약의 문자열 리터럴 집합을 뽑는다.
-    private static func checkDomain(named name: String, in database: LearnDatabase) throws -> Set<String> {
-        let schema = try database.schemaDump()
-        guard let start = schema.range(of: "CONSTRAINT \(name)") else {
-            Issue.record("\(name) 제약을 찾지 못했다")
-            return []
-        }
-        // 다음 CONSTRAINT 또는 테이블 끝까지가 이 제약의 본문이다.
-        let rest = schema[start.upperBound...]
-        let end = rest.range(of: "CONSTRAINT ")?.lowerBound
-            ?? rest.range(of: ") STRICT;")?.lowerBound
-            ?? rest.endIndex
-        let body = String(rest[..<end])
-
-        var literals: Set<String> = []
-        var iterator = body.split(separator: "'", omittingEmptySubsequences: false).enumerated()
-            .makeIterator()
-        while let (index, piece) = iterator.next() {
-            // 홀수 번째 조각이 따옴표 안이다.
-            if index % 2 == 1 { literals.insert(String(piece)) }
-        }
-        return literals
     }
 }

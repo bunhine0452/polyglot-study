@@ -107,7 +107,7 @@ enum GoldenReviewLog {
         withIDs.reserveCapacity(timeOrdered.count)
         for (offset, entry) in timeOrdered.enumerated() {
             var entry = entry
-            entry.logID = Int64(offset + 1)
+            entry.id = ReviewLogID(Int64(offset + 1))
             withIDs.append(entry)
         }
 
@@ -148,10 +148,14 @@ enum GoldenReviewLog {
         let scheduler = try FSRSReviewScheduler(clock: FixedSchedulerClock(base))
         let rebuild = try scheduler.rebuild(entries)
 
-        try FileManager.default.createDirectory(at: Fixtures.directory, withIntermediateDirectories: true)
-        try encodeJSONL(entries).write(to: Fixtures.url(logFileName))
+        // 번들이 아니라 소스 트리에 쓴다 — 갱신 결과가 `git diff` 에 보여야 의미가 있다.
+        try FileManager.default.createDirectory(
+            at: Fixtures.sourceDirectory,
+            withIntermediateDirectories: true
+        )
+        try encodeJSONL(entries).write(to: Fixtures.sourceURL(logFileName))
         var stateData = try snapshotEncoder.encode(rebuild)
         stateData.append(0x0a)
-        try stateData.write(to: Fixtures.url(stateFileName))
+        try stateData.write(to: Fixtures.sourceURL(stateFileName))
     }
 }

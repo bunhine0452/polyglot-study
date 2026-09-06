@@ -22,7 +22,7 @@ struct LessonProgressTests {
                 lessonID: lesson,
                 languageID: .python,
                 blockIndex: block,
-                at: Fixture.epoch + Int64(block) * 1_000
+                at: Fixture.at(Int64(block) * 1_000)
             )
             #expect(progress.status == .inProgress, "블록 \(block) 에서 이미 completed 가 됐다")
             #expect(progress.completedAt == nil)
@@ -35,12 +35,12 @@ struct LessonProgressTests {
             lessonID: lesson,
             languageID: .python,
             blockIndex: 5,
-            at: Fixture.epoch + 5_000
+            at: Fixture.at(5_000)
         )
         #expect(final.status == .completed)
-        #expect(final.completedAt == Fixture.epoch + 5_000)
+        #expect(final.completedAt == Fixture.at(5_000))
         #expect(final.startedAt == Fixture.epoch)
-        #expect(final.lastActivityAt == Fixture.epoch + 5_000)
+        #expect(final.lastActivityAt == Fixture.at(5_000))
         #expect(final.isFullyCompleted)
 
         // 저장된 값도 같아야 한다.
@@ -92,24 +92,24 @@ struct LessonProgressTests {
         #expect(progress.status == .notStarted)
         #expect(progress.startedAt == nil)
 
-        progress = progress.completing(block: 0, at: 100)
+        progress = progress.completing(block: 0, at: EpochMillis(100))
         #expect(progress.status == .inProgress)
-        #expect(progress.startedAt == 100)
+        #expect(progress.startedAt == EpochMillis(100))
 
-        for block in 1...5 { progress = progress.completing(block: block, at: 200) }
+        for block in 1...5 { progress = progress.completing(block: block, at: EpochMillis(200)) }
         #expect(progress.status == .completed)
-        #expect(progress.completedAt == 200)
-        #expect(progress.startedAt == 100, "startedAt 이 덮어써졌다")
+        #expect(progress.completedAt == EpochMillis(200))
+        #expect(progress.startedAt == EpochMillis(100), "startedAt 이 덮어써졌다")
 
         // 범위 밖 인덱스는 조용히 무시한다 — CHECK 가 어차피 거부한다.
-        let unchanged = progress.completing(block: 6, at: 300)
+        let unchanged = progress.completing(block: 6, at: EpochMillis(300))
         #expect(unchanged == progress)
 
         // skipped 는 건드리지 않는다.
         var skipped = LessonProgress(
             packID: PackID("p"), lessonID: LessonID("l2"), languageID: .sql, status: .skipped
         )
-        skipped = skipped.completing(block: 0, at: 100)
+        skipped = skipped.completing(block: 0, at: EpochMillis(100))
         #expect(skipped.status == .skipped)
         #expect(skipped.completedBlocks.isEmpty)
     }
@@ -222,7 +222,7 @@ struct LessonProgressTests {
             completedBlocks: [0, 2],
             currentBlockIndex: 3,
             startedAt: Fixture.epoch,
-            lastActivityAt: Fixture.epoch + 500,
+            lastActivityAt: Fixture.at(500),
             completedAt: nil
         )
         try await harness.database.lessonProgressStore.upsert(original)

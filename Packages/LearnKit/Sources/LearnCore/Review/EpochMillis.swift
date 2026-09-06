@@ -1,4 +1,4 @@
-/// UTC epoch milliseconds. **모든 스케줄링 시각의 유일한 표현**이다.
+/// UTC epoch milliseconds. **이 앱의 모든 시각의 유일한 표현**이다 — 스케줄링도, 저장도.
 ///
 /// `Date` 가 아니라 정수를 진실의 원천으로 삼는 이유는 리플레이 때문이다. `review_log` 는
 /// append-only 이고 `card_state` 는 언제든 버리고 재구축하는 캐시인데, 재구축이 원본 스케줄과
@@ -8,14 +8,24 @@
 /// 에서 시드는 `reviewTime.timeIntervalSince1970` 을 문자열로 찍어 만든다). 밀리초 정수는
 /// 그 경로를 원천 봉쇄한다.
 ///
-/// 이 타입은 `Foundation` 을 노출하지 않는다 — `Date` 로의 변환은 벤더 FSRS 를 호출하는
-/// `LearnScheduling` 경계 안에만 존재한다.
+/// 저장 쪽에도 같은 이유가 따로 있다 — SQLite 에는 날짜 타입이 아예 없고, 정수 비교라
+/// `(language_id, due_at)` 같은 인덱스가 그대로 먹으며, 다른 언어로 `review_log` 를
+/// 리플레이해도 값이 흔들리지 않는다. 하루 경계(롤오버)는 저장이 아니라 **읽는 쪽**의
+/// 관심사다 — `DayBoundary` 가 계산한다.
+///
+/// 이 타입은 `Foundation` 도 SQLite 도 노출하지 않는다 — `Date` 로의 변환은 벤더 FSRS 를
+/// 호출하는 `LearnScheduling` 경계 안에만, `INTEGER` 컬럼으로의 변환은 `LearnPersistence`
+/// 의 `DomainColumns.swift` 안에만 존재한다.
 ///
 /// 인코딩은 단일 정수다 — SQLite `INTEGER` 컬럼과 JSONL 픽스처 양쪽에 1:1 로 대응한다.
 public struct EpochMillis: Hashable, Sendable, Comparable, CustomStringConvertible {
     public var value: Int64
 
     public init(_ value: Int64) { self.value = value }
+
+    /// 표현 가능한 양 끝. "상한 없음" 을 뜻하는 큐 질의 경계로 쓴다.
+    public static let min = EpochMillis(.min)
+    public static let max = EpochMillis(.max)
 
     public static func < (lhs: EpochMillis, rhs: EpochMillis) -> Bool { lhs.value < rhs.value }
 

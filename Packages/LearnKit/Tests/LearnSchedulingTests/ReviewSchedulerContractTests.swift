@@ -101,7 +101,7 @@ struct ReviewSchedulerContractTests {
     }
 
     @Test("모든 시각이 epoch ms UTC 로 왕복한다")
-    func timestampsRoundTripAsEpochMilliseconds() throws {
+    func timestampsRoundTripAsEpochMillis() throws {
         let scheduler = try makeScheduler()
         let card = scheduler.initialState(for: CardID("c"), createdAt: Self.base)
         let outcome = try scheduler.apply(.easy, to: card, at: Self.base, reviewDurationMS: nil, source: .review)
@@ -224,9 +224,9 @@ struct ReviewSchedulerContractTests {
         let scheduler = try makeScheduler()
         let active = scheduler.parameterSetID
         let states = [
-            CardSchedulingState.newCard(CardID("c3"), createdAt: Self.base, parameterSetID: "fsrs6-oldhash"),
+            CardSchedulingState.newCard(CardID("c3"), createdAt: Self.base, parameterSetID: ParameterSetID("fsrs6-oldhash")),
             CardSchedulingState.newCard(CardID("c1"), createdAt: Self.base, parameterSetID: active),
-            CardSchedulingState.newCard(CardID("c2"), createdAt: Self.base, parameterSetID: "fsrs6-oldhash"),
+            CardSchedulingState.newCard(CardID("c2"), createdAt: Self.base, parameterSetID: ParameterSetID("fsrs6-oldhash")),
         ]
         #expect(scheduler.staleCards(in: states) == [CardID("c2"), CardID("c3")])
         #expect(states[1].isStale(activeParameterSetID: active) == false)

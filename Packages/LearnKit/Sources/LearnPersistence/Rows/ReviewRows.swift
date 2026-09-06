@@ -4,9 +4,12 @@ internal import LearnCore
 /// GRDB 행 구조체는 DTO 와 **따로** 둔다.
 ///
 /// 두 가지를 산다. 첫째, `LearnCore` 의 값 타입에 GRDB 프로토콜을 retroactive 하게 붙이지 않아도 된다
-/// (Swift 6 에서 경고이고, 같은 타입에 두 모듈이 준수를 붙이면 링크 시점 충돌이다).
-/// 둘째, 컬럼명 드리프트가 허용된다 — `review_duration_ms` ↔ `reviewDurationMilliseconds` 처럼
-/// SQL 관례와 Swift 관례가 각자 자연스러운 이름을 쓰고, 매핑이 한 곳에 모인다.
+/// — 애초에 **붙일 수도 없다**. public 타입의 준수는 public 이고, Swift 6 는 public 준수에
+/// public import 를 요구하는데 `public import GRDB` 는 `{#grdb-pin}` 이 금지한다
+/// (`DomainColumns.swift` 의 `EpochMillis` 주석 참고).
+/// 둘째, 컬럼명·컬럼값 드리프트가 허용된다 — SQL 관례와 Swift 관례가 각자 자연스러운 이름을
+/// 쓰고(`review_duration_ms` ↔ `reviewDurationMS`), 표현이 달라도(정수 `CardPhase` ↔ TEXT
+/// `state`) 매핑이 `DomainColumns.swift` 한 곳에 모인다.
 ///
 /// 대가는 이 파일의 보일러플레이트다. 값이 있는 대가라고 본다 — 매핑이 명시적이라
 /// 컬럼을 하나 바꿨을 때 컴파일러가 정확히 여기를 가리킨다.
@@ -59,36 +62,36 @@ struct ReviewLogRow: FetchableRecord, PersistableRecord {
     init(_ entry: ReviewLogEntry) {
         id = entry.id?.rawValue
         cardID = entry.cardID.rawValue
-        reviewedAt = entry.reviewedAt
+        reviewedAt = entry.reviewedAt.sqlValue
         rating = entry.rating.rawValue
-        stateBefore = entry.stateBefore.rawValue
+        stateBefore = entry.stateBefore.sqlText
         elapsedDays = entry.elapsedDays
         scheduledDays = entry.scheduledDays
-        reviewDurationMS = entry.reviewDurationMilliseconds
+        reviewDurationMS = entry.reviewDurationMS
         schedulerID = entry.schedulerID
         parameterSetID = entry.parameterSetID.rawValue
-        source = entry.source.rawValue
+        source = entry.source.sqlText
     }
 
     func toEntry() throws -> ReviewLogEntry {
         guard let rating = ReviewRating(rawValue: rating) else {
             throw StoreError.storage(message: "review_log.rating 값이 도메인 밖이다: \(rating)")
         }
-        guard let stateBefore = LearningState(rawValue: stateBefore) else {
+        guard let stateBefore = CardPhase(sqlText: stateBefore) else {
             throw StoreError.storage(message: "review_log.state_before: \(stateBefore)")
         }
-        guard let source = ReviewSource(rawValue: source) else {
+        guard let source = ReviewLogSource(sqlText: source) else {
             throw StoreError.storage(message: "review_log.source: \(source)")
         }
         return ReviewLogEntry(
             id: id.map { ReviewLogID($0) },
             cardID: CardID(cardID),
-            reviewedAt: reviewedAt,
+            reviewedAt: EpochMillis(sqlValue: reviewedAt),
             rating: rating,
             stateBefore: stateBefore,
             elapsedDays: elapsedDays,
             scheduledDays: scheduledDays,
-            reviewDurationMilliseconds: reviewDurationMS,
+            reviewDurationMS: reviewDurationMS,
             schedulerID: schedulerID,
             parameterSetID: ParameterSetID(parameterSetID),
             source: source
@@ -132,7 +135,7 @@ struct SchedulerParameterRow: FetchableRecord, PersistableRecord {
         schedulerID = set.schedulerID
         weights = try set.weights.map(JSONArray.encode)
         desiredRetention = set.desiredRetention
-        createdAt = set.createdAt
+        createdAt = set.createdAt.sqlValue
         isActive = set.isActive
     }
 
@@ -142,7 +145,7 @@ struct SchedulerParameterRow: FetchableRecord, PersistableRecord {
             schedulerID: schedulerID,
             weights: try weights.map(JSONArray.decodeDoubles),
             desiredRetention: desiredRetention,
-            createdAt: createdAt,
+            createdAt: EpochMillis(sqlValue: createdAt),
             isActive: isActive
         )
     }
@@ -204,19 +207,22 @@ struct CardStateRow: FetchableRecord, PersistableRecord {
         languageID = snapshot.languageID.rawValue
         stability = snapshot.stability
         difficulty = snapshot.difficulty
-        dueAt = snapshot.dueAt
-        lastReviewedAt = snapshot.lastReviewedAt
-        state = snapshot.state.rawValue
+        dueAt = snapshot.dueAt.sqlValue
+        lastReviewedAt = snapshot.lastReviewedAt?.sqlValue
+        state = snapshot.phase.sqlText
         reps = snapshot.reps
         lapses = snapshot.lapses
         scheduledDays = snapshot.scheduledDays
         derivedFromLogID = snapshot.derivedFromLogID?.rawValue
         parameterSetID = snapshot.parameterSetID.rawValue
-        rebuiltAt = snapshot.rebuiltAt
+        rebuiltAt = snapshot.rebuiltAt.sqlValue
     }
 
+    /// - Important: `CardSchedulingState.elapsedDays` 와 `learningStepIndex` 는 컬럼이 없어
+    ///   0 으로 되살아난다. 두 값은 로그 리플레이로만 정확히 복원된다 —
+    ///   `CardStateSnapshot` 의 경고 참고.
     func toSnapshot() throws -> CardStateSnapshot {
-        guard let state = LearningState(rawValue: state) else {
+        guard let phase = CardPhase(sqlText: state) else {
             throw StoreError.storage(message: "card_state.state: \(state)")
         }
         return CardStateSnapshot(
@@ -224,15 +230,15 @@ struct CardStateRow: FetchableRecord, PersistableRecord {
             languageID: LanguageID(languageID),
             stability: stability,
             difficulty: difficulty,
-            dueAt: dueAt,
-            lastReviewedAt: lastReviewedAt,
-            state: state,
+            dueAt: EpochMillis(sqlValue: dueAt),
+            lastReviewedAt: lastReviewedAt.map(EpochMillis.init(sqlValue:)),
+            phase: phase,
             reps: reps,
             lapses: lapses,
             scheduledDays: scheduledDays,
             derivedFromLogID: derivedFromLogID.map { ReviewLogID($0) },
             parameterSetID: ParameterSetID(parameterSetID),
-            rebuiltAt: rebuiltAt
+            rebuiltAt: EpochMillis(sqlValue: rebuiltAt)
         )
     }
 }

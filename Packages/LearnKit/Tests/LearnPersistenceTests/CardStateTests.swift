@@ -57,26 +57,54 @@ struct CardStateTests {
             languageID: .python,
             stability: 12.5,
             difficulty: 7.125,
-            dueAt: Fixture.epoch + 30 * Fixture.day,
+            dueAt: Fixture.days(30),
             lastReviewedAt: Fixture.epoch,
-            state: .relearning,
+            phase: .relearning,
             reps: 11,
             lapses: 3,
             scheduledDays: 30,
             derivedFromLogID: logID,
             parameterSetID: .fsrs6Default,
-            rebuiltAt: Fixture.epoch + Fixture.day
+            rebuiltAt: Fixture.days(1)
         )
         try await harness.database.cardStateStore.upsert(original)
 
         #expect(try await harness.database.cardStateStore.snapshot(forCard: CardID("py-007")) == original)
     }
 
+    /// 두 세션이 각자 정의한 카드 상태를 하나로 합치면서 드러난 구멍을 **못박아 둔다**.
+    ///
+    /// 스케줄링 쪽 `CardSchedulingState` 에는 `elapsedDays` 와 `learningStepIndex` 가 있는데
+    /// `card_state` 테이블에는 그 컬럼이 없다(마이그레이션 002 는 불변이다). 그래서 캐시를
+    /// 거쳐 돌아온 상태로 곧장 다음 리뷰를 스케줄하면 학습 스텝이 처음으로 되감긴다.
+    /// **캐시가 아니라 `review_log` 리플레이가 정본**이라는 규칙이 여기서 선택이 아니라 필수가 된다.
+    @Test("컬럼이 없는 두 필드는 저장에서 유실된다 — 캐시가 아니라 로그가 정본이다", arguments: DatabaseFlavor.allCases)
+    func columnlessSchedulingFieldsAreLost(flavor: DatabaseFlavor) async throws {
+        let harness = try TestDatabase(flavor)
+        var snapshot = Fixture.cardState(card: "py-learning")
+        snapshot.scheduling.phase = .learning
+        snapshot.scheduling.elapsedDays = 7
+        snapshot.scheduling.learningStepIndex = 1
+
+        try await harness.database.cardStateStore.upsert(snapshot)
+        let fetched = try await harness.database.cardStateStore.snapshot(forCard: CardID("py-learning"))
+
+        #expect(fetched?.scheduling.elapsedDays == 0, "컬럼이 없는데 값이 살아 돌아왔다")
+        #expect(fetched?.scheduling.learningStepIndex == 0)
+        // 나머지는 전부 왕복한다 — 유실은 딱 두 필드다.
+        #expect(fetched?.scheduling == {
+            var expected = snapshot.scheduling
+            expected.elapsedDays = 0
+            expected.learningStepIndex = 0
+            return expected
+        }())
+    }
+
     @Test("리뷰가 없는 신규 카드는 derived_from_log_id 가 nil 이다", arguments: DatabaseFlavor.allCases)
     func newCardsHaveNilWatermark(flavor: DatabaseFlavor) async throws {
         let harness = try TestDatabase(flavor)
         var snapshot = Fixture.cardState(card: "py-new")
-        snapshot.state = .new
+        snapshot.phase = .new
         snapshot.stability = 0
         snapshot.reps = 0
         snapshot.lastReviewedAt = nil
@@ -116,14 +144,14 @@ struct CardStateTests {
 
         let due = try await cards.dueCards(
             languageID: .python,
-            dueAtOrBefore: Fixture.epoch + 4 * Fixture.day,
+            dueAtOrBefore: Fixture.days(4),
             limit: 10
         )
         #expect(due.map(\.cardID.rawValue) == ["py-early", "py-mid"])
 
         let sqlDue = try await cards.dueCards(
             languageID: .sql,
-            dueAtOrBefore: Fixture.epoch + 4 * Fixture.day,
+            dueAtOrBefore: Fixture.days(4),
             limit: 10
         )
         #expect(sqlDue.map(\.cardID.rawValue) == ["sql-early"])

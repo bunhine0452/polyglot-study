@@ -81,6 +81,10 @@ struct MigrationPolicyTests {
     }
 
     /// `{#grdb-pin}` 의 완료 기준.
+    ///
+    /// 판정은 **줄 단위**다. 왜 GRDB 를 public 으로 못 내보내는지 주석으로 설명해 둔 파일이
+    /// 있어서(`DomainColumns.swift`) 통짜 문자열 검색은 자기 자신의 근거 문서에 걸린다.
+    /// `learnCoreIsGRDBFree` 도 같은 이유로 줄 단위다 — 언급은 괜찮고 import 가 금지다.
     @Test("public import GRDB 가 0건이고 GRDB 는 LearnPersistence 안에만 있다")
     func grdbStaysInternal() throws {
         var publicImports: [String] = []
@@ -88,8 +92,13 @@ struct MigrationPolicyTests {
 
         for file in try SourceTree.swiftFiles(under: "Sources") {
             let contents = try String(contentsOf: file, encoding: .utf8)
-            guard contents.contains("import GRDB") else { continue }
-            if contents.contains("public import GRDB") {
+            let importLines = contents
+                .split(separator: "\n")
+                .map { $0.trimmingCharacters(in: .whitespaces) }
+                .filter { $0.hasSuffix("import GRDB") || $0.contains("import GRDB.") }
+            guard !importLines.isEmpty else { continue }
+
+            if importLines.contains(where: { $0.hasPrefix("public ") || $0.hasPrefix("@_exported") }) {
                 publicImports.append(file.lastPathComponent)
             }
             if !file.path.contains("/Sources/LearnPersistence/") {

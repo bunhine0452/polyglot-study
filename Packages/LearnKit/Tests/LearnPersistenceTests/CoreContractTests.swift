@@ -63,11 +63,11 @@ struct CoreContractTests {
         for block in 0..<6 {
             let real = try await harness.database.lessonProgressStore.completeBlock(
                 packID: PackID("p"), lessonID: LessonID("l"), languageID: .python,
-                blockIndex: block, at: Fixture.epoch + Int64(block)
+                blockIndex: block, at: Fixture.at(Int64(block))
             )
             let fake = try await fakes.lessonProgress.completeBlock(
                 packID: PackID("p"), lessonID: LessonID("l"), languageID: .python,
-                blockIndex: block, at: Fixture.epoch + Int64(block)
+                blockIndex: block, at: Fixture.at(Int64(block))
             )
             #expect(real == fake)
         }
@@ -88,7 +88,7 @@ struct CoreContractTests {
     func fakeRejectsSameInputs() async throws {
         let fakes = InMemoryStores()
         var bad = Fixture.reviewEntry()
-        bad.reviewedAt = 0
+        bad.reviewedAt = EpochMillis(0)
         await #expect(throws: StoreError.self) { try await fakes.reviewLog.append(bad) }
 
         var negative = Fixture.reviewEntry()
@@ -202,7 +202,7 @@ struct CoreContractTests {
             completedBlocks: [4, 1, 0]
         )
         #expect(progress.completedBlocks == [0, 1, 4])
-        #expect(progress.completing(block: 1, at: 1).completedBlocks == [0, 1, 4])
+        #expect(progress.completing(block: 1, at: EpochMillis(1)).completedBlocks == [0, 1, 4])
     }
 
     @Test("stale 판정은 두 원인을 따로 센다")

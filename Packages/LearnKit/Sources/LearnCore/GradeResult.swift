@@ -20,7 +20,7 @@ public struct GradeResult: Hashable, Sendable {
     }
 
     /// 결과를 무엇으로 보여줄지. 이질성을 데이터 모델이 아니라 여기 가둔다.
-    public enum Presenter: String, Hashable, Sendable {
+    public enum Presenter: String, Hashable, Sendable, CaseIterable {
         /// stdout/stderr 를 흘려보내는 콘솔 — 대부분의 언어.
         case console
         /// 행·열 diff 가 있는 결과 그리드 — SQL.

@@ -40,7 +40,7 @@ public struct SubmissionRecord: Hashable, Sendable {
     /// 6블록 시퀀스 안의 위치. 0..<`LessonBlockSequence.count`.
     public var blockIndex: Int
     public var languageID: LanguageID
-    public var submittedAt: EpochMilliseconds
+    public var submittedAt: EpochMillis
     public var passed: Bool
     public var sourceCode: String
     /// 저장 시 `PersistenceLimits.submissionOutputBytes` 로 잘린다.
@@ -63,7 +63,7 @@ public struct SubmissionRecord: Hashable, Sendable {
         lessonID: LessonID,
         blockIndex: Int,
         languageID: LanguageID,
-        submittedAt: EpochMilliseconds,
+        submittedAt: EpochMillis,
         passed: Bool,
         sourceCode: String,
         stdout: String = "",
@@ -108,7 +108,7 @@ extension SubmissionRecord {
         lessonID: LessonID,
         blockIndex: Int,
         languageID: LanguageID,
-        submittedAt: EpochMilliseconds,
+        submittedAt: EpochMillis,
         sourceCode: String,
         runnerBackend: RunnerBackend,
         toolchainVersion: String? = nil,

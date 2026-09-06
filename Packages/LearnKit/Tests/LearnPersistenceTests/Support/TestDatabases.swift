@@ -42,24 +42,29 @@ final class TestDatabase: @unchecked Sendable {
 
 enum Fixture {
     /// 2026-01-01T00:00:00Z.
-    static let epoch: EpochMilliseconds = 1_767_225_600_000
-    static let day: EpochMilliseconds = 86_400_000
+    static let epoch = EpochMillis(1_767_225_600_000)
+
+    /// `epoch` 로부터 `milliseconds` 뒤.
+    static func at(_ milliseconds: Int64) -> EpochMillis { epoch.adding(milliseconds: milliseconds) }
+
+    /// `epoch` 로부터 `count` 일 뒤.
+    static func days(_ count: Int) -> EpochMillis { epoch.adding(days: count) }
 
     static func reviewEntry(
         card: String = "py-001",
-        at offsetDays: Int64 = 0,
+        at offsetDays: Int = 0,
         rating: ReviewRating = .good,
-        stateBefore: LearningState = .new,
-        source: ReviewSource = .scheduled
+        stateBefore: CardPhase = .new,
+        source: ReviewLogSource = .review
     ) -> ReviewLogEntry {
         ReviewLogEntry(
             cardID: CardID(card),
-            reviewedAt: epoch + offsetDays * day,
+            reviewedAt: days(offsetDays),
             rating: rating,
             stateBefore: stateBefore,
-            elapsedDays: Int(offsetDays),
+            elapsedDays: offsetDays,
             scheduledDays: 1,
-            reviewDurationMilliseconds: 4_200,
+            reviewDurationMS: 4_200,
             source: source
         )
     }
@@ -67,7 +72,7 @@ enum Fixture {
     static func cardState(
         card: String = "py-001",
         language: LanguageID = .python,
-        dueOffsetDays: Int64 = 1,
+        dueOffsetDays: Int = 1,
         derivedFrom: ReviewLogID? = nil,
         parameterSet: ParameterSetID = .fsrs6Default
     ) -> CardStateSnapshot {
@@ -76,12 +81,12 @@ enum Fixture {
             languageID: language,
             stability: 3.5,
             difficulty: 5.25,
-            dueAt: epoch + dueOffsetDays * day,
+            dueAt: days(dueOffsetDays),
             lastReviewedAt: epoch,
-            state: .review,
+            phase: .review,
             reps: 2,
             lapses: 0,
-            scheduledDays: Int(dueOffsetDays),
+            scheduledDays: dueOffsetDays,
             derivedFromLogID: derivedFrom,
             parameterSetID: parameterSet,
             rebuiltAt: epoch
@@ -130,6 +135,36 @@ enum Fixture {
             createdAt: epoch,
             updatedAt: epoch
         )
+    }
+}
+
+// MARK: - 스키마 CHECK 도메인
+
+/// 골든 스키마 덤프에서 CHECK 제약의 문자열 리터럴 집합을 뽑는다.
+///
+/// 열거형과 CHECK 가 어긋났는지 보는 테스트들이 공유한다. 한쪽 방향(`schema.contains`)만
+/// 보면 CHECK 에만 남은 죽은 값을 못 잡으므로 호출부는 집합 **동등**으로 비교한다.
+enum SchemaDomain {
+    static func literals(of constraint: String, in database: LearnDatabase) throws -> Set<String> {
+        let schema = try database.schemaDump()
+        guard let start = schema.range(of: "CONSTRAINT \(constraint)") else {
+            Issue.record("\(constraint) 제약을 찾지 못했다")
+            return []
+        }
+        // 다음 CONSTRAINT 또는 테이블 끝까지가 이 제약의 본문이다.
+        let rest = schema[start.upperBound...]
+        let end = rest.range(of: "CONSTRAINT ")?.lowerBound
+            ?? rest.range(of: ") STRICT;")?.lowerBound
+            ?? rest.endIndex
+        let body = String(rest[..<end])
+
+        var literals: Set<String> = []
+        for (index, piece) in body.split(separator: "'", omittingEmptySubsequences: false).enumerated()
+        where index % 2 == 1 {
+            // 홀수 번째 조각이 따옴표 안이다.
+            literals.insert(String(piece))
+        }
+        return literals
     }
 }
 

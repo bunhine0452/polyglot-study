@@ -52,7 +52,7 @@ struct GRDBCardStateStore: CardStateStore {
 
     func dueCards(
         languageID: LanguageID,
-        dueAtOrBefore: EpochMilliseconds,
+        dueAtOrBefore: EpochMillis,
         limit: Int
     ) async throws -> [CardStateSnapshot] {
         try await writer.readMapped { db in
@@ -63,7 +63,7 @@ struct GRDBCardStateStore: CardStateStore {
                     WHERE language_id = ? AND due_at <= ?
                     ORDER BY due_at, card_id
                     LIMIT ?
-                    """, arguments: [languageID.rawValue, dueAtOrBefore, max(0, limit)])
+                    """, arguments: [languageID.rawValue, dueAtOrBefore.sqlValue, max(0, limit)])
                 .map { try $0.toSnapshot() }
         }
     }
@@ -101,14 +101,14 @@ struct GRDBCardStateStore: CardStateStore {
 
     func observeDueCount(
         languageID: LanguageID,
-        dueAtOrBefore: EpochMilliseconds
+        dueAtOrBefore: EpochMillis
     ) -> AsyncThrowingStream<Int, any Error> {
         let language = languageID.rawValue
         return makeObservationStream(reader: writer) { db in
             try Int.fetchOne(
                 db,
                 sql: "SELECT COUNT(*) FROM card_state WHERE language_id = ? AND due_at <= ?",
-                arguments: [language, dueAtOrBefore]
+                arguments: [language, dueAtOrBefore.sqlValue]
             ) ?? 0
         }
     }

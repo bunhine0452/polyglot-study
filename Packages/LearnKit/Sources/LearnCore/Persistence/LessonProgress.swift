@@ -28,9 +28,9 @@ public struct LessonProgress: Hashable, Sendable, Codable {
     /// 완료한 블록 인덱스. **항상 정렬·중복 제거된 상태**로 유지되며 JSON 배열로 저장된다.
     public var completedBlocks: [Int]
     public var currentBlockIndex: Int
-    public var startedAt: EpochMilliseconds?
-    public var lastActivityAt: EpochMilliseconds?
-    public var completedAt: EpochMilliseconds?
+    public var startedAt: EpochMillis?
+    public var lastActivityAt: EpochMillis?
+    public var completedAt: EpochMillis?
 
     public init(
         packID: PackID,
@@ -39,9 +39,9 @@ public struct LessonProgress: Hashable, Sendable, Codable {
         status: LessonStatus = .notStarted,
         completedBlocks: [Int] = [],
         currentBlockIndex: Int = 0,
-        startedAt: EpochMilliseconds? = nil,
-        lastActivityAt: EpochMilliseconds? = nil,
-        completedAt: EpochMilliseconds? = nil
+        startedAt: EpochMillis? = nil,
+        lastActivityAt: EpochMillis? = nil,
+        completedAt: EpochMillis? = nil
     ) {
         self.packID = packID
         self.lessonID = lessonID
@@ -68,7 +68,7 @@ extension LessonProgress {
     /// - 6개가 다 차면 `completed` 로 가고 `completedAt` 이 박힌다.
     /// - `skipped` 는 건드리지 않는다 — 건너뛴 레슨에 진도를 다시 쌓는 건 사용자 명시적 행동이어야 한다.
     /// - 범위 밖 인덱스는 무시한다. CHECK 제약이 어차피 거부하므로 여기서 조용히 떨어뜨린다.
-    public func completing(block index: Int, at timestamp: EpochMilliseconds) -> LessonProgress {
+    public func completing(block index: Int, at timestamp: EpochMillis) -> LessonProgress {
         guard LessonBlockSequence.contains(index), status != .skipped else { return self }
 
         var next = self

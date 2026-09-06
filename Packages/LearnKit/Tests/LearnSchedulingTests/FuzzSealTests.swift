@@ -148,7 +148,7 @@ struct FuzzSealTests {
         let scheduler = try FSRSReviewScheduler(clock: FixedSchedulerClock(EpochMillis(1_767_600_000_000)))
         let state = scheduler.initialState(for: CardID("c1"), createdAt: EpochMillis(1_767_600_000_000))
         let outcome = try scheduler.apply(.good, to: state)
-        #expect(outcome.logEntry.parameterSetID == a)
+        #expect(outcome.logEntry.parameterSetID == ParameterSetID(a))
         #expect(outcome.logEntry.schedulerID == "fsrs-6/swift-fsrs@4fbaf20")
     }
 

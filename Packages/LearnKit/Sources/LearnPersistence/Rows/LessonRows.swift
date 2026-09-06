@@ -69,7 +69,7 @@ struct SubmissionRow: FetchableRecord, PersistableRecord {
         lessonID = record.lessonID.rawValue
         blockIndex = record.blockIndex
         languageID = record.languageID.rawValue
-        submittedAt = record.submittedAt
+        submittedAt = record.submittedAt.sqlValue
         passed = record.passed
         sourceCode = record.sourceCode
         stdout = record.stdout
@@ -102,7 +102,7 @@ struct SubmissionRow: FetchableRecord, PersistableRecord {
             lessonID: LessonID(lessonID),
             blockIndex: blockIndex,
             languageID: LanguageID(languageID),
-            submittedAt: submittedAt,
+            submittedAt: EpochMillis(sqlValue: submittedAt),
             passed: passed,
             sourceCode: sourceCode,
             stdout: stdout,
@@ -231,8 +231,8 @@ struct MistakeNoteRow: FetchableRecord, PersistableRecord {
         lessonID = note.lessonID?.rawValue
         title = note.title
         body = note.body
-        createdAt = note.createdAt
-        updatedAt = note.updatedAt
+        createdAt = note.createdAt.sqlValue
+        updatedAt = note.updatedAt.sqlValue
     }
 
     func toNote() -> MistakeNote {
@@ -244,8 +244,8 @@ struct MistakeNoteRow: FetchableRecord, PersistableRecord {
             lessonID: lessonID.map { LessonID($0) },
             title: title,
             body: body,
-            createdAt: createdAt,
-            updatedAt: updatedAt
+            createdAt: EpochMillis(sqlValue: createdAt),
+            updatedAt: EpochMillis(sqlValue: updatedAt)
         )
     }
 }
@@ -297,9 +297,9 @@ struct LessonProgressRow: FetchableRecord, PersistableRecord {
         status = progress.status.rawValue
         completedBlocks = try JSONArray.encode(progress.completedBlocks)
         currentBlockIndex = progress.currentBlockIndex
-        startedAt = progress.startedAt
-        lastActivityAt = progress.lastActivityAt
-        completedAt = progress.completedAt
+        startedAt = progress.startedAt?.sqlValue
+        lastActivityAt = progress.lastActivityAt?.sqlValue
+        completedAt = progress.completedAt?.sqlValue
     }
 
     func toProgress() throws -> LessonProgress {
@@ -313,9 +313,9 @@ struct LessonProgressRow: FetchableRecord, PersistableRecord {
             status: status,
             completedBlocks: try JSONArray.decodeInts(completedBlocks),
             currentBlockIndex: currentBlockIndex,
-            startedAt: startedAt,
-            lastActivityAt: lastActivityAt,
-            completedAt: completedAt
+            startedAt: startedAt.map(EpochMillis.init(sqlValue:)),
+            lastActivityAt: lastActivityAt.map(EpochMillis.init(sqlValue:)),
+            completedAt: completedAt.map(EpochMillis.init(sqlValue:))
         )
     }
 }

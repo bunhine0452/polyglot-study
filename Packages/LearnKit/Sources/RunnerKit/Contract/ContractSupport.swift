@@ -88,6 +88,9 @@ public struct ContractCase: Hashable, Sendable {
 /// 계약 실패의 종류. `RunFailure` 를 계약 스위트가 비교할 수 있는 형태로 접은 것.
 public enum ContractFailureKind: String, Hashable, Sendable {
     case wallClockExceeded
+    /// `RLIMIT_CPU` 초과. `wallClockExceeded` 와 접으면 안 된다 — `RunFailure` 가 둘을
+    /// 나눈 이유(멈춘 코드 vs 느린 코드)가 계약 스위트에서도 그대로 유효하다.
+    case cpuExceeded
     case memoryExceeded
     case cancelled
     case toolchainMissing
@@ -98,6 +101,7 @@ public enum ContractFailureKind: String, Hashable, Sendable {
         if let failure = error as? RunFailure {
             switch failure {
             case .wallClockExceeded: self = .wallClockExceeded
+            case .cpuExceeded: self = .cpuExceeded
             case .memoryExceeded: self = .memoryExceeded
             case .cancelled: self = .cancelled
             case .toolchainMissing: self = .toolchainMissing

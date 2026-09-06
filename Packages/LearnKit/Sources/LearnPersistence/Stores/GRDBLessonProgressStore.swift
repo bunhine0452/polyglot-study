@@ -49,7 +49,7 @@ struct GRDBLessonProgressStore: LessonProgressStore {
         lessonID: LessonID,
         languageID: LanguageID,
         blockIndex: Int,
-        at timestamp: EpochMilliseconds
+        at timestamp: EpochMillis
     ) async throws -> LessonProgress {
         guard LessonBlockSequence.contains(blockIndex) else {
             throw StoreError.constraint(

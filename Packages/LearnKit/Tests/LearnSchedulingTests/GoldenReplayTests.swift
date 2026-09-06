@@ -34,7 +34,7 @@ struct GoldenReplayTests {
         let entries = try GoldenReviewLog.loadEntries()
         #expect(entries.count == 200, "골든 로그가 200건이 아니다 — \(entries.count)건")
         #expect(Set(entries.map(\.cardID)).count == 40)
-        #expect(Set(entries.compactMap(\.logID)).count == 200, "logID 가 유일하지 않다")
+        #expect(Set(entries.compactMap(\.id)).count == 200, "로그 id 가 유일하지 않다")
 
         // 파일에는 뒤섞인 순서로 저장돼 있어야 한다 — 리플레이의 정렬 책임을 실제로 시험한다.
         #expect(
@@ -105,7 +105,7 @@ struct GoldenReplayTests {
                 """
             )
             #expect(state.lastReviewedAt == last.reviewedAt)
-            #expect(state.derivedFromLogID == last.logID)
+            #expect(state.derivedFromLogID == last.id)
         }
     }
 
@@ -154,7 +154,7 @@ struct GoldenReplayTests {
         let at = GoldenReviewLog.base
         func entry(_ rating: ReviewRating) -> ReviewLogEntry {
             ReviewLogEntry(
-                logID: nil, cardID: CardID("tie"), reviewedAt: at, rating: rating,
+                id: nil, cardID: CardID("tie"), reviewedAt: at, rating: rating,
                 stateBefore: .new, elapsedDays: 0, scheduledDays: 0,
                 schedulerID: scheduler.schedulerID, parameterSetID: scheduler.parameterSetID,
                 source: .review

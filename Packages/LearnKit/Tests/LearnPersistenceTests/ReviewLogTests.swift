@@ -92,17 +92,32 @@ struct ReviewLogTests {
         #expect(failure?.extendedResultCode == SQLiteResultCode.constraintCheck)
     }
 
-    @Test("CHECK 도메인이 LearnCore 열거형 rawValue 와 일치한다")
+    /// CHECK 리터럴의 주인은 `LearnPersistence` 의 `DomainColumns.swift` 다 — 도메인 열거형은
+    /// 정수(`CardPhase`)이거나 다른 스펠링(`.review` → `'scheduled'`)이라 rawValue 를 그대로
+    /// 비교하면 안 된다. 여기서 못박는 것은 **매핑 결과가 CHECK 와 정확히 같은 집합**이라는 것.
+    @Test("CHECK 도메인이 LearnCore 열거형의 컬럼 표현과 정확히 일치한다")
     func checkDomainsMatchEnums() throws {
         let harness = try TestDatabase(.inMemory)
-        let schema = try harness.database.schemaDump()
 
-        for state in LearningState.allCases {
-            #expect(schema.contains("'\(state.rawValue)'"), "state_before 에 \(state.rawValue) 없음")
+        #expect(
+            try SchemaDomain.literals(of: "chk_review_log_state_before", in: harness.database)
+                == Set(CardPhase.allCases.map(\.sqlText))
+        )
+        #expect(
+            try SchemaDomain.literals(of: "chk_card_state_state", in: harness.database)
+                == Set(CardPhase.allCases.map(\.sqlText))
+        )
+        #expect(
+            try SchemaDomain.literals(of: "chk_review_log_source", in: harness.database)
+                == Set(ReviewLogSource.allCases.map(\.sqlText))
+        )
+
+        // 매핑이 왕복해야 저장한 행을 다시 읽을 수 있다.
+        for phase in CardPhase.allCases { #expect(CardPhase(sqlText: phase.sqlText) == phase) }
+        for source in ReviewLogSource.allCases {
+            #expect(ReviewLogSource(sqlText: source.sqlText) == source)
         }
-        for source in ReviewSource.allCases {
-            #expect(schema.contains("'\(source.rawValue)'"), "source 에 \(source.rawValue) 없음")
-        }
+
         // rating 은 정수 1..4 — 열거형 rawValue 가 그 범위를 벗어나면 CHECK 가 틀린 것이다.
         #expect(ReviewRating.allCases.map(\.rawValue).sorted() == [1, 2, 3, 4])
     }
@@ -184,12 +199,12 @@ struct ReviewLogTests {
         let harness = try TestDatabase(flavor)
         let original = ReviewLogEntry(
             cardID: CardID("swift-042"),
-            reviewedAt: Fixture.epoch + 7 * Fixture.day,
+            reviewedAt: Fixture.days(7),
             rating: .hard,
             stateBefore: .relearning,
             elapsedDays: 9,
             scheduledDays: 4,
-            reviewDurationMilliseconds: 12_345,
+            reviewDurationMS: 12_345,
             schedulerID: "fsrs6",
             parameterSetID: .fsrs6Default,
             source: .cram
@@ -207,7 +222,7 @@ struct ReviewLogTests {
     func paginationCoversEverything(flavor: DatabaseFlavor) async throws {
         let harness = try TestDatabase(flavor)
         let store = harness.database.reviewLogStore
-        try await store.append(contentsOf: (0..<25).map { Fixture.reviewEntry(at: Int64($0)) })
+        try await store.append(contentsOf: (0..<25).map { Fixture.reviewEntry(at: $0) })
 
         var cursor: ReviewLogID?
         var seen: [ReviewLogID] = []
@@ -226,11 +241,11 @@ struct ReviewLogTests {
     func countUsesHalfOpenRange(flavor: DatabaseFlavor) async throws {
         let harness = try TestDatabase(flavor)
         let store = harness.database.reviewLogStore
-        try await store.append(contentsOf: (0..<5).map { Fixture.reviewEntry(at: Int64($0)) })
+        try await store.append(contentsOf: (0..<5).map { Fixture.reviewEntry(at: $0) })
 
         #expect(try await store.count(from: Fixture.epoch, to: Fixture.epoch) == 0)
-        #expect(try await store.count(from: Fixture.epoch, to: Fixture.epoch + Fixture.day) == 1)
-        #expect(try await store.count(from: Fixture.epoch, to: Fixture.epoch + 5 * Fixture.day) == 5)
+        #expect(try await store.count(from: Fixture.epoch, to: Fixture.days(1)) == 1)
+        #expect(try await store.count(from: Fixture.epoch, to: Fixture.days(5)) == 5)
     }
 
     // MARK: - {#scheduler-parameters}

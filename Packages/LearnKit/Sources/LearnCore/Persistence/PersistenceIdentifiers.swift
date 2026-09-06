@@ -1,15 +1,10 @@
-/// 영속화 계층에서만 쓰는 식별자와 시각 표현.
+/// 영속화 계층에서만 쓰는 식별자.
 ///
 /// `Identifiers.swift` 의 도메인 식별자(`CardID`·`PackID`…)는 콘텐츠가 정하는 이름이지만,
 /// 여기 있는 것들은 **DB 가 발급한 rowid** 다. 둘을 같은 파일에 두면 "콘텐츠가 정하는 id" 와
 /// "DB 가 정하는 id" 의 구분이 흐려진다.
-
-/// UTC epoch 기준 밀리초.
 ///
-/// 시각을 `Date` 가 아니라 정수로 고정하는 이유는 셋이다 — SQLite 가 날짜 타입을 갖지 않고,
-/// 정수 비교라 인덱스가 그대로 먹고, `review_log` 를 다른 언어로 리플레이해도 값이 흔들리지 않는다.
-/// 하루 경계(롤오버)는 저장이 아니라 **읽는 쪽**의 관심사다 — `LearnScheduling` 이 계산한다.
-public typealias EpochMilliseconds = Int64
+/// 시각 표현은 여기 없다 — `Review/EpochMillis.swift` 가 정본이다.
 
 /// `review_log` 행 식별자.
 ///

@@ -60,7 +60,7 @@ struct ObservationTests {
         let cards = harness.database.cardStateStore
         try await cards.upsert(Fixture.cardState(card: "py-1", dueOffsetDays: 0))
 
-        let horizon = Fixture.epoch + Fixture.day
+        let horizon = Fixture.days(1)
         let values = try await collect(
             cards.observeDueCount(languageID: .python, dueAtOrBefore: horizon),
             count: 2

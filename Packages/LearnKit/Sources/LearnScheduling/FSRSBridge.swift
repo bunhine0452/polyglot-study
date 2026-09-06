@@ -64,7 +64,7 @@ extension CardSchedulingState {
         )
     }
 
-    init(vendor card: Card, cardID: CardID, parameterSetID: String, derivedFromLogID: Int64?) {
+    init(vendor card: Card, cardID: CardID, parameterSetID: ParameterSetID, derivedFromLogID: ReviewLogID?) {
         self.init(
             cardID: cardID,
             phase: CardPhase(vendor: card.state),

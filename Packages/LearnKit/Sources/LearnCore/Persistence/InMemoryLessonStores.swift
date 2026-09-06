@@ -172,7 +172,7 @@ public actor InMemoryLessonProgressStore: LessonProgressStore {
         lessonID: LessonID,
         languageID: LanguageID,
         blockIndex: Int,
-        at timestamp: EpochMilliseconds
+        at timestamp: EpochMillis
     ) async throws -> LessonProgress {
         guard LessonBlockSequence.contains(blockIndex) else {
             throw StoreError.constraint(message: "chk_lesson_progress_block_index")

@@ -116,14 +116,14 @@ public struct CardStateRebuild: Hashable, Sendable, Codable {
     /// `.cram` 이라 건너뛴 로그 행 수.
     public var skippedEntryCount: Int
     public var schedulerID: String
-    public var parameterSetID: String
+    public var parameterSetID: ParameterSetID
 
     public init(
         states: [CardSchedulingState],
         appliedEntryCount: Int,
         skippedEntryCount: Int,
         schedulerID: String,
-        parameterSetID: String
+        parameterSetID: ParameterSetID
     ) {
         self.states = states
         self.appliedEntryCount = appliedEntryCount
@@ -185,7 +185,7 @@ public protocol ReviewScheduler: Sendable {
     /// 이 스케줄러의 안정 식별자. `review_log.scheduler_id` 에 그대로 들어간다.
     var schedulerID: String { get }
     /// 활성 파라미터 세트 id. `review_log.parameter_set_id` 이자 `card_state` 의 stale 판정 기준.
-    var parameterSetID: String { get }
+    var parameterSetID: ParameterSetID { get }
     var dayBoundary: DayBoundary { get }
     var clock: any SchedulerClock { get }
 
@@ -196,6 +196,9 @@ public protocol ReviewScheduler: Sendable {
     func preview(_ card: CardSchedulingState, at now: EpochMillis) throws -> ReviewPreview
 
     /// 리뷰 하나를 적용해 새 상태와 로그 행을 만든다.
+    ///
+    /// `reviewDurationMS` 가 nil 이면 "재지 않았다" 는 뜻이고 로그에는 0 으로 남는다 —
+    /// `review_log.review_duration_ms` 는 `NOT NULL` 이라 "모름" 을 표현할 칸이 없다.
     func apply(
         _ rating: ReviewRating,
         to card: CardSchedulingState,

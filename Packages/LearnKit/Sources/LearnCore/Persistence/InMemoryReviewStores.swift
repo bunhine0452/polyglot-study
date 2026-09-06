@@ -47,12 +47,12 @@ public actor InMemoryReviewLogStore: ReviewLogStore {
 
     /// 마이그레이션 001 의 CHECK 6종을 그대로 옮긴 것. 두 구현이 같은 입력을 같은 이유로 거부해야 한다.
     private static func validate(_ entry: ReviewLogEntry) throws {
-        guard entry.reviewedAt > 0 else {
+        guard entry.reviewedAt > EpochMillis(0) else {
             throw StoreError.constraint(message: "chk_review_log_reviewed_at")
         }
         guard entry.elapsedDays >= 0,
               entry.scheduledDays >= 0,
-              entry.reviewDurationMilliseconds >= 0
+              entry.reviewDurationMS >= 0
         else {
             throw StoreError.constraint(message: "chk_review_log_intervals")
         }
@@ -82,7 +82,7 @@ public actor InMemoryReviewLogStore: ReviewLogStore {
 
     public func count() async throws -> Int { entries.count }
 
-    public func count(from: EpochMilliseconds, to: EpochMilliseconds) async throws -> Int {
+    public func count(from: EpochMillis, to: EpochMillis) async throws -> Int {
         entries.count { $0.reviewedAt >= from && $0.reviewedAt < to }
     }
 
@@ -136,7 +136,7 @@ extension SchedulerParameterSet {
         schedulerID: "fsrs6",
         weights: nil,
         desiredRetention: 0.9,
-        createdAt: 0,
+        createdAt: EpochMillis(0),
         isActive: true
     )
 }
@@ -149,7 +149,7 @@ public actor InMemoryCardStateStore: CardStateStore {
     private var snapshots: [CardID: CardStateSnapshot] = [:]
     private let reviewLog: InMemoryReviewLogStore
     private var dueObservers = ContinuationRegistry<Int>()
-    private var dueObserverKey: (LanguageID, EpochMilliseconds)?
+    private var dueObserverKey: (LanguageID, EpochMillis)?
 
     public init(reviewLog: InMemoryReviewLogStore) {
         self.reviewLog = reviewLog
@@ -181,7 +181,7 @@ public actor InMemoryCardStateStore: CardStateStore {
 
     public func dueCards(
         languageID: LanguageID,
-        dueAtOrBefore: EpochMilliseconds,
+        dueAtOrBefore: EpochMillis,
         limit: Int
     ) async throws -> [CardStateSnapshot] {
         snapshots.values
@@ -214,7 +214,7 @@ public actor InMemoryCardStateStore: CardStateStore {
 
     nonisolated public func observeDueCount(
         languageID: LanguageID,
-        dueAtOrBefore: EpochMilliseconds
+        dueAtOrBefore: EpochMillis
     ) -> AsyncThrowingStream<Int, any Error> {
         AsyncThrowingStream { continuation in
             Task { await self.registerDueObserver(continuation, languageID, dueAtOrBefore) }
@@ -224,7 +224,7 @@ public actor InMemoryCardStateStore: CardStateStore {
     private func registerDueObserver(
         _ continuation: AsyncThrowingStream<Int, any Error>.Continuation,
         _ languageID: LanguageID,
-        _ dueAtOrBefore: EpochMilliseconds
+        _ dueAtOrBefore: EpochMillis
     ) {
         dueObserverKey = (languageID, dueAtOrBefore)
         dueObservers.add(continuation, current: dueCount(languageID, dueAtOrBefore))
@@ -235,7 +235,7 @@ public actor InMemoryCardStateStore: CardStateStore {
         dueObservers.broadcast(dueCount(key.0, key.1))
     }
 
-    private func dueCount(_ languageID: LanguageID, _ dueAtOrBefore: EpochMilliseconds) -> Int {
+    private func dueCount(_ languageID: LanguageID, _ dueAtOrBefore: EpochMillis) -> Int {
         snapshots.values.count { $0.languageID == languageID && $0.dueAt <= dueAtOrBefore }
     }
 }

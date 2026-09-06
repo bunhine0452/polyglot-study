@@ -43,7 +43,7 @@ public protocol ReviewLogStore: Sendable {
     func count() async throws -> Int
 
     /// 기간 통계. `(reviewed_at)` 인덱스를 타야 한다.
-    func count(from: EpochMilliseconds, to: EpochMilliseconds) async throws -> Int
+    func count(from: EpochMillis, to: EpochMillis) async throws -> Int
 
     func activeParameterSet() async throws -> SchedulerParameterSet
     func parameterSet(id: ParameterSetID) async throws -> SchedulerParameterSet?
@@ -71,7 +71,7 @@ public protocol CardStateStore: Sendable {
     /// 트랙별 due 큐. 항상 `language_id` 로 먼저 좁히고 `(language_id, due_at)` 인덱스를 탄다.
     func dueCards(
         languageID: LanguageID,
-        dueAtOrBefore: EpochMilliseconds,
+        dueAtOrBefore: EpochMillis,
         limit: Int
     ) async throws -> [CardStateSnapshot]
 
@@ -81,7 +81,7 @@ public protocol CardStateStore: Sendable {
 
     func observeDueCount(
         languageID: LanguageID,
-        dueAtOrBefore: EpochMilliseconds
+        dueAtOrBefore: EpochMillis
     ) -> AsyncThrowingStream<Int, any Error>
 }
 
@@ -135,7 +135,7 @@ public protocol LessonProgressStore: Sendable {
         lessonID: LessonID,
         languageID: LanguageID,
         blockIndex: Int,
-        at timestamp: EpochMilliseconds
+        at timestamp: EpochMillis
     ) async throws -> LessonProgress
 
     func observeProgress(

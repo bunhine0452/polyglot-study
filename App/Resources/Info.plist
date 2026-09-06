@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>ko</string>
+	<key>CFBundleExecutable</key>
+	<string>Polyglot</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.polyglotstudy.Polyglot</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Polyglot</string>
+	<key>CFBundleDisplayName</key>
+	<string>Polyglot</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>14.0</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>NSSupportsAutomaticTermination</key>
+	<false/>
+	<key>NSSupportsSuddenTermination</key>
+	<false/>
+	<!-- 폰트 번들링({#plex-font-bundling})의 착지점. 이 키는 앱 번들 Contents/Resources
+	     기준 상대 경로에만 먹는다 — SPM 의 Bundle.module 경로에는 효과가 없다. -->
+	<key>ATSApplicationFontsPath</key>
+	<string>Fonts</string>
+</dict>
+</plist>

@@ -96,9 +96,9 @@ owner: claude-code
 - [ ] notarytool submit 부터 stapler staple 을 거쳐 DMG 까지 스크립트 하나로 — 완료: 네트워크 격리된 다른 맥에서 Gatekeeper 경고 없이 실행되고 spctl 이 accepted {#notarize-staple-dmg}
   - [ ] 자격증명을 notarytool 키체인 프로파일로 저장하고 앱 암호를 스크립트·로그·인자 어디에도 싣지 않음 — 스크립트 전문 grep 에 0건 {#notary-credentials}
   - [ ] 앱뿐 아니라 DMG 자체도 서명·공증·스테이플 — DMG 파일 단독으로 stapler validate 통과 {#dmg-notarize}
-- [ ] Sparkle 2.9.6 자동 업데이트를 EdDSA 서명으로 연결 — 완료: 구버전 앱이 appcast 를 읽어 신버전을 받고 서명 검증 후 설치까지 완료 {#sparkle-updates}
-  - [ ] 생성한 공개키를 SUPublicEDKey 에 넣고 개인키는 로그인 키체인에만 보관 — 저장소 전체 grep 에 개인키 0건 {#sparkle-eddsa-keys}
-  - [ ] 피드 URL 을 GitHub Pages 의 appcast.xml 로 두고 appcast 생성기를 릴리스 스크립트에 편입 — 릴리스 1회로 서명과 길이가 갱신 {#sparkle-appcast}
+- [~] Sparkle 2.9.6 자동 업데이트를 EdDSA 서명으로 연결 — 완료: 구버전 앱이 appcast 를 읽어 신버전을 받고 서명 검증 후 설치까지 완료 {#sparkle-updates}
+  - [x] 생성한 공개키를 SUPublicEDKey 에 넣고 개인키는 로그인 키체인에만 보관 — 저장소 전체 grep 에 개인키 0건 {#sparkle-eddsa-keys}
+  - [~] 피드 URL 을 GitHub Pages 의 appcast.xml 로 두고 appcast 생성기를 릴리스 스크립트에 편입 — 릴리스 1회로 서명과 길이가 갱신 {#sparkle-appcast}
 - [x] GitHub 공개 준비 — README 와 CONTRIBUTING 작성. LICENSE 는 이미 MIT 로 커밋됨. README 라이선스 절에 Unicorn Engine 도입 시 MIT 선택이 무효화된다는 경고 한 줄 {#github-public-repo}
 - [~] 릴리스 CI — swift test 와 xcodebuild build 와 packtool validate 3게이트를 PR 에 걸고, 공증과 appcast 잡은 태그 푸시에만 Actions secrets 로 실행 {#release-ci}
 
@@ -168,4 +168,6 @@ owner: claude-code
 | 2026-09-07T07:19:56+09:00 | #toolchain-skip-policy | claude-code | ~→x | .oculpm/journal/20260907/Features_to_add/0719_feature_ci-gate-pr-checks.md | CI 절반 완료 — 필수 체크 경로에 --allow-missing-toolchain 을 기본으로 넘기지 않고 옵트인 시 경고. "경량 러너" 전제는 반박됨: RunnerKit 이 가드 없이 import Darwin 이라 Linux 는 스킵이 아니라 컴파일 실패다 → 3게이트 모두 macos-14 |
 | 2026-09-07T07:20:04+09:00 | #release-ci | claude-code | ☐→~ | .oculpm/journal/20260907/Features_to_add/0719_feature_ci-gate-pr-checks.md | PR 3게이트(swift test·build-app.sh·packtool validate)는 완료. 태그 푸시의 공증·appcast 잡은 미구현 — #notarize-staple-dmg(Developer ID 없음)와 #sparkle-appcast 에 의존한다. 트리거 자체를 안 넣고 주석 자리만 남김 |
 | 2026-09-07T07:20:15+09:00 | #lessongen-prompt-caching | claude-code | !→! | .oculpm/journal/20260907/Errors/0719_error_prompt-cache-cold-despite-pin.md | 가설 반증됨 — Wafer 로 고정해 순차 3회를 태워도 cached_tokens 가 0. 접두사는 두 레슨에서 5527B 바이트 동일(무료 확인), 23개 엔드포인트 전부 캐시 읽기 가격 게시(무료 확인). 원인은 공급자 쪽. 더 안 태운다: out 이 비용을 지배해(in 1995 / out 3625) 완벽한 입력 캐시의 이득이 15~20%뿐이고 폴백 금지의 가용성 대가와 맞바꿔야 한다. 배선·관측은 남는다 |
+| 2026-09-07T07:33:12+09:00 | #sparkle-eddsa-keys | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0733_feature_sparkle-auto-update.md | 공개키가 SUPublicEDKey 에, 개인키는 로그인 키체인에만. 저장소 전수 grep 에 개인키 0건 (BEGIN PRIVATE KEY 0건, *.pem/*.der/*.key 0건) — 공개키만 Info.plist·문서에 있다 |
+| 2026-09-07T07:33:22+09:00 | #sparkle-appcast | claude-code | ☐→~ | .oculpm/journal/20260907/Features_to_add/0733_feature_sparkle-auto-update.md | 생성기는 release.sh 에 편입돼 릴리스 1회로 서명(88자)·길이가 갱신되는 것까지 단언으로 확인. 남은 것은 피드 URL — polyglotstudy.github.io 는 아무도 소유하지 않은 추정 주소라 release.sh 가 그 호스트로는 릴리스를 거부하도록 게이트를 걸었다. 원격·Pages 가 생겨 실주소를 확보해야 닫힌다 |
 <!-- oculpm:plan-log end -->

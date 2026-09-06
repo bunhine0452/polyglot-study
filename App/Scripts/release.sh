@@ -103,6 +103,32 @@ if [ -n "$FEED_URL_OVERRIDE" ]; then
 	echo "!!  이 산출물은 배포용이 아니다 — 검증용으로만 써라."
 else
 	FEED_URL="$(/usr/libexec/PlistBuddy -c 'Print :SUFeedURL' "$APP_DIR/Resources/Info.plist")"
+
+	# Info.plist 의 SUFeedURL 은 **아직 아무도 소유하지 않은 추정 주소**다. 원격도
+	# Pages 도 없어서 그 주소로 왕복해 본 적이 없다.
+	#
+	# 이 상태로 배포물을 구우면, 그 호스트를 나중에 가로챈 사람이 우리 앱의 업데이트
+	# 피드를 쥔다. EdDSA 서명 검증이 있어 임의 코드를 밀어 넣지는 못하지만, 우리가
+	# 서명한 **구버전으로 되돌리거나**(다운그레이드) 업데이트를 막을 수는 있다.
+	#
+	# 그래서 문서의 경고를 릴리스 시점의 게이트로 바꾼다. 주소를 실제로 확보한 사람이
+	# 이 목록에서 호스트를 지우거나, 확인했다고 명시적으로 말해야 한다.
+	UNVERIFIED_FEED_HOSTS="polyglotstudy.github.io"
+	FEED_HOST="${FEED_URL#*://}"
+	FEED_HOST="${FEED_HOST%%/*}"
+	for unverified in $UNVERIFIED_FEED_HOSTS; do
+		if [ "$FEED_HOST" = "$unverified" ] && [ "${POLYGLOT_FEED_HOST_VERIFIED:-0}" != "1" ]; then
+			echo "피드 호스트 $FEED_HOST 는 아직 확보되지 않은 추정 주소다 — 릴리스를 멈춘다." >&2
+			echo "" >&2
+			echo "  이 주소로 배포하면 나중에 이 호스트를 가로챈 사람이 업데이트 피드를 쥔다." >&2
+			echo "  서명 검증이 임의 코드는 막지만 다운그레이드와 업데이트 차단은 막지 못한다." >&2
+			echo "" >&2
+			echo "  실제 주소를 확보했다면 Resources/Info.plist 의 SUFeedURL 을 그 주소로 바꾸고" >&2
+			echo "  이 스크립트의 UNVERIFIED_FEED_HOSTS 에서 호스트를 지워라." >&2
+			echo "  검증 목적이면 --feed-url 로 덮어쓰거나 POLYGLOT_FEED_HOST_VERIFIED=1 을 줘라." >&2
+			exit 1
+		fi
+	done
 fi
 APPCAST_NAME="${FEED_URL##*/}"
 DOWNLOAD_PREFIX="${FEED_URL%/*}/"

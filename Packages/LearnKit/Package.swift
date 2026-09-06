@@ -32,6 +32,7 @@ let package = Package(
         .library(name: "LessonFeature", targets: ["LessonFeature"]),
         .library(name: "ReviewFeature", targets: ["ReviewFeature"]),
         .library(name: "EditorUI", targets: ["EditorUI"]),
+        .library(name: "EditorFeature", targets: ["EditorFeature"]),
     ],
     dependencies: [
         .package(url: "https://github.com/groue/GRDB.swift.git", .upToNextMinor(from: "7.11.1")),
@@ -48,6 +49,10 @@ let package = Package(
         // 저장소(CodeEdit·CodeEditSourceEditor·CodeEditTextView)가 전부 MIT 이고 README
         // 태그라인이 "Open source, free forever" 라 정책이 아니라 누락으로 판단한다.
         .package(path: "../../Vendor/CodeEditSourceEditor"),
+        // `CodeEditSourceEditor` 의 `exact` 전이 의존과 같은 버전. `EditorFeature` 가
+        // `SourceEditor(language:)` 에 넘길 `CodeLanguage` 값을 이름으로 가리키려면
+        // 이 패키지를 직접 의존해야 한다 — 전이 의존만으로는 타입을 import 할 수 없다.
+        .package(url: "https://github.com/CodeEditApp/CodeEditLanguages.git", exact: "0.1.20"),
     ],
     targets: [
         .target(name: "LearnCore", swiftSettings: coreSettings),
@@ -130,11 +135,25 @@ let package = Package(
             ],
             swiftSettings: uiSettings
         ),
+        // 에디터 콘솔 화면(`design/Editor.dc.html`)과 SQL 결과 화면
+        // (`design/ResultSQL.dc.html`). `RunnerKit` 은 실제 swiftc 컴파일과 인프로세스
+        // SQLite 실행을 태우는 데 쓴다 — 목 데이터가 없다.
+        .target(
+            name: "EditorFeature",
+            dependencies: [
+                "LearnCore", "LanguageKit", "RunnerKit", "DesignSystem", "EditorUI",
+                .product(name: "CodeEditSourceEditor", package: "CodeEditSourceEditor"),
+                .product(name: "CodeEditLanguages", package: "CodeEditLanguages"),
+            ],
+            path: "Sources/Features/EditorFeature",
+            swiftSettings: uiSettings
+        ),
         .testTarget(name: "ContentKitTests", dependencies: ["ContentKit"], swiftSettings: coreSettings),
         .testTarget(name: "DashboardFeatureTests", dependencies: ["DashboardFeature"], swiftSettings: uiSettings),
         .testTarget(name: "LessonFeatureTests", dependencies: ["LessonFeature"], swiftSettings: uiSettings),
         .testTarget(name: "ReviewFeatureTests", dependencies: ["ReviewFeature"], swiftSettings: uiSettings),
         .testTarget(name: "EditorUITests", dependencies: ["EditorUI"], swiftSettings: uiSettings),
+        .testTarget(name: "EditorFeatureTests", dependencies: ["EditorFeature"], swiftSettings: uiSettings),
         .testTarget(name: "DesignSystemTests", dependencies: ["DesignSystem"], swiftSettings: uiSettings),
         .testTarget(name: "OnboardingFeatureTests", dependencies: ["OnboardingFeature"], swiftSettings: uiSettings),
         .testTarget(

@@ -37,16 +37,17 @@
 	     키체인(서비스 "https://sparkle-project.org", 계정 "ed25519")에만 있고 저장소에는
 	     없다. 릴리스 서명은 `Scripts/release.sh` 가 키체인에서 꺼내 쓴다.
 
-	     SUFeedURL 은 GitHub Pages 를 가리킨다. 이 저장소에는 아직 git 원격도 Pages 도
-	     없어서 이 주소로 실제 왕복을 해본 적이 없다 — 원격이 생기면 실제 Pages 주소와
-	     같은지 확인해야 하고, Scripts/release.sh 가 appcast 를 굽는 --feed-base 와
+	     SUFeedURL 은 GitHub Pages 를 가리킨다. 2026-09-07 에 실제 저장소
+	     (bunhine0452/polyglot-study)를 만들면서 실주소로 확정했다. 이 값은 배포된
+	     구버전 앱에 영구히 박히므로 바꾸면 이미 나간 버전이 업데이트를 못 받는다.
+	     Scripts/release.sh 가 appcast 를 굽는 --feed-base 와
 	     이 값이 어긋나면 릴리스를 거부한다.
 
 	     SUVerifyUpdateBeforeExtraction: 압축을 풀기 **전에** EdDSA 서명을 검증한다.
 	     서명이 틀린 아카이브의 바이트가 애초에 압축 해제기를 타지 않는다.
 	-->
 	<key>SUFeedURL</key>
-	<string>https://polyglotstudy.github.io/polyglot/appcast.xml</string>
+	<string>https://bunhine0452.github.io/polyglot-study/appcast.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>HRRXJyBOBY0aer/wNjrtCQppaKr/qYJrg/BSQhI/6b4=</string>
 	<key>SUVerifyUpdateBeforeExtraction</key>

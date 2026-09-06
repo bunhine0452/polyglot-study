@@ -63,7 +63,7 @@ echo "$SPARKLE_PRIVATE_KEY" | App/Scripts/release.sh --version 0.2.0 --ed-key-fi
 업데이트가 "받아지긴 하는데 설치가 안 되는" 형태로 조용히 깨지기 때문이다.
 
 ```
-SUFeedURL = https://polyglotstudy.github.io/polyglot/appcast.xml
+SUFeedURL = https://bunhine0452.github.io/polyglot-study/appcast.xml
 ```
 
 > **아직 확인되지 않은 값이다.** 이 저장소에는 git 원격이 없고 GitHub Pages 도 없다.

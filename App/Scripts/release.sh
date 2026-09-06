@@ -113,7 +113,10 @@ else
 	#
 	# 그래서 문서의 경고를 릴리스 시점의 게이트로 바꾼다. 주소를 실제로 확보한 사람이
 	# 이 목록에서 호스트를 지우거나, 확인했다고 명시적으로 말해야 한다.
-	UNVERIFIED_FEED_HOSTS="polyglotstudy.github.io"
+	# 2026-09-07: bunhine0452.github.io 로 확정했다 — 계정 소유자가 그 호스트를 쥐고
+	# 있으므로 가로채기 위험이 없다. 목록은 비웠지만 기제는 남긴다. 다음에 또 확보하지
+	# 않은 주소를 임시로 박게 되면 여기에 넣어라.
+	UNVERIFIED_FEED_HOSTS=""
 	FEED_HOST="${FEED_URL#*://}"
 	FEED_HOST="${FEED_HOST%%/*}"
 	for unverified in $UNVERIFIED_FEED_HOSTS; do

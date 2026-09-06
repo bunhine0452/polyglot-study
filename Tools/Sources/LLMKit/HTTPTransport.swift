@@ -22,7 +22,7 @@ public struct HTTPResponse: Sendable, Hashable {
     }
 }
 
-/// 실제 전송. `URLSession` 을 쓴다 — Swift 에는 공식 Anthropic SDK 가 없다.
+/// 실제 전송. `URLSession` 을 쓴다 — 이 공급자들에는 Swift 공식 SDK 가 없다.
 public struct URLSessionTransport: HTTPTransport {
     private let session: URLSession
 
@@ -31,7 +31,7 @@ public struct URLSessionTransport: HTTPTransport {
     }
 
     /// 기본 세션. 비스트리밍 요청이라 서버가 응답을 다 만들 때까지 기다려야 하므로
-    /// 타임아웃을 넉넉히 잡는다 (Anthropic 비스트리밍 상한이 10분).
+    /// 타임아웃을 넉넉히 잡는다.
     public init(timeout: Duration = .seconds(600)) {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.timeoutIntervalForRequest = timeout.asTimeInterval
@@ -48,10 +48,10 @@ public struct URLSessionTransport: HTTPTransport {
         } catch {
             // `URLError` 의 설명에는 URL 만 담기고 헤더는 담기지 않는다. 그래도 로그로
             // 나갈 때는 `RedactingLog` 를 한 번 더 통과한다.
-            throw AnthropicError.transport(String(describing: error))
+            throw LLMError.transport(String(describing: error))
         }
         guard let http = response as? HTTPURLResponse else {
-            throw AnthropicError.malformedResponse("HTTP 응답이 아닙니다: \(type(of: response))")
+            throw LLMError.malformedResponse("HTTP 응답이 아닙니다: \(type(of: response))")
         }
         var headers: [String: String] = [:]
         for (key, value) in http.allHeaderFields {

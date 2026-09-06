@@ -1,11 +1,11 @@
-public import AnthropicKit
 public import Foundation
+public import LLMKit
 
 /// 미리 정해 둔 응답을 순서대로 돌려주는 전송. 재시도·백오프 검증용.
 public final class StubTransport: HTTPTransport, @unchecked Sendable {
     public enum Step: Sendable {
         case response(HTTPResponse)
-        case failure(AnthropicError)
+        case failure(LLMError)
     }
 
     private let lock = NSLock()
@@ -35,7 +35,7 @@ public final class StubTransport: HTTPTransport, @unchecked Sendable {
             return steps.isEmpty ? nil : steps.removeFirst()
         }
         guard let step else {
-            throw AnthropicError.transport("StubTransport: 준비된 응답을 다 썼습니다.")
+            throw LLMError.transport("StubTransport: 준비된 응답을 다 썼습니다.")
         }
         switch step {
         case .response(let response): return response
@@ -77,5 +77,80 @@ public final class CapturingLog: ClientLogSink, @unchecked Sendable {
 
     public func write(_ line: String) {
         lock.withLock { recorded.append(line) }
+    }
+}
+
+/// 네트워크가 아예 없는 ``LLMProvider``.
+///
+/// ``ProviderContract`` 를 태우는 **두 번째 구현**이라는 데 의미가 있다 — 계약이 한
+/// 구현에만 맞춰 쓰이면 계약이 아니라 그 구현의 사본이다. 도메인 코드(개요 생성기)의
+/// 테스트도 HTTP 를 세우지 않고 이걸 쓴다.
+public final class FakeProvider: LLMProvider, @unchecked Sendable {
+    public enum Step: Sendable {
+        case success(CompletionResponse)
+        case failure(LLMError)
+    }
+
+    public let capabilities: ProviderCapabilities
+    public let identity: ProviderIdentity
+
+    private let lock = NSLock()
+    private var steps: [Step]
+    private var recorded: [CompletionRequest] = []
+
+    public init(
+        capabilities: ProviderCapabilities = [.structuredOutputs, .jsonObjectMode, .usageTokens],
+        model: ModelID = ModelID(Fixtures.testModel),
+        steps: [Step]
+    ) {
+        self.capabilities = capabilities
+        self.identity = ProviderIdentity(provider: "fake", model: model)
+        self.steps = steps
+    }
+
+    /// 같은 텍스트를 몇 번이든 돌려주는 공급자.
+    public convenience init(
+        capabilities: ProviderCapabilities = [.structuredOutputs, .jsonObjectMode, .usageTokens],
+        alwaysReturning text: String,
+        finishReason: FinishReason = .stop
+    ) {
+        self.init(
+            capabilities: capabilities,
+            steps: [
+                .success(
+                    CompletionResponse(
+                        id: "fake-1",
+                        model: Fixtures.testModel,
+                        upstreamProvider: "fake",
+                        text: text,
+                        finishReason: finishReason,
+                        usage: TokenUsage(inputTokens: 100, outputTokens: 50)
+                    )
+                )
+            ]
+        )
+        repeating = true
+    }
+
+    private var repeating = false
+
+    public var requests: [CompletionRequest] {
+        lock.withLock { recorded }
+    }
+
+    public func complete(_ request: CompletionRequest) async throws -> CompletionResponse {
+        if let required = request.responseFormat.requiredCapability, !capabilities.contains(required) {
+            throw LLMError.unsupported(required)
+        }
+        let step: Step? = lock.withLock {
+            recorded.append(request)
+            guard !steps.isEmpty else { return nil }
+            return repeating ? steps[0] : steps.removeFirst()
+        }
+        guard let step else { throw LLMError.provider("FakeProvider: 준비된 응답을 다 썼습니다.") }
+        switch step {
+        case .success(let response): return response
+        case .failure(let error): throw error
+        }
     }
 }

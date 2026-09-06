@@ -1,4 +1,4 @@
-import AnthropicKit
+import LLMKit
 import Foundation
 import LearnCore
 import LessonGenKit
@@ -64,14 +64,14 @@ struct OutlineTests {
         let outline = try OutlineAssembler.assemble(
             draft: makeDraft(),
             language: .python,
-            generatorModel: AnthropicModel.opus5.rawValue
+            generatorModel: Fixtures.testModel
         )
         #expect(outline.lessons.map(\.stableID.rawValue) == ["python.hello-stdout", "python.list-comprehension"])
         #expect(outline.lessons.map(\.ordinal) == [1, 2])
         #expect(outline.lessons[1].prerequisites == [LessonID("python.hello-stdout")])
         #expect(outline.lessons[0].prerequisites.isEmpty)
         #expect(outline.language == .python)
-        #expect(outline.generatorModel == "claude-opus-5")
+        #expect(outline.generatorModel == Fixtures.testModel)
         #expect(outline.schemaVersion == TrackOutline.currentSchemaVersion)
         // 순번이 ID 에 들어가면 레슨을 끼워 넣을 때마다 진도가 고아가 된다.
         #expect(outline.lessons.allSatisfy { !$0.stableID.rawValue.contains("\($0.ordinal)") })

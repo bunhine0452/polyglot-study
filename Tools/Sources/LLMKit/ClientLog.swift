@@ -2,7 +2,7 @@ import Foundation
 
 /// 클라이언트가 한 줄씩 뱉는 진행 로그의 목적지.
 ///
-/// ``AnthropicClient`` 는 무엇을 받든 ``RedactingLog`` 로 감싸서 들고 있으므로,
+/// 공급자는 무엇을 받든 ``RedactingLog`` 로 감싸서 들고 있으므로,
 /// 이 프로토콜을 구현한 쪽이 무엇을 하든 비밀값은 먼저 지워진다.
 public protocol ClientLogSink: Sendable {
     func write(_ line: String)
@@ -24,7 +24,7 @@ public struct StandardErrorLog: ClientLogSink {
 
 /// 어떤 sink 든 감싸서 비밀값을 지운 뒤 넘긴다.
 ///
-/// 이 타입이 "로그에 키가 0건" 을 구조로 보장하는 지점이다 — 클라이언트가 자기 sink 를
+/// 이 타입이 "로그에 키가 0건" 을 구조로 보장하는 지점이다 — 공급자가 자기 sink 를
 /// 이걸로만 들고 있으므로 우회 경로가 없다.
 public struct RedactingLog: ClientLogSink {
     private let redactor: Redactor

@@ -26,14 +26,20 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-argument-parser", .upToNextMinor(from: "1.8.2")),
     ],
     targets: [
-        // Anthropic Messages API 클라이언트. Swift 공식 SDK 가 없어 URLSession 으로 직접
-        // 호출한다. 요청 조립과 응답 해석은 순수 함수로 떼어 두어 네트워크 없이 검증된다.
-        .target(name: "AnthropicKit", swiftSettings: toolSettings),
+        // 공급자 중립 LLM 경계. `LLMProvider` 프로토콜과 그 주변(키 취급·재시도·로그
+        // 마스킹·계약 스위트)만 산다. **여기에는 어떤 공급자의 와이어 타입도 없다** —
+        // 로컬 MLX 백엔드가 붙는 날 이 타깃이 그대로 재사용되어야 하기 때문이다.
+        // `LanguageKit` 이 `CodeRunner` 를 들고 백엔드는 `RunnerKit` 에 두는 것과 같은 배치다.
+        .target(name: "LLMKit", swiftSettings: toolSettings),
+        // OpenRouter 구현. OpenAI 호환 chat/completions 를 URLSession 으로 직접 친다.
+        // 요청 조립과 응답 해석은 순수 함수로 떼어 두어 네트워크 없이 검증된다.
+        .target(name: "OpenRouterKit", dependencies: ["LLMKit"], swiftSettings: toolSettings),
         // 트랙 개요 도메인 — 스키마·프롬프트·조립·검증. CLI 는 여기에 얇게 얹힌다.
+        // **LLMKit 만 의존한다** — 어느 공급자를 쓸지는 CLI 가 정한다.
         .target(
             name: "LessonGenKit",
             dependencies: [
-                "AnthropicKit",
+                "LLMKit",
                 .product(name: "LearnCore", package: "LearnKit"),
             ],
             swiftSettings: toolSettings
@@ -42,6 +48,7 @@ let package = Package(
             name: "lessongen",
             dependencies: [
                 "LessonGenKit",
+                "OpenRouterKit",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ],
             swiftSettings: toolSettings
@@ -52,13 +59,18 @@ let package = Package(
 
         .target(
             name: "TestSupport",
-            dependencies: ["AnthropicKit"],
+            dependencies: ["LLMKit"],
             path: "Tests/TestSupport",
             swiftSettings: toolSettings
         ),
         .testTarget(
-            name: "AnthropicKitTests",
-            dependencies: ["AnthropicKit", "TestSupport"],
+            name: "LLMKitTests",
+            dependencies: ["LLMKit", "TestSupport"],
+            swiftSettings: toolSettings
+        ),
+        .testTarget(
+            name: "OpenRouterKitTests",
+            dependencies: ["OpenRouterKit", "TestSupport"],
             swiftSettings: toolSettings
         ),
         .testTarget(

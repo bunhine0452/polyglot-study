@@ -163,4 +163,5 @@ owner: claude-code
 | 2026-09-07T06:18:11+09:00 | #lessongen-quarantine | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0616_feature_lessongen-lesson-and-repair-loop.md | 3회 실패 시 레슨·사이드카를 팩에서 지우고 명단과 함께 non-zero. 시도 장부가 실행을 넘어 이어짐 |
 | 2026-09-07T06:18:18+09:00 | #lessongen-runlog | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0616_feature_lessongen-lesson-and-repair-loop.md | 실행별 디렉터리에 요청·응답·usage·cost·model·seed·temperature·upstream·generation id. --max-usd 초과 시 새 요청 중단. 결산이 캐시 미적중과 갈린 업스트림을 직접 찍음 |
 | 2026-09-07T06:42:28+09:00 | #packtool-sign | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0642_feature_packtool-build-and-sign.md | Ed25519 분리 서명, 키는 POLYGLOT_PACK_SIGNING_KEY/PUBLIC_KEY 환경변수 전용. verify 는 서명+해시 둘 다 — 서명만으로는 레슨 본문 변조를 못 잡는다(실증). 미서명·변조·다른 키가 서로 다른 판정 |
+| 2026-09-07T06:56:18+09:00 | #lessongen-prompt-caching | claude-code | !→! | .oculpm/journal/20260907/Features_to_add/0656_feature_openrouter-upstream-pin.md | 막힘 유지 — 배선은 끝났다. provider.order + allow_fallbacks(기본 금지)로 고정하는 --provider 를 붙였고 dry-run 으로 요청 본문까지 실증. 결산이 "고정이 새었다"를 갈라 찍는다. 남은 것은 실왕복 측정뿐이며 크레딧이 나가 사용자 승인 대기 |
 <!-- oculpm:plan-log end -->

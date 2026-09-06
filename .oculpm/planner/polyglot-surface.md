@@ -81,9 +81,9 @@ owner: claude-code
 - [x] 에디터와 콘솔 — 48px 헤더, 56px 과제 바, 좌우 2단 레이아웃 — 완료: 우측 패널이 출력·테스트 탭과 상태 행과 stderr 원문과 테스트 결과를 담고 폭 520px 고정 {#screen-editor-console}
   - [x] 인라인 진단 행 — 거터 6px 사각과 코드 아래 한국어 설명과 위치·도구·개수 라벨을 Diagnostic 에서 조립, 진단이 붙은 행만 배경 전환 {#inline-diagnostic-row}
   - [x] 빨강 사용을 종료 코드 옆 8px 사각 하나로 제한하는 규칙을 뷰 레벨에서 강제 — 이 화면에서 실패색을 쓰는 지점이 코드상 1곳뿐 {#red-budget-guard}
-- [ ] sourcekit-lsp 연동 — Swift 트랙에만 완성과 진단 두 기능. Xcode 26.6 동봉이라 서버 조달·설치 안내 비용이 0 — 완료: initialize 응답 수신 {#sourcekit-lsp-swift}
-  - [ ] completion 요청을 CESE 의 트리거 문자와 delegate 에 연결 — 점 입력 후 200ms 안에 후보가 뜨고 취소 시 요청이 실제로 취소됨 {#lsp-completion}
-  - [ ] publishDiagnostics 를 LearnCore.Diagnostic 으로 매핑해 인라인 진단 행에 재사용 — swiftc 진단과 같은 컴포넌트로 렌더하고 출처만 라벨로 구분 {#lsp-diagnostics}
+- [x] sourcekit-lsp 연동 — Swift 트랙에만 완성과 진단 두 기능. Xcode 26.6 동봉이라 서버 조달·설치 안내 비용이 0 — 완료: initialize 응답 수신 {#sourcekit-lsp-swift}
+  - [x] completion 요청을 CESE 의 트리거 문자와 delegate 에 연결 — 점 입력 후 200ms 안에 후보가 뜨고 취소 시 요청이 실제로 취소됨 {#lsp-completion}
+  - [x] publishDiagnostics 를 LearnCore.Diagnostic 으로 매핑해 인라인 진단 행에 재사용 — swiftc 진단과 같은 컴포넌트로 렌더하고 출처만 라벨로 구분 {#lsp-diagnostics}
 - [x] SQL 결과표 diff — 내 결과와 예상 결과 2단 표 — 완료: 누락 행이 실패 틴트 배경에 6px 적색 사각으로 표시되고 하단에 결과셋 비교 캡션이 고정 {#screen-sql-result}
   - [x] 행 수가 다를 때 짧은 쪽에 누락 플레이스홀더 행을 채워 두 표의 높이를 맞춤 — 하단 캡션 y 좌표가 항상 고정 {#sql-row-padding}
 - [x] FSRS 복습 — 12칸 진행 헤더와 질문·답 카드와 동일 크기 4버튼 — 완료: 4버튼의 폭·높이·배경·테두리가 완전 동일하고 각 아래 다음 간격이 실제 FSRS-6 계산값 {#screen-review}
@@ -171,4 +171,6 @@ owner: claude-code
 | 2026-09-07T07:33:12+09:00 | #sparkle-eddsa-keys | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0733_feature_sparkle-auto-update.md | 공개키가 SUPublicEDKey 에, 개인키는 로그인 키체인에만. 저장소 전수 grep 에 개인키 0건 (BEGIN PRIVATE KEY 0건, *.pem/*.der/*.key 0건) — 공개키만 Info.plist·문서에 있다 |
 | 2026-09-07T07:33:22+09:00 | #sparkle-appcast | claude-code | ☐→~ | .oculpm/journal/20260907/Features_to_add/0733_feature_sparkle-auto-update.md | 생성기는 release.sh 에 편입돼 릴리스 1회로 서명(88자)·길이가 갱신되는 것까지 단언으로 확인. 남은 것은 피드 URL — polyglotstudy.github.io 는 아무도 소유하지 않은 추정 주소라 release.sh 가 그 호스트로는 릴리스를 거부하도록 게이트를 걸었다. 원격·Pages 가 생겨 실주소를 확보해야 닫힌다 |
 | 2026-09-07T07:56:35+09:00 | #lessongen-prompt-caching | claude-code | !→x | .oculpm/journal/20260907/Errors/0752_error_prompt-cache-verdict-corrected.md | 앞선 "캐시가 안 붙는다" 판정을 정정한다 — 표본 3회가 부족했다. 트랙 생성 14회에서 4회가 각 1856 토큰(고정 접두사 크기)을 캐시에서 읽었고 입력의 20.3%. 적중은 간헐적이다 — 동시성 4에서 같이 날아간 요청은 서로를 데우지 못한다. 고정 없이도 14회가 전부 Wafer 로 갔다(보장은 아니므로 --provider 는 보험으로 유지) |
+| 2026-09-07T08:02:58+09:00 | #lsp-completion | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0802_feature_sourcekit-lsp-integration.md | 트리거 문자를 서버 응답에서 받아 CESE 에 넣고 SwiftLanguageSupport 가 completionDelegate. 워밍 중앙값 28ms — 다만 문서를 연 직후 첫 요청은 빌드 설정 해석과 겹쳐 270ms 다. 기준은 "한 번 분석된 뒤 200ms" 로 읽어야 맞다. 취소는 시간이 아니라 구조로 증명 — 같은 id 로 $/cancelRequest 가 나가고 호출자는 CancellationError 를 받으며 늦은 응답은 버려진다 |
+| 2026-09-07T08:03:07+09:00 | #lsp-diagnostics | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0802_feature_sourcekit-lsp-integration.md | 새 뷰 0개 — 기존 EditorDiagnosticPresentation.rows 가 그대로 InlineDiagnosticRowView 를 먹인다. 다른 것은 라벨뿐(· sourcekit-lsp ·, 한 줄에 둘 다 오면 · sourcekit-lsp/swiftc ·). 진단에 code 가 없어 ruleID 는 nil 이고 출처는 라벨이 진다 |
 <!-- oculpm:plan-log end -->

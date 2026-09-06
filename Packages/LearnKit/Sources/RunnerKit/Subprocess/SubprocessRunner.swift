@@ -199,15 +199,24 @@ public struct SubprocessRunner: CodeRunner {
                 ) { execution in
                     // 스폰이 끝났다. 부모 쪽 쓰기 끝을 닫아야 status 읽기가 EOF 를 본다.
                     channel.closeWriteEnd()
+                    // 그룹 기록을 **드레인 시작 전에** 걸어 둔다. 아래 watcher 는 출력
+                    // 드레인이 끝나면 취소되는데, 즉시 끝나는 프로그램에서는 그 취소가
+                    // SPAWNED 파싱을 앞지를 수 있다. 그때 groupBox 가 비면 회수 defer 도
+                    // onCancel 킬러도 때릴 그룹을 모른다 — 손자가 그대로 남는다.
+                    let observer = configuration.processGroupObserver
+                    channel.onSpawn { _, group in
+                        groupBox.set(group)
+                        observer?(group)
+                    }
                     channel.startDraining()
 
+                    // 그룹 기록은 위 onSpawn 이 이미 했다. 이 Task 가 남은 이유는
+                    // 메모리 상한 감시뿐이고, 그래서 취소돼도 안전하다.
                     let watcher = Task { () -> Bool in
+                        guard request.limits.memoryMegabytes > 0 else { return false }
                         guard let spawned = await channel.awaitSpawn(within: .seconds(5)) else {
                             return false
                         }
-                        groupBox.set(spawned.processGroup)
-                        configuration.processGroupObserver?(spawned.processGroup)
-                        guard request.limits.memoryMegabytes > 0 else { return false }
                         return await MemoryLimitEnforcer(
                             megabytes: request.limits.memoryMegabytes,
                             interval: configuration.memoryPollInterval

@@ -23,6 +23,8 @@ final class LauncherStatusChannel: @unchecked Sendable {
     private var writeClosed = false
     private var drainStarted = false
     private var drainFinished = false
+    private var spawnHandler: (@Sendable (Int32, Int32) -> Void)?
+    private var spawnReported = false
 
     init(childFileDescriptor: Int32 = 3) throws {
         var descriptors: [Int32] = [0, 0]
@@ -50,6 +52,50 @@ final class LauncherStatusChannel: @unchecked Sendable {
         Darwin.close(writeEnd)
     }
 
+    /// `SPAWNED` 가 파싱되는 **즉시** 부르는 콜백. ``startDraining()`` 전에 건다.
+    ///
+    /// ## 왜 폴링이 아니라 밀어 주는가
+    ///
+    /// 프로세스 그룹은 손자까지 회수하는 유일한 손잡이다. 그걸 `awaitSpawn` 폴러로만
+    /// 얻으면 **폴러가 취소되는 순간 그룹을 영영 모르게 된다** — 그리고 그 폴러는
+    /// 출력 드레인이 끝나면 취소된다. 즉시 끝나는 프로그램에서는 드레인 완료가
+    /// SPAWNED 파싱을 앞지를 수 있고, 그러면 `Task.sleep` 이 취소로 던지면서
+    /// `awaitSpawn` 이 nil 을 돌려주고, 회수 `defer` 는 아무 그룹도 못 받는다.
+    /// 손자(`sleep 300`)가 그대로 남는다.
+    ///
+    /// 실측으로 한 번 잡혔다(부하 17.8, `grandchildIsReaped` 실패). 그래서 기록을
+    /// 취소될 수 있는 Task 에서 떼어 **드레인 스레드**로 옮긴다. 드레인은 취소되지
+    /// 않으므로 SPAWNED 가 도착하기만 하면 그룹은 반드시 기록된다.
+    func onSpawn(_ handler: @escaping @Sendable (Int32, Int32) -> Void) {
+        lock.lock()
+        spawnHandler = handler
+        lock.unlock()
+        // 이미 도착해 있을 수 있다 — 드레인이 먼저 시작된 경우.
+        reportSpawnIfNeeded()
+    }
+
+    /// SPAWNED 가 파싱됐으면 콜백을 **정확히 한 번** 부른다. 락 밖에서 부른다 —
+    /// `outcome` 이 다시 락을 잡고, 콜백이 무엇을 할지 우리가 모른다.
+    private func reportSpawnIfNeeded() {
+        lock.lock()
+        let alreadyReported = spawnReported
+        let handler = spawnHandler
+        lock.unlock()
+        guard !alreadyReported, let handler else { return }
+
+        let snapshot = outcome
+        guard let pid = snapshot.processIdentifier, let group = snapshot.processGroup else {
+            return
+        }
+
+        lock.lock()
+        let shouldFire = !spawnReported
+        spawnReported = true
+        lock.unlock()
+        guard shouldFire else { return }
+        handler(pid, group)
+    }
+
     /// 전용 스레드에서 EOF 까지 빨아낸다.
     ///
     /// 협력 스레드풀에 올리지 않는 이유는 `read(2)` 가 블로킹이기 때문이다 —
@@ -71,6 +117,9 @@ final class LauncherStatusChannel: @unchecked Sendable {
                     lock.lock()
                     storage.append(contentsOf: buffer[0..<count])
                     lock.unlock()
+                    // 취소될 수 있는 폴러가 아니라 여기서 기록한다. 이 스레드는 취소되지
+                    // 않으므로 SPAWNED 가 도착하면 그룹은 반드시 알려진다.
+                    reportSpawnIfNeeded()
                     continue
                 }
                 if count < 0 && errno == EINTR { continue }
@@ -118,6 +167,12 @@ final class LauncherStatusChannel: @unchecked Sendable {
             do {
                 try await Task.sleep(for: .milliseconds(2))
             } catch {
+                // 취소됐다. 그 사이에 도착해 있을 수 있으니 마지막으로 한 번 더 본다 —
+                // 값을 알고도 nil 을 돌려주면 호출자가 그룹을 잃는다.
+                let last = outcome
+                if let pid = last.processIdentifier, let group = last.processGroup {
+                    return (pid, group)
+                }
                 return nil
             }
         }

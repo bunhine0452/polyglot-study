@@ -69,10 +69,18 @@ enum Fixture {
         )
     }
 
+    /// 복습 단계 카드 한 장.
+    ///
+    /// `elapsedDays` 와 `learningStepIndex` 는 **기본값에 기대지 않고 명시한다** — 편의 생성자에
+    /// 붙어 있던 `= 0` 이 006 이 메운 구멍을 한 겹 아래로 숨기고 있었고, 그 기본값을 없앤 뒤로
+    /// 값의 출처를 밝히는 것은 호출부의 책임이다. 여기서는 "복습 단계 · 학습 스텝 없음" 이라는
+    /// 픽스처의 뜻 그대로 0 이다.
     static func cardState(
         card: String = "py-001",
         language: LanguageID = .python,
         dueOffsetDays: Int = 1,
+        elapsedDays: Int = 0,
+        learningStepIndex: Int = 0,
         derivedFrom: ReviewLogID? = nil,
         parameterSet: ParameterSetID = .fsrs6Default
     ) -> CardStateSnapshot {
@@ -86,7 +94,9 @@ enum Fixture {
             phase: .review,
             reps: 2,
             lapses: 0,
+            elapsedDays: elapsedDays,
             scheduledDays: dueOffsetDays,
+            learningStepIndex: learningStepIndex,
             derivedFromLogID: derivedFrom,
             parameterSetID: parameterSet,
             rebuiltAt: epoch

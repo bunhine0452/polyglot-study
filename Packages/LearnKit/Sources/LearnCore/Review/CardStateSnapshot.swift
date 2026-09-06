@@ -50,6 +50,18 @@ public struct CardStateSnapshot: Hashable, Sendable, Codable {
     ///
     /// 인자가 `card_state` 의 컬럼과 1:1 이라 행을 손으로 만들 때 읽기 쉽다. 006 이후로는
     /// **정말로 1:1 이다** — 표현하지 못하는 필드가 없다.
+    ///
+    /// ## `elapsedDays` 와 `learningStepIndex` 에 기본값이 없는 이유
+    ///
+    /// 006 이 두 컬럼을 추가했을 때 여기 `= 0` 을 붙였고, 그 순간 기존 호출부가 **컴파일은
+    /// 되면서 조용히 0 을 쓰기 시작했다**. 006 이 고치려던 바로 그 버그(저장→로드에서 학습
+    /// 스텝이 되감기는 것)를 생성자 기본값이 한 겹 아래로 숨긴 셈이다. 컴파일러가 잡아 주지
+    /// 않는 종류의 유실이라 기본값을 없앴다 — 행을 만드는 쪽은 두 값을 **어디서 가져올지
+    /// 반드시 밝혀야 한다**. 리플레이 결과에서 오는 게 정상이고, 정말로 0 인 경우
+    /// (이력이 없는 신규 카드)에도 0 이라고 써야 한다.
+    ///
+    /// 알고리즘 상태를 통째로 들고 있다면 `init(scheduling:languageID:rebuiltAt:)` 를 써라 —
+    /// 필드가 늘어도 손으로 베낄 일이 없다.
     public init(
         cardID: CardID,
         languageID: LanguageID,
@@ -60,9 +72,9 @@ public struct CardStateSnapshot: Hashable, Sendable, Codable {
         phase: CardPhase,
         reps: Int = 0,
         lapses: Int = 0,
-        elapsedDays: Int = 0,
+        elapsedDays: Int,
         scheduledDays: Int = 0,
-        learningStepIndex: Int = 0,
+        learningStepIndex: Int,
         derivedFromLogID: ReviewLogID? = nil,
         parameterSetID: ParameterSetID = .fsrs6Default,
         rebuiltAt: EpochMillis

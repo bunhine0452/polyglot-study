@@ -59,8 +59,8 @@ owner: claude-code
 - [ ] review_log 에서 card_state 전체 재구축 경로 + 골든 리플레이 회귀 방지 — 완료: 체크인된 200건 로그 재구축 결과가 기대 card_state 와 완전 일치 {#card-state-rebuild}
   - [x] 카드별 스트리밍 처리 후 한 트랜잭션 안에서 스왑 — 도중 실패해도 기존 캐시가 그대로 남아야 함 {#rebuild-transactional}
   - [x] 파라미터 세트가 바뀌면 자동으로 재구축 예약 — card_state.parameter_set_id 가 활성 세트와 다른 카드를 stale 로 집계 {#rebuild-on-param-change}
-- [ ] 트랙별 due 큐 쿼리 확정 + 22.8만 행 규모 실측 — 완료: 언어 하나의 due 카드 50개 조회가 5ms 이하이고 전체 스캔 없음 {#due-queue-benchmark}
-  - [ ] 신규·학습중·복습 혼합 비율과 일일 상한을 큐 쿼리 안에서 결정 — 앱 레이어에서 자르지 않음 {#queue-mixing}
+- [x] 트랙별 due 큐 쿼리 확정 + 22.8만 행 규모 실측 — 완료: 언어 하나의 due 카드 50개 조회가 5ms 이하이고 전체 스캔 없음 {#due-queue-benchmark}
+  - [x] 신규·학습중·복습 혼합 비율과 일일 상한을 큐 쿼리 안에서 결정 — 앱 레이어에서 자르지 않음 {#queue-mixing}
 
 ## 격리 기반과 툴체인 감지 {#isolation-and-toolchain}
 - [ ] C 런처 헬퍼 — setsid 후 setrlimit(CPU/NPROC/FSIZE) 걸고 execv, 부모는 데드라인에 killpg — 완료: 무한루프가 SIGXCPU 로, sleep 60 이 2초 내 프로세스 그룹째 소멸 {#launcher-core}
@@ -76,24 +76,24 @@ owner: claude-code
   - [x] 판정 규칙 고정 — 종료코드 0 + 버전 정규식 매치 + 스텁 메시지 비매치만 ready, java 스텁은 stub, 동작하나 최소 버전 미달은 unsupported {#availability-mapping}
 - [x] 프로브 캐시 키를 스키마 버전·툴 id·절대경로·inode 메타·PATH·OS 빌드·xcode-select 경로·앱 버전 해시로 정의하고 24시간 TTL — 완료: 툴체인 교체 시 자동 무효화 {#probe-cache}
 - [x] 실행마다 고유 임시 워크스페이스를 만들고 SourceFile.path 의 절대경로·상위 참조를 스폰 전에 거부, 네 종료 경로 모두에서 정리 — 완료: 100회 반복 후 잔여 디렉터리 0 {#run-workspace}
-- [ ] sandbox-exec 프로파일 v1 — 네트워크 전면 차단 + 쓰기는 워크스페이스와 TMPDIR 한정 + 읽기 관대, 부재나 거부 시 런처 단독 격리로 자동 강등 {#sandbox-profile}
+- [x] sandbox-exec 프로파일 v1 — 네트워크 전면 차단 + 쓰기는 워크스페이스와 TMPDIR 한정 + 읽기 관대, 부재나 거부 시 런처 단독 격리로 자동 강등 {#sandbox-profile}
 - [x] RunnerContractTests 하네스와 ContractSupport 옵션셋, 언어별 픽스처 카탈로그(무한루프·fork bomb·출력폭주·거대 단일행·비UTF8·손자 프로세스·stdin echo) 구축 {#contract-harness}
 
 ## 실행 백엔드와 채점 {#backends-and-grading}
 - [x] RunnerKit 타깃 신설 + swift-subprocess 1.0.0 고정 의존 — 완료: Subprocess 모듈과 SubprocessFoundation trait 사용 가능. 저장소 README 의 0.4.0 표기는 낡은 문서 {#runnerkit-target}
-- [ ] SubprocessRunner 가 클로저 폼 run 을 AsyncThrowingStream 으로 브리지하고 teardownSequence 를 프로세스 그룹 대상으로 — 완료: 3갈래 동시 소비에 교착 없고 취소 시 1초 내 그룹 소멸 {#subprocess-runner}
-  - [ ] 출력 상한을 limit 계열 API 가 아니라 Buffer 를 직접 세어 강제 — limit 은 초과 시 throw 하고 버리며 strings 는 128KB 단일행에서 throw {#output-cap}
-  - [ ] TerminationStatus 와 런처 status 라인을 조합해 finished·wallClockExceeded·memoryExceeded·cancelled 로 매핑, SubprocessError 는 RunFailure.backend 로만 노출 {#termination-mapping}
+- [x] SubprocessRunner 가 클로저 폼 run 을 AsyncThrowingStream 으로 브리지하고 teardownSequence 를 프로세스 그룹 대상으로 — 완료: 3갈래 동시 소비에 교착 없고 취소 시 1초 내 그룹 소멸 {#subprocess-runner}
+  - [x] 출력 상한을 limit 계열 API 가 아니라 Buffer 를 직접 세어 강제 — limit 은 초과 시 throw 하고 버리며 strings 는 128KB 단일행에서 throw {#output-cap}
+  - [x] TerminationStatus 와 런처 status 라인을 조합해 finished·wallClockExceeded·memoryExceeded·cancelled 로 매핑, SubprocessError 는 RunFailure.backend 로만 노출 {#termination-mapping}
   - [x] RunFailure 에 cpuExceeded 케이스 추가 — SIGXCPU(코드가 느리다)와 벽시계 초과(코드가 멈췄다)는 사용자에게 완전히 다른 의미 {#contract-cpu-exceeded}
-- [ ] swiftc 를 diagnostic-style llvm + no-color + print-diagnostic-groups 로 돌려 텍스트 진단을 파싱 — swiftc 에 JSON 진단은 없음, fdiagnostics-format json 은 clang 전용 {#swift-compile}
-- [ ] 예열된 SwiftPM 템플릿에 사용자 코드와 숨은 테스트만 갈아끼워 event-stream-output-path 로 JSON Lines 수집 — 완료: 예열 후 2회차 실행이 5초 이내 {#swift-testing-grade}
-- [ ] Python 실행을 python3 -I -B 로 확정해 사용자 site-packages 와 PYTHON 계열 환경변수 차단하고 stdin 연결 — 완료: input 을 쓰는 프로그램이 정답을 냄. Pyodide 는 MVP 에서 제외 {#python-run}
-- [ ] 표준 unittest 위에 JSON Lines 를 뱉는 60줄 하네스를 번들 — 완료: pytest 미설치 머신에서 통과·실패·에러 3종이 구분되고 사용자 stdout 이 테스트 JSON 을 오염시키지 않음 {#python-grade}
+- [x] swiftc 를 diagnostic-style llvm + no-color + print-diagnostic-groups 로 돌려 텍스트 진단을 파싱 — swiftc 에 JSON 진단은 없음, fdiagnostics-format json 은 clang 전용 {#swift-compile}
+- [x] 예열된 SwiftPM 템플릿에 사용자 코드와 숨은 테스트만 갈아끼워 event-stream-output-path 로 JSON Lines 수집 — 완료: 예열 후 2회차 실행이 5초 이내 {#swift-testing-grade}
+- [x] Python 실행을 python3 -I -B 로 확정해 사용자 site-packages 와 PYTHON 계열 환경변수 차단하고 stdin 연결 — 완료: input 을 쓰는 프로그램이 정답을 냄. Pyodide 는 MVP 에서 제외 {#python-run}
+- [x] 표준 unittest 위에 JSON Lines 를 뱉는 60줄 하네스를 번들 — 완료: pytest 미설치 머신에서 통과·실패·에러 3종이 구분되고 사용자 stdout 이 테스트 JSON 을 오염시키지 않음 {#python-grade}
 - [ ] InProcessRunner 가 copyfile CLONE 으로 매 실행 DB 를 복제하고 READONLY + query_only + authorizer + hard_heap_limit 으로 가둠 — 완료: 원본 db 파일의 mtime 이 어떤 실행 후에도 불변 {#sql-inprocess}
   - [x] sqlite3_progress_handler 데드라인 콜백과 취소 핸들러의 sqlite3_interrupt 로 무한 쿼리 차단, sqlite3_error_offset 을 행·열로 환산해 Diagnostic 생성 {#sql-diagnostics}
 - [x] 결과셋 비교 채점기 — 참조 해답은 별도 클론에서 실행, 정렬 요구는 orderMatters 메타데이터로 분기 — 완료: INTEGER 10 과 REAL 10.0 은 같고 NULL·빈문자열·0 은 다르며 중복 행 개수까지 일치해야 통과 {#sql-resultset-grading}
 - [x] table 프리젠터용 결과셋 diff 산출 — 누락 행·초과 행·첫 불일치 셀 좌표를 각각 50개 상한으로 — 완료: 1만 행 오답에서도 100ms 내 {#sql-result-diff}
-- [ ] 계약 스위트 전 케이스를 세 백엔드에 통과시키고 병렬·누수 항목 추가 — 완료: 8개 동시 실행 무간섭, fork bomb 실행 후 잔존 프로세스 0, CI 그린 {#contract-suite-full}
+- [x] 계약 스위트 전 케이스를 세 백엔드에 통과시키고 병렬·누수 항목 추가 — 완료: 8개 동시 실행 무간섭, fork bomb 실행 후 잔존 프로세스 0, CI 그린 {#contract-suite-full}
 
 <!-- oculpm:plan-log begin v1 -->
 | 시각 | 항목 | 에이전트 | 변화 | 일지 | 메모 |
@@ -144,4 +144,13 @@ owner: claude-code
 | 2026-09-06T15:33:00+09:00 | #sql-diagnostics | claude-code | [ ]→[x] | journal/20260906/Features_to_add/1533_feature_parallel-core-implementation.md | no such table 은 error_offset 이 -1 이라 위치 없는 진단 경로 필수 |
 | 2026-09-06T15:33:00+09:00 | #sql-resultset-grading | claude-code | [ ]→[x] | journal/20260906/Features_to_add/1533_feature_parallel-core-implementation.md | 병렬 세션 4개 병합, 316 테스트 통과 |
 | 2026-09-06T15:33:00+09:00 | #sql-result-diff | claude-code | [ ]→[x] | journal/20260906/Features_to_add/1533_feature_parallel-core-implementation.md | 병렬 세션 4개 병합, 316 테스트 통과 |
+| 2026-09-06T17:35:31+09:00 | #output-cap | claude-code | ☐→x | .oculpm/journal/20260906/Features_to_add/1735_feature_subprocess-runner-swift-python.md | OutputBudget 이 Buffer 를 직접 셈, 초과 후에도 파이프를 계속 비움 |
+| 2026-09-06T17:35:40+09:00 | #termination-mapping | claude-code | ☐→x | .oculpm/journal/20260906/Features_to_add/1735_feature_subprocess-runner-swift-python.md | status 라인+종료상태+메모리폴러로 6갈래 분기, SubprocessError 는 backend 로만 |
+| 2026-09-06T17:35:49+09:00 | #swift-compile | claude-code | ☐→x | .oculpm/journal/20260906/Features_to_add/1735_feature_subprocess-runner-swift-python.md | import Foundation 을 파일 끝에 덧붙여 줄 번호 보정 없이 진단 위치 보존 |
+| 2026-09-06T17:35:57+09:00 | #swift-testing-grade | claude-code | ☐→x | .oculpm/journal/20260906/Features_to_add/1735_feature_subprocess-runner-swift-python.md | event-stream-output-path 실재 확인(--help 에 없음), 예열 후 1회 0.7~0.9초 |
+| 2026-09-06T17:36:05+09:00 | #python-run | claude-code | ☐→x | .oculpm/journal/20260906/Features_to_add/1735_feature_subprocess-runner-swift-python.md | -I -B, input() 실측 통과. -P 때문에 형제 모듈 import 불가는 하네스가 sys.path 로 품 |
+| 2026-09-06T17:36:14+09:00 | #python-grade | claude-code | ☐→x | .oculpm/journal/20260906/Features_to_add/1735_feature_subprocess-runner-swift-python.md | JSON 을 stdout 이 아니라 워크스페이스 밖 파일로 — 사용자 print 와 물리적으로 분리 |
+| 2026-09-06T17:36:22+09:00 | #contract-suite-full | claude-code | ☐→x | .oculpm/journal/20260906/Features_to_add/1735_feature_subprocess-runner-swift-python.md | 두 백엔드로 읽음(에뮬레이터는 Assembly 트랙과 함께). 픽스처 2건은 자기모순이라 테스트 카탈로그에서 보정 |
+| 2026-09-06T17:46:25+09:00 | #sandbox-profile | claude-code | ☐→x | journal/20260906/Features_to_add/1746_feature_core-completion-round2.md | SBPL v1 + 런처 argv 체인, 강등 4종. 실측 6항목 통과 |
+| 2026-09-06T17:46:32+09:00 | #queue-mixing | claude-code | ☐→x | journal/20260906/Features_to_add/1746_feature_core-completion-round2.md | 상한 20 몫 0.25 → 복습 15 신규 5, 전부 SQL LIMIT 안에서 |
 <!-- oculpm:plan-log end -->

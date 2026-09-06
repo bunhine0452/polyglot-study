@@ -3,6 +3,14 @@ import PackageDescription
 
 /// 코어 계층: 격리 기본값은 `nonisolated`. 값 타입과 `Sendable` 로 경계를 강제한다.
 /// UI 계층 타깃이 생기면 `.defaultIsolation(MainActor.self)` 를 붙인 별도 설정을 쓴다.
+/// UI 계층: 기본 격리를 MainActor 로 뒤집는다(SE-0466). 뷰 코드에서 @MainActor 도배가 사라지고,
+/// 코어 타깃(nonisolated 기본)과의 경계가 "타깃 = 격리 도메인" 으로 물리적으로 드러난다.
+let uiSettings: [SwiftSetting] = [
+    .defaultIsolation(MainActor.self),
+    .enableUpcomingFeature("InternalImportsByDefault"),
+    .enableUpcomingFeature("MemberImportVisibility"),
+]
+
 let coreSettings: [SwiftSetting] = [
     .enableUpcomingFeature("InternalImportsByDefault"),
     .enableUpcomingFeature("MemberImportVisibility"),
@@ -18,6 +26,8 @@ let package = Package(
         .library(name: "LearnScheduling", targets: ["LearnScheduling"]),
         .library(name: "RunnerKit", targets: ["RunnerKit"]),
         .library(name: "ContentKit", targets: ["ContentKit"]),
+        .library(name: "DesignSystem", targets: ["DesignSystem"]),
+        .library(name: "OnboardingFeature", targets: ["OnboardingFeature"]),
     ],
     dependencies: [
         .package(url: "https://github.com/groue/GRDB.swift.git", .upToNextMinor(from: "7.11.1")),
@@ -57,7 +67,16 @@ let package = Package(
             swiftSettings: coreSettings
         ),
         .testTarget(name: "LearnCoreTests", dependencies: ["LearnCore"], swiftSettings: coreSettings),
+        .target(name: "DesignSystem", swiftSettings: uiSettings),
+        .target(
+            name: "OnboardingFeature",
+            dependencies: ["LearnCore", "LanguageKit", "RunnerKit", "DesignSystem"],
+            path: "Sources/Features/OnboardingFeature",
+            swiftSettings: uiSettings
+        ),
         .testTarget(name: "ContentKitTests", dependencies: ["ContentKit"], swiftSettings: coreSettings),
+        .testTarget(name: "DesignSystemTests", dependencies: ["DesignSystem"], swiftSettings: uiSettings),
+        .testTarget(name: "OnboardingFeatureTests", dependencies: ["OnboardingFeature"], swiftSettings: uiSettings),
         .testTarget(
             name: "LearnPersistenceTests",
             // LearnScheduling 은 "진짜 드라이버 + 진짜 FSRS + 진짜 SQLite" 조합을 한 번

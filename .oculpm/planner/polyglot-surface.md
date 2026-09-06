@@ -47,8 +47,8 @@ owner: claude-code
 - [x] lessongen repair — packtool 리포트를 읽어 실패 레슨만 재생성하고 러너 원문을 프롬프트에 담아 재요청 — 완료: 컴파일 에러·stdout 불일치·테스트 실패 3종이 통과로 수렴 {#lessongen-repair}
   - [x] 3회 실패 시 격리 — 해당 레슨을 팩에서 빼고 명단과 함께 non-zero 종료, 절대 머지시키지 않음 {#lessongen-quarantine}
 - [x] 실행 로그와 비용 가드 — 실행별 디렉터리에 요청·응답·usage·cost·검증 리포트를 남기고 최대 지출 초과 시 중단. 임의 모델은 temperature·seed 를 받으므로 재현을 목표로 삼되, 진짜 변수는 시드가 아니라 어느 업스트림이 답했는가라서 모델 id·seed·temperature·upstream provider·generation id 를 함께 기록 {#lessongen-runlog}
-- [~] GitHub Actions — macOS 러너에서 packtool validate 를 packs 변경 PR 의 필수 체크로 걸고 lessongen 은 workflow_dispatch 에서만 실행 {#ci-gate}
-  - [~] 툴체인 부재 시 스킵이 아니라 실패가 기본 — 명시 플래그를 줄 때만 스킵하고 리포트에 기록, 경량 러너는 구조·문법만 돌고 게이트로 세지 않음 {#toolchain-skip-policy}
+- [x] GitHub Actions — macOS 러너에서 packtool validate 를 packs 변경 PR 의 필수 체크로 걸고 lessongen 은 workflow_dispatch 에서만 실행 {#ci-gate}
+  - [x] 툴체인 부재 시 스킵이 아니라 실패가 기본 — 명시 플래그를 줄 때만 스킵하고 리포트에 기록, 경량 러너는 구조·문법만 돌고 게이트로 세지 않음 {#toolchain-skip-policy}
 
 ## UI 기반 — 타깃·토큰·에디터 {#ui-foundation}
 - [ ] Polyglot.xcodeproj 를 앱 타깃 하나만 담는 얇은 셸로 만들고 코드는 전부 로컬 SPM 참조로 — 완료: 앱 타깃 컴파일 소스가 2개 이하이고 xcodebuild build 통과 {#xcode-app-target}
@@ -100,7 +100,7 @@ owner: claude-code
   - [ ] 생성한 공개키를 SUPublicEDKey 에 넣고 개인키는 로그인 키체인에만 보관 — 저장소 전체 grep 에 개인키 0건 {#sparkle-eddsa-keys}
   - [ ] 피드 URL 을 GitHub Pages 의 appcast.xml 로 두고 appcast 생성기를 릴리스 스크립트에 편입 — 릴리스 1회로 서명과 길이가 갱신 {#sparkle-appcast}
 - [x] GitHub 공개 준비 — README 와 CONTRIBUTING 작성. LICENSE 는 이미 MIT 로 커밋됨. README 라이선스 절에 Unicorn Engine 도입 시 MIT 선택이 무효화된다는 경고 한 줄 {#github-public-repo}
-- [ ] 릴리스 CI — swift test 와 xcodebuild build 와 packtool validate 3게이트를 PR 에 걸고, 공증과 appcast 잡은 태그 푸시에만 Actions secrets 로 실행 {#release-ci}
+- [~] 릴리스 CI — swift test 와 xcodebuild build 와 packtool validate 3게이트를 PR 에 걸고, 공증과 appcast 잡은 태그 푸시에만 Actions secrets 로 실행 {#release-ci}
 
 <!-- oculpm:plan-log begin v1 -->
 | 시각 | 항목 | 에이전트 | 변화 | 일지 | 메모 |
@@ -165,4 +165,7 @@ owner: claude-code
 | 2026-09-07T06:42:28+09:00 | #packtool-sign | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0642_feature_packtool-build-and-sign.md | Ed25519 분리 서명, 키는 POLYGLOT_PACK_SIGNING_KEY/PUBLIC_KEY 환경변수 전용. verify 는 서명+해시 둘 다 — 서명만으로는 레슨 본문 변조를 못 잡는다(실증). 미서명·변조·다른 키가 서로 다른 판정 |
 | 2026-09-07T06:56:18+09:00 | #lessongen-prompt-caching | claude-code | !→! | .oculpm/journal/20260907/Features_to_add/0656_feature_openrouter-upstream-pin.md | 막힘 유지 — 배선은 끝났다. provider.order + allow_fallbacks(기본 금지)로 고정하는 --provider 를 붙였고 dry-run 으로 요청 본문까지 실증. 결산이 "고정이 새었다"를 갈라 찍는다. 남은 것은 실왕복 측정뿐이며 크레딧이 나가 사용자 승인 대기 |
 | 2026-09-07T06:57:56+09:00 | #screen-registers-deferred | claude-code | ☐→x |  | 프리젠터 절반은 이미 서 있었다 — PresenterRoute 가 .registers 를 .preparing 으로 보내고 switch 가 exhaustive 라 케이스를 늘리면 컴파일이 깨진다. 남은 절반을 docs/milestones/assembly-registers.md 로 채웠다 — 착수 조건(에뮬레이터 먼저, Unicorn Engine GPL 판정이 코드보다 먼저)과 화면 규칙 포함 |
+| 2026-09-07T07:19:56+09:00 | #toolchain-skip-policy | claude-code | ~→x | .oculpm/journal/20260907/Features_to_add/0719_feature_ci-gate-pr-checks.md | CI 절반 완료 — 필수 체크 경로에 --allow-missing-toolchain 을 기본으로 넘기지 않고 옵트인 시 경고. "경량 러너" 전제는 반박됨: RunnerKit 이 가드 없이 import Darwin 이라 Linux 는 스킵이 아니라 컴파일 실패다 → 3게이트 모두 macos-14 |
+| 2026-09-07T07:20:04+09:00 | #release-ci | claude-code | ☐→~ | .oculpm/journal/20260907/Features_to_add/0719_feature_ci-gate-pr-checks.md | PR 3게이트(swift test·build-app.sh·packtool validate)는 완료. 태그 푸시의 공증·appcast 잡은 미구현 — #notarize-staple-dmg(Developer ID 없음)와 #sparkle-appcast 에 의존한다. 트리거 자체를 안 넣고 주석 자리만 남김 |
+| 2026-09-07T07:20:15+09:00 | #lessongen-prompt-caching | claude-code | !→! | .oculpm/journal/20260907/Errors/0719_error_prompt-cache-cold-despite-pin.md | 가설 반증됨 — Wafer 로 고정해 순차 3회를 태워도 cached_tokens 가 0. 접두사는 두 레슨에서 5527B 바이트 동일(무료 확인), 23개 엔드포인트 전부 캐시 읽기 가격 게시(무료 확인). 원인은 공급자 쪽. 더 안 태운다: out 이 비용을 지배해(in 1995 / out 3625) 완벽한 입력 캐시의 이득이 15~20%뿐이고 폴백 금지의 가용성 대가와 맞바꿔야 한다. 배선·관측은 남는다 |
 <!-- oculpm:plan-log end -->

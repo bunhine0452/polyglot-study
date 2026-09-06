@@ -99,6 +99,13 @@ public enum RunEvent: Sendable {
 public enum RunFailure: Error, Sendable {
     case toolchainMissing(hint: String)
     case wallClockExceeded(seconds: Int)
+    /// `RLIMIT_CPU` 초과로 SIGXCPU 를 맞았다.
+    ///
+    /// - Important: `wallClockExceeded` 와 반드시 구별해야 한다. 벽시계 초과는
+    ///   "코드가 멈췄다"(입력 대기·데드락)이고 CPU 초과는 "코드가 느리다"(비효율 알고리즘)라서
+    ///   학습자에게 줄 조언이 정반대다. 서브프로세스 백엔드는 런처 status fd 의
+    ///   `TIMEOUT` 유무로 둘을 가른다 — 둘 다 종료 상태만 보면 구별되지 않는다.
+    case cpuExceeded(seconds: Int)
     case memoryExceeded(megabytes: Int)
     case cancelled
     case backend(String)

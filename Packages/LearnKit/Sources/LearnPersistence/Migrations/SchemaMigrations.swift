@@ -21,6 +21,7 @@ enum SchemaMigrations {
         "004-mistake-note",
         "005-lesson-progress",
         "006-card-state-scheduling",
+        "007-card-state-difficulty",
     ]
 
     static func migrator() -> DatabaseMigrator {
@@ -31,6 +32,7 @@ enum SchemaMigrations {
         register004MistakeNote(&migrator)
         register005LessonProgress(&migrator)
         register006CardStateScheduling(&migrator)
+        register007CardStateDifficulty(&migrator)
         return migrator
     }
 }

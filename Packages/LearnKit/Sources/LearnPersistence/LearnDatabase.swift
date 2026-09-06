@@ -179,6 +179,20 @@ extension LearnDatabase {
     func scalarInt(_ sql: String) throws -> Int? {
         try writer.read { db in try Int.fetchOne(db, sql: sql) }
     }
+
+    /// 임의 조회의 결과를 행마다 `컬럼=값 컬럼=값 …` 한 줄로.
+    ///
+    /// `PRAGMA table_info`·`index_xinfo`·`foreign_key_list` 를 **비교 가능한 값**으로 꺼내기
+    /// 위한 것이다 — 마이그레이션 007 처럼 테이블을 재생성하는 변경은 "빠뜨린 컬럼·제약·
+    /// 인덱스가 없다" 를 눈이 아니라 테스트로 증명해야 하고, 그 증명의 재료가 이 PRAGMA 들이다.
+    /// GRDB `Row` 는 클로저 밖으로 나가지 못하므로 여기서 문자열로 굳혀 내보낸다.
+    func rawRowStrings(_ sql: String) throws -> [String] {
+        try writer.read { db in
+            try Row.fetchAll(db, sql: sql).map { row in
+                row.map { "\($0.0)=\($0.1)" }.joined(separator: " ")
+            }
+        }
+    }
 }
 
 /// `dumpSchema(to:)` 가 요구하는 `TextOutputStream`.

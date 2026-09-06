@@ -5,7 +5,7 @@ import LearnCore
 
 @Suite("마이그레이션 정책과 골든 스키마")
 struct MigrationPolicyTests {
-    @Test("마이그레이션 001~006 이 순서대로 전부 적용된다", arguments: DatabaseFlavor.allCases)
+    @Test("마이그레이션 001~007 이 순서대로 전부 적용된다", arguments: DatabaseFlavor.allCases)
     func allMigrationsApply(flavor: DatabaseFlavor) throws {
         let harness = try TestDatabase(flavor)
         #expect(try harness.database.appliedMigrations() == SchemaMigrations.identifiers)

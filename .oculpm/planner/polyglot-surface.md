@@ -25,8 +25,8 @@ owner: claude-code
   - [x] 디렉티브 인자를 이름으로 조회하는 래퍼를 직접 작성 — 라이브러리에 없고 업스트림 테스트 파일의 fileprivate 헬퍼만 존재 {#directive-args-wrapper}
 - [ ] 팩 로더와 원자적 설치·롤백 — 버전 디렉터리와 current 포인터 — 완료: staging 에 풀고 전 파일 sha256 검증 후 교체, 설치 도중 강제 종료해도 current 가 이전 버전을 가리킴 {#pack-installer}
   - [x] 설치 전 상위 경로 탈출·절대경로·심볼릭 링크 거부 — 악성 경로 4종 픽스처가 전부 거부되고 디스크 잔여물 0 {#pack-path-hardening}
-- [ ] Textual 하이브리드 렌더러 — 산문만 태우고 퀴즈·빈칸·실행 버튼은 네이티브 SwiftUI 형제 뷰로. MarkupParser 가 문서 전체를 AttributedString 으로 렌더하므로 컨트롤을 안에 못 넣음 {#lesson-renderer}
-  - [ ] Textual 이 macOS 15 를 요구하고 LearnKit 은 macOS 14 — UI 타깃만 올릴지 패키지 전체를 올릴지 결정하고 이유를 Package.swift 주석에 {#platform-bump}
+- [x] Textual 하이브리드 렌더러 — 산문만 태우고 퀴즈·빈칸·실행 버튼은 네이티브 SwiftUI 형제 뷰로. MarkupParser 가 문서 전체를 AttributedString 으로 렌더하므로 컨트롤을 안에 못 넣음 {#lesson-renderer}
+  - [x] Textual 이 macOS 15 를 요구하고 LearnKit 은 macOS 14 — UI 타깃만 올릴지 패키지 전체를 올릴지 결정하고 이유를 Package.swift 주석에 {#platform-bump}
 
 ## packtool · lessongen · CI 게이트 {#content-toolchain}
 - [x] Tools 를 별도 SPM 패키지로 만들고 LearnKit 을 path 의존으로 — 완료: packtool 과 lessongen 두 실행 파일이 나오고 앱 산출물은 ArgumentParser 를 링크하지 않음 {#tools-package}
@@ -60,24 +60,24 @@ owner: claude-code
   - [ ] ATSApplicationFontsPath 는 앱 번들 Resources 에만 먹으므로 Bundle.module 경로에는 쓰지 않고 process 스코프 등록으로 처리 {#font-registration-path}
 - [x] 라운딩과 그림자를 타입 차원에서 봉인한 프리미티브 6종 — Rule·StatusDot·SegmentedProgress·MonoText·FlatButton·LabelText, cornerRadius 와 shadow 파라미터를 아예 노출하지 않음 {#ds-primitives}
 - [x] 232px 고정 사이드바와 4개 내비를 NavigationSplitView 없이 HStack 과 1px 룰로 구성 — 완료: 시스템 기본 라운딩·머티리얼 배경이 전혀 나타나지 않고 활성 항목이 잉크 반전 {#app-shell-chrome}
-- [ ] EditorUI 타깃 신설 + CodeEditSourceEditor 를 exact 0.15.2 로 핀하고 Package.resolved 커밋 — 완료: CESE 0.15.2 · CodeEditTextView 0.12.1 · CodeEditLanguages 0.1.20 고정 {#editorui-target-pin}
-  - [ ] CodeEditLanguages 0.1.20 이 exact 전이 의존이라 제거 불가임을 모듈 주석에 명시 — MVP 3종은 CEL 내장 그래머(python·sql·swift)를 그대로 사용 {#cel-transitive-note}
-- [ ] EditorTheme 16개 속성을 전부 무채색으로 채운 모노크롬 테마 — 완료: 에디터 안에 유채색 0건이고 키워드·타입·문자열·주석이 굵기와 회색 3단으로만 구분 {#mono-syntax-theme}
-  - [ ] EditorTheme.Attribute 가 bold 와 italic 만 지원해 디자인의 500 medium 을 표현 못 함 — types 를 ink 레귤러로 근사하고 근사 사실을 주석에 남김 {#theme-weight-limitation}
-  - [ ] SourceEditorConfiguration 조이기 — 미니맵과 폴딩 리본 끄고 괄호 강조 제거, 12.5pt 폰트에서 행높이가 20px 이 되도록 배수 설정 {#editor-config-tuning}
+- [x] EditorUI 타깃 신설 + CodeEditSourceEditor 를 exact 0.15.2 로 핀하고 Package.resolved 커밋 — 완료: CESE 0.15.2 · CodeEditTextView 0.12.1 · CodeEditLanguages 0.1.20 고정 {#editorui-target-pin}
+  - [x] CodeEditLanguages 0.1.20 이 exact 전이 의존이라 제거 불가임을 모듈 주석에 명시 — MVP 3종은 CEL 내장 그래머(python·sql·swift)를 그대로 사용 {#cel-transitive-note}
+- [x] EditorTheme 16개 속성을 전부 무채색으로 채운 모노크롬 테마 — 완료: 에디터 안에 유채색 0건이고 키워드·타입·문자열·주석이 굵기와 회색 3단으로만 구분 {#mono-syntax-theme}
+  - [x] EditorTheme.Attribute 가 bold 와 italic 만 지원해 디자인의 500 medium 을 표현 못 함 — types 를 ink 레귤러로 근사하고 근사 사실을 주석에 남김 {#theme-weight-limitation}
+  - [x] SourceEditorConfiguration 조이기 — 미니맵과 폴딩 리본 끄고 괄호 강조 제거, 12.5pt 폰트에서 행높이가 20px 이 되도록 배수 설정 {#editor-config-tuning}
 - [ ] Grammars 타깃을 탈출구로만 세우고 alex-pinkus/tree-sitter-swift 는 0.7.3-with-generated-files 태그를 물기 — main 브랜치에는 src/parser.c 가 없어 빌드가 깨짐 {#grammars-escape-hatch}
   - [ ] MVP 단계에서는 앱에 링크하지 않고 Assembly 트랙 착수 시점에 활성화 — 바이너리 크기 증가 0이고 활성화 조건을 한 줄로 문서화 {#grammars-deferred-link}
-- [ ] GradeResult.Presenter 4케이스를 SwiftUI 뷰로 분기하는 라우터 — console 과 table 은 실제 뷰로, browser 와 registers 는 준비중 뷰로, switch 는 exhaustive {#presenter-router}
-  - [ ] 실행 전에도 결과 영역이 같은 크기를 차지하도록 고정 높이 예약 — 레슨 출력 80px, 에디터 우측 패널 520px, 실행 시 상단 y 좌표 불변 {#fixed-height-reservation}
+- [x] GradeResult.Presenter 4케이스를 SwiftUI 뷰로 분기하는 라우터 — console 과 table 은 실제 뷰로, browser 와 registers 는 준비중 뷰로, switch 는 exhaustive {#presenter-router}
+  - [x] 실행 전에도 결과 영역이 같은 크기를 차지하도록 고정 높이 예약 — 레슨 출력 80px, 에디터 우측 패널 520px, 실행 시 상단 y 좌표 불변 {#fixed-height-reservation}
 
 ## 화면 7개 구현 {#screens}
 - [ ] 온보딩 — 툴체인 진단 10행 표와 3상태 표시 — 완료: ready·missing·stub 이 녹색 채움·1px 빈 사각·적색 채움으로 나오고 상단 집계가 실제 probe 결과와 일치 {#screen-onboarding}
   - [x] unsupported 는 디자인에 없는 4번째 상태 — 미설치 빈 사각에 사유 문구를 붙여 접고, switch 에 default 가 필요 없게 {#unsupported-state-mapping}
   - [x] 설치 명령 복사 버튼 — installHint 문자열을 클립보드에 넣기만 하고 프로세스 실행은 일어나지 않음 {#install-hint-copy}
-- [ ] 대시보드 — 오늘 헤더와 2단 카드(이어서·오늘의 복습)와 10행 트랙 표 — 완료: 활성 3트랙은 잉크, 준비 중 7트랙은 흐림, 트랙별 진도칸 수가 레슨 총수와 정확히 일치 {#screen-dashboard}
-  - [ ] 진도 셀 3상태 — 완료는 잉크 채움, 현재는 종이에 잉크 1px, 미래는 종이에 흐린 1px. LazyHGrid 가 아닌 고정 Grid 로 2px 간격 유지 {#progress-cell-states}
-- [ ] 레슨 — 6블록 스텝바와 완료 블록 40px 접힘 행과 활성 블록 카드 — 완료: 한 화면에 펼쳐진 블록이 항상 1개이고 미도래 블록은 흐려진 40px 행으로 남음 {#screen-lesson}
-  - [ ] 실행 예제 블록의 출력 영역을 실행 전 빈 상태로 80px 예약하고 RunEvent 스트림을 그 자리에 흘림 — 시작·도착·완료 3시점 모두 카드 높이 불변 {#lesson-output-slot}
+- [x] 대시보드 — 오늘 헤더와 2단 카드(이어서·오늘의 복습)와 10행 트랙 표 — 완료: 활성 3트랙은 잉크, 준비 중 7트랙은 흐림, 트랙별 진도칸 수가 레슨 총수와 정확히 일치 {#screen-dashboard}
+  - [x] 진도 셀 3상태 — 완료는 잉크 채움, 현재는 종이에 잉크 1px, 미래는 종이에 흐린 1px. LazyHGrid 가 아닌 고정 Grid 로 2px 간격 유지 {#progress-cell-states}
+- [x] 레슨 — 6블록 스텝바와 완료 블록 40px 접힘 행과 활성 블록 카드 — 완료: 한 화면에 펼쳐진 블록이 항상 1개이고 미도래 블록은 흐려진 40px 행으로 남음 {#screen-lesson}
+  - [x] 실행 예제 블록의 출력 영역을 실행 전 빈 상태로 80px 예약하고 RunEvent 스트림을 그 자리에 흘림 — 시작·도착·완료 3시점 모두 카드 높이 불변 {#lesson-output-slot}
 - [ ] 에디터와 콘솔 — 48px 헤더, 56px 과제 바, 좌우 2단 레이아웃 — 완료: 우측 패널이 출력·테스트 탭과 상태 행과 stderr 원문과 테스트 결과를 담고 폭 520px 고정 {#screen-editor-console}
   - [ ] 인라인 진단 행 — 거터 6px 사각과 코드 아래 한국어 설명과 위치·도구·개수 라벨을 Diagnostic 에서 조립, 진단이 붙은 행만 배경 전환 {#inline-diagnostic-row}
   - [ ] 빨강 사용을 종료 코드 옆 8px 사각 하나로 제한하는 규칙을 뷰 레벨에서 강제 — 이 화면에서 실패색을 쓰는 지점이 코드상 1곳뿐 {#red-budget-guard}
@@ -86,8 +86,8 @@ owner: claude-code
   - [ ] publishDiagnostics 를 LearnCore.Diagnostic 으로 매핑해 인라인 진단 행에 재사용 — swiftc 진단과 같은 컴포넌트로 렌더하고 출처만 라벨로 구분 {#lsp-diagnostics}
 - [ ] SQL 결과표 diff — 내 결과와 예상 결과 2단 표 — 완료: 누락 행이 실패 틴트 배경에 6px 적색 사각으로 표시되고 하단에 결과셋 비교 캡션이 고정 {#screen-sql-result}
   - [ ] 행 수가 다를 때 짧은 쪽에 누락 플레이스홀더 행을 채워 두 표의 높이를 맞춤 — 하단 캡션 y 좌표가 항상 고정 {#sql-row-padding}
-- [ ] FSRS 복습 — 12칸 진행 헤더와 질문·답 카드와 동일 크기 4버튼 — 완료: 4버튼의 폭·높이·배경·테두리가 완전 동일하고 각 아래 다음 간격이 실제 FSRS-6 계산값 {#screen-review}
-  - [ ] 어떤 답을 골라도 카드가 사라지지 않는다는 문구를 상수로 두고 좋음 을 시각적으로 유도하지 않는 규칙을 주석으로 고정 {#review-no-nudge}
+- [x] FSRS 복습 — 12칸 진행 헤더와 질문·답 카드와 동일 크기 4버튼 — 완료: 4버튼의 폭·높이·배경·테두리가 완전 동일하고 각 아래 다음 간격이 실제 FSRS-6 계산값 {#screen-review}
+  - [x] 어떤 답을 골라도 카드가 사라지지 않는다는 문구를 상수로 두고 좋음 을 시각적으로 유도하지 않는 규칙을 주석으로 고정 {#review-no-nudge}
 - [ ] ARM64 레지스터 패널을 Assembly 트랙 착수 시점까지 후순위로 분리 — registers 프리젠터는 준비중 뷰로 처리하고 디자인은 별도 마일스톤 문서로만 남김 {#screen-registers-deferred}
 
 ## 서명·공증·배포 {#distribution}
@@ -131,4 +131,19 @@ owner: claude-code
 | 2026-09-06T21:01:00+09:00 | #unsupported-state-mapping | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 첫 실행 앱 — 653 테스트 통과, 스크린샷 확인 |
 | 2026-09-06T21:01:00+09:00 | #install-hint-copy | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 클립보드 복사만, 프로세스 실행 0건 |
 | 2026-09-06T21:01:00+09:00 | #cel-transitive-note | claude-code | 주의 | journal/20260906/Features_to_add/2101_feature_first-running-app.md | CodeEditLanguages·CodeEditSymbols 에 LICENSE 없음 — 조직 주요 저장소 3종이 MIT 라 누락으로 판단, 우리가 LICENSE 추가 PR 을 올린다 |
+| 2026-09-06T22:35:00+09:00 | #cel-transitive-note | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 화면 4종 조립 — 870 테스트, 스크린샷 확인 |
+| 2026-09-06T22:35:00+09:00 | #editor-config-tuning | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 화면 4종 조립 — 870 테스트, 스크린샷 확인 |
+| 2026-09-06T22:35:00+09:00 | #editorui-target-pin | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | CESE 0.15.2 + PR #355 를 Vendor/ 에 벤더링 (165파일). CodeEditLanguages LICENSE 부재는 누락으로 판단 |
+| 2026-09-06T22:35:00+09:00 | #fixed-height-reservation | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 화면 4종 조립 — 870 테스트, 스크린샷 확인 |
+| 2026-09-06T22:35:00+09:00 | #lesson-output-slot | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 화면 4종 조립 — 870 테스트, 스크린샷 확인 |
+| 2026-09-06T22:35:00+09:00 | #lesson-renderer | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 인라인은 AttributedString 위임, 블록만 직접. Body.prose 들여쓰기 근본 수정으로 방어 코드 제거 |
+| 2026-09-06T22:35:00+09:00 | #mono-syntax-theme | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 화면 4종 조립 — 870 테스트, 스크린샷 확인 |
+| 2026-09-06T22:35:00+09:00 | #platform-bump | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | macOS 14 확정, Textual 제거, ProseRenderer 자체 구현(821줄) |
+| 2026-09-06T22:35:00+09:00 | #presenter-router | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 화면 4종 조립 — 870 테스트, 스크린샷 확인 |
+| 2026-09-06T22:35:00+09:00 | #progress-cell-states | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 위협 어휘 11종 0건 grep 봉인 포함 |
+| 2026-09-06T22:35:00+09:00 | #review-no-nudge | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | RatingButtonMetrics.shared 단일 상수 — rating 별 분기가 구조적으로 없음 |
+| 2026-09-06T22:35:00+09:00 | #screen-dashboard | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 화면 4종 조립 — 870 테스트, 스크린샷 확인 |
+| 2026-09-06T22:35:00+09:00 | #screen-lesson | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 화면 4종 조립 — 870 테스트, 스크린샷 확인 |
+| 2026-09-06T22:35:00+09:00 | #screen-review | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 화면 4종 조립 — 870 테스트, 스크린샷 확인 |
+| 2026-09-06T22:35:00+09:00 | #theme-weight-limitation | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 화면 4종 조립 — 870 테스트, 스크린샷 확인 |
 <!-- oculpm:plan-log end -->

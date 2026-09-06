@@ -12,6 +12,19 @@
 #   Scripts/build-app.sh --release
 #   Codesign/notarize.sh /path/to/.build/bundle/Polyglot.app /path/to/Polyglot.dmg
 #
+# Sparkle 이 들어온 뒤 바뀐 것 — {#sparkle-updates}:
+#   번들 안에 서명 대상 실행 파일이 넷 늘었다(Sparkle.framework 안의 Autoupdate ·
+#   Updater.app · XPCServices 둘). `Scripts/build-app.sh` 가 안쪽부터 전부 서명하므로
+#   여기서 따로 할 일은 없다. 다만 개발자 인증서가 생기면 두 가지가 자동으로 달라진다:
+#
+#   1. build-app.sh 가 ad-hoc 경로에서만 붙이던
+#      `com.apple.security.cs.disable-library-validation` 이 **사라진다**. ad-hoc 에는
+#      Team ID 가 없어 Hardened Runtime 의 라이브러리 검증이 Sparkle.framework 로드를
+#      막기 때문에 넣었던 예외이고, Developer ID 로 앱과 프레임워크를 같은 신원으로
+#      서명하면 필요 없다. 공증에 제출하는 번들에 이 예외가 남아 있으면 안 된다.
+#   2. `--timestamp=none` 을 **`--timestamp` 으로 바꿔야 한다.** 공증은 보안 타임스탬프를
+#      요구한다. 지금 껐던 이유는 인증서가 없어 타임스탬프 서버에 갈 이유가 없어서다.
+#
 set -euo pipefail
 
 if [ "${1:-}" = "" ] || [ "${2:-}" = "" ]; then

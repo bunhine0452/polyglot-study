@@ -22,6 +22,15 @@ jobs:
     runs-on: macos-14
     timeout-minutes: 30
     steps:
+      - name: 진단 — 러너의 Xcode·Swift (임시)
+        run: |
+          echo "runner image: $ImageOS / $ImageVersion"
+          ls -d /Applications/Xcode*.app 2>/dev/null || echo "Xcode 없음"
+          echo "선택된 DEVELOPER_DIR: $(xcode-select -p)"
+          swift --version || true
+          for x in /Applications/Xcode*.app; do
+            echo "--- $x"; DEVELOPER_DIR="$x/Contents/Developer" swift --version 2>&1 | head -2
+          done
       - uses: actions/checkout@v4
       - name: 툴체인 확인
         run: |

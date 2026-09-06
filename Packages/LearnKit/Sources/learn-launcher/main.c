@@ -495,15 +495,19 @@ int main(int argc, char **argv) {
         }
 
         if (use_queue) {
+            /* NOTE_EXIT 은 유실될 수 있다. 부모 프로세스가 proc_listpids/proc_pid_rusage 로
+             * 이 그룹을 폴링하는 동안(메모리 상한 감시) 알림이 도착하지 않는 것을 실측했다 —
+             * 8개 동시 실행 기준 실행당 3% 안팎, 30ms 짜리 프로그램이 wall 만료까지 잠들었다.
+             * 그래서 kevent 를 remaining 전체만큼 재우지 않고 짧게 끊어, 루프 상단의
+             * waitpid(WNOHANG) 가 주기적으로 다시 돌게 한다. 알림에만 의존하지 않는다는 뜻이다.
+             * 무제한 분기가 전달 시그널 확인을 위해 이미 같은 일을 하고 있었다. */
+            static const double kMaxWaitSeconds = 0.1;
             struct timespec wait_for;
-            if (remaining >= 0.0) {
-                wait_for.tv_sec = (time_t)remaining;
-                wait_for.tv_nsec = (long)((remaining - (double)wait_for.tv_sec) * 1e9);
-            } else {
-                /* 무제한이어도 전달 시그널을 확인하러 1 초마다 깨운다. */
-                wait_for.tv_sec = 1;
-                wait_for.tv_nsec = 0;
-            }
+            double slice = (remaining >= 0.0 && remaining < kMaxWaitSeconds)
+                ? remaining
+                : kMaxWaitSeconds;
+            wait_for.tv_sec = (time_t)slice;
+            wait_for.tv_nsec = (long)((slice - (double)wait_for.tv_sec) * 1e9);
             struct kevent event;
             int n = kevent(queue, NULL, 0, &event, 1, &wait_for);
             if (n < 0 && errno != EINTR) use_queue = 0;

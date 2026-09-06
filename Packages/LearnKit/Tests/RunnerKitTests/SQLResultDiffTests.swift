@@ -85,7 +85,11 @@ struct SQLResultDiffTests {
         #expect(SQLResultDiff.compute(expected: expected, actual: actual, orderMatters: true).isEmpty)
     }
 
-    @Test("1만 행 전부 오답이어도 100ms 안에 끝난다")
+    // 벽시계 예산은 관대하게(1초), 구조 단언은 엄격하게 간다. 이 테스트가 실제로 지키는 것은
+    // "상한이 걸려 결과가 유한하다" 이지 절대 속도가 아니다. 병렬 스위트 안에서 벽시계를 재면
+    // 부하에 좌우된다 — 실측 유휴 22ms / 컴파일 부하 만재 111~127ms 로, 100ms 예산은 CI 에서
+    // 반드시 깨진다. 알고리즘 회귀(예: 상한 없는 O(n²))는 1초에서도 그대로 잡힌다.
+    @Test("1만 행 전부 오답이어도 상한 안에서 유한하게 끝난다")
     func tenThousandRowsUnderOneHundredMilliseconds() {
         let expected = ResultSet(
             columnNames: ["id", "name", "city"],
@@ -104,6 +108,6 @@ struct SQLResultDiffTests {
         #expect(diff.missingRowCount == 10_000)
         #expect(diff.extraRowCount == 10_000)
         #expect(diff.missingRows.count == 50)
-        #expect(elapsedMilliseconds < 100, "\(elapsedMilliseconds)ms 걸렸습니다")
+        #expect(elapsedMilliseconds < 1_000, "\(elapsedMilliseconds)ms 걸렸습니다")
     }
 }

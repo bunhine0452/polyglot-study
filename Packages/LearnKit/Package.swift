@@ -17,10 +17,12 @@ let package = Package(
         .library(name: "LearnPersistence", targets: ["LearnPersistence"]),
         .library(name: "LearnScheduling", targets: ["LearnScheduling"]),
         .library(name: "RunnerKit", targets: ["RunnerKit"]),
+        .library(name: "ContentKit", targets: ["ContentKit"]),
     ],
     dependencies: [
         .package(url: "https://github.com/groue/GRDB.swift.git", .upToNextMinor(from: "7.11.1")),
         .package(url: "https://github.com/swiftlang/swift-subprocess.git", from: "1.0.0"),
+        .package(url: "https://github.com/swiftlang/swift-markdown.git", from: "0.8.0"),
     ],
     targets: [
         .target(name: "LearnCore", swiftSettings: coreSettings),
@@ -49,8 +51,21 @@ let package = Package(
             ],
             swiftSettings: coreSettings
         ),
+        .target(
+            name: "ContentKit",
+            dependencies: ["LearnCore", .product(name: "Markdown", package: "swift-markdown")],
+            swiftSettings: coreSettings
+        ),
         .testTarget(name: "LearnCoreTests", dependencies: ["LearnCore"], swiftSettings: coreSettings),
-        .testTarget(name: "LearnPersistenceTests", dependencies: ["LearnPersistence"], swiftSettings: coreSettings),
+        .testTarget(name: "ContentKitTests", dependencies: ["ContentKit"], swiftSettings: coreSettings),
+        .testTarget(
+            name: "LearnPersistenceTests",
+            // LearnScheduling 은 "진짜 드라이버 + 진짜 FSRS + 진짜 SQLite" 조합을 한 번
+            // 태워 보기 위해서만 붙는다. 프로덕션 의존 방향(Persistence 는 Scheduling 을
+            // 모른다)은 그대로다 — 테스트 타깃만 둘을 함께 본다.
+            dependencies: ["LearnPersistence", "LearnScheduling"],
+            swiftSettings: coreSettings
+        ),
         .testTarget(
             name: "LearnSchedulingTests",
             dependencies: ["LearnScheduling"],

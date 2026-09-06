@@ -12,24 +12,24 @@ owner: claude-code
 
 ## 콘텐츠 팩 포맷과 ContentKit {#content-pack-format}
 - [ ] 팩 디렉터리 레이아웃과 manifest 스키마 v1 확정 — lessons·starters·tests·solutions·expected·assets 6종 — 완료: 스펙 문서와 그대로 만든 샘플 팩 1개가 리포에 존재 {#pack-format-spec}
-  - [ ] stableID 불변 규칙을 lock 파일로 물리화 — 삭제와 개명은 에러, 추가만 허용, 위반 3종의 기대 에러 메시지를 문서화 {#stableid-lock}
-  - [ ] 매니페스트 정규 바이트 규칙 — 키 정렬·개행·타임스탬프 출처를 git commit date 로 고정해 두 번 구운 결과가 바이트 동일 {#manifest-canonical-bytes}
+  - [x] stableID 불변 규칙을 lock 파일로 물리화 — 삭제와 개명은 에러, 추가만 허용, 위반 3종의 기대 에러 메시지를 문서화 {#stableid-lock}
+  - [x] 매니페스트 정규 바이트 규칙 — 키 정렬·개행·타임스탬프 출처를 git commit date 로 고정해 두 번 구운 결과가 바이트 동일 {#manifest-canonical-bytes}
 - [ ] Example·Blank·Task·Quiz·Reflection 디렉티브 인자 스펙 확정 — 인자는 식별자·열거 토큰·경로만, 자유 텍스트는 전부 본문 하위 디렉티브나 사이드카 파일로 {#directive-syntax-spec}
-  - [ ] 인자 값에 콜론·중괄호·괄호·쉼표·큰따옴표를 못 쓰고 역슬래시가 값에 그대로 남는 동작을 스펙에 명시 — 정답은 Answer 본문으로, 기대 stdout 은 expected 사이드카로 {#directive-arg-charset}
-  - [ ] 중괄호 본문을 여러 줄로 강제 — 한 줄 본문은 마지막 중괄호까지 삼키고, 중괄호 없는 디렉티브 뒤 같은 줄 텍스트는 조용히 버려짐 {#directive-multiline-body}
-- [ ] ContentKit 타깃 추가 + swift-markdown 0.8.0 태그 핀 — 완료: LearnCore 에만 의존하는 타깃에서 Markdown 임포트 성공 {#contentkit-target}
+  - [x] 인자 값에 콜론·중괄호·괄호·쉼표·큰따옴표를 못 쓰고 역슬래시가 값에 그대로 남는 동작을 스펙에 명시 — 정답은 Answer 본문으로, 기대 stdout 은 expected 사이드카로 {#directive-arg-charset}
+  - [x] 중괄호 본문을 여러 줄로 강제 — 한 줄 본문은 마지막 중괄호까지 삼키고, 중괄호 없는 디렉티브 뒤 같은 줄 텍스트는 조용히 버려짐 {#directive-multiline-body}
+- [x] ContentKit 타깃 추가 + swift-markdown 0.8.0 태그 핀 — 완료: LearnCore 에만 의존하는 타깃에서 Markdown 임포트 성공 {#contentkit-target}
 - [ ] PackManifest Codable 모델과 validate 작성 — 완료: 깨진 매니페스트 6종(중복 id·미등록 파일·잘못된 semver·경로 탈출·빈 lessons·미지 언어)이 각각 다른 에러로 실패 {#packmanifest-codable}
-  - [ ] schemaVersion 과 minAppVersion 게이트 — 앱보다 새 팩은 사용자에게 보여줄 문구와 함께 거부하고 크래시하지 않음 {#schema-version-gate}
-- [ ] LessonBlock 값 타입 6종을 Sendable 로 정의하고 Markup 트리를 파싱 경계 밖으로 내보내지 않음 — Markup 프로토콜은 Sendable 이 아니라 nonisolated 코어에서 못 씀 {#lessonblock-model}
+  - [x] schemaVersion 과 minAppVersion 게이트 — 앱보다 새 팩은 사용자에게 보여줄 문구와 함께 거부하고 크래시하지 않음 {#schema-version-gate}
+- [x] LessonBlock 값 타입 6종을 Sendable 로 정의하고 Markup 트리를 파싱 경계 밖으로 내보내지 않음 — Markup 프로토콜은 Sendable 이 아니라 nonisolated 코어에서 못 씀 {#lessonblock-model}
 - [ ] MarkupWalker 로 BlockDirective 를 순회해 레슨을 블록 배열로 변환 — 완료: 레퍼런스 레슨이 6블록 순서로 파싱되고 미지 디렉티브·순서 위반·블록 누락이 전부 throw {#lesson-parser}
-  - [ ] 디렉티브 인자를 이름으로 조회하는 래퍼를 직접 작성 — 라이브러리에 없고 업스트림 테스트 파일의 fileprivate 헬퍼만 존재 {#directive-args-wrapper}
+  - [x] 디렉티브 인자를 이름으로 조회하는 래퍼를 직접 작성 — 라이브러리에 없고 업스트림 테스트 파일의 fileprivate 헬퍼만 존재 {#directive-args-wrapper}
 - [ ] 팩 로더와 원자적 설치·롤백 — 버전 디렉터리와 current 포인터 — 완료: staging 에 풀고 전 파일 sha256 검증 후 교체, 설치 도중 강제 종료해도 current 가 이전 버전을 가리킴 {#pack-installer}
-  - [ ] 설치 전 상위 경로 탈출·절대경로·심볼릭 링크 거부 — 악성 경로 4종 픽스처가 전부 거부되고 디스크 잔여물 0 {#pack-path-hardening}
+  - [x] 설치 전 상위 경로 탈출·절대경로·심볼릭 링크 거부 — 악성 경로 4종 픽스처가 전부 거부되고 디스크 잔여물 0 {#pack-path-hardening}
 - [ ] Textual 하이브리드 렌더러 — 산문만 태우고 퀴즈·빈칸·실행 버튼은 네이티브 SwiftUI 형제 뷰로. MarkupParser 가 문서 전체를 AttributedString 으로 렌더하므로 컨트롤을 안에 못 넣음 {#lesson-renderer}
   - [ ] Textual 이 macOS 15 를 요구하고 LearnKit 은 macOS 14 — UI 타깃만 올릴지 패키지 전체를 올릴지 결정하고 이유를 Package.swift 주석에 {#platform-bump}
 
 ## packtool · lessongen · CI 게이트 {#content-toolchain}
-- [ ] Tools 를 별도 SPM 패키지로 만들고 LearnKit 을 path 의존으로 — 완료: packtool 과 lessongen 두 실행 파일이 나오고 앱 산출물은 ArgumentParser 를 링크하지 않음 {#tools-package}
+- [x] Tools 를 별도 SPM 패키지로 만들고 LearnKit 을 path 의존으로 — 완료: packtool 과 lessongen 두 실행 파일이 나오고 앱 산출물은 ArgumentParser 를 링크하지 않음 {#tools-package}
 - [ ] packtool validate 의 구조·문법 단계 — 매니페스트 디코딩·sha256 대조·디렉티브 파싱·참조 파일 존재 — 완료: 툴체인 없는 머신에서도 돌고 망가진 픽스처 8종이 서로 다른 메시지로 실패 {#packtool-structural}
 - [ ] packtool validate 의 실행 게이트 — MVP 3트랙 샘플 팩의 모든 예제·과제 블록이 실제 CodeRunner 를 타고 통과, 하나라도 어긋나면 non-zero. 통과 못 한 팩은 머지 금지 {#packtool-execution}
   - [ ] 예제 블록을 실행해 expected 사이드카와 바이트 단위 대조, 불일치 시 줄 단위 diff 출력, CRLF·후행 개행 정규화 규칙을 스펙에 명시 {#example-stdout-compare}
@@ -38,9 +38,9 @@ owner: claude-code
 - [ ] packtool 리포트를 JSON 과 JUnit XML 두 형식으로 — CI 어노테이션과 lessongen 재생성 루프가 같은 파일을 읽음, 레슨별 stableID·실패 단계·러너 원문 포함 {#packtool-report}
 - [ ] packtool build — solutions 를 벗기고 sha256 재계산해 배포용 팩을 결정적으로 굽기 — 완료: 두 번 빌드한 tar 바이트가 동일하고 배포 팩에 solutions 없음 {#packtool-build}
   - [ ] packtool sign 과 verify — 정규 매니페스트 바이트에 대한 분리 서명, 키는 환경변수로만 받고 서명 없는 팩과 변조된 팩은 거부 {#packtool-sign}
-- [ ] lessongen 의 Anthropic HTTP 클라이언트를 URLSession 으로 작성 — Swift 공식 SDK 가 없어 messages 엔드포인트 직접 호출 — 완료: 왕복 1회 성공하고 429·529 에 지수 백오프 {#lessongen-http-client}
-  - [ ] API 키는 ANTHROPIC_API_KEY 환경변수에서만 읽고 플래그·설정파일·로그 어디에도 싣지 않음 — 실행 로그 전수 grep 에 키 0건 {#api-key-handling}
-- [ ] lessongen outline — 트랙 개요를 구조화 출력 1회로 뽑아 stableID·학습목표·선수개념을 갖춘 JSON 으로 커밋, 사람이 리뷰한 뒤에만 진행 {#lessongen-outline}
+- [x] lessongen 의 Anthropic HTTP 클라이언트를 URLSession 으로 작성 — Swift 공식 SDK 가 없어 messages 엔드포인트 직접 호출 — 완료: 왕복 1회 성공하고 429·529 에 지수 백오프 {#lessongen-http-client}
+  - [x] API 키는 ANTHROPIC_API_KEY 환경변수에서만 읽고 플래그·설정파일·로그 어디에도 싣지 않음 — 실행 로그 전수 grep 에 키 0건 {#api-key-handling}
+- [~] lessongen outline — 트랙 개요를 구조화 출력 1회로 뽑아 stableID·학습목표·선수개념을 갖춘 JSON 으로 커밋, 사람이 리뷰한 뒤에만 진행 {#lessongen-outline}
 - [ ] lessongen lesson — 레슨을 JSON 으로 받아 Swift 코드가 디렉티브 마크다운으로 직렬화. 모델에게 마크다운을 시키지 않음 — 완료: 생성물이 구조·문법 단계를 첫 시도에 통과 {#lessongen-lesson}
   - [ ] 1차 생성은 Batch API 로 트랙 전체를 팬아웃해 입출력 50% 할인 — custom_id 로 결과를 짝지어 회수 {#lessongen-batch-fanout}
   - [ ] 시스템 프롬프트(스타일 가이드 + 6블록 계약 + 실행 제약)에 cache_control 을 걸고 레슨별 가변부를 뒤에 — 2회차부터 캐시 읽기 토큰이 0 이 아님 {#lessongen-prompt-caching}
@@ -105,4 +105,17 @@ owner: claude-code
 <!-- oculpm:plan-log begin v1 -->
 | 시각 | 항목 | 에이전트 | 변화 | 일지 | 메모 |
 |---|---|---|---|---|---|
+| 2026-09-06T18:27:23+09:00 | #tools-package | claude-code | ☐→x | .oculpm/journal/20260906/Features_to_add/1826_feature_tools-package-and-lessongen-client.md | 별도 SPM 패키지. nm 확인 packtool 0 / lessongen 15856. ArgumentParser 1.8.2 핀 |
+| 2026-09-06T18:27:31+09:00 | #api-key-handling | claude-code | ☐→x | .oculpm/journal/20260906/Features_to_add/1826_feature_tools-package-and-lessongen-client.md | 환경변수 전용·RedactingLog 봉인. 주의: 부모 #lessongen-http-client 의 실왕복 1회는 키 부재로 미검증 |
+| 2026-09-06T18:27:38+09:00 | #lessongen-outline | claude-code | ☐→~ | .oculpm/journal/20260906/Features_to_add/1826_feature_tools-package-and-lessongen-client.md | 스키마·프롬프트·조립·검증·파일쓰기 완성. 키가 없어 실제 개요 JSON 은 아직 미생성 |
+| 2026-09-06T18:47:00+09:00 | #contentkit-target | claude-code | [ ]→[x] | journal/20260906/Features_to_add/1847_feature_content-pipeline-foundation.md | 콘텐츠 파이프라인 기반, 607 테스트 통과 |
+| 2026-09-06T18:47:00+09:00 | #stableid-lock | claude-code | [ ]→[x] | journal/20260906/Features_to_add/1847_feature_content-pipeline-foundation.md | 콘텐츠 파이프라인 기반, 607 테스트 통과 |
+| 2026-09-06T18:47:00+09:00 | #manifest-canonical-bytes | claude-code | [ ]→[x] | journal/20260906/Features_to_add/1847_feature_content-pipeline-foundation.md | 콘텐츠 파이프라인 기반, 607 테스트 통과 |
+| 2026-09-06T18:47:00+09:00 | #directive-arg-charset | claude-code | [ ]→[x] | journal/20260906/Features_to_add/1847_feature_content-pipeline-foundation.md | @X(id: a:b) 가 에러 없이 :b 를 버리는 것 실측 — 정규형 되짚기로 방어 |
+| 2026-09-06T18:47:00+09:00 | #directive-multiline-body | claude-code | [ ]→[x] | journal/20260906/Features_to_add/1847_feature_content-pipeline-foundation.md | 한 줄 본문이 마지막 중괄호까지 삼킴 — 렉시컬 사전 검사로 거부 |
+| 2026-09-06T18:47:00+09:00 | #schema-version-gate | claude-code | [ ]→[x] | journal/20260906/Features_to_add/1847_feature_content-pipeline-foundation.md | 콘텐츠 파이프라인 기반, 607 테스트 통과 |
+| 2026-09-06T18:47:00+09:00 | #lessonblock-model | claude-code | [ ]→[x] | journal/20260906/Features_to_add/1847_feature_content-pipeline-foundation.md | 콘텐츠 파이프라인 기반, 607 테스트 통과 |
+| 2026-09-06T18:47:00+09:00 | #directive-args-wrapper | claude-code | [ ]→[x] | journal/20260906/Features_to_add/1847_feature_content-pipeline-foundation.md | 콘텐츠 파이프라인 기반, 607 테스트 통과 |
+| 2026-09-06T18:47:00+09:00 | #pack-path-hardening | claude-code | [ ]→[x] | journal/20260906/Features_to_add/1847_feature_content-pipeline-foundation.md | FileManager.enumerator 가 베이스 심볼릭 링크를 풀어 조용히 0개 반환 — 자체 워커로 교체 |
+| 2026-09-06T18:47:00+09:00 | #lessongen-http-client | claude-code | 주의 | journal/20260906/Features_to_add/1847_feature_content-pipeline-foundation.md | 실왕복 미검증 — 루프백 서버로만 확인. 키 보유자가 한 번 태워야 닫힘 |
 <!-- oculpm:plan-log end -->

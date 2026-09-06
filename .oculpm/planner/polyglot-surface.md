@@ -88,7 +88,7 @@ owner: claude-code
   - [x] 행 수가 다를 때 짧은 쪽에 누락 플레이스홀더 행을 채워 두 표의 높이를 맞춤 — 하단 캡션 y 좌표가 항상 고정 {#sql-row-padding}
 - [x] FSRS 복습 — 12칸 진행 헤더와 질문·답 카드와 동일 크기 4버튼 — 완료: 4버튼의 폭·높이·배경·테두리가 완전 동일하고 각 아래 다음 간격이 실제 FSRS-6 계산값 {#screen-review}
   - [x] 어떤 답을 골라도 카드가 사라지지 않는다는 문구를 상수로 두고 좋음 을 시각적으로 유도하지 않는 규칙을 주석으로 고정 {#review-no-nudge}
-- [ ] ARM64 레지스터 패널을 Assembly 트랙 착수 시점까지 후순위로 분리 — registers 프리젠터는 준비중 뷰로 처리하고 디자인은 별도 마일스톤 문서로만 남김 {#screen-registers-deferred}
+- [x] ARM64 레지스터 패널을 Assembly 트랙 착수 시점까지 후순위로 분리 — registers 프리젠터는 준비중 뷰로 처리하고 디자인은 별도 마일스톤 문서로만 남김 {#screen-registers-deferred}
 
 ## 서명·공증·배포 {#distribution}
 - [x] Hardened Runtime 을 켜고 App Sandbox 를 끈 서명 설정 확정 — 완료: entitlements 출력에 app-sandbox 가 없고 codesign 에 runtime 플래그가 찍힐 {#codesign-hardened-runtime}
@@ -164,4 +164,5 @@ owner: claude-code
 | 2026-09-07T06:18:18+09:00 | #lessongen-runlog | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0616_feature_lessongen-lesson-and-repair-loop.md | 실행별 디렉터리에 요청·응답·usage·cost·model·seed·temperature·upstream·generation id. --max-usd 초과 시 새 요청 중단. 결산이 캐시 미적중과 갈린 업스트림을 직접 찍음 |
 | 2026-09-07T06:42:28+09:00 | #packtool-sign | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0642_feature_packtool-build-and-sign.md | Ed25519 분리 서명, 키는 POLYGLOT_PACK_SIGNING_KEY/PUBLIC_KEY 환경변수 전용. verify 는 서명+해시 둘 다 — 서명만으로는 레슨 본문 변조를 못 잡는다(실증). 미서명·변조·다른 키가 서로 다른 판정 |
 | 2026-09-07T06:56:18+09:00 | #lessongen-prompt-caching | claude-code | !→! | .oculpm/journal/20260907/Features_to_add/0656_feature_openrouter-upstream-pin.md | 막힘 유지 — 배선은 끝났다. provider.order + allow_fallbacks(기본 금지)로 고정하는 --provider 를 붙였고 dry-run 으로 요청 본문까지 실증. 결산이 "고정이 새었다"를 갈라 찍는다. 남은 것은 실왕복 측정뿐이며 크레딧이 나가 사용자 승인 대기 |
+| 2026-09-07T06:57:56+09:00 | #screen-registers-deferred | claude-code | ☐→x |  | 프리젠터 절반은 이미 서 있었다 — PresenterRoute 가 .registers 를 .preparing 으로 보내고 switch 가 exhaustive 라 케이스를 늘리면 컴파일이 깨진다. 남은 절반을 docs/milestones/assembly-registers.md 로 채웠다 — 착수 조건(에뮬레이터 먼저, Unicorn Engine GPL 판정이 코드보다 먼저)과 화면 규칙 포함 |
 <!-- oculpm:plan-log end -->

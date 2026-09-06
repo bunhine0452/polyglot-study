@@ -1,6 +1,10 @@
 internal import Foundation
+internal import DashboardFeature
 internal import DesignSystem
+internal import LearnCore
+internal import LessonFeature
 internal import OnboardingFeature
+internal import ReviewFeature
 internal import SwiftUI
 
 /// 앱 타깃의 **유일한** 컴파일 소스. 화면은 전부 LearnKit 안에 있고 여기서는 셸만 세운다.
@@ -34,22 +38,18 @@ struct PolyglotApp: App {
 private struct RootView: View {
     @Binding var selection: ShellDestination
 
-    /// 툴체인 감지는 서브프로세스를 10번 띄운다. 화면을 오갈 때마다 다시 훑지 않도록
-    /// 모델을 셸 수명에 붙인다.
-    @State private var onboarding = OnboardingModel()
+    /// 조립은 한 번만. 툴체인 감지는 서브프로세스를 10번 띄우고 DB·팩도 여기서 한 번 연다.
+    @State private var composition = Composition()
+    /// 레슨은 사이드바 목적지가 아니라 대시보드에서 밀려 들어온다.
+    @State private var openLesson: LessonModel?
+    @State private var screenError: String?
 
     var body: some View {
         AppShell(selection: $selection, badge: badge) { destination in
             ShellContent {
                 ShellHeader(destination.title, trailing: Self.today)
-                switch destination {
-                case .toolchain:
-                    // 첫 실제 화면. 목 데이터가 아니라 RunnerKit 의 ToolchainProbe 가
-                    // 이 머신을 실제로 훑은 결과를 그린다.
-                    OnboardingView(model: onboarding)
-                case .today, .tracks, .review:
-                    PlaceholderPanel(destination: destination)
-                }
+                notices
+                content(for: destination)
             }
         }
         .frame(minWidth: 1040, minHeight: 680)
@@ -57,10 +57,63 @@ private struct RootView: View {
 
     /// 아직 데이터 계층이 셸에 붙지 않았다. 배지가 붙을 자리만 비워 둔다 —
     /// 화면이 생기면 여기서 실제 카운트를 넘긴다.
+    @ViewBuilder
+    private func content(for destination: ShellDestination) -> some View {
+        if let lesson = openLesson {
+            LessonView(model: lesson) { openLesson = nil }
+        } else {
+            switch destination {
+            case .today:
+                DashboardView(model: composition.dashboard, onResume: resume)
+            case .tracks:
+                // 트랙 전용 화면은 아직 디자인이 없다. 대시보드의 트랙 표가 그 역할을 한다.
+                PlaceholderPanel(destination: destination)
+            case .review:
+                reviewScreen
+            case .toolchain:
+                // 목 데이터가 아니라 RunnerKit 의 ToolchainProbe 가 이 머신을 실제로 훑은 결과.
+                OnboardingView(model: composition.onboarding)
+            }
+        }
+    }
+
+    /// 복습 모델은 DB 를 요구하므로 조립이 실패할 수 있다. 실패를 빈 화면으로 숨기지 않는다.
+    @ViewBuilder
+    private var reviewScreen: some View {
+        if let model = try? composition.makeReview() {
+            ReviewView(model: model)
+        } else {
+            LabelText("복습을 열 수 없습니다 — 저장소를 확인하십시오.")
+        }
+    }
+
+    /// 조립 실패는 화면 위에 남긴다. 조용히 비어 있으면 "아직 아무것도 안 함" 과 구별되지 않는다.
+    @ViewBuilder
+    private var notices: some View {
+        let messages = [composition.databaseFailureNotice, composition.packFailureNotice, screenError]
+            .compactMap { $0 }
+        if !messages.isEmpty {
+            VStack(alignment: .leading, spacing: Spacing.xs) {
+                ForEach(messages, id: \.self) { MonoText($0, size: .label, color: Palette.fail) }
+            }
+        }
+    }
+
+    private func resume(_ point: ResumePoint) {
+        do {
+            // ResumePoint 는 팩 id 를 들고 있지 않다 — 대시보드가 단일 팩을 전제로 만들어졌다.
+            // 조립 루트가 아는 팩을 그대로 쓴다.
+            openLesson = try composition.makeLesson(lessonID: point.lessonID)
+            screenError = nil
+        } catch {
+            screenError = "\(error)"
+        }
+    }
+
     private func badge(for destination: ShellDestination) -> String? {
-        // 지금 배지를 낼 수 있는 곳은 툴체인뿐이다 — 나머지는 데이터 계층이 아직 안 붙었다.
+        // 지금 배지를 낼 수 있는 곳은 툴체인뿐이다 — 나머지는 화면 안에서 이미 보인다.
         guard destination == .toolchain else { return nil }
-        let unresolved = onboarding.summary.missing + onboarding.summary.problem
+        let unresolved = composition.onboarding.summary.missing + composition.onboarding.summary.problem
         return unresolved > 0 ? String(unresolved) : nil
     }
 

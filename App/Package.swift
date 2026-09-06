@@ -34,6 +34,11 @@ let package = Package(
             dependencies: [
                 .product(name: "DesignSystem", package: "LearnKit"),
                 .product(name: "OnboardingFeature", package: "LearnKit"),
+                .product(name: "DashboardFeature", package: "LearnKit"),
+                .product(name: "LessonFeature", package: "LearnKit"),
+                .product(name: "ReviewFeature", package: "LearnKit"),
+                .product(name: "ContentKit", package: "LearnKit"),
+                .product(name: "LearnPersistence", package: "LearnKit"),
             ],
             // LearnKit 의 uiSettings 와 동일해야 한다 — 격리 도메인이 타깃 경계에서
             // 어긋나면 뷰 코드에 @MainActor 가 다시 번진다.

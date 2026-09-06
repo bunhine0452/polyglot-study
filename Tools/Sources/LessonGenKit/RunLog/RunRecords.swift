@@ -91,6 +91,11 @@ public struct RunManifest: Codable, Hashable, Sendable {
     /// 모델이 썼나" 를 되짚을 때 기본값이 무엇이었는지도 필요하다.
     public var stageModels: [String: String]
     public var sessionID: String?
+    /// 요청에 건 업스트림 고정. 비어 있으면 고정 없이 돈 실행이다.
+    ///
+    /// 재현 재료다 — `upstreamProviders` 가 "누가 답했는가" 라면 이쪽은 "누구에게
+    /// 보내려 했는가" 이고, 둘이 어긋난 실행은 캐시를 기대하면 안 된다.
+    public var pinnedProviders: [String]
     public var budgetUSD: Double?
     public var calls: Int
     public var failedCalls: Int
@@ -112,6 +117,7 @@ public struct RunManifest: Codable, Hashable, Sendable {
         command: String,
         stageModels: [String: String],
         sessionID: String?,
+        pinnedProviders: [String] = [],
         budgetUSD: Double?,
         calls: Int = 0,
         failedCalls: Int = 0,
@@ -129,6 +135,7 @@ public struct RunManifest: Codable, Hashable, Sendable {
         self.command = command
         self.stageModels = stageModels
         self.sessionID = sessionID
+        self.pinnedProviders = pinnedProviders
         self.budgetUSD = budgetUSD
         self.calls = calls
         self.failedCalls = failedCalls
@@ -153,7 +160,21 @@ public struct RunManifest: Codable, Hashable, Sendable {
             let ratio = inputTokens > 0 ? Double(cachedInputTokens) / Double(inputTokens) * 100 : 0
             lines.append(String(format: "프롬프트 캐시 적중 — 입력의 %.1f%% 가 캐시에서 왔다", ratio))
         } else if calls > 1 {
-            lines.append("프롬프트 캐시 적중 없음 — session_id 라우팅과 접두사 안정성을 확인하라")
+            lines.append(
+                pinnedProviders.isEmpty
+                    ? "프롬프트 캐시 적중 없음 — 업스트림을 고정하지 않았다 (--provider). session_id 는 힌트일 뿐이다"
+                    : "프롬프트 캐시 적중 없음 — 업스트림은 고정했으니 접두사 안정성을 확인하라")
+        }
+        // 고정을 요청했는데 다른 곳이 답했다면 그 실행의 캐시 결과는 아무것도 증명하지 않는다.
+        if !pinnedProviders.isEmpty {
+            let strayed = upstreamProviders.filter { !pinnedProviders.contains($0) }
+            if strayed.isEmpty {
+                lines.append("업스트림 고정 지켜짐: \(pinnedProviders.joined(separator: " → "))")
+            } else {
+                lines.append(
+                    "**업스트림 고정이 새었다** — 고정 \(pinnedProviders.joined(separator: " → "))"
+                        + ", 실제로 답한 곳에 \(strayed.joined(separator: ", ")) 가 섞였다")
+            }
         }
         if upstreamProviders.count > 1 {
             lines.append("업스트림이 \(upstreamProviders.count)곳으로 갈렸다: \(upstreamProviders.joined(separator: ", "))")

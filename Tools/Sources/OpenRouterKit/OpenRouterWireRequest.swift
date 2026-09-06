@@ -140,10 +140,33 @@ struct WireReasoning: Encodable, Sendable, Hashable {
 /// 아니라 JSON 이 아예 아닌 응답이라 파싱 실패로만 드러난다. `seed` 에는 그 약한 선호도
 /// 없다. 이 플래그는 요청한 파라미터를 전부 지원하는 업스트림으로만 라우팅을 좁혀
 /// 두 경우를 다 막는다.
+/// ## 업스트림 고정 — `order` + `allow_fallbacks`
+///
+/// 프롬프트 캐시는 **업스트림에 붙어 있다.** `session_id` 만으로는 부족하다는 것이
+/// 실측으로 드러났다 — 같은 `session_id` 로 7회를 보냈는데 NextBit·Wafer·Reka 로 갈려
+/// `cached_tokens` 가 매번 0 이었다 (`{#lessongen-prompt-caching}`). 라우터에게 힌트가
+/// 아니라 **제약**을 줘야 한다.
+///
+/// `only`(허용 목록)가 아니라 `order`(우선순위) + `allow_fallbacks` 를 쓰는 이유는
+/// 표현력이다. `allow_fallbacks: false` 면 `only` 와 같은 하드 제약이 되고, `true` 면
+/// "이쪽을 먼저 시도하되 없으면 아무 데나" 가 된다. `only` 로는 뒤쪽을 표현할 수 없다.
 struct WireProviderRouting: Encodable, Sendable, Hashable {
     var requireParameters: Bool
+    /// 업스트림 우선순위. 비어 있으면 인코딩되지 않는다.
+    var order: [String]?
+    /// `false` 면 ``order`` 밖으로 나가지 않는다. 목록의 업스트림이 전부 죽어 있으면
+    /// 요청이 실패한다 — 조용히 다른 곳으로 새는 것보다 낫다.
+    var allowFallbacks: Bool?
+
+    init(requireParameters: Bool, order: [String]? = nil, allowFallbacks: Bool? = nil) {
+        self.requireParameters = requireParameters
+        self.order = order
+        self.allowFallbacks = allowFallbacks
+    }
 
     enum CodingKeys: String, CodingKey {
         case requireParameters = "require_parameters"
+        case order
+        case allowFallbacks = "allow_fallbacks"
     }
 }

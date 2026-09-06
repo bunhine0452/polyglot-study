@@ -142,6 +142,69 @@ struct OpenRouterRequestBuilderTests {
         #expect(try body(sampleRequest, builder: builder)["provider"] == nil)
     }
 
+    // MARK: - 업스트림 고정 ({#lessongen-prompt-caching})
+
+    private func pinnedBuilder(
+        _ names: [String], allowFallbacks: Bool = false, requireParameters: Bool = true
+    ) throws -> OpenRouterRequestBuilder {
+        OpenRouterRequestBuilder(
+            requireParameters: requireParameters,
+            upstreamPin: try #require(
+                UpstreamPin(providers: names, allowFallbacks: allowFallbacks)))
+    }
+
+    @Test("업스트림을 고정하면 order 와 allow_fallbacks 로 나간다")
+    func pinBecomesOrderAndFallbacks() throws {
+        let json = try body(sampleRequest, builder: try pinnedBuilder(["NextBit", "Wafer"]))
+        let provider = try #require(json["provider"] as? [String: Any])
+        #expect(provider["order"] as? [String] == ["NextBit", "Wafer"])
+        #expect(provider["allow_fallbacks"] as? Bool == false)
+        // 고정과 파라미터 좁히기는 따로 논다. 둘 다 필요하면 둘 다 나간다.
+        #expect(provider["require_parameters"] as? Bool == true)
+    }
+
+    /// 고정은 캐시가 목적이라 파라미터와 무관하게 언제나 의미가 있다. 예전 로직은
+    /// "요구한 파라미터가 있을 때만" provider 블록을 냈고, 그 조건에 고정을 얹으면
+    /// 평범한 요청의 고정이 조용히 사라진다.
+    @Test("파라미터를 하나도 안 걸어도 고정은 나간다")
+    func pinSurvivesPlainRequest() throws {
+        let plain = CompletionRequest(messages: [.user("x")], maxOutputTokens: 10)
+        let json = try body(plain, builder: try pinnedBuilder(["NextBit"]))
+        let provider = try #require(json["provider"] as? [String: Any])
+        #expect(provider["order"] as? [String] == ["NextBit"])
+        // 좁힐 파라미터가 없으니 require_parameters 는 켜지 않는다 — 값싼 업스트림을
+        // 이유 없이 버리지 않는다는 기존 규칙 그대로다.
+        #expect(provider["require_parameters"] as? Bool == false)
+    }
+
+    @Test("폴백을 허용하면 allow_fallbacks 가 참으로 나간다")
+    func fallbacksCanBeAllowed() throws {
+        let json = try body(
+            sampleRequest, builder: try pinnedBuilder(["NextBit"], allowFallbacks: true))
+        #expect((json["provider"] as? [String: Any])?["allow_fallbacks"] as? Bool == true)
+    }
+
+    @Test("고정이 없으면 order 와 allow_fallbacks 는 아예 없다")
+    func noPinNoOrder() throws {
+        let provider = try #require(try body(sampleRequest)["provider"] as? [String: Any])
+        #expect(provider["order"] == nil)
+        #expect(provider["allow_fallbacks"] == nil)
+    }
+
+    @Test("빈 이름만 준 고정은 고정이 아니다")
+    func emptyPinIsNil() {
+        #expect(UpstreamPin(providers: []) == nil)
+        #expect(UpstreamPin(providers: ["", "   "]) == nil)
+        #expect(UpstreamPin(providers: [" NextBit "])?.providers == ["NextBit"])
+    }
+
+    @Test("고정 목록에 실제로 답한 업스트림이 있는지 판정한다")
+    func honoredJudgement() throws {
+        let pin = try #require(UpstreamPin(providers: ["NextBit", "Wafer"]))
+        #expect(pin.honored(by: "NextBit"))
+        #expect(!pin.honored(by: "Reka"))
+    }
+
     /// `usage: {include: true}` 는 2026년에 폐기되어 아무 효과가 없다. 죽은 필드를
     /// 보내면 캐시 접두사 바이트만 흔든다.
     @Test("폐기된 usage.include 는 보내지 않는다")

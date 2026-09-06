@@ -156,7 +156,8 @@ enum LessonFixtures {
     static func runLog(
         directory: URL,
         budgetUSD: Double? = nil,
-        sessionID: String? = "test-session"
+        sessionID: String? = "test-session",
+        pinnedProviders: [String] = []
     ) throws -> RunLog {
         try RunLog(
             rootDirectory: directory,
@@ -165,7 +166,8 @@ enum LessonFixtures {
             startedAt: Date(timeIntervalSince1970: 1_787_752_741),
             models: ModelSelection(base: ModelID("z-ai/glm-5.3-flash")),
             sessionID: sessionID,
-            budgetUSD: budgetUSD)
+            budgetUSD: budgetUSD,
+            pinnedProviders: pinnedProviders)
     }
 
     /// 실패 하나짜리 검증 리포트.

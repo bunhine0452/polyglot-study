@@ -31,6 +31,9 @@ public struct OpenRouterProvider: LLMProvider {
         /// 캐시 경계 표현 방식. 기본은 자동 — 대부분의 업스트림이 그쪽이고, 파트 배열을
         /// 못 받는 곳이 섞여 있다.
         public var promptCaching: PromptCachingMode
+        /// 업스트림 고정. `session_id` 가 힌트라면 이쪽은 제약이다 — 실측상 힌트만으로는
+        /// 캐시가 붙지 않았다 (``UpstreamPin`` 참조).
+        public var upstreamPin: UpstreamPin?
 
         public init(
             baseURL: URL = OpenRouterRequestBuilder.defaultBaseURL,
@@ -39,7 +42,8 @@ public struct OpenRouterProvider: LLMProvider {
             attribution: OpenRouterRequestBuilder.Attribution = .polyglotStudy,
             requireParameters: Bool = true,
             sessionID: String? = nil,
-            promptCaching: PromptCachingMode = .automatic
+            promptCaching: PromptCachingMode = .automatic,
+            upstreamPin: UpstreamPin? = nil
         ) {
             self.baseURL = baseURL
             self.retry = retry
@@ -48,6 +52,7 @@ public struct OpenRouterProvider: LLMProvider {
             self.requireParameters = requireParameters
             self.sessionID = sessionID
             self.promptCaching = promptCaching
+            self.upstreamPin = upstreamPin
         }
     }
 
@@ -113,7 +118,8 @@ public struct OpenRouterProvider: LLMProvider {
             attribution: configuration.attribution,
             requireParameters: configuration.requireParameters,
             sessionID: configuration.sessionID,
-            promptCaching: configuration.promptCaching
+            promptCaching: configuration.promptCaching,
+            upstreamPin: configuration.upstreamPin
         )
     }
 

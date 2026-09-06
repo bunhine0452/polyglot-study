@@ -159,6 +159,63 @@ struct RunLogTests {
         #expect(manifest.summaryText.contains("갈렸다"))
     }
 
+    /// 고정을 요청해 놓고 다른 곳이 답하면, 그 실행의 캐시 결과는 아무것도 증명하지
+    /// 못한다. 조용히 넘어가면 "고정했는데도 캐시가 안 붙네" 라는 잘못된 결론에 이른다.
+    @Test("업스트림 고정이 새면 결산이 그렇게 말한다")
+    func strayedPinIsReported() async throws {
+        let root = try LessonFixtures.temporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        let log = try LessonFixtures.runLog(directory: root, pinnedProviders: ["Alpha"])
+        for upstream in ["Alpha", "Reka"] {
+            try await log.record(
+                stage: .lesson, subject: upstream, attempt: 1, requestedModel: ModelID("m"),
+                request: request(),
+                response: LessonFixtures.response(text: "{}", upstream: upstream),
+                startedAt: Date(), duration: .seconds(1))
+        }
+        let manifest = try await log.finish()
+        #expect(manifest.pinnedProviders == ["Alpha"])
+        #expect(manifest.summaryText.contains("고정이 새었다"))
+        #expect(manifest.summaryText.contains("Reka"))
+    }
+
+    @Test("고정이 지켜지면 결산이 그것도 말한다")
+    func honoredPinIsReported() async throws {
+        let root = try LessonFixtures.temporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        let log = try LessonFixtures.runLog(directory: root, pinnedProviders: ["Alpha"])
+        for index in 1...2 {
+            try await log.record(
+                stage: .lesson, subject: "lesson-\(index)", attempt: 1,
+                requestedModel: ModelID("m"), request: request(),
+                response: LessonFixtures.response(text: "{}", upstream: "Alpha"),
+                startedAt: Date(), duration: .seconds(1))
+        }
+        let manifest = try await log.finish()
+        #expect(manifest.summaryText.contains("고정 지켜짐"))
+        // 고정했는데도 캐시가 차가우면 원인은 라우팅이 아니라 접두사다 — 진단이 갈려야 한다.
+        #expect(manifest.summaryText.contains("접두사 안정성"))
+    }
+
+    @Test("고정 없이 돈 실행은 캐시 미적중의 원인으로 라우팅을 먼저 지목한다")
+    func unpinnedColdCacheBlamesRouting() async throws {
+        let root = try LessonFixtures.temporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        let log = try LessonFixtures.runLog(directory: root)
+        for index in 1...2 {
+            try await log.record(
+                stage: .lesson, subject: "lesson-\(index)", attempt: 1,
+                requestedModel: ModelID("m"), request: request(),
+                response: LessonFixtures.response(text: "{}", cachedTokens: 0),
+                startedAt: Date(), duration: .seconds(1))
+        }
+        let manifest = try await log.finish()
+        #expect(manifest.summaryText.contains("--provider"))
+    }
+
     @Test("실패한 호출도 남는다 — 빠지면 재시도 횟수가 어긋난다")
     func recordsFailures() async throws {
         let root = try LessonFixtures.temporaryDirectory()

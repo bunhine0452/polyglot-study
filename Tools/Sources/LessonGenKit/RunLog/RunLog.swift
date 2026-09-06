@@ -34,6 +34,7 @@ public actor RunLog {
         models selection: ModelSelection,
         sessionID: String?,
         budgetUSD: Double?,
+        pinnedProviders: [String] = [],
         fileManager: FileManager = .default
     ) throws {
         self.directory = rootDirectory.appendingPathComponent(runID, isDirectory: true)
@@ -48,6 +49,7 @@ public actor RunLog {
             command: command,
             stageModels: stageModels,
             sessionID: sessionID,
+            pinnedProviders: pinnedProviders,
             budgetUSD: budgetUSD)
         try fileManager.createDirectory(
             at: directory.appendingPathComponent("calls", isDirectory: true),

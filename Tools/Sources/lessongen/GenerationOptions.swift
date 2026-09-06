@@ -48,6 +48,27 @@ struct GenerationOptions: ParsableArguments {
     )
     var sessionID: String = "polyglot-lessongen"
 
+    @Option(
+        name: .customLong("provider"),
+        help: """
+            업스트림을 이 이름으로 고정합니다. 여러 번 주면 우선순위 순입니다. \
+            session_id 는 힌트일 뿐이고 이쪽이 제약입니다 — 실측상 힌트만으로는 \
+            업스트림이 갈려 프롬프트 캐시가 매번 차가웠습니다. 이름은 실행 로그 \
+            run.json 의 upstreamProviders 에서 가져오십시오.
+            """
+    )
+    var providers: [String] = []
+
+    @Flag(
+        name: .long,
+        help: """
+            --provider 로 고정한 업스트림이 모두 불가할 때 다른 곳으로 넘어갑니다. \
+            기본은 금지입니다 — 조용히 새면 캐시는 차가운데 요청은 성공해서 고정이 \
+            실패한 줄 아무도 모릅니다.
+            """
+    )
+    var allowProviderFallback = false
+
     @Option(name: .long, help: "실행 로그를 남길 뿌리 디렉터리.")
     var runsDirectory: String = ".lessongen/runs"
 
@@ -73,6 +94,17 @@ struct GenerationOptions: ParsableArguments {
         guard !sessionID.trimmingCharacters(in: .whitespaces).isEmpty else {
             throw ValidationError("--session-id 는 비울 수 없습니다 — 비우면 캐시가 매번 차갑습니다.")
         }
+        if providers.contains(where: { $0.trimmingCharacters(in: .whitespaces).isEmpty }) {
+            throw ValidationError("--provider 에 빈 이름을 줄 수 없습니다.")
+        }
+        if allowProviderFallback && providers.isEmpty {
+            throw ValidationError("--allow-provider-fallback 은 --provider 와 함께 써야 의미가 있습니다.")
+        }
+    }
+
+    /// 업스트림 고정. 이름이 하나도 없으면 nil 이다.
+    var upstreamPin: UpstreamPin? {
+        UpstreamPin(providers: providers, allowFallbacks: allowProviderFallback)
     }
 
     var sampling: SamplingParameters? {
@@ -124,7 +156,8 @@ struct GenerationOptions: ParsableArguments {
             model: model,
             configuration: OpenRouterProvider.Configuration(
                 requireParameters: true,
-                sessionID: sessionID),
+                sessionID: sessionID,
+                upstreamPin: upstreamPin),
             log: log)
     }
 
@@ -138,7 +171,8 @@ struct GenerationOptions: ParsableArguments {
             startedAt: startedAt,
             models: models,
             sessionID: sessionID,
-            budgetUSD: maxUsd)
+            budgetUSD: maxUsd,
+            pinnedProviders: upstreamPin?.providers ?? [])
     }
 
     /// 실행 로그의 재현 재료. **모델은 비밀이 아니라 남겨야 하고, 키는 출처만 남긴다.**
@@ -154,6 +188,7 @@ struct GenerationOptions: ParsableArguments {
             "[lessongen] 단계=\(stage.rawValue) 모델=\(selection.model(for: stage)) (\(selection.origin(for: stage)))")
         sink.write("[lessongen] 단계별 모델 — \(selection.logLine)")
         sink.write("[lessongen] session_id=\(sessionID) 실행 로그=\(runDirectory.path)")
+        sink.write("[lessongen] 업스트림 고정=\(upstreamPin?.logLine ?? "없음 — 캐시가 차가울 수 있다")")
         sink.write(
             "[lessongen] 키 출처=\(environment.origin(of: APIKey.environmentVariableName) ?? "없음")")
     }

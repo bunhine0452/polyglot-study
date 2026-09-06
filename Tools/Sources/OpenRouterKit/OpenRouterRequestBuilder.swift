@@ -70,6 +70,9 @@ public struct OpenRouterRequestBuilder: Sendable {
     /// 매번 차갑다 (`{#lessongen-prompt-caching}`). 비밀값이 아니다.
     public var sessionID: String?
     public var promptCaching: PromptCachingMode
+    /// 업스트림 고정. ``sessionID`` 가 힌트라면 이쪽은 제약이다 — 실측상 힌트만으로는
+    /// 캐시가 붙지 않았다 (``UpstreamPin`` 참조).
+    public var upstreamPin: UpstreamPin?
 
     public init(
         baseURL: URL = OpenRouterRequestBuilder.defaultBaseURL,
@@ -77,7 +80,8 @@ public struct OpenRouterRequestBuilder: Sendable {
         attribution: Attribution = .polyglotStudy,
         requireParameters: Bool = true,
         sessionID: String? = nil,
-        promptCaching: PromptCachingMode = .automatic
+        promptCaching: PromptCachingMode = .automatic,
+        upstreamPin: UpstreamPin? = nil
     ) {
         self.baseURL = baseURL
         self.timeout = timeout
@@ -85,6 +89,7 @@ public struct OpenRouterRequestBuilder: Sendable {
         self.requireParameters = requireParameters
         self.sessionID = sessionID
         self.promptCaching = promptCaching
+        self.upstreamPin = upstreamPin
     }
 
     /// 본문을 바이트로 굽는다.
@@ -141,13 +146,24 @@ public struct OpenRouterRequestBuilder: Sendable {
             seed: request.sampling?.seed,
             responseFormat: responseFormat,
             reasoning: request.reasoningEffort.map { WireReasoning(effort: $0.rawValue) },
-            // 라우팅을 좁히는 것은 **요구한 파라미터가 있을 때만** 의미가 있다. 아무
-            // 파라미터도 안 건 요청까지 좁히면 값싼 업스트림을 이유 없이 버리게 된다.
-            provider: (requireParameters && hasRoutingSensitiveParameters(request))
-                ? WireProviderRouting(requireParameters: true)
-                : nil,
+            provider: providerRouting(for: request),
             sessionID: sessionID
         )
+    }
+
+    /// 라우팅 블록. 고정이 있거나 파라미터 때문에 좁혀야 할 때만 나간다.
+    ///
+    /// `require_parameters` 로 좁히는 것은 **요구한 파라미터가 있을 때만** 의미가 있다 —
+    /// 아무 파라미터도 안 건 요청까지 좁히면 값싼 업스트림을 이유 없이 버린다. 반면
+    /// 업스트림 고정은 파라미터와 무관하게 언제나 의미가 있다(캐시가 목적이므로).
+    /// 그래서 두 조건은 OR 이다.
+    private func providerRouting(for request: CompletionRequest) -> WireProviderRouting? {
+        let narrowing = requireParameters && hasRoutingSensitiveParameters(request)
+        guard narrowing || upstreamPin != nil else { return nil }
+        return WireProviderRouting(
+            requireParameters: narrowing,
+            order: upstreamPin?.providers,
+            allowFallbacks: upstreamPin.map(\.allowFallbacks))
     }
 
     /// 업스트림마다 지원 여부가 갈리는 파라미터를 요청이 쓰고 있는가.

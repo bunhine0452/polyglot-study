@@ -23,6 +23,20 @@ struct EditorUIConfigurationTests {
         #expect(config.appearance.bracketPairEmphasis == nil)
     }
 
+    /// `{#lsp-completion}` — 완성 창을 여는 문자는 **언어 서버가 광고한 것**이다.
+    /// 기본값이 비어 있어야 언어 서버가 없는 트랙(SQL·Python)과 서버가 없는 머신에서
+    /// 완성 창이 아예 열리지 않는다.
+    @Test("트리거 문자는 기본이 비어 있고 넘긴 값이 그대로 실린다")
+    func completionTriggerCharactersComeFromTheCaller() {
+        #expect(EditorUIConfiguration.make().peripherals.codeSuggestionTriggerCharacters.isEmpty)
+        // sourcekit-lsp 가 실제로 광고하는 두 문자(실측).
+        let config = EditorUIConfiguration.make(triggerCharacters: [".", "("])
+        #expect(config.peripherals.codeSuggestionTriggerCharacters == [".", "("])
+        // 나머지 조임 값은 그대로다.
+        #expect(config.peripherals.showMinimap == false)
+        #expect(config.appearance.bracketPairEmphasis == nil)
+    }
+
     @Test("폰트 크기가 디자인 토큰의 코드 크기(12.5pt)와 같다")
     func fontSizeMatchesDesignToken() {
         let config = EditorUIConfiguration.make()

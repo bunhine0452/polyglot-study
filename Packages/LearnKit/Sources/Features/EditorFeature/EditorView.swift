@@ -39,6 +39,21 @@ public struct EditorView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(Palette.paper)
+        // `{#sourcekit-lsp-swift}` — Swift 과제에서만 언어 서버가 뜬다. 서버가 없는
+        // 머신에서는 조용히 아무 일도 일어나지 않고 나머지 화면은 그대로 동작한다.
+        .task {
+            await model.startLanguageSupport()
+        }
+        // 편집기 본문이 바뀌면 서버에 알린다. 알림이라 왕복이 없다 —
+        // 진단은 서버가 스스로 다시 계산해 `publishDiagnostics` 로 보낸다.
+        .onChange(of: model.code) {
+            Task { await model.codeDidChange() }
+        }
+        .onDisappear {
+            // 프로세스를 거둔다. 화면을 여닫을 때마다 sourcekit-lsp 가 하나씩 쌓이면
+            // 그게 곧 이 저장소가 러너에서 이미 겪은 "잔존 프로세스" 문제다.
+            Task { await model.stopLanguageSupport() }
+        }
     }
 
     private var taskBarTrailingLabel: String {

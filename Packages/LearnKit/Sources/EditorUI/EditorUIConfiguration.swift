@@ -32,7 +32,12 @@ public enum EditorUIConfiguration {
 
     /// 이 앱의 기본 에디터 설정. 언어(`CodeLanguage`)는 `SourceEditorConfiguration` 이
     /// 아니라 `SourceEditor` 생성자가 직접 받으므로 여기엔 없다.
-    public static func make() -> SourceEditorConfiguration {
+    ///
+    /// - Parameter triggerCharacters: 완성 창을 여는 문자. **언어 서버가 `initialize`
+    ///   응답에서 광고한 것을 그대로 넘긴다** — 여기에 상수를 적으면 서버가 무엇을
+    ///   지원하든 상관없이 그 값이 이긴다. 서버가 없으면 빈 집합이고, 그러면
+    ///   `SuggestionTriggerCharacterModel` 이 완성 창을 아예 열지 않는다.
+    public static func make(triggerCharacters: Set<String> = []) -> SourceEditorConfiguration {
         let resolvedFont = font()
         return SourceEditorConfiguration(
             appearance: .init(
@@ -45,7 +50,8 @@ public enum EditorUIConfiguration {
             ),
             peripherals: .init(
                 showMinimap: false,
-                showFoldingRibbon: false
+                showFoldingRibbon: false,
+                codeSuggestionTriggerCharacters: triggerCharacters
             )
         )
     }

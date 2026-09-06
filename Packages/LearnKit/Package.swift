@@ -25,6 +25,7 @@ let package = Package(
         .library(name: "LearnPersistence", targets: ["LearnPersistence"]),
         .library(name: "LearnScheduling", targets: ["LearnScheduling"]),
         .library(name: "RunnerKit", targets: ["RunnerKit"]),
+        .library(name: "LSPKit", targets: ["LSPKit"]),
         .library(name: "ContentKit", targets: ["ContentKit"]),
         .library(name: "DesignSystem", targets: ["DesignSystem"]),
         .library(name: "OnboardingFeature", targets: ["OnboardingFeature"]),
@@ -53,6 +54,15 @@ let package = Package(
         // `SourceEditor(language:)` 에 넘길 `CodeLanguage` 값을 이름으로 가리키려면
         // 이 패키지를 직접 의존해야 한다 — 전이 의존만으로는 타입을 import 할 수 없다.
         .package(url: "https://github.com/CodeEditApp/CodeEditLanguages.git", exact: "0.1.20"),
+        // 같은 이유로 한 겹 더. `{#lsp-completion}` 에서 완성을 확정할 때 커서 앞의
+        // 식별자 조각을 갈아 끼우는데, 그 `replaceCharacters(in:with:)` 는
+        // `CodeEditTextView` 가 `TextView` 에 붙인 확장이다. `MemberImportVisibility`
+        // 가 켜져 있어 **그 모듈을 직접 import 하지 않으면 멤버가 보이지 않는다** —
+        // 전이 의존으로 타입이 보이는 것과 멤버가 보이는 것은 다른 문제다.
+        //
+        // 버전 요구는 벤더링된 `CodeEditSourceEditor` 의 것(`from: "0.12.1"`)과
+        // 똑같이 적는다. 다르게 적으면 해석이 갈린다.
+        .package(url: "https://github.com/CodeEditApp/CodeEditTextView.git", from: "0.12.1"),
     ],
     targets: [
         .target(name: "LearnCore", swiftSettings: coreSettings),
@@ -77,6 +87,24 @@ let package = Package(
             dependencies: [
                 "LearnCore",
                 "LanguageKit",
+                .product(name: "Subprocess", package: "swift-subprocess"),
+            ],
+            swiftSettings: coreSettings
+        ),
+        // 장수명 양방향 LSP 클라이언트. Swift 트랙 전용이다.
+        //
+        // `RunnerKit` 을 의존하는 것은 `BoundedCommand` 하나 때문이다 — `xcrun --find
+        // sourcekit-lsp` 처럼 "절대 매달리지 않아야 하는 짧은 신뢰 명령" 을 돌리는 장치가
+        // 이미 거기 있고, 두 벌을 두면 타임아웃·파이프 배수 규칙이 갈린다.
+        //
+        // 반대로 러너의 격리 장치(`learn-launcher`·rlimit·sandbox-exec)는 **쓰지 않는다.**
+        // 그것들은 학습자 코드를 가두는 물건이고, 여기서 띄우는 것은 Xcode 에 동봉된
+        // 애플 바이너리다. 샌드박스를 씌우면 SDK·모듈 캐시를 못 읽어 서버가 죽는다.
+        .target(
+            name: "LSPKit",
+            dependencies: [
+                "LearnCore",
+                "RunnerKit",
                 .product(name: "Subprocess", package: "swift-subprocess"),
             ],
             swiftSettings: coreSettings
@@ -142,8 +170,11 @@ let package = Package(
             name: "EditorFeature",
             dependencies: [
                 "LearnCore", "LanguageKit", "RunnerKit", "DesignSystem", "EditorUI",
+                // Swift 트랙의 완성·실시간 진단. 다른 언어 트랙은 이 경로를 타지 않는다.
+                "LSPKit",
                 .product(name: "CodeEditSourceEditor", package: "CodeEditSourceEditor"),
                 .product(name: "CodeEditLanguages", package: "CodeEditLanguages"),
+                .product(name: "CodeEditTextView", package: "CodeEditTextView"),
             ],
             path: "Sources/Features/EditorFeature",
             swiftSettings: uiSettings
@@ -173,5 +204,6 @@ let package = Package(
             swiftSettings: coreSettings
         ),
         .testTarget(name: "RunnerKitTests", dependencies: ["RunnerKit"], swiftSettings: coreSettings),
+        .testTarget(name: "LSPKitTests", dependencies: ["LSPKit"], swiftSettings: coreSettings),
     ]
 )

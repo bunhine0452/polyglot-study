@@ -5,7 +5,7 @@ public import Foundation
 /// 스텁 전송은 ``HTTPTransport`` 경계 위쪽만 검증한다. 이 서버는 그 아래 —
 /// `URLSession` 이 실제로 소켓을 열고, 우리가 조립한 헤더가 그대로 전선을 타고,
 /// 상태 코드와 `retry-after` 가 진짜 HTTP 프레이밍으로 돌아오는 경로 — 를 검증한다.
-/// **실제 Anthropic 왕복의 대역은 아니다.** 다만 왕복 경로에서 우리가 책임지는 부분을
+/// **실제 OpenRouter 왕복의 대역은 아니다.** 다만 왕복 경로에서 우리가 책임지는 부분을
 /// 키 없이 태워 볼 수 있는 가장 가까운 수단이다.
 public final class LoopbackHTTPServer: @unchecked Sendable {
     public struct Reply: Sendable {
@@ -118,7 +118,7 @@ public final class LoopbackHTTPServer: @unchecked Sendable {
         let reply: Reply = lock.withLock {
             received.append(request)
             guard !replies.isEmpty else {
-                return Reply(status: 503, body: Data(#"{"type":"error","error":{"type":"api_error","message":"no reply queued"}}"#.utf8))
+                return Reply(status: 503, body: Data(#"{"error":{"code":503,"message":"no reply queued"}}"#.utf8))
             }
             return replies.removeFirst()
         }

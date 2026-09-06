@@ -25,3 +25,8 @@ design/polyglot-study-app.html
 Packages/*/.build/
 .claude/worktrees/
 Tools/.build/
+
+# 로컬 비밀값 — .env.example 만 커밋한다
+.env
+.env.*
+!.env.example

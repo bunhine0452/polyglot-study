@@ -1,4 +1,4 @@
-public import AnthropicKit
+public import LLMKit
 
 /// 모델이 내놓는 것. ``TrackOutline`` 과 **일부러 다른 타입이다.**
 ///

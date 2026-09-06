@@ -16,27 +16,35 @@ Swift 6.3 / SwiftUI, **macOS 14 하한 확정**, MIT 오픈소스, Developer ID 
 실행 가능:
 
 ```bash
-cd Packages/LearnKit && swift test          # 912개
-swift test --package-path Tools             # 300개
+cd Packages/LearnKit && swift test          # 1051개
+swift test --package-path Tools             # 309개
 
-# 콘텐츠 파이프라인 — 생성 → 검증 → 굽기 → 서명 → 검증
-swift run --package-path Tools lessongen lesson --help
-swift run --package-path Tools packtool validate Content/packs/polyglot-mvp
-swift run --package-path Tools packtool build Content/packs/polyglot-mvp -o dist/pack.tar --sign
+# 콘텐츠 파이프라인 — 생성 → 검증 → 수리 → 굽기 → 서명 → 검증
+swift run --package-path Tools packtool validate Content/packs/polyglot-python
+swift run --package-path Tools packtool build Content/packs/polyglot-python -o dist/pack.tar --sign
 swift run --package-path Tools packtool verify dist/pack.tar.staging
+
+# CI 게이트를 로컬에서 그대로
+./scripts/ci-run-swift-tests.sh
+./scripts/ci-validate-packs.sh
+
+# Sparkle 왕복 (앱 조립 → 로컬 피드 → 설치 → 거부)
+./App/Scripts/verify-sparkle.sh
 ```
 
-없는 것: sourcekit-lsp 연동, 레지스터 화면(Assembly 트랙까지 후순위), CI 워크플로,
-공증·DMG·Sparkle, 레슨 콘텐츠(아직 샘플 1팩·레슨 3개).
+없는 것: 레지스터 화면(Assembly 트랙까지 후순위 — `docs/milestones/`), 공증·DMG,
+레슨 콘텐츠 2트랙(SQL·Swift 는 아직 시드 1편씩).
 
 ## 상태
 
-- 커밋 74개, 워킹트리 깨끗. **LearnKit 912 + Tools 300 = 1212 테스트**, 양쪽 빌드 경고 0.
-- 플랜 3개: `polyglot-core` **55/55 완료**, `polyglot-surface` 42/53, `polyglot-tutor` 0/25.
+- 커밋 91개, 워킹트리 깨끗. **LearnKit 1051 + Tools 309 = 1360 테스트**, 양쪽 빌드 경고 0.
+- 플랜 3개: `polyglot-core` **55/55 완료**, `polyglot-surface` 48/53, `polyglot-tutor` 0/25.
 - 동작: GRDB 마이그레이션 7단계, FSRS-6 스케줄러, SQLite 인프로세스 러너, 서브프로세스
   러너(Swift·Python 실행·채점), C 런처(rlimit·killpg), sandbox-exec 격리, 툴체인 자동 감지,
-  콘텐츠 팩 포맷·레슨 파서, OpenRouter 클라이언트(실왕복 검증됨), 앱 셸과 화면 5종,
-  `packtool` 4단계 검증 게이트와 결정적 배포 팩·서명, `lessongen` 생성·수리 루프.
+  콘텐츠 팩 포맷·레슨 파서, OpenRouter 클라이언트, 앱 셸과 화면 5종,
+  `packtool` 4단계 검증 게이트와 결정적 배포 팩·서명, `lessongen` 생성·수리 루프,
+  **sourcekit-lsp 완성·진단**, **Sparkle 자동 업데이트**, **PR 필수 체크 3게이트**,
+  **파이썬 트랙 12레슨**.
 
 ## 시작 전 반드시 읽을 것
 
@@ -44,27 +52,41 @@ swift run --package-path Tools packtool verify dist/pack.tar.staging
 2. `.oculpm/planner/polyglot-surface.md` · `polyglot-tutor.md` — 항목마다 완료 기준이 붙어 있다.
 3. `.oculpm/discussion/mac-polyglot-learning-app/discussion.md` — **하단 토의 로그의 정정 항목을
    특히.** 본문에 낡은 기록이 남아 있을 수 있고 로그가 최신이다.
-4. `.oculpm/journal/20260906/` · `20260907/` — 일지 19건. 같은 함정을 다시 밟지 마라.
+4. `.oculpm/journal/20260906/` · `20260907/` — 일지 27건. 같은 함정을 다시 밟지 마라.
 
-## 다음 작업
+## 다음 작업 — 남은 것은 대부분 **인프라 대기**다
 
-콘텐츠 파이프라인은 **닫혔다** — 생성(`lessongen lesson`) → 검증(`packtool validate` 4단계)
-→ 수리(`lessongen repair`) → 굽기(`packtool build`) → 서명·검증이 전부 실측으로 왕복한다.
-남은 갈래는 셋.
+`polyglot-surface` 48/53. 남은 5개 중 코드로 풀리는 것이 없다.
 
-**(A) 게이트를 CI 에 건다** — `{#ci-gate}` → `{#toolchain-skip-policy}`(툴 쪽 절반은 이미 끝).
-macOS 러너에서 `packtool validate` 를 packs 변경 PR 의 필수 체크로. `lessongen` 은
-`workflow_dispatch` 에서만 — 크레딧이 나간다.
+**(A) 막힌 것 — 사람이 자원을 줘야 한다**
 
-**(B) 콘텐츠를 실제로 채운다** — 지금 팩에 레슨이 셋뿐이다. 파이프라인이 닫혔으니
-`lessongen lesson` 팬아웃 → `packtool validate` → `repair` 로 트랙을 굽는 것이 가능하다.
-막힌 것 하나: `{#lessongen-prompt-caching}` — `session_id` 를 보내도 OpenRouter 가
-업스트림을 갈라 캐시가 매번 차갑다. 팬아웃 전에 `provider.only`/`order` 로 고정해 재측정하는
-편이 비용에 유리하다.
+- `{#notarize-staple-dmg}` 계열 3개 — **Developer ID Application 인증서**가 있어야 한다.
+  지금은 ad-hoc 서명이라 다른 맥에서 Gatekeeper 에 막힌다. (Sparkle 업데이트 경로 자체는
+  ad-hoc 로도 동작한다 — 아래 실측 참고.)
+- `{#sparkle-appcast}` · `{#release-ci}` — **git 원격과 GitHub Pages** 가 있어야 한다.
+  `SUFeedURL` 이 아직 아무도 소유하지 않은 추정 주소라 `release.sh` 가 그 호스트로는
+  릴리스를 **거부한다**(`UNVERIFIED_FEED_HOSTS`). 워크플로도 실제로 트리거된 적이 없다.
+- `{#grammars-escape-hatch}` — 이월. 이유와 켜는 법은 `docs/milestones/assembly-registers.md`.
 
-**(C) 에디터를 완성한다** — `{#sourcekit-lsp-swift}` → `{#lsp-completion}` →
-`{#lsp-diagnostics}`. Xcode 26.6 에 `sourcekit-lsp` 가 동봉돼 조달 비용이 0 이고,
-진단은 이미 있는 인라인 진단 행 컴포넌트에 그대로 얹힌다.
+**(B) 언제든 할 수 있는 것 — 콘텐츠**
+
+파이프라인이 닫혀 있다. 파이썬 트랙 12편이 이 루프로 만들어졌고 게이트가 2편에서 결함을
+잡아 `repair` 가 고쳤다. SQL·Swift 트랙도 같은 방식으로 채우면 된다.
+
+```bash
+swift run --package-path Tools lessongen outline --language sql --lessons 12 --output tracks
+# 개요를 사람이 읽고 고친 뒤
+swift run --package-path Tools lessongen lesson --outline tracks/sql.outline.json \
+  --pack Content/packs/polyglot-sql --pack-id polyglot-sql --serialization-retries 3 --max-usd 0.20
+swift run --package-path Tools packtool validate Content/packs/polyglot-sql --report json -o /tmp/r.json
+swift run --package-path Tools lessongen repair --report /tmp/r.json --pack Content/packs/polyglot-sql
+```
+
+실측: 레슨당 약 $0.0023, 동시성 4에서 약 1분. 트랙 하나 $0.03 안팎.
+**Swift 트랙은 채점이 SwiftPM 템플릿을 공유해 직렬화되므로**(`SwiftGradingGate`)
+검증 시간이 파이썬보다 훨씬 길다.
+
+**(C) 튜터** — `polyglot-tutor` 0/25. 첫 항목 `{#nl-embedding-spike}` 가 게이트다.
 
 ## 작업 방식
 
@@ -105,7 +127,16 @@ python3 이 셋 있고 로그인 셸은 `/usr/bin` 의 3.9.6 을 준다(감지�
 - `/usr/bin/swiftc`·`/usr/bin/python3` 는 **xcrun 셰이더**다. `xcrun --find` 로 해석한 경로를
   실행해라 — 샌드박스에서 xcrun 캐시 쓰기가 거부돼 stderr 가 오염된다. 프로파일을 여는 건 탈출구다.
 
-**서명·아카이브**
+**서명·아카이브·배포**
+
+- **ad-hoc 서명은 Sparkle 을 막지 않는다.** `SUUpdateValidator` 의 판정은
+  `passedDSACheck || passedCodeSigning` 이라 서명 검증만 유효해도 통과한다.
+  실제로 막는 것은 **dyld** 다 — Hardened Runtime 이 라이브러리 검증을 함께 켜는데
+  ad-hoc 에는 Team ID 가 없어 프레임워크 로드가 거부된다. ad-hoc 일 때만
+  `disable-library-validation` 을 붙인다(배포용 번들에는 붙으면 안 된다).
+- Sparkle 의 `generate_keys` 와 `generate_appcast` 는 서로 다른 실행 파일이라 첫 appcast
+  생성 때 키체인 승인 대화상자가 뜬다. 헤드리스에서 실패하면 `errSecUserCanceled(-128)`
+  인데 Sparkle 은 "not found in the Keychain" 으로 찍는다 — 키는 멀쩡히 있다.
 
 - **CryptoKit 의 Ed25519 는 결정적이지 않다.** 같은 키로 같은 바이트에 두 번 서명하면 다른
   64바이트가 나오고 둘 다 유효하다(논스에 난수를 섞는다). RFC 8032 의 순수 Ed25519 를
@@ -118,6 +149,24 @@ python3 이 셋 있고 로그인 셸은 `/usr/bin` 의 3.9.6 을 준다(감지�
 - `SwiftTestingGrader` 는 예열된 SwiftPM 템플릿 **하나**를 공유한다. 동시 채점은
   `SwiftGradingGate` 로 상호 배제해야 한다 — 액터만으로는 부족하다(메서드 안에서 `await`
   하면 재진입이 허용된다). 같은 종류의 버그를 세 번 밟았다.
+
+**sourcekit-lsp**
+
+- `xcrun --find sourcekit-lsp` 로 잡힌다. `initialize` 38~50ms, `triggerCharacters: [".", "("]`.
+- **디스크에 없는 URI 로도 완전히 동작한다** — 유령 경로에 `didOpen` 해도 진단과 완성이 온다.
+  그래서 학습자 코드는 디스크에 닿지 않고 빈 임시 디렉터리만 `rootUri` 로 준다.
+- 완성은 워밍 후 중앙값 28ms 이지만 **문서를 연 직후 첫 요청은 270ms** — 서버의 빌드 설정
+  해석과 겹친다. "200ms" 는 한 번 분석된 뒤의 이야기다.
+- 진단에 `code` 가 없어 `ruleID` 는 nil. 출처는 인라인 진단 행의 라벨이 진다.
+- `label` 은 사람이 읽는 시그니처다. 삽입할 문자열은 `textEdit.newText`.
+
+**동시성 — 안전 보장의 수명**
+
+- 회수·정리 같은 **안전 보장을 취소 가능한 Task 에 매달지 마라.** 프로세스 그룹 기록이
+  `awaitSpawn` 폴러 안에만 있었고, 그 폴러는 출력 드레인이 끝나면 취소된다 — 즉시 끝나는
+  프로그램에서 취소가 SPAWNED 파싱을 앞지르면 그룹을 영영 모르고 손자가 남는다.
+  드레인 스레드가 파싱 즉시 기록하도록 옮겼다(`LauncherStatusChannel.onSpawn`).
+- 같은 종류의 버그가 넷째다. 앞의 셋은 "예열·재사용을 위해 공유한 자원에 동시 접근" 이었다.
 
 **툴체인·라이브러리**
 

@@ -27,8 +27,35 @@ case .browser, .registers: .preparing
    `Unicorn Engine` 이 후보이나 **GPL 이다** — 도입하면 이 저장소의 MIT 선택이 무효가 된다
    (`README` 라이선스 절의 경고). 링크 방식과 라이선스 판정이 코드보다 먼저 끝나야 한다.
 2. `CodeRunner` 백엔드로서의 어댑터 — 다른 트랙과 같은 `RunEvent` 스트림에 얹힌다.
-3. tree-sitter ARM 문법 (`{#grammars-escape-hatch}`) — 그때 활성화한다. MVP 동안은 링크하지 않아
-   바이너리 크기 증가가 0 이다.
+3. tree-sitter 문법 (`{#grammars-escape-hatch}`) — 그때 활성화한다. 아래에 활성화 절차가 있다.
+
+## 문법 탈출구 — 지금 세우지 않은 이유와 켜는 법
+
+MVP 3언어(python·sql·swift)의 문법은 **CodeEditLanguages 0.1.20 에 이미 들어 있다.**
+그래서 지금은 우리 `Grammars` 타깃이 없다.
+
+의존성만 선언해 두는 안을 검토했다가 접었다. SwiftPM 은 **어떤 타깃도 링크하지 않는
+패키지까지 전부 fetch·resolve 한다** — 바이너리는 안 커져도 모든 빌드와 CI 가 그 대가를
+낸다. 쓰지 않는 의존성을 미리 다는 것은 탈출구가 아니라 부채다. 대신 켜는 데 필요한 것을
+여기 적어 두어, 필요해지는 날 5분이면 되게 한다.
+
+**켤 때 할 일**
+
+1. `Packages/LearnKit/Package.swift` 의 `dependencies` 에 추가:
+   ```swift
+   .package(url: "https://github.com/alex-pinkus/tree-sitter-swift", exact: "0.7.3-with-generated-files")
+   ```
+   **태그를 정확히 이것으로 물어야 한다.** `main` 브랜치에는 `src/parser.c` 가 없어
+   빌드가 깨진다(생성물을 커밋하지 않는 저장소다). `0.7.3` 태그도 아니다 —
+   `-with-generated-files` 접미사가 붙은 쪽이 파서 C 소스를 포함한다.
+   (2026-09-07 확인: 두 태그 모두 실재하고 서로 다른 커밋을 가리킨다.)
+2. `Grammars` 타깃을 만들고 그 문법만 의존시킨다. **앱 타깃에는 붙이지 않는다** —
+   에디터가 실제로 그 문법을 요구할 때 `EditorUI` 에서만 문다.
+3. Assembly 트랙에 필요한 것은 Swift 문법이 아니라 **ARM 어셈블리 문법**이다. 위 저장소는
+   탈출구의 *형태*를 보여 줄 뿐이고, 실제로 물 문법은 그때 고른다.
+
+**켜야 하는 신호**: CodeEditLanguages 가 주는 문법이 틀리거나(하이라이트가 어긋남),
+CEL 에 없는 언어를 트랙으로 열 때. 그 전에는 켜지 마라.
 
 ## 레이아웃
 

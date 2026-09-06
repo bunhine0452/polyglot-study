@@ -65,8 +65,8 @@ owner: claude-code
 - [x] EditorTheme 16개 속성을 전부 무채색으로 채운 모노크롬 테마 — 완료: 에디터 안에 유채색 0건이고 키워드·타입·문자열·주석이 굵기와 회색 3단으로만 구분 {#mono-syntax-theme}
   - [x] EditorTheme.Attribute 가 bold 와 italic 만 지원해 디자인의 500 medium 을 표현 못 함 — types 를 ink 레귤러로 근사하고 근사 사실을 주석에 남김 {#theme-weight-limitation}
   - [x] SourceEditorConfiguration 조이기 — 미니맵과 폴딩 리본 끄고 괄호 강조 제거, 12.5pt 폰트에서 행높이가 20px 이 되도록 배수 설정 {#editor-config-tuning}
-- [ ] Grammars 타깃을 탈출구로만 세우고 alex-pinkus/tree-sitter-swift 는 0.7.3-with-generated-files 태그를 물기 — main 브랜치에는 src/parser.c 가 없어 빌드가 깨짐 {#grammars-escape-hatch}
-  - [ ] MVP 단계에서는 앱에 링크하지 않고 Assembly 트랙 착수 시점에 활성화 — 바이너리 크기 증가 0이고 활성화 조건을 한 줄로 문서화 {#grammars-deferred-link}
+- [>] Grammars 타깃을 탈출구로만 세우고 alex-pinkus/tree-sitter-swift 는 0.7.3-with-generated-files 태그를 물기 — main 브랜치에는 src/parser.c 가 없어 빌드가 깨짐 {#grammars-escape-hatch}
+  - [>] MVP 단계에서는 앱에 링크하지 않고 Assembly 트랙 착수 시점에 활성화 — 바이너리 크기 증가 0이고 활성화 조건을 한 줄로 문서화 {#grammars-deferred-link}
 - [x] GradeResult.Presenter 4케이스를 SwiftUI 뷰로 분기하는 라우터 — console 과 table 은 실제 뷰로, browser 와 registers 는 준비중 뷰로, switch 는 exhaustive {#presenter-router}
   - [x] 실행 전에도 결과 영역이 같은 크기를 차지하도록 고정 높이 예약 — 레슨 출력 80px, 에디터 우측 패널 520px, 실행 시 상단 y 좌표 불변 {#fixed-height-reservation}
 
@@ -173,4 +173,5 @@ owner: claude-code
 | 2026-09-07T07:56:35+09:00 | #lessongen-prompt-caching | claude-code | !→x | .oculpm/journal/20260907/Errors/0752_error_prompt-cache-verdict-corrected.md | 앞선 "캐시가 안 붙는다" 판정을 정정한다 — 표본 3회가 부족했다. 트랙 생성 14회에서 4회가 각 1856 토큰(고정 접두사 크기)을 캐시에서 읽었고 입력의 20.3%. 적중은 간헐적이다 — 동시성 4에서 같이 날아간 요청은 서로를 데우지 못한다. 고정 없이도 14회가 전부 Wafer 로 갔다(보장은 아니므로 --provider 는 보험으로 유지) |
 | 2026-09-07T08:02:58+09:00 | #lsp-completion | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0802_feature_sourcekit-lsp-integration.md | 트리거 문자를 서버 응답에서 받아 CESE 에 넣고 SwiftLanguageSupport 가 completionDelegate. 워밍 중앙값 28ms — 다만 문서를 연 직후 첫 요청은 빌드 설정 해석과 겹쳐 270ms 다. 기준은 "한 번 분석된 뒤 200ms" 로 읽어야 맞다. 취소는 시간이 아니라 구조로 증명 — 같은 id 로 $/cancelRequest 가 나가고 호출자는 CancellationError 를 받으며 늦은 응답은 버려진다 |
 | 2026-09-07T08:03:07+09:00 | #lsp-diagnostics | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0802_feature_sourcekit-lsp-integration.md | 새 뷰 0개 — 기존 EditorDiagnosticPresentation.rows 가 그대로 InlineDiagnosticRowView 를 먹인다. 다른 것은 라벨뿐(· sourcekit-lsp ·, 한 줄에 둘 다 오면 · sourcekit-lsp/swiftc ·). 진단에 code 가 없어 ruleID 는 nil 이고 출처는 라벨이 진다 |
+| 2026-09-07T08:05:25+09:00 | #grammars-deferred-link | claude-code | ☐→> |  | 재판단 — 의존성 선언만 미리 두는 안을 접었다. SwiftPM 은 어떤 타깃도 링크하지 않는 패키지까지 전부 fetch·resolve 하므로 바이너리는 안 커져도 모든 빌드·CI 가 대가를 낸다. MVP 3언어 문법은 이미 CodeEditLanguages 0.1.20 에 있다. 활성화 절차를 docs/milestones/assembly-registers.md 에 적었다 — 태그가 0.7.3-with-generated-files 여야 하는 이유(main 에 src/parser.c 없음, 두 태그 실재 확인)와 켜야 하는 신호 포함. Assembly 트랙 착수 시 5분이면 켠다 |
 <!-- oculpm:plan-log end -->

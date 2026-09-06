@@ -56,7 +56,7 @@ struct ToolchainLauncherProcessTests {
         #expect(run.outcome.cpuExceeded)
         // 벽시계가 아니라 CPU 로 죽은 것이어야 한다.
         #expect(!run.outcome.wallClockExceeded)
-        #expect(matches(run.outcome.failure(limits: ResourceLimits(cpuSeconds: 1)), .cpuExceeded(seconds: 1)))
+        #expect(run.outcome.failure(limits: ResourceLimits(cpuSeconds: 1)) == .cpuExceeded(seconds: 1))
         #expect(run.elapsed < .seconds(10))
     }
 
@@ -161,6 +161,10 @@ struct ToolchainLauncherProcessTests {
         )
         #expect(run.outcome.termination == .signalled(number: SIGXFSZ))
         #expect(run.outcome.fileSizeExceeded)
+        #expect(
+            run.outcome.failure(limits: ResourceLimits(fileSizeBytes: 4096))
+                == .fileSizeExceeded(bytes: 4096)
+        )
 
         let written = try FileManager.default.attributesOfItem(
             atPath: directory.appendingPathComponent("big.bin").path

@@ -14,7 +14,7 @@ struct SQLInProcessRunnerIsolationTests {
             // mtime 해상도가 1초라도 차이를 잡도록 한 박자 쉬어 준다.
             try await Task.sleep(nanoseconds: 1_100_000_000)
 
-            let runner = InProcessRunner(databaseURL: databaseURL)
+            let runner = InProcessRunner()
             let attacks = [
                 "SELECT count(*) FROM members;",
                 "INSERT INTO members (id, name) VALUES (99, 'mallory');",
@@ -28,7 +28,7 @@ struct SQLInProcessRunnerIsolationTests {
                 "VACUUM;",
             ]
             for sql in attacks {
-                _ = try? await runner.execute(sql: sql)
+                _ = try? await runner.execute(sql: sql, database: databaseURL)
             }
 
             let after = try SQLTestDatabase.Fingerprint(of: databaseURL)
@@ -45,8 +45,8 @@ struct SQLInProcessRunnerIsolationTests {
     @Test("PRAGMA query_only=OFF 로는 탈출할 수 없다")
     func cannotDisableQueryOnly() async throws {
         try await SQLTestDatabase.withDatabase { databaseURL in
-            let runner = InProcessRunner(databaseURL: databaseURL)
-            let result = try await runner.execute(sql: "PRAGMA query_only = OFF;")
+            let runner = InProcessRunner()
+            let result = try await runner.execute(sql: "PRAGMA query_only = OFF;", database: databaseURL)
             #expect(result.failed)
             let message = try #require(result.diagnostics.first?.message)
             #expect(message.lowercased().contains("not authorized"))
@@ -57,9 +57,10 @@ struct SQLInProcessRunnerIsolationTests {
     @Test("query_only 를 끈 뒤 쓰려는 시도도 첫 문장에서 막힌다")
     func writeAfterPragmaEscapeFails() async throws {
         try await SQLTestDatabase.withDatabase { databaseURL in
-            let runner = InProcessRunner(databaseURL: databaseURL)
+            let runner = InProcessRunner()
             let result = try await runner.execute(
-                sql: "PRAGMA query_only = OFF;\nINSERT INTO members (id, name) VALUES (99, 'mallory');"
+                sql: "PRAGMA query_only = OFF;\nINSERT INTO members (id, name) VALUES (99, 'mallory');",
+                database: databaseURL
             )
             #expect(result.failed)
             // 첫 문장에서 멈추므로 INSERT 는 준비조차 되지 않는다.
@@ -70,9 +71,10 @@ struct SQLInProcessRunnerIsolationTests {
     @Test("ATTACH 로 다른 파일을 붙일 수 없다")
     func cannotAttach() async throws {
         try await SQLTestDatabase.withDatabase { databaseURL in
-            let runner = InProcessRunner(databaseURL: databaseURL)
+            let runner = InProcessRunner()
             let result = try await runner.execute(
-                sql: "ATTACH DATABASE '\(databaseURL.path)' AS other;"
+                sql: "ATTACH DATABASE '\(databaseURL.path)' AS other;",
+                database: databaseURL
             )
             #expect(result.failed)
             #expect(result.resultSet == nil)
@@ -82,8 +84,8 @@ struct SQLInProcessRunnerIsolationTests {
     @Test("허용된 PRAGMA 는 통과한다")
     func allowedPragmaWorks() async throws {
         try await SQLTestDatabase.withDatabase { databaseURL in
-            let runner = InProcessRunner(databaseURL: databaseURL)
-            let result = try await runner.execute(sql: "PRAGMA table_info(members);")
+            let runner = InProcessRunner()
+            let result = try await runner.execute(sql: "PRAGMA table_info(members);", database: databaseURL)
             #expect(!result.failed)
             #expect((result.resultSet?.rows.count ?? 0) == 5)
         }
@@ -99,8 +101,8 @@ struct SQLInProcessRunnerIsolationTests {
     ])
     func writesAreRejected(sql: String) async throws {
         try await SQLTestDatabase.withDatabase { databaseURL in
-            let runner = InProcessRunner(databaseURL: databaseURL)
-            let result = try await runner.execute(sql: sql)
+            let runner = InProcessRunner()
+            let result = try await runner.execute(sql: sql, database: databaseURL)
             #expect(result.failed, "\(sql) 가 통과했습니다")
         }
     }
@@ -109,12 +111,12 @@ struct SQLInProcessRunnerIsolationTests {
     func eachRunGetsItsOwnClone() async throws {
         try await SQLTestDatabase.withDatabase { databaseURL in
             let observed = ClonePathCollector()
-            var configuration = SQLRunnerConfiguration(databaseURL: databaseURL)
+            var configuration = SQLRunnerConfiguration()
             configuration.cloneObserver = { url in observed.append(url) }
             let runner = InProcessRunner(configuration: configuration)
 
-            _ = try await runner.execute(sql: "SELECT 1;")
-            _ = try await runner.execute(sql: "SELECT 2;")
+            _ = try await runner.execute(sql: "SELECT 1;", database: databaseURL)
+            _ = try await runner.execute(sql: "SELECT 2;", database: databaseURL)
 
             let paths = observed.paths
             #expect(paths.count == 2)
@@ -126,11 +128,38 @@ struct SQLInProcessRunnerIsolationTests {
         }
     }
 
+    @Test("러너 하나가 요청마다 다른 DB 를 대상으로 삼는다")
+    func oneRunnerManyDatabases() async throws {
+        try await SQLTestDatabase.withDatabase { databaseURL in
+            // 레슨마다 DB 가 다른 SQL 트랙의 실제 모양. 예전에는 러너를 새로 만들어야 했다.
+            let other = databaseURL.deletingLastPathComponent().appendingPathComponent("other.db")
+            try SQLTestDatabase.create(
+                at: other,
+                schema: "CREATE TABLE lessons (n INTEGER); INSERT INTO lessons VALUES (7);"
+            )
+            let runner = InProcessRunner()
+
+            let first = try await runner.execute(sql: "SELECT count(*) AS n FROM members;", database: databaseURL)
+            #expect(first.resultSet?.rows.first?.first == .integer(5))
+
+            let second = try await runner.execute(sql: "SELECT n FROM lessons;", database: other)
+            #expect(second.resultSet?.rows.first?.first == .integer(7))
+
+            // 자원은 요청에 묶인다 — 다른 DB 의 테이블이 새어 들어오지 않는다.
+            let crossed = try await runner.execute(sql: "SELECT count(*) FROM members;", database: other)
+            #expect(crossed.failed)
+
+            // 자원을 아예 안 주면 빈 인메모리 DB 다.
+            let bare = try await runner.execute(sql: "SELECT 1 AS one;")
+            #expect(bare.resultSet?.rows.first?.first == .integer(1))
+        }
+    }
+
     @Test("복제본은 원본과 같은 내용을 본다")
     func cloneSeesSameData() async throws {
         try await SQLTestDatabase.withDatabase { databaseURL in
-            let runner = InProcessRunner(databaseURL: databaseURL)
-            let result = try await runner.execute(sql: "SELECT count(*) AS n FROM members;")
+            let runner = InProcessRunner()
+            let result = try await runner.execute(sql: "SELECT count(*) AS n FROM members;", database: databaseURL)
             #expect(result.resultSet?.rows.first?.first == .integer(5))
         }
     }
@@ -142,14 +171,14 @@ struct SQLInProcessRunnerDiagnosticsTests {
     @Test("error_offset 이 행·열로 환산된다 — 앞 문장의 길이까지 더해서")
     func errorOffsetBecomesLineAndColumn() async throws {
         try await SQLTestDatabase.withDatabase { databaseURL in
-            let runner = InProcessRunner(databaseURL: databaseURL)
+            let runner = InProcessRunner()
             let sql = """
                 SELECT 1;
                 SELECT id,
                        bad_col
                   FROM members;
                 """
-            let result = try await runner.execute(sql: sql, fileName: "answer.sql")
+            let result = try await runner.execute(sql: sql, database: databaseURL, fileName: "answer.sql")
 
             let diagnostic = try #require(result.diagnostics.first)
             #expect(diagnostic.severity == .error)
@@ -165,8 +194,8 @@ struct SQLInProcessRunnerDiagnosticsTests {
         // 3.51 에서 `no such table` 은 sqlite3_error_offset() 이 -1 이다.
         // 위치가 없다고 진단을 버리면 학습자는 아무 메시지도 못 본다.
         try await SQLTestDatabase.withDatabase { databaseURL in
-            let runner = InProcessRunner(databaseURL: databaseURL)
-            let result = try await runner.execute(sql: "SELECT * FROM missing_table;")
+            let runner = InProcessRunner()
+            let result = try await runner.execute(sql: "SELECT * FROM missing_table;", database: databaseURL)
             let diagnostic = try #require(result.diagnostics.first)
             #expect(diagnostic.severity == .error)
             #expect(diagnostic.message.contains("missing_table"))
@@ -197,7 +226,7 @@ struct SQLInProcessRunnerDiagnosticsTests {
 
     @Test("무한 쿼리는 벽시계 데드라인에 끊긴다", .timeLimit(.minutes(1)))
     func infiniteQueryHitsDeadline() async throws {
-        let runner = InProcessRunner(databaseURL: nil)
+        let runner = InProcessRunner()
         let started = Date()
         await #expect(throws: RunFailure.self) {
             try await runner.execute(
@@ -211,7 +240,7 @@ struct SQLInProcessRunnerDiagnosticsTests {
 
     @Test("데드라인 초과는 wallClockExceeded 로 분류된다")
     func deadlineIsClassifiedCorrectly() async throws {
-        let runner = InProcessRunner(databaseURL: nil)
+        let runner = InProcessRunner()
         do {
             _ = try await runner.execute(
                 sql: "WITH RECURSIVE spin(x) AS (SELECT 1 UNION ALL SELECT x + 1 FROM spin) SELECT count(*) FROM spin;",
@@ -229,7 +258,7 @@ struct SQLInProcessRunnerDiagnosticsTests {
 
     @Test("취소는 sqlite3_interrupt 로 즉시 먹힌다", .timeLimit(.minutes(1)))
     func cancellationInterruptsImmediately() async throws {
-        let runner = InProcessRunner(databaseURL: nil)
+        let runner = InProcessRunner()
         let task = Task { () -> (any Error)? in
             do {
                 _ = try await runner.execute(
@@ -257,32 +286,41 @@ struct SQLInProcessRunnerDiagnosticsTests {
 
     @Test("SQL 오류는 진단이지 실패가 아니다 — 종료코드 1 로 정상 스트림 종료")
     func sqlErrorIsDiagnosticNotThrow() async throws {
-        let runner = InProcessRunner(databaseURL: nil)
-        var exitCode: Int32?
+        let runner = InProcessRunner()
+        var termination: RunTermination?
         var diagnostics: [Diagnostic] = []
         for try await event in runner.run(RunRequest(files: [SourceFile(path: "q.sql", contents: "SELEKT 1;")])) {
             if case .diagnostic(let diagnostic) = event { diagnostics.append(diagnostic) }
-            if case .finished(let code, _) = event { exitCode = code }
+            if case .finished(let value) = event { termination = value }
         }
-        #expect(exitCode == 1)
+        // 인프로세스에는 종료 코드라는 개념이 없다 — 임의의 1 이 아니라 "코드 없는 실패".
+        #expect(termination?.status == .failed(code: nil))
+        #expect(termination?.exitCode == nil)
         #expect(diagnostics.contains { $0.severity == .error })
     }
 
     @Test("정상 쿼리는 종료코드 0 과 표 출력")
     func successfulQueryStreamsTable() async throws {
-        let runner = InProcessRunner(databaseURL: nil)
+        let runner = InProcessRunner()
         var stdout = Data()
-        var exitCode: Int32?
+        var termination: RunTermination?
         var phases: [RunPhase] = []
+        var resultSets: [ResultSet] = []
         for try await event in runner.run(RunRequest(files: [SourceFile(path: "q.sql", contents: "SELECT 1 AS one, 'x' AS letter;")])) {
             switch event {
             case .standardOutput(let data): stdout.append(data)
-            case .finished(let code, _): exitCode = code
+            case .resultSet(let set): resultSets.append(set)
+            case .finished(let value): termination = value
             case .phase(let phase): phases.append(phase)
             default: break
             }
         }
-        #expect(exitCode == 0)
+        #expect(termination?.status == .succeeded)
+        #expect(termination?.succeeded == true)
+        // 같은 실행이 구조화된 표도 낸다 — 표 프리젠터는 stdout 을 다시 파싱하지 않는다.
+        #expect(resultSets.count == 1)
+        #expect(resultSets.first?.columns.map(\.name) == ["one", "letter"])
+        #expect(resultSets.first?.rows == [[.integer(1), .text("x")]])
         #expect(phases.contains(.preparing))
         let text = String(decoding: stdout, as: UTF8.self)
         #expect(text.contains("one | letter"))
@@ -291,7 +329,7 @@ struct SQLInProcessRunnerDiagnosticsTests {
 
     @Test("출력이 상한을 넘으면 잘리고 truncated 가 한 번 온다")
     func outputIsTruncated() async throws {
-        let runner = InProcessRunner(databaseURL: nil)
+        let runner = InProcessRunner()
         let request = RunRequest(
             files: [SourceFile(path: "q.sql", contents: """
                 WITH RECURSIVE gen(i) AS (SELECT 1 UNION ALL SELECT i + 1 FROM gen WHERE i < 20000)
@@ -315,7 +353,7 @@ struct SQLInProcessRunnerDiagnosticsTests {
 
     @Test("UTF-8 이 아닌 TEXT 는 손실 없이 바이트로 나온다")
     func nonUTF8TextSurvives() async throws {
-        let runner = InProcessRunner(databaseURL: nil)
+        let runner = InProcessRunner()
         let result = try await runner.execute(sql: "SELECT CAST(x'FFFE' AS TEXT) AS raw;")
         let value = try #require(result.resultSet?.rows.first?.first)
         #expect(value == .blob(Data([0xFF, 0xFE])))
@@ -323,7 +361,7 @@ struct SQLInProcessRunnerDiagnosticsTests {
 
     @Test("잘못된 SourceFile 경로는 스폰 전에 backend 오류로 거부된다")
     func badSourcePathIsRejected() async throws {
-        let runner = InProcessRunner(databaseURL: nil)
+        let runner = InProcessRunner()
         await #expect(throws: RunFailure.self) {
             try await runner.execute(RunRequest(files: [SourceFile(path: "../evil.sql", contents: "SELECT 1;")]))
         }

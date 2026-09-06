@@ -3,9 +3,10 @@ public import LanguageKit
 internal import LearnCore
 
 /// SQL 인프로세스 백엔드 설정.
+///
+/// 대상 DB 는 여기 없다 — 레슨마다 달라지는 것은 설정이 아니라 요청이라
+/// `RunRequest.resources[RunRequest.Resource.database]` 로 들어온다.
 public struct SQLRunnerConfiguration: Sendable {
-    /// 학습용 원본 DB. nil 이면 빈 인메모리 DB 로 연다(표현식 전용 레슨).
-    public var databaseURL: URL?
     /// 워크스페이스 안에서 클론이 갖는 이름.
     public var databaseFileName: String
     /// 결과셋 행 상한. 넘으면 잘리고 `RunEvent.truncated` 가 나간다.
@@ -21,7 +22,6 @@ public struct SQLRunnerConfiguration: Sendable {
     public var cloneObserver: (@Sendable (URL) -> Void)?
 
     public init(
-        databaseURL: URL? = nil,
         databaseFileName: String = "study.db",
         maxRows: Int = 50_000,
         maxSQLBytes: Int = 1 << 20,
@@ -30,7 +30,6 @@ public struct SQLRunnerConfiguration: Sendable {
         workspaceContainer: URL? = nil,
         cloneObserver: (@Sendable (URL) -> Void)? = nil
     ) {
-        self.databaseURL = databaseURL
         self.databaseFileName = databaseFileName
         self.maxRows = maxRows
         self.maxSQLBytes = maxSQLBytes
@@ -61,12 +60,19 @@ public struct InProcessRunner: CodeRunner {
         self.configuration = configuration
     }
 
-    public init(databaseURL: URL?) {
-        self.init(configuration: SQLRunnerConfiguration(databaseURL: databaseURL))
+    /// stdin 도 네트워크도 없다. prepare 단계가 따로 있어 진단은 낼 수 있고,
+    /// 결과는 구조화된 표로 나간다. 메모리 상한은 **프로세스 전역**이라 그 사실도 노출한다.
+    public var capabilities: RunnerCapabilities {
+        [.compileDiagnostics, .structuredResults, .processGlobalMemoryLimit]
     }
 
-    /// stdin 도 네트워크도 없다. prepare 단계가 따로 있어 진단은 낼 수 있다.
-    public var capabilities: RunnerCapabilities { [.compileDiagnostics] }
+    /// 벽시계·출력 절단·메모리만 실제로 막을 수 있다.
+    ///
+    /// CPU 시간과 프로세스 수는 **수단 자체가 없다** — 프로세스를 안 띄우니 `RLIMIT_CPU`·
+    /// `RLIMIT_NPROC` 를 걸 대상이 없고, 앱 자신에게 걸면 앱이 죽는다. 파일 크기도
+    /// 같은 이유로 못 막는다. 메모리는 막지만 `sqlite3_hard_heap_limit64` 가 프로세스
+    /// 전역이라 대가가 따른다 — `capabilities` 의 `.processGlobalMemoryLimit` 참조.
+    public var enforcedLimits: EnforcedLimits { [.wallClock, .memory, .outputBytes] }
 
     // MARK: - CodeRunner
 
@@ -81,11 +87,18 @@ public struct InProcessRunner: CodeRunner {
                     for diagnostic in outcome.diagnostics {
                         continuation.yield(.diagnostic(diagnostic))
                     }
+                    // 구조화된 표를 먼저 내보내고 같은 내용을 콘솔 바이트로도 흘린다.
+                    // 표 프리젠터와 콘솔 프리젠터가 서로를 기다리지 않게 하려는 것이다.
+                    if let set = outcome.resultSet {
+                        continuation.yield(.resultSet(set))
+                    }
                     self.emitOutput(outcome, limits: request.limits, into: continuation)
-                    continuation.yield(.finished(
-                        exitCode: outcome.failed ? 1 : 0,
+                    // 인프로세스에는 종료 코드라는 개념이 없다 — SQL 오류를 임의로 1 에
+                    // 매핑하지 않고 "코드 없는 실패"로 보고한다.
+                    continuation.yield(.finished(RunTermination(
+                        status: outcome.failed ? .failed(code: nil) : .succeeded,
                         durationMilliseconds: outcome.durationMilliseconds
-                    ))
+                    )))
                     continuation.finish()
                 } catch let failure as RunFailure {
                     continuation.finish(throwing: failure)
@@ -123,7 +136,7 @@ public struct InProcessRunner: CodeRunner {
             container: configuration.workspaceContainer
         ) { workspace in
             let databasePath: String
-            if let source = configuration.databaseURL {
+            if let source = request.resources[RunRequest.Resource.database] {
                 let clone = try SQLDatabaseClone.clone(
                     source: source,
                     into: workspace.root,
@@ -153,8 +166,20 @@ public struct InProcessRunner: CodeRunner {
     }
 
     /// SQL 문자열만 있으면 되는 짧은 입구. 채점기와 테스트가 쓴다.
-    public func execute(sql: String, limits: ResourceLimits = .lesson, fileName: String = "query.sql") async throws -> SQLExecutionResult {
-        try await execute(RunRequest(files: [SourceFile(path: fileName, contents: sql)], limits: limits))
+    ///
+    /// - Parameter database: 이 실행이 대상으로 삼을 원본 `.db`. nil 이면 빈 인메모리
+    ///   DB 로 연다(표현식 전용 레슨).
+    public func execute(
+        sql: String,
+        database: URL? = nil,
+        limits: ResourceLimits = .lesson,
+        fileName: String = "query.sql"
+    ) async throws -> SQLExecutionResult {
+        try await execute(RunRequest(
+            files: [SourceFile(path: fileName, contents: sql)],
+            limits: limits,
+            resources: database.map { [RunRequest.Resource.database: $0] } ?? [:]
+        ))
     }
 
     // MARK: - 내부

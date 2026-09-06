@@ -9,44 +9,44 @@ struct SQLValueEqualityTests {
 
     @Test("INTEGER 10 과 REAL 10.0 은 같다")
     func integerEqualsWholeReal() {
-        #expect(SQLValue.integer(10).normalizedForGrading == SQLValue.real(10.0).normalizedForGrading)
-        #expect(SQLValue.integer(0).normalizedForGrading == SQLValue.real(-0.0).normalizedForGrading)
-        #expect(SQLValue.integer(-7).normalizedForGrading == SQLValue.real(-7.0).normalizedForGrading)
+        #expect(ResultSet.Value.integer(10).normalizedForGrading == ResultSet.Value.real(10.0).normalizedForGrading)
+        #expect(ResultSet.Value.integer(0).normalizedForGrading == ResultSet.Value.real(-0.0).normalizedForGrading)
+        #expect(ResultSet.Value.integer(-7).normalizedForGrading == ResultSet.Value.real(-7.0).normalizedForGrading)
     }
 
     @Test("소수부가 있으면 접히지 않는다")
     func fractionalRealStaysReal() {
-        #expect(SQLValue.integer(10).normalizedForGrading != SQLValue.real(10.5).normalizedForGrading)
-        #expect(SQLValue.real(10.5).normalizedForGrading == .real(10.5))
+        #expect(ResultSet.Value.integer(10).normalizedForGrading != ResultSet.Value.real(10.5).normalizedForGrading)
+        #expect(ResultSet.Value.real(10.5).normalizedForGrading == .real(10.5))
     }
 
     @Test("Int64 로 정확히 못 담는 REAL 은 그대로 REAL")
     func hugeRealStaysReal() {
-        #expect(SQLValue.real(1e300).normalizedForGrading == .real(1e300))
-        #expect(SQLValue.real(.nan).normalizedForGrading.isNull == false)
-        if case .real = SQLValue.real(.infinity).normalizedForGrading {} else {
+        #expect(ResultSet.Value.real(1e300).normalizedForGrading == .real(1e300))
+        #expect(ResultSet.Value.real(.nan).normalizedForGrading.isNull == false)
+        if case .real = ResultSet.Value.real(.infinity).normalizedForGrading {} else {
             Issue.record("무한대는 정수로 접히면 안 됩니다")
         }
     }
 
     @Test("NULL·빈 문자열·0 은 서로 다르다")
     func nullEmptyZeroAreDistinct() {
-        let values: [SQLValue] = [.null, .text(""), .integer(0), .real(0.0), .text("0")]
+        let values: [ResultSet.Value] = [.null, .text(""), .integer(0), .real(0.0), .text("0")]
         let normalized = values.map(\.normalizedForGrading)
         // 0 과 0.0 만 같고 나머지는 전부 다르다 → 서로 다른 값 4가지.
         #expect(Set(normalized).count == 4)
-        #expect(SQLValue.null.normalizedForGrading != SQLValue.text("").normalizedForGrading)
-        #expect(SQLValue.text("").normalizedForGrading != SQLValue.integer(0).normalizedForGrading)
-        #expect(SQLValue.integer(0).normalizedForGrading != SQLValue.text("0").normalizedForGrading)
-        #expect(SQLValue.null.normalizedForGrading != SQLValue.integer(0).normalizedForGrading)
+        #expect(ResultSet.Value.null.normalizedForGrading != ResultSet.Value.text("").normalizedForGrading)
+        #expect(ResultSet.Value.text("").normalizedForGrading != ResultSet.Value.integer(0).normalizedForGrading)
+        #expect(ResultSet.Value.integer(0).normalizedForGrading != ResultSet.Value.text("0").normalizedForGrading)
+        #expect(ResultSet.Value.null.normalizedForGrading != ResultSet.Value.integer(0).normalizedForGrading)
     }
 }
 
 @Suite("SQL 결과셋 채점 — 비교기")
 struct SQLResultComparatorTests {
 
-    private func set(_ columns: [String], _ rows: [[SQLValue]]) -> SQLResultSet {
-        SQLResultSet(columnNames: columns, rows: rows)
+    private func set(_ columns: [String], _ rows: [[ResultSet.Value]]) -> ResultSet {
+        ResultSet(columnNames: columns, rows: rows)
     }
 
     @Test("정수와 실수가 섞여도 통과")
@@ -140,15 +140,15 @@ struct SQLResultComparatorTests {
 
     @Test("무명 표현식은 위치로 맞춘다")
     func anonymousExpressionsFallBackToPosition() {
-        let expected = SQLResultSet(
-            columns: [SQLColumn(name: "count(*)")],
+        let expected = ResultSet(
+            columns: [ResultSet.Column(name: "count(*)")],
             rows: [[.integer(5)]]
         )
-        let actual = SQLResultSet(
-            columns: [SQLColumn(name: "COUNT(*)  ")],
+        let actual = ResultSet(
+            columns: [ResultSet.Column(name: "COUNT(*)  ")],
             rows: [[.integer(5)]]
         )
-        #expect(SQLColumn(name: "count(*)").isAnonymousExpression)
+        #expect(ResultSet.Column(name: "count(*)").isAnonymousExpression)
         let comparison = SQLResultComparator().compare(expected: expected, actual: actual)
         #expect(comparison.matches)
         #expect(comparison.columnMapping == [0])
@@ -156,8 +156,8 @@ struct SQLResultComparatorTests {
 
     @Test("정답이 별칭을 붙였고 제출이 안 붙였으면 위치로 봐준다")
     func aliasOmissionIsForgiven() {
-        let expected = SQLResultSet(columns: [SQLColumn(name: "total")], rows: [[.integer(5)]])
-        let actual = SQLResultSet(columns: [SQLColumn(name: "count(*)")], rows: [[.integer(5)]])
+        let expected = ResultSet(columns: [ResultSet.Column(name: "total")], rows: [[.integer(5)]])
+        let actual = ResultSet(columns: [ResultSet.Column(name: "count(*)")], rows: [[.integer(5)]])
         #expect(SQLResultComparator().compare(expected: expected, actual: actual).matches)
     }
 
@@ -177,7 +177,7 @@ struct SQLResultSetGraderTests {
     @Test("정답 쿼리는 통과하고 presenter 는 table")
     func correctSubmissionPasses() async throws {
         try await SQLTestDatabase.withDatabase { databaseURL in
-            let grader = SQLResultSetGrader(runner: InProcessRunner(databaseURL: databaseURL))
+            let grader = SQLResultSetGrader(runner: InProcessRunner(), database: databaseURL)
             let grading = try await grader.grade(
                 submission: "SELECT name FROM members WHERE city = 'Seoul';",
                 reference: "SELECT name FROM members WHERE city = 'Seoul';"
@@ -191,15 +191,15 @@ struct SQLResultSetGraderTests {
     @Test("정렬만 다른 답은 orderMatters 에 따라 갈린다")
     func orderMattersBranches() async throws {
         try await SQLTestDatabase.withDatabase { databaseURL in
-            let runner = InProcessRunner(databaseURL: databaseURL)
+            let runner = InProcessRunner()
             let submission = "SELECT name FROM members ORDER BY name DESC;"
             let reference = "SELECT name FROM members ORDER BY name ASC;"
 
-            let lenient = try await SQLResultSetGrader(runner: runner, criteria: .unordered)
+            let lenient = try await SQLResultSetGrader(runner: runner, database: databaseURL, criteria: .unordered)
                 .grade(submission: submission, reference: reference)
             #expect(lenient.passed)
 
-            let strict = try await SQLResultSetGrader(runner: runner, criteria: .ordered)
+            let strict = try await SQLResultSetGrader(runner: runner, database: databaseURL, criteria: .ordered)
                 .grade(submission: submission, reference: reference)
             #expect(!strict.passed)
             #expect(strict.comparison?.failures == [.orderDiffers])
@@ -209,7 +209,7 @@ struct SQLResultSetGraderTests {
     @Test("NULL 을 '' 로 바꾼 답은 오답")
     func nullVersusEmptyStringOnRealData() async throws {
         try await SQLTestDatabase.withDatabase { databaseURL in
-            let grader = SQLResultSetGrader(runner: InProcessRunner(databaseURL: databaseURL))
+            let grader = SQLResultSetGrader(runner: InProcessRunner(), database: databaseURL)
             let grading = try await grader.grade(
                 submission: "SELECT id, coalesce(nickname, '') AS nickname FROM members;",
                 reference: "SELECT id, nickname FROM members;"
@@ -223,7 +223,7 @@ struct SQLResultSetGraderTests {
     @Test("DISTINCT 로 중복을 없앤 답은 오답 — 중복 개수까지 맞아야 한다")
     func duplicateRowsMatterOnRealData() async throws {
         try await SQLTestDatabase.withDatabase { databaseURL in
-            let grader = SQLResultSetGrader(runner: InProcessRunner(databaseURL: databaseURL))
+            let grader = SQLResultSetGrader(runner: InProcessRunner(), database: databaseURL)
             let grading = try await grader.grade(
                 submission: "SELECT DISTINCT city FROM visits;",
                 reference: "SELECT city FROM visits;"
@@ -236,7 +236,7 @@ struct SQLResultSetGraderTests {
     @Test("REAL 10.0 과 INTEGER 10 이 섞여도 실제 DB 에서 통과")
     func mixedNumericStorageOnRealData() async throws {
         try await SQLTestDatabase.withDatabase { databaseURL in
-            let grader = SQLResultSetGrader(runner: InProcessRunner(databaseURL: databaseURL))
+            let grader = SQLResultSetGrader(runner: InProcessRunner(), database: databaseURL)
             let grading = try await grader.grade(
                 submission: "SELECT count(*) * 1.0 AS total FROM members;",
                 reference: "SELECT count(*) AS total FROM members;"
@@ -251,7 +251,7 @@ struct SQLResultSetGraderTests {
     @Test("참조 해답이 깨져 있으면 학습자 잘못이 아니라 backend 오류")
     func brokenReferenceThrows() async throws {
         try await SQLTestDatabase.withDatabase { databaseURL in
-            let grader = SQLResultSetGrader(runner: InProcessRunner(databaseURL: databaseURL))
+            let grader = SQLResultSetGrader(runner: InProcessRunner(), database: databaseURL)
             await #expect(throws: RunFailure.self) {
                 try await grader.grade(
                     submission: "SELECT 1;",
@@ -264,14 +264,15 @@ struct SQLResultSetGraderTests {
     @Test("제출이 문법 오류면 진단이 붙은 오답")
     func brokenSubmissionIsGradedFalse() async throws {
         try await SQLTestDatabase.withDatabase { databaseURL in
-            let grader = SQLResultSetGrader(runner: InProcessRunner(databaseURL: databaseURL))
+            let grader = SQLResultSetGrader(runner: InProcessRunner(), database: databaseURL)
             let grading = try await grader.grade(
                 submission: "SELEKT name FROM members;",
                 reference: "SELECT name FROM members;"
             )
             #expect(!grading.passed)
             #expect(grading.result.hasErrors)
-            #expect(grading.result.exitCode == 1)
+            // 종료 코드를 지어내지 않는다 — 인프로세스 SQL 에는 그런 개념이 없다.
+            #expect(grading.result.exitCode == nil)
         }
     }
 }

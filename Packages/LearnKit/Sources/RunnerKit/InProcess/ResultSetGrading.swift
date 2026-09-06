@@ -1,15 +1,11 @@
 public import Foundation
+public import LearnCore
 
-/// 결과셋 열 하나.
-public struct SQLColumn: Hashable, Sendable {
-    public var name: String
-    public var declaredType: String?
-
-    public init(name: String, declaredType: String? = nil) {
-        self.name = name
-        self.declaredType = declaredType
-    }
-
+/// 결과셋 채점에만 필요한 부가 규칙.
+///
+/// `ResultSet` 자체는 LearnCore 의 언어 중립 타입이다. 여기 있는 것들은 **SQL 채점**의
+/// 규칙이라 코어로 올리지 않는다 — 저장 클래스 접기나 무명 표현식 판정은 SQL 방언의 사정이다.
+extension ResultSet.Column {
     /// 이름으로 매칭할 수 없는 열인지. `count(*)`, `a + b`, `?` 처럼 SQLite 가
     /// 표현식 텍스트를 그대로 열 이름으로 준 경우다. 이런 열은 위치로 맞춘다.
     public var isAnonymousExpression: Bool {
@@ -26,48 +22,57 @@ public struct SQLColumn: Hashable, Sendable {
     public var matchKey: String { name.lowercased() }
 }
 
-/// 한 SELECT 가 낸 결과셋.
-public struct SQLResultSet: Hashable, Sendable {
-    public var columns: [SQLColumn]
-    public var rows: [[SQLValue]]
-
-    public init(columns: [SQLColumn], rows: [[SQLValue]] = []) {
-        self.columns = columns
-        self.rows = rows
+extension ResultSet.Value {
+    /// 채점용 정규화. **INTEGER 10 과 REAL 10.0 을 같은 값으로 접는다.**
+    ///
+    /// `SELECT 10` 과 `SELECT avg(x)` 가 같은 답이어야 하는데 저장 클래스만 다른 경우가
+    /// 실제 레슨에서 계속 나온다. 반대로 `NULL`·`''`·`0` 은 서로 다른 케이스라 절대 안 접힌다.
+    public var normalizedForGrading: ResultSet.Value {
+        guard case .real(let double) = self else { return self }
+        // Int64(exactly:) 는 소수부가 있거나 Int64 범위를 넘거나 NaN/Inf 면 nil 이다.
+        guard let integer = Int64(exactly: double) else { return self }
+        return .integer(integer)
     }
+}
 
+extension ResultSet {
     /// 테스트·픽스처 편의 생성자.
-    public init(columnNames: [String], rows: [[SQLValue]] = []) {
-        self.init(columns: columnNames.map { SQLColumn(name: $0) }, rows: rows)
+    public init(columnNames: [String], rows: [[Value]] = [], isTruncated: Bool = false) {
+        self.init(
+            columns: columnNames.map { Column(name: $0) },
+            rows: rows,
+            isTruncated: isTruncated
+        )
     }
-
-    public var rowCount: Int { rows.count }
-    public var columnCount: Int { columns.count }
 
     /// 주어진 열 인덱스만 뽑아 새 결과셋을 만든다. 열 매칭 후 행 비교에 쓴다.
-    public func projected(onto indices: [Int]) -> SQLResultSet {
-        SQLResultSet(
+    public func projected(onto indices: [Int]) -> ResultSet {
+        ResultSet(
             columns: indices.map { columns[$0] },
-            rows: rows.map { row in indices.map { row[$0] } }
+            rows: rows.map { row in indices.map { row[$0] } },
+            isTruncated: isTruncated
         )
     }
 
     /// 채점용으로 모든 셀을 정규화한 사본.
-    public var normalizedForGrading: SQLResultSet {
-        SQLResultSet(
+    public var normalizedForGrading: ResultSet {
+        ResultSet(
             columns: columns,
-            rows: rows.map { $0.map(\.normalizedForGrading) }
+            rows: rows.map { $0.map(\.normalizedForGrading) },
+            isTruncated: isTruncated
         )
     }
 }
 
-/// 결과셋을 콘솔 바이트로 옮기는 최소 렌더러. 표 프리젠터는 `SQLResultSet` 를 직접 쓰고,
-/// 이건 stdout 폴백과 계약 테스트용이다.
+/// 결과셋을 콘솔 바이트로 옮기는 최소 렌더러.
+///
+/// 표 프리젠터는 `RunEvent.resultSet` 으로 온 구조화된 표를 직접 그리고, 이건 stdout
+/// 폴백과 계약 테스트용이다 — 두 통로가 같은 데이터를 서로 다른 방식으로 나른다.
 public enum SQLTextRenderer {
     public static let columnSeparator = Data(" | ".utf8)
     public static let newline = Data("\n".utf8)
 
-    public static func headerLine(_ columns: [SQLColumn]) -> Data {
+    public static func headerLine(_ columns: [ResultSet.Column]) -> Data {
         var data = Data()
         for (index, column) in columns.enumerated() {
             if index > 0 { data.append(columnSeparator) }
@@ -77,7 +82,7 @@ public enum SQLTextRenderer {
         return data
     }
 
-    public static func rowLine(_ row: [SQLValue]) -> Data {
+    public static func rowLine(_ row: [ResultSet.Value]) -> Data {
         var data = Data()
         for (index, value) in row.enumerated() {
             if index > 0 { data.append(columnSeparator) }
@@ -88,7 +93,7 @@ public enum SQLTextRenderer {
     }
 
     /// 표 전체를 문자열로. `GradeResult.stdout` 채울 때 쓴다(바이트 상한은 호출부 책임).
-    public static func render(_ set: SQLResultSet, maxRows: Int = 200) -> String {
+    public static func render(_ set: ResultSet, maxRows: Int = 200) -> String {
         var lines: [String] = [set.columns.map(\.name).joined(separator: " | ")]
         for row in set.rows.prefix(maxRows) {
             lines.append(row.map(\.displayText).joined(separator: " | "))

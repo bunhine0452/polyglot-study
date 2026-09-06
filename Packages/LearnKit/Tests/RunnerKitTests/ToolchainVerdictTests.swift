@@ -176,11 +176,15 @@ struct ToolchainVerdictTests {
                 Self.candidate("/b/node", .belowMinimum(version: ToolVersion("16.20.0")!)),
             ]
         )
-        guard case let .unsupported(reason) = availability else {
+        guard case let .unsupported(path, version, minimum) = availability else {
             Issue.record("unsupported 여야 한다: \(availability)")
             return
         }
-        #expect(reason.contains("16.20.0"))
+        // 구조가 살아 있어야 UI 가 "어느 바이너리가 얼마나 낡았는지"를 문자열에서
+        // 다시 파싱하지 않는다.
+        #expect(version == "16.20.0")
+        #expect(path == "/b/node")
+        #expect(minimum == ToolchainCatalog.node.minimumVersion?.raw)
     }
 
     @Test("스텁만 있으면 stub, 후보가 아예 없으면 missing")

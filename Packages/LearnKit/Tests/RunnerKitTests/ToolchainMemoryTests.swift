@@ -93,10 +93,10 @@ struct ToolchainMemoryTests {
         #expect(run.outcome.termination == .signalled(number: SIGKILL))
         // 폴러가 죽였음을 아는 것은 호출자뿐 — 런처는 TIMEOUT 을 쓰지 않았다.
         #expect(!run.outcome.wallClockExceeded)
-        #expect(matches(
-            run.outcome.failure(limits: ResourceLimits(memoryMegabytes: 64), memoryKilled: true),
-            .memoryExceeded(megabytes: 64)
-        ))
+        #expect(
+            run.outcome.failure(limits: ResourceLimits(memoryMegabytes: 64), memoryKilled: true)
+                == .memoryExceeded(megabytes: 64)
+        )
         #expect(ToolchainLauncherHarness.waitForProcessGroupToVanish(processGroup))
     }
 

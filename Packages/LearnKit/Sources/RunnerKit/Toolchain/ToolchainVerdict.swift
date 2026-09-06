@@ -128,9 +128,7 @@ public enum ToolchainVerdict {
             }
         }
         if let newestBelow, let minimum = spec.minimumVersion {
-            return .unsupported(
-                reason: "\(spec.displayName) \(newestBelow.0.raw) 은 최소 요구 \(minimum.raw) 미만이다 (\(newestBelow.1)). \(spec.installHint)"
-            )
+            return .unsupported(path: newestBelow.1, version: newestBelow.0.raw, minimum: minimum.raw)
         }
 
         if let stub = candidates.first(where: { if case .stub = $0.verdict { return true } else { return false } }) {

@@ -138,6 +138,9 @@ public struct LauncherOutcome: Hashable, Sendable {
         if cpuExceeded {
             return .cpuExceeded(seconds: limits.cpuSeconds)
         }
+        if fileSizeExceeded {
+            return .fileSizeExceeded(bytes: limits.fileSizeBytes)
+        }
         return nil
     }
 }

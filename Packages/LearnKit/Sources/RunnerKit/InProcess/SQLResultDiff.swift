@@ -1,4 +1,5 @@
 internal import Foundation
+public import LearnCore
 
 /// `Presenter.table` 이 그릴 결과셋 차이.
 ///
@@ -12,10 +13,10 @@ public struct SQLResultDiff: Hashable, Sendable {
         public var row: Int
         public var column: Int
         public var columnName: String
-        public var expected: SQLValue
-        public var actual: SQLValue
+        public var expected: ResultSet.Value
+        public var actual: ResultSet.Value
 
-        public init(row: Int, column: Int, columnName: String, expected: SQLValue, actual: SQLValue) {
+        public init(row: Int, column: Int, columnName: String, expected: ResultSet.Value, actual: ResultSet.Value) {
             self.row = row
             self.column = column
             self.columnName = columnName
@@ -25,9 +26,9 @@ public struct SQLResultDiff: Hashable, Sendable {
     }
 
     /// 정답에는 있는데 제출에는 없는 행 (최대 `limit` 개).
-    public var missingRows: [[SQLValue]]
+    public var missingRows: [[ResultSet.Value]]
     /// 제출에만 있는 행 (최대 `limit` 개).
-    public var extraRows: [[SQLValue]]
+    public var extraRows: [[ResultSet.Value]]
     /// 행 좌표가 같은데 값이 다른 첫 셀들 (최대 `limit` 개).
     public var cellMismatches: [CellMismatch]
 
@@ -38,8 +39,8 @@ public struct SQLResultDiff: Hashable, Sendable {
     public var limit: Int
 
     public init(
-        missingRows: [[SQLValue]] = [],
-        extraRows: [[SQLValue]] = [],
+        missingRows: [[ResultSet.Value]] = [],
+        extraRows: [[ResultSet.Value]] = [],
         cellMismatches: [CellMismatch] = [],
         missingRowCount: Int = 0,
         extraRowCount: Int = 0,
@@ -82,8 +83,8 @@ public struct SQLResultDiff: Hashable, Sendable {
     ///
     /// 다중집합 비교는 사전 한 번 훑기로 끝나므로 행 수에 선형이다.
     public static func compute(
-        expected: SQLResultSet,
-        actual: SQLResultSet,
+        expected: ResultSet,
+        actual: ResultSet,
         orderMatters: Bool,
         limit: Int = SQLResultDiff.defaultLimit
     ) -> SQLResultDiff {
@@ -91,10 +92,10 @@ public struct SQLResultDiff: Hashable, Sendable {
         let actualRows = actual.rows.map { $0.map(\.normalizedForGrading) }
 
         // ── 누락·초과 (순서 무관 다중집합)
-        var remaining: [[SQLValue]: Int] = Dictionary(minimumCapacity: expectedRows.count)
+        var remaining: [[ResultSet.Value]: Int] = Dictionary(minimumCapacity: expectedRows.count)
         for row in expectedRows { remaining[row, default: 0] += 1 }
 
-        var extraRows: [[SQLValue]] = []
+        var extraRows: [[ResultSet.Value]] = []
         var extraCount = 0
         for row in actualRows {
             if let count = remaining[row], count > 0 {
@@ -105,7 +106,7 @@ public struct SQLResultDiff: Hashable, Sendable {
             }
         }
 
-        var missingRows: [[SQLValue]] = []
+        var missingRows: [[ResultSet.Value]] = []
         var missingCount = 0
         for row in expectedRows {
             guard let count = remaining[row], count > 0 else { continue }

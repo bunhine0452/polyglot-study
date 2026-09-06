@@ -33,7 +33,7 @@ Python · Rust · C++ · Go · Java · Next.js · TypeScript · SQL · Swift · 
 | 항목 | 값 | 의미 |
 |---|---|---|
 | OS / 아키텍처 | macOS 26.6.2 / **arm64** | Assembly 트랙은 ARM64(AAPCS64)가 정규 |
-| **Xcode** | **미설치** (CommandLineTools 만) | **선행 작업 0번** — SwiftUI 앱 빌드 불가 |
+| **Xcode** | **26.6 설치됨** (2026-09-06 확인, 최초 기록은 미설치였음) | `sourcekit-lsp` 동봉 — Swift 트랙 LSP 조달 비용 0. MLX 의 Metal 셰이더 빌드에도 필요 |
 | 설치됨 | swift 6.3.3 · python3 3.13.12 · rustc 1.98.0 · clang 21.0.0 · node 26.7.0 · sqlite3 3.51.1 · `/usr/bin/as` | MVP 3종 전부 커버 |
 | 미설치 | go · java/javac · tsc · nasm | 2차 트랙에서 설치 안내 UI 필요 |
 | git | **저장소 아님** | 오픈소스 공개 전 `git init` 필요 |
@@ -223,11 +223,20 @@ Tools/
 | 2026-09-06T13:55:00+09:00 | claude-code | 정정 — 로그인 셸의 python3 는 /usr/bin 의 3.9.6 이다. 3.13.12 는 miniconda 경로라 PATH 상 뒤. 툴체인 감지는 전수 열거 후 버전 정책으로 선택해야 한다 |
 | 2026-09-06T13:55:00+09:00 | claude-code | 정정 — swiftc 에 JSON 진단이 없다(clang 전용). diagnostic-style llvm 텍스트 파싱 + print-diagnostic-groups 로 ruleID 확보 |
 | 2026-09-06T13:55:00+09:00 | claude-code | 결정 — Pyodide 를 MVP 에서 제외하고 Python 은 로컬 python3 서브프로세스로. input() 실습 가능 여부와 무한루프 정지 확실성이 결정적 |
+| 2026-09-06T20:05:00+09:00 | claude-code | 정정 — Xcode 26.6 이 설치됐다. 위 실측 환경표의 '미설치' 는 최초 기록이며 이후 해소됐다 |
+| 2026-09-06T20:05:00+09:00 | claude-code | 결정 — macOS 하한을 14 로 확정한다. Textual(macOS 15)을 의존에서 제거하고 ProseRenderer 를 자체 구현한다. 인라인은 AttributedString(markdown:) 의 inlineOnlyPreservingWhitespace 에 위임(macOS 12+)하고 블록 레이아웃만 250~400줄로 직접 그린다. 어차피 Textual 의 MarkupParser 는 퀴즈·빈칸 컨트롤을 담지 못한다고 이미 판정돼 있었다 |
+| 2026-09-06T20:05:00+09:00 | claude-code | 정정 — NLContextualEmbedding 은 '다운로드 0' 이 아니다. 헤더가 over-the-air 다운로드를 명시하고 실물 에셋이 CJK 88MB · Latin 111MB 다. 앱이 직접 받는 것은 0, OS 가 받는 것은 최대 111MB 로 표현해야 정확하다 |
+| 2026-09-06T20:05:00+09:00 | claude-code | 정정 — 한국어 질의로 영어 문서를 벡터 검색하는 것은 이 API 로 구조적으로 불가능하다. CJK 모델(ja·ko·zh)과 Latin 모델(en 포함)이 서로 다른 가중치이고 벡터 공간이 다르다. 게다가 CJK 모델에는 문장 임베딩 헤드가 없어 서브워드 평균 풀링이 강제된다 |
+| 2026-09-06T20:05:00+09:00 | claude-code | 결정 — 튜터 검색의 역할을 언어로 가른다. 영문 공식 문서는 FTS5 trigram(식별자가 언어 중립이라 잘 잡힌다), 한국어 오답 노트와 레슨 팩은 벡터. 언어 장벽을 건너는 다리는 Diagnostic.message 다 — 컴파일러가 뱉은 영어 문장이 영문 문서 어휘와 겹친다 |
+| 2026-09-06T20:05:00+09:00 | claude-code | 정정 — mlx-swift-lm 3.31.4 에는 traits 블록 자체가 없다. 'FoundationModelsIntegration trait 을 끄라' 는 조언은 불필요했다. 다만 MLXGuidedGeneration 도 없어 인용을 문법으로 강제하는 설계가 그 태그에서는 불가능하다 — 파서·재시도·후검증 3중으로 대체 |
+| 2026-09-06T20:05:00+09:00 | claude-code | 결정 — Qwen3-Coder-30B-A3B(4bit 17.5GB, 실사용 19.3GB, 32GB 맥 필요)는 기본이 아니라 옵트인 상급자 옵션. 기본은 4B 급(Gemma 3 4B int4 2.6GB / Qwen3.5-4B 4bit 4.0GB) |
+| 2026-09-06T20:05:00+09:00 | claude-code | 결정 — 공식 문서는 크롤링하지 않는다. Python 은 공식 아카이브(text 3.3MB), Rust 는 rust-docs 컴포넌트, Swift Book·TS Handbook 은 GitHub 리포로 받는다. 크롤러는 버전 고정·재현성·robots 준수 부담만 새로 만든다 |
+| 2026-09-06T20:05:00+09:00 | claude-code | 결정 — 튜터를 별도 플랜 polyglot-tutor 로 분리(2페이즈 40항목). macOS 14 하한 덕에 생성이 옵트인이 되어 '거부가 기본값' 이라는 안전 조건이 플랫폼 제약으로 강제된다 |
 <!-- oculpm:discussion-log end -->
 
 ## 다음 단계
 
-- [ ] Xcode 설치 후 `xcode-select -s` 로 활성 개발자 디렉터리 전환 {#next-xcode}
+- [x] Xcode 설치 후 `xcode-select -s` 로 활성 개발자 디렉터리 전환 {#next-xcode}
 - [ ] `git init` + 앱 라이선스 결정 (쟁점 1 의 GPL 선택지를 남길지 함께 판단) {#next-git-license}
 - [ ] 쟁점 3 결정 — 레슨 생성을 빌드타임 CLI 로 밀지, 런타임에 둘지 {#next-decide-gen-time}
 - [ ] `Packages/LearnKit` 스캐폴딩 + 타깃별 `defaultIsolation` 설정 {#next-scaffold}

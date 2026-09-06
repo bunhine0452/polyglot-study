@@ -7,10 +7,26 @@ import LearnCore
 @Suite("Swift Testing 채점 실측", .serialized)
 struct LanguageSwiftGradingTests {
 
-    /// 예열된 템플릿은 **테스트 실행 사이에도 살아남아야** 의미가 있다.
-    /// 고정 이름을 쓰는 이유가 그것이다 — 첫 실행만 비싸고 이후는 증분 빌드다.
-    static let templateDirectory = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        .appendingPathComponent("learnkit-swift-template-tests", isDirectory: true)
+    /// 예열된 템플릿은 **테스트 실행 사이에도 살아남아야** 의미가 있다 — 첫 실행만 비싸고
+    /// 이후는 증분 빌드다. 그래서 고정 이름을 쓴다.
+    ///
+    /// 다만 머신 전역으로 고정하면 **다른 체크아웃이 같은 `.build` 를 공유한다.** 병렬
+    /// 워크트리에서 두 세션이 동시에 이 스위트를 돌렸을 때 SwiftPM 락이 걸리고
+    /// `Another instance of SwiftPM ... waiting` 뒤에 **이전 실행 결과가 반환됐다**
+    /// (실측: 4~9건 실패, 두 세션이 독립적으로 재현). 그래서 체크아웃 경로 해시를 붙인다 —
+    /// 같은 체크아웃의 반복 실행은 여전히 템플릿을 재사용하고, 다른 체크아웃끼리만 갈린다.
+    ///
+    /// 한 체크아웃 안의 동시 실행은 이 스위트의 `.serialized` 가 막는다.
+    static let templateDirectory: URL = {
+        // #filePath 는 체크아웃마다 다르다. 워크트리든 클론이든 이것만으로 갈린다.
+        var hash: UInt64 = 0xcbf2_9ce4_8422_2325
+        for byte in #filePath.utf8 {
+            hash = (hash ^ UInt64(byte)) &* 0x0000_0100_0000_01B3
+        }
+        return URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+            .appendingPathComponent("learnkit-swift-template-tests-\(String(hash, radix: 36))",
+                                    isDirectory: true)
+    }()
 
     private static func grader() -> SwiftTestingGrader {
         // 채점은 SwiftPM 을 통째로 돌린다 — 병렬 스위트의 시간 측정과 겹치면 남의

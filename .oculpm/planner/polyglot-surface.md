@@ -38,15 +38,15 @@ owner: claude-code
 - [ ] packtool 리포트를 JSON 과 JUnit XML 두 형식으로 — CI 어노테이션과 lessongen 재생성 루프가 같은 파일을 읽음, 레슨별 stableID·실패 단계·러너 원문 포함 {#packtool-report}
 - [ ] packtool build — solutions 를 벗기고 sha256 재계산해 배포용 팩을 결정적으로 굽기 — 완료: 두 번 빌드한 tar 바이트가 동일하고 배포 팩에 solutions 없음 {#packtool-build}
   - [ ] packtool sign 과 verify — 정규 매니페스트 바이트에 대한 분리 서명, 키는 환경변수로만 받고 서명 없는 팩과 변조된 팩은 거부 {#packtool-sign}
-- [x] lessongen 의 Anthropic HTTP 클라이언트를 URLSession 으로 작성 — Swift 공식 SDK 가 없어 messages 엔드포인트 직접 호출 — 완료: 왕복 1회 성공하고 429·529 에 지수 백오프 {#lessongen-http-client}
-  - [x] API 키는 ANTHROPIC_API_KEY 환경변수에서만 읽고 플래그·설정파일·로그 어디에도 싣지 않음 — 실행 로그 전수 grep 에 키 0건 {#api-key-handling}
-- [~] lessongen outline — 트랙 개요를 구조화 출력 1회로 뽑아 stableID·학습목표·선수개념을 갖춘 JSON 으로 커밋, 사람이 리뷰한 뒤에만 진행 {#lessongen-outline}
+- [x] lessongen 의 LLM HTTP 클라이언트를 URLSession 으로 작성 — 공급자는 LLMProvider 프로토콜 뒤, 구현은 OpenRouter chat/completions — 완료: 실왕복 1회 성공하고 429·5xx 에 지수 백오프 {#lessongen-http-client}
+  - [x] API 키는 OPENROUTER_API_KEY 환경변수(없으면 .env)에서만 읽고 플래그·설정파일·로그 어디에도 싣지 않음 — 실행 로그 전수 grep 에 키 0건 {#api-key-handling}
+- [x] lessongen outline — 트랙 개요를 구조화 출력 1회로 뽑아 stableID·학습목표·선수개념을 갖춘 JSON 으로 커밋, 사람이 리뷰한 뒤에만 진행 {#lessongen-outline}
 - [ ] lessongen lesson — 레슨을 JSON 으로 받아 Swift 코드가 디렉티브 마크다운으로 직렬화. 모델에게 마크다운을 시키지 않음 — 완료: 생성물이 구조·문법 단계를 첫 시도에 통과 {#lessongen-lesson}
-  - [ ] 1차 생성은 Batch API 로 트랙 전체를 팬아웃해 입출력 50% 할인 — custom_id 로 결과를 짝지어 회수 {#lessongen-batch-fanout}
-  - [ ] 시스템 프롬프트(스타일 가이드 + 6블록 계약 + 실행 제약)에 cache_control 을 걸고 레슨별 가변부를 뒤에 — 2회차부터 캐시 읽기 토큰이 0 이 아님 {#lessongen-prompt-caching}
+  - [ ] 트랙 전체 팬아웃은 동시성 제한 병렬 요청으로 — OpenRouter Batch(/api/beta/batches, 통상 50%)는 있으나 현 모델의 :batch 변종이 프로모션가의 2배이고 seed 미지원이라 이득이 없음 {#lessongen-batch-fanout}
+  - [ ] 고정 시스템 프롬프트를 안정 접두사로 두고 session_id 로 업스트림을 고정 — 현 모델은 자동 캐싱(쓰기 무료·읽기 0.2배)이라 cache_control 이 불필요하고 캐시가 업스트림에 붙어 있어 라우팅 고정이 진짜 조건. 완료: 2회차부터 cached_tokens 가 0 이 아님 {#lessongen-prompt-caching}
 - [ ] lessongen repair — packtool 리포트를 읽어 실패 레슨만 재생성하고 러너 원문을 프롬프트에 담아 재요청 — 완료: 컴파일 에러·stdout 불일치·테스트 실패 3종이 통과로 수렴 {#lessongen-repair}
   - [ ] 3회 실패 시 격리 — 해당 레슨을 팩에서 빼고 명단과 함께 non-zero 종료, 절대 머지시키지 않음 {#lessongen-quarantine}
-- [ ] 실행 로그와 비용 가드 — 실행별 디렉터리에 요청·응답·usage·검증 리포트를 남기고 최대 지출 초과 시 중단. Opus 5 는 temperature 가 없어 시드 재현이 불가하므로 전량 감사 로그로 대체 {#lessongen-runlog}
+- [ ] 실행 로그와 비용 가드 — 실행별 디렉터리에 요청·응답·usage·cost·검증 리포트를 남기고 최대 지출 초과 시 중단. 임의 모델은 temperature·seed 를 받으므로 재현을 목표로 삼되, 진짜 변수는 시드가 아니라 어느 업스트림이 답했는가라서 모델 id·seed·temperature·upstream provider·generation id 를 함께 기록 {#lessongen-runlog}
 - [ ] GitHub Actions — macOS 러너에서 packtool validate 를 packs 변경 PR 의 필수 체크로 걸고 lessongen 은 workflow_dispatch 에서만 실행 {#ci-gate}
   - [ ] 툴체인 부재 시 스킵이 아니라 실패가 기본 — 명시 플래그를 줄 때만 스킵하고 리포트에 기록, 경량 러너는 구조·문법만 돌고 게이트로 세지 않음 {#toolchain-skip-policy}
 
@@ -118,4 +118,9 @@ owner: claude-code
 | 2026-09-06T18:47:00+09:00 | #directive-args-wrapper | claude-code | [ ]→[x] | journal/20260906/Features_to_add/1847_feature_content-pipeline-foundation.md | 콘텐츠 파이프라인 기반, 607 테스트 통과 |
 | 2026-09-06T18:47:00+09:00 | #pack-path-hardening | claude-code | [ ]→[x] | journal/20260906/Features_to_add/1847_feature_content-pipeline-foundation.md | FileManager.enumerator 가 베이스 심볼릭 링크를 풀어 조용히 0개 반환 — 자체 워커로 교체 |
 | 2026-09-06T18:47:00+09:00 | #lessongen-http-client | claude-code | 주의 | journal/20260906/Features_to_add/1847_feature_content-pipeline-foundation.md | 실왕복 미검증 — 루프백 서버로만 확인. 키 보유자가 한 번 태워야 닫힘 |
+| 2026-09-06T19:49:00+09:00 | #api-key-handling | claude-code | x→x | .oculpm/journal/20260906/Refactors/1946_refactor_llm-provider-abstraction-openrouter.md | OPENROUTER_API_KEY + .env(환경변수 우선). 부모 #lessongen-http-client 는 실왕복 1회 성공으로 닫힘 — 로그·워크트리 키 grep 0건 |
+| 2026-09-06T19:49:09+09:00 | #lessongen-batch-fanout | claude-code | ☐→☐ | .oculpm/journal/20260906/Refactors/1946_refactor_llm-provider-abstraction-openrouter.md | 재판단: 50% 할인 전제 무너짐. 현 모델 :batch 가 프로모션가 2배·seed 미지원 → 동시성 제한 병렬로 전환 |
+| 2026-09-06T19:49:20+09:00 | #lessongen-prompt-caching | claude-code | ☐→☐ | .oculpm/journal/20260906/Refactors/1946_refactor_llm-provider-abstraction-openrouter.md | 재판단: 현 모델은 자동 캐싱이라 cache_control 불필요. 진짜 조건은 session_id 로 업스트림 고정 (배선 완료, CLI 미연결) |
+| 2026-09-06T19:49:31+09:00 | #lessongen-runlog | claude-code | ☐→☐ | .oculpm/journal/20260906/Refactors/1946_refactor_llm-provider-abstraction-openrouter.md | 재판단: temperature·seed 가 생겨 재현이 목표로 복귀. 단 진짜 변수는 upstream provider — model·seed·temperature·upstream·generation id 를 함께 기록 |
+| 2026-09-06T19:55:37+09:00 | #lessongen-outline | claude-code | ~→x | journal/20260906/Refactors/1955_refactor_openrouter-provider-abstraction.md | 실왕복 1회로 검증 — glm-5.3-flash 가 구조화 출력을 첫 시도에 스키마대로 반환, 3레슨 개요 JSON 생성. lessongen-http-client 의 미검증 표시도 이로써 해소됨 |
 <!-- oculpm:plan-log end -->

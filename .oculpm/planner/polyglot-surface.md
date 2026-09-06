@@ -52,14 +52,14 @@ owner: claude-code
 
 ## UI 기반 — 타깃·토큰·에디터 {#ui-foundation}
 - [ ] Polyglot.xcodeproj 를 앱 타깃 하나만 담는 얇은 셸로 만들고 코드는 전부 로컬 SPM 참조로 — 완료: 앱 타깃 컴파일 소스가 2개 이하이고 xcodebuild build 통과 {#xcode-app-target}
-  - [ ] Package.swift 에 uiSettings 추가 — MainActor 기본 격리 + 기존 upcoming feature 2종, 코어 타깃은 coreSettings 유지하고 경고 0으로 빌드 {#ui-isolation-settings}
+  - [x] Package.swift 에 uiSettings 추가 — MainActor 기본 격리 + 기존 upcoming feature 2종, 코어 타깃은 coreSettings 유지하고 경고 0으로 빌드 {#ui-isolation-settings}
 - [ ] DesignSystem 타깃에 색 12종·타입 스케일 2종·룰 2종·8px 그리드를 Swift 상수로 — 완료: 디자인 파일의 모든 색 리터럴이 토큰에 대응되고 뷰 코드에 hex 하드코딩 0건 {#designsystem-tokens}
-  - [ ] 색 토큰 실측값 그대로 — paper F4F4F2 · ink 141414 · secondary 5F5F5C · faint 9A9A97 · ruleSoft D9D9D6 · cellEmpty C9C9C6 · pass 2F8F4E · fail C8372D · failWash F7E4E2 {#color-tokens}
-  - [ ] 산스 11/13/15/20/24/28/32 와 모노 11/12/12.5 를 분리한 Typography 열거형 + 전역 monospacedDigit 로 숫자 폭 고정 {#type-scale}
+  - [x] 색 토큰 실측값 그대로 — paper F4F4F2 · ink 141414 · secondary 5F5F5C · faint 9A9A97 · ruleSoft D9D9D6 · cellEmpty C9C9C6 · pass 2F8F4E · fail C8372D · failWash F7E4E2 {#color-tokens}
+  - [x] 산스 11/13/15/20/24/28/32 와 모노 11/12/12.5 를 분리한 Typography 열거형 + 전역 monospacedDigit 로 숫자 폭 고정 {#type-scale}
 - [ ] IBM Plex Sans KR 과 Mono 를 SPM 리소스로 번들하고 CTFontManagerRegisterFontsForURL 로 런타임 등록 — 완료: 네트워크를 끊어도 폴백이 아닌 Plex 로 렌더 {#plex-font-bundling}
   - [ ] ATSApplicationFontsPath 는 앱 번들 Resources 에만 먹으므로 Bundle.module 경로에는 쓰지 않고 process 스코프 등록으로 처리 {#font-registration-path}
-- [ ] 라운딩과 그림자를 타입 차원에서 봉인한 프리미티브 6종 — Rule·StatusDot·SegmentedProgress·MonoText·FlatButton·LabelText, cornerRadius 와 shadow 파라미터를 아예 노출하지 않음 {#ds-primitives}
-- [ ] 232px 고정 사이드바와 4개 내비를 NavigationSplitView 없이 HStack 과 1px 룰로 구성 — 완료: 시스템 기본 라운딩·머티리얼 배경이 전혀 나타나지 않고 활성 항목이 잉크 반전 {#app-shell-chrome}
+- [x] 라운딩과 그림자를 타입 차원에서 봉인한 프리미티브 6종 — Rule·StatusDot·SegmentedProgress·MonoText·FlatButton·LabelText, cornerRadius 와 shadow 파라미터를 아예 노출하지 않음 {#ds-primitives}
+- [x] 232px 고정 사이드바와 4개 내비를 NavigationSplitView 없이 HStack 과 1px 룰로 구성 — 완료: 시스템 기본 라운딩·머티리얼 배경이 전혀 나타나지 않고 활성 항목이 잉크 반전 {#app-shell-chrome}
 - [ ] EditorUI 타깃 신설 + CodeEditSourceEditor 를 exact 0.15.2 로 핀하고 Package.resolved 커밋 — 완료: CESE 0.15.2 · CodeEditTextView 0.12.1 · CodeEditLanguages 0.1.20 고정 {#editorui-target-pin}
   - [ ] CodeEditLanguages 0.1.20 이 exact 전이 의존이라 제거 불가임을 모듈 주석에 명시 — MVP 3종은 CEL 내장 그래머(python·sql·swift)를 그대로 사용 {#cel-transitive-note}
 - [ ] EditorTheme 16개 속성을 전부 무채색으로 채운 모노크롬 테마 — 완료: 에디터 안에 유채색 0건이고 키워드·타입·문자열·주석이 굵기와 회색 3단으로만 구분 {#mono-syntax-theme}
@@ -72,8 +72,8 @@ owner: claude-code
 
 ## 화면 7개 구현 {#screens}
 - [ ] 온보딩 — 툴체인 진단 10행 표와 3상태 표시 — 완료: ready·missing·stub 이 녹색 채움·1px 빈 사각·적색 채움으로 나오고 상단 집계가 실제 probe 결과와 일치 {#screen-onboarding}
-  - [ ] unsupported 는 디자인에 없는 4번째 상태 — 미설치 빈 사각에 사유 문구를 붙여 접고, switch 에 default 가 필요 없게 {#unsupported-state-mapping}
-  - [ ] 설치 명령 복사 버튼 — installHint 문자열을 클립보드에 넣기만 하고 프로세스 실행은 일어나지 않음 {#install-hint-copy}
+  - [x] unsupported 는 디자인에 없는 4번째 상태 — 미설치 빈 사각에 사유 문구를 붙여 접고, switch 에 default 가 필요 없게 {#unsupported-state-mapping}
+  - [x] 설치 명령 복사 버튼 — installHint 문자열을 클립보드에 넣기만 하고 프로세스 실행은 일어나지 않음 {#install-hint-copy}
 - [ ] 대시보드 — 오늘 헤더와 2단 카드(이어서·오늘의 복습)와 10행 트랙 표 — 완료: 활성 3트랙은 잉크, 준비 중 7트랙은 흐림, 트랙별 진도칸 수가 레슨 총수와 정확히 일치 {#screen-dashboard}
   - [ ] 진도 셀 3상태 — 완료는 잉크 채움, 현재는 종이에 잉크 1px, 미래는 종이에 흐린 1px. LazyHGrid 가 아닌 고정 Grid 로 2px 간격 유지 {#progress-cell-states}
 - [ ] 레슨 — 6블록 스텝바와 완료 블록 40px 접힘 행과 활성 블록 카드 — 완료: 한 화면에 펼쳐진 블록이 항상 1개이고 미도래 블록은 흐려진 40px 행으로 남음 {#screen-lesson}
@@ -123,4 +123,12 @@ owner: claude-code
 | 2026-09-06T19:49:20+09:00 | #lessongen-prompt-caching | claude-code | ☐→☐ | .oculpm/journal/20260906/Refactors/1946_refactor_llm-provider-abstraction-openrouter.md | 재판단: 현 모델은 자동 캐싱이라 cache_control 불필요. 진짜 조건은 session_id 로 업스트림 고정 (배선 완료, CLI 미연결) |
 | 2026-09-06T19:49:31+09:00 | #lessongen-runlog | claude-code | ☐→☐ | .oculpm/journal/20260906/Refactors/1946_refactor_llm-provider-abstraction-openrouter.md | 재판단: temperature·seed 가 생겨 재현이 목표로 복귀. 단 진짜 변수는 upstream provider — model·seed·temperature·upstream·generation id 를 함께 기록 |
 | 2026-09-06T19:55:37+09:00 | #lessongen-outline | claude-code | ~→x | journal/20260906/Refactors/1955_refactor_openrouter-provider-abstraction.md | 실왕복 1회로 검증 — glm-5.3-flash 가 구조화 출력을 첫 시도에 스키마대로 반환, 3레슨 개요 JSON 생성. lessongen-http-client 의 미검증 표시도 이로써 해소됨 |
+| 2026-09-06T21:01:00+09:00 | #ui-isolation-settings | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 첫 실행 앱 — 653 테스트 통과, 스크린샷 확인 |
+| 2026-09-06T21:01:00+09:00 | #color-tokens | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | monoFallback 을 SF Mono → Menlo 로 정정 (NSFont(name:) 해석 실패 실측), 스케일 12/14/18/11.5 추가 |
+| 2026-09-06T21:01:00+09:00 | #type-scale | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 첫 실행 앱 — 653 테스트 통과, 스크린샷 확인 |
+| 2026-09-06T21:01:00+09:00 | #ds-primitives | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | cornerRadius·shadow·Material·NavigationSplitView 0건 grep 테스트로 봉인 |
+| 2026-09-06T21:01:00+09:00 | #app-shell-chrome | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 첫 실행 앱 — 653 테스트 통과, 스크린샷 확인 |
+| 2026-09-06T21:01:00+09:00 | #unsupported-state-mapping | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 첫 실행 앱 — 653 테스트 통과, 스크린샷 확인 |
+| 2026-09-06T21:01:00+09:00 | #install-hint-copy | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 클립보드 복사만, 프로세스 실행 0건 |
+| 2026-09-06T21:01:00+09:00 | #cel-transitive-note | claude-code | 주의 | journal/20260906/Features_to_add/2101_feature_first-running-app.md | CodeEditLanguages·CodeEditSymbols 에 LICENSE 없음 — 조직 주요 저장소 3종이 MIT 라 누락으로 판단, 우리가 LICENSE 추가 PR 을 올린다 |
 <!-- oculpm:plan-log end -->

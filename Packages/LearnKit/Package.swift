@@ -28,6 +28,9 @@ let package = Package(
         .library(name: "ContentKit", targets: ["ContentKit"]),
         .library(name: "DesignSystem", targets: ["DesignSystem"]),
         .library(name: "OnboardingFeature", targets: ["OnboardingFeature"]),
+        .library(name: "DashboardFeature", targets: ["DashboardFeature"]),
+        .library(name: "LessonFeature", targets: ["LessonFeature"]),
+        .library(name: "ReviewFeature", targets: ["ReviewFeature"]),
     ],
     dependencies: [
         .package(url: "https://github.com/groue/GRDB.swift.git", .upToNextMinor(from: "7.11.1")),
@@ -74,7 +77,28 @@ let package = Package(
             path: "Sources/Features/OnboardingFeature",
             swiftSettings: uiSettings
         ),
+        .target(
+            name: "DashboardFeature",
+            dependencies: ["LearnCore", "LearnPersistence", "DesignSystem"],
+            path: "Sources/Features/DashboardFeature",
+            swiftSettings: uiSettings
+        ),
+        .target(
+            name: "LessonFeature",
+            dependencies: ["LearnCore", "LanguageKit", "ContentKit", "RunnerKit", "DesignSystem"],
+            path: "Sources/Features/LessonFeature",
+            swiftSettings: uiSettings
+        ),
+        .target(
+            name: "ReviewFeature",
+            dependencies: ["LearnCore", "LearnScheduling", "LearnPersistence", "DesignSystem"],
+            path: "Sources/Features/ReviewFeature",
+            swiftSettings: uiSettings
+        ),
         .testTarget(name: "ContentKitTests", dependencies: ["ContentKit"], swiftSettings: coreSettings),
+        .testTarget(name: "DashboardFeatureTests", dependencies: ["DashboardFeature"], swiftSettings: uiSettings),
+        .testTarget(name: "LessonFeatureTests", dependencies: ["LessonFeature"], swiftSettings: uiSettings),
+        .testTarget(name: "ReviewFeatureTests", dependencies: ["ReviewFeature"], swiftSettings: uiSettings),
         .testTarget(name: "DesignSystemTests", dependencies: ["DesignSystem"], swiftSettings: uiSettings),
         .testTarget(name: "OnboardingFeatureTests", dependencies: ["OnboardingFeature"], swiftSettings: uiSettings),
         .testTarget(

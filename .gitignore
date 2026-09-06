@@ -25,3 +25,8 @@ design/polyglot-study-app.html
 Packages/*/.build/
 .claude/worktrees/
 Tools/.build/
+
+# 로컬 시크릿
+.env
+.env.*
+!.env.example

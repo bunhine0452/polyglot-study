@@ -1,0 +1,22 @@
+# oculpm:begin v1
+.oculpm/index/
+.oculpm/hooks/
+.oculpm/agents/live/
+.oculpm/agents/inbox/
+.oculpm/agents/tasks/
+.oculpm/agents/leases/
+.oculpm/agents/audit/
+.oculpm/.lock
+.oculpm/.schema-version
+.oculpm/oculpm.log
+.oculpm.backup-*/
+# oculpm:end
+
+# Swift / Xcode
+.build/
+.swiftpm/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+.DS_Store
+design/polyglot-study-app.html

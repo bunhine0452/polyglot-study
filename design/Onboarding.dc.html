@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&amp;family=IBM+Plex+Sans+KR:wght@400;500;600;700&amp;display=swap">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #F4F4F2; color: #141414; font-family: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Helvetica Neue", Helvetica, sans-serif; font-size: 13px; line-height: 20px; -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+    a { color: #141414; } a:hover { color: #5F5F5C; }
+    .mono { font-family: "IBM Plex Mono", "SF Mono", Menlo, "Courier New", monospace; }
+    .lbl { font-size: 11px; line-height: 16px; letter-spacing: 0.04em; font-weight: 500; color: #5F5F5C; }
+    .dim { color: #9A9A97; }
+    .kw { font-weight: 600; } .ty { font-weight: 500; } .st { color: #5F5F5C; } .cm { color: #9A9A97; font-style: italic; }
+    .z { color: #B4B4B1; }
+  </style>
+</helmet>
+<div style="width:1280px;height:800px;display:flex;flex-direction:column;gap:20px;background:#F4F4F2;padding:40px 40px 36px;overflow:hidden;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px;border-bottom:1px solid #141414;padding-bottom:16px;">
+    <div style="display:flex;flex-direction:column;gap:8px;max-width:760px;">
+      <h1 style="margin:0;font-size:28px;line-height:36px;font-weight:600;letter-spacing:-0.01em;">툴체인 진단</h1>
+      <p style="margin:0;font-size:14px;line-height:22px;text-wrap:pretty;">10개 도구를 <span class="mono">--version</span> 으로 직접 실행해 종료 코드까지 확인했습니다 (도구당 2초 제한). 이 앱은 아무것도 대신 설치하지 않습니다 — 필요한 명령을 복사해 터미널에서 직접 실행하세요.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;white-space:nowrap;"><span class="lbl">검사 환경</span><span class="mono" style="font-size:12px;">macOS 26.6.2 · arm64 · 방금 전</span></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:32px;">
+    <div style="display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:8px;height:8px;background:#2F8F4E;flex-shrink:0;"></span><span style="font-weight:500;">설치됨</span><span class="mono" style="font-size:12px;">7</span></div>
+    <div style="display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:8px;height:8px;border:1px solid #9A9A97;flex-shrink:0;"></span><span style="font-weight:500;">미설치</span><span class="mono" style="font-size:12px;">2</span></div>
+    <div style="display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:8px;height:8px;background:#C8372D;flex-shrink:0;"></span><span style="font-weight:500;">스텁 감지</span><span class="mono" style="font-size:12px;">1</span></div>
+    <span class="dim">스텁 — 실행 파일은 있지만 실행이 실패하는 상태. 설치된 것으로 오인하기 쉽습니다.</span>
+  </div>
+  <section style="display:flex;flex-direction:column;">
+    <div class="lbl" style="display:grid;grid-template-columns:120px 120px 128px 480px 352px;padding-bottom:8px;border-bottom:1px solid #141414;"><div>트랙</div><div>도구</div><div>상태</div><div>확인 결과</div><div>설치 명령</div></div>
+    <div style="display:grid;grid-template-columns:120px 120px 128px 480px 352px;min-height:44px;align-items:center;border-bottom:1px solid #D9D9D6;padding:6px 0;"><div style="font-weight:500;">Python</div><div class="mono" style="font-size:12px;">python3</div><div style="display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:8px;height:8px;background:#2F8F4E;flex-shrink:0;"></span><span>설치됨</span></div><div style="font-size:12px;line-height:16px;color:#5F5F5C;padding-right:24px;">3.13.12 · /opt/homebrew/bin/python3</div><div></div></div>
+    <div style="display:grid;grid-template-columns:120px 120px 128px 480px 352px;min-height:44px;align-items:center;border-bottom:1px solid #D9D9D6;padding:6px 0;"><div style="font-weight:500;">SQL</div><div class="mono" style="font-size:12px;">sqlite3</div><div style="display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:8px;height:8px;background:#2F8F4E;flex-shrink:0;"></span><span>설치됨</span></div><div style="font-size:12px;line-height:16px;color:#5F5F5C;padding-right:24px;">3.51.1 · /opt/homebrew/bin/sqlite3</div><div></div></div>
+    <div style="display:grid;grid-template-columns:120px 120px 128px 480px 352px;min-height:44px;align-items:center;border-bottom:1px solid #D9D9D6;padding:6px 0;"><div style="font-weight:500;">Swift</div><div class="mono" style="font-size:12px;">swiftc</div><div style="display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:8px;height:8px;background:#2F8F4E;flex-shrink:0;"></span><span>설치됨</span></div><div style="font-size:12px;line-height:16px;color:#5F5F5C;padding-right:24px;">6.3.3 · /usr/bin/swiftc · Command Line Tools</div><div></div></div>
+    <div style="display:grid;grid-template-columns:120px 120px 128px 480px 352px;min-height:44px;align-items:center;border-bottom:1px solid #D9D9D6;padding:6px 0;"><div style="font-weight:500;">Rust</div><div class="mono" style="font-size:12px;">rustc</div><div style="display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:8px;height:8px;background:#2F8F4E;flex-shrink:0;"></span><span>설치됨</span></div><div style="font-size:12px;line-height:16px;color:#5F5F5C;padding-right:24px;">1.98.0 · ~/.cargo/bin/rustc</div><div></div></div>
+    <div style="display:grid;grid-template-columns:120px 120px 128px 480px 352px;min-height:44px;align-items:center;border-bottom:1px solid #D9D9D6;padding:6px 0;"><div style="font-weight:500;">C++</div><div class="mono" style="font-size:12px;">clang++</div><div style="display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:8px;height:8px;background:#2F8F4E;flex-shrink:0;"></span><span>설치됨</span></div><div style="font-size:12px;line-height:16px;color:#5F5F5C;padding-right:24px;">Apple clang 21.0.0 · /usr/bin/clang++</div><div></div></div>
+    <div style="display:grid;grid-template-columns:120px 120px 128px 480px 352px;min-height:44px;align-items:center;border-bottom:1px solid #D9D9D6;padding:6px 0;"><div style="font-weight:500;">Go</div><div class="mono" style="font-size:12px;">go</div><div style="display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:8px;height:8px;border:1px solid #9A9A97;flex-shrink:0;"></span><span>미설치</span></div><div style="font-size:12px;line-height:16px;color:#5F5F5C;padding-right:24px;">PATH · /opt/homebrew/bin · ~/go/bin 에서 찾지 못함</div><div><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;height:32px;padding:0 8px 0 12px;background:#FFFFFF;border:1px solid #D9D9D6;"><span class="mono" style="font-size:12px;">brew install go</span><span style="display:inline-flex;color:#5F5F5C;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5.5" y="5.5" width="8" height="8"></rect><path d="M10.5 5.5v-3h-8v8h3"></path></svg></span></div></div></div>
+    <div style="display:grid;grid-template-columns:120px 120px 128px 480px 352px;min-height:44px;align-items:center;border-bottom:1px solid #D9D9D6;padding:6px 0;"><div style="font-weight:500;">Java</div><div class="mono" style="font-size:12px;">java</div><div style="display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:8px;height:8px;background:#C8372D;flex-shrink:0;"></span><span style="font-weight:500;">스텁 감지</span></div><div style="font-size:12px;line-height:16px;color:#5F5F5C;padding-right:24px;"><span class="mono">/usr/bin/java</span> 는 있지만 실행하면 종료 코드 1 · “Unable to locate a Java Runtime”</div><div><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;height:32px;padding:0 8px 0 12px;background:#FFFFFF;border:1px solid #D9D9D6;"><span class="mono" style="font-size:12px;">brew install --cask temurin</span><span style="display:inline-flex;color:#5F5F5C;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5.5" y="5.5" width="8" height="8"></rect><path d="M10.5 5.5v-3h-8v8h3"></path></svg></span></div></div></div>
+    <div style="display:grid;grid-template-columns:120px 120px 128px 480px 352px;min-height:44px;align-items:center;border-bottom:1px solid #D9D9D6;padding:6px 0;"><div style="font-weight:500;">Next.js</div><div class="mono" style="font-size:12px;">node</div><div style="display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:8px;height:8px;background:#2F8F4E;flex-shrink:0;"></span><span>설치됨</span></div><div style="font-size:12px;line-height:16px;color:#5F5F5C;padding-right:24px;">26.7.0 · ~/.local/bin/node</div><div></div></div>
+    <div style="display:grid;grid-template-columns:120px 120px 128px 480px 352px;min-height:44px;align-items:center;border-bottom:1px solid #D9D9D6;padding:6px 0;"><div style="font-weight:500;">TypeScript</div><div class="mono" style="font-size:12px;">tsc</div><div style="display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:8px;height:8px;border:1px solid #9A9A97;flex-shrink:0;"></span><span>미설치</span></div><div style="font-size:12px;line-height:16px;color:#5F5F5C;padding-right:24px;">node 26.7.0 은 있지만 tsc 가 없음</div><div><div style="display:flex;align-items:center;justify-content:space-between;gap:12px;height:32px;padding:0 8px 0 12px;background:#FFFFFF;border:1px solid #D9D9D6;"><span class="mono" style="font-size:12px;">npm install -g typescript</span><span style="display:inline-flex;color:#5F5F5C;"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5.5" y="5.5" width="8" height="8"></rect><path d="M10.5 5.5v-3h-8v8h3"></path></svg></span></div></div></div>
+    <div style="display:grid;grid-template-columns:120px 120px 128px 480px 352px;min-height:44px;align-items:center;border-bottom:1px solid #D9D9D6;padding:6px 0;"><div style="font-weight:500;">Assembly</div><div class="mono" style="font-size:12px;">as</div><div style="display:flex;align-items:center;gap:8px;"><span style="display:inline-block;width:8px;height:8px;background:#2F8F4E;flex-shrink:0;"></span><span>설치됨</span></div><div style="font-size:12px;line-height:16px;color:#5F5F5C;padding-right:24px;">Apple clang 21.0.0 · /usr/bin/as · arm64 (AAPCS64)</div><div></div></div>
+  </section>
+  <div style="flex-grow:1;"></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;">
+    <span class="dim">미설치 트랙은 나중에 설치해도 됩니다. 설치한 뒤 ‘다시 검사’를 누르면 바로 활성화됩니다.</span>
+    <div style="display:flex;gap:8px;">
+      <div style="display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 16px;font-size:13px;font-weight:500;background:#F4F4F2;color:#141414;border:1px solid #141414;white-space:nowrap;">다시 검사</div>
+      <div style="display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 16px;font-size:13px;font-weight:500;background:#141414;color:#F4F4F2;border:1px solid #141414;white-space:nowrap;">Python · SQL · Swift 로 시작</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&amp;family=IBM+Plex+Sans+KR:wght@400;500;600;700&amp;display=swap">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #F4F4F2; color: #141414; font-family: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Helvetica Neue", Helvetica, sans-serif; font-size: 13px; line-height: 20px; -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+    a { color: #141414; } a:hover { color: #5F5F5C; }
+    .mono { font-family: "IBM Plex Mono", "SF Mono", Menlo, "Courier New", monospace; }
+    .lbl { font-size: 11px; line-height: 16px; letter-spacing: 0.04em; font-weight: 500; color: #5F5F5C; }
+    .dim { color: #9A9A97; }
+    .kw { font-weight: 600; } .ty { font-weight: 500; } .st { color: #5F5F5C; } .cm { color: #9A9A97; font-style: italic; }
+    .z { color: #B4B4B1; }
+  </style>
+</helmet>
+<div style="width:1280px;height:800px;display:flex;flex-direction:column;background:#F4F4F2;overflow:hidden;">
+  <header style="height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid #141414;flex-shrink:0;"><div style="display:flex;align-items:center;gap:12px;"><span style="display:inline-flex;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M10 3L5 8l5 5"></path></svg></span><span class="lbl">Swift · 레슨 07 / 24</span><span style="font-weight:600;">값 타입과 참조 타입</span></div><div style="display:flex;align-items:center;gap:8px;"><span class="lbl" style="margin-right:8px;">블록 4 / 6 · 테스트 과제</span><div style="display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 16px;font-size:13px;font-weight:500;background:#F4F4F2;color:#141414;border:1px solid #141414;white-space:nowrap;">제출</div><div style="display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 16px;font-size:13px;font-weight:500;background:#141414;color:#F4F4F2;border:1px solid #141414;white-space:nowrap;"><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><path d="M2 1l7 4-7 4z"></path></svg> 실행 <span style="font-family:"IBM Plex Mono","SF Mono",Menlo,monospace;font-size:11px;opacity:0.7;">⌘↩</span></div></div></header>
+  <div style="height:56px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 24px;border-bottom:1px solid #D9D9D6;flex-shrink:0;">
+    <div style="display:flex;align-items:center;gap:16px;min-width:0;"><span class="lbl" style="color:#141414;white-space:nowrap;">04 테스트 과제</span><span style="font-size:14px;"><span class="mono">Counter</span> 를 값 타입(<span class="mono">struct</span>)으로 유지한 채, <span class="mono">increment()</span> 를 두 번 호출하면 <span class="mono">count</span> 가 2 가 되도록 고치세요.</span></div>
+    <span class="lbl" style="white-space:nowrap;">테스트 3개 통과 시 완료</span>
+  </div>
+  <div style="flex-grow:1;display:grid;grid-template-columns:minmax(0,1fr) 520px;min-height:0;">
+    <section style="display:flex;flex-direction:column;background:#FFFFFF;min-width:0;">
+      <div style="height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 16px 0 24px;border-bottom:1px solid #D9D9D6;">
+        <span class="mono" style="font-size:12px;font-weight:500;">main.swift</span>
+        <span class="lbl">swiftc 6.3.3 · arm64</span>
+      </div>
+      <div style="display:flex;flex-direction:column;padding-top:12px;">
+        <div class="mono" style="display:grid;grid-template-columns:56px minmax(0,1fr);height:20px;font-size:12.5px;line-height:20px;"><div style="text-align:right;padding-right:12px;color:#B4B4B1;">1</div><div style="white-space:pre;"><span class="kw">struct</span> <span class="ty">Counter</span> {</div></div><div class="mono" style="display:grid;grid-template-columns:56px minmax(0,1fr);height:20px;font-size:12.5px;line-height:20px;"><div style="text-align:right;padding-right:12px;color:#B4B4B1;">2</div><div style="white-space:pre;">    <span class="kw">var</span> count = 0</div></div><div class="mono" style="display:grid;grid-template-columns:56px minmax(0,1fr);height:20px;font-size:12.5px;line-height:20px;"><div style="text-align:right;padding-right:12px;color:#B4B4B1;">3</div><div style="white-space:pre;">    <span class="kw">func</span> increment() {</div></div><div class="mono" style="display:grid;grid-template-columns:56px minmax(0,1fr);height:20px;font-size:12.5px;line-height:20px;background:#F4F4F2;"><div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;padding-right:12px;color:#9A9A97;"><span style="display:inline-block;width:6px;height:6px;background:#141414;flex-shrink:0;"></span><span>4</span></div><div style="white-space:pre;">        count += 1</div></div><div style="display:grid;grid-template-columns:56px minmax(0,1fr);background:#F4F4F2;border-top:1px solid #D9D9D6;border-bottom:1px solid #D9D9D6;padding:8px 16px 8px 0;">
+          <div></div>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <div style="font-size:12.5px;line-height:18px;">‘self’ 는 불변이라 <span class="mono">count</span> 에 대입할 수 없습니다. 메서드에 <span class="mono" style="font-weight:600;">mutating</span> 을 붙이면 <span class="mono">self</span> 를 바꿀 수 있습니다.</div>
+            <div class="lbl">4행 9열 · swiftc · 1개</div>
+          </div>
+        </div><div class="mono" style="display:grid;grid-template-columns:56px minmax(0,1fr);height:20px;font-size:12.5px;line-height:20px;"><div style="text-align:right;padding-right:12px;color:#B4B4B1;">5</div><div style="white-space:pre;">    }</div></div><div class="mono" style="display:grid;grid-template-columns:56px minmax(0,1fr);height:20px;font-size:12.5px;line-height:20px;"><div style="text-align:right;padding-right:12px;color:#B4B4B1;">6</div><div style="white-space:pre;">}</div></div><div class="mono" style="display:grid;grid-template-columns:56px minmax(0,1fr);height:20px;font-size:12.5px;line-height:20px;"><div style="text-align:right;padding-right:12px;color:#B4B4B1;">7</div><div style="white-space:pre;"></div></div><div class="mono" style="display:grid;grid-template-columns:56px minmax(0,1fr);height:20px;font-size:12.5px;line-height:20px;"><div style="text-align:right;padding-right:12px;color:#B4B4B1;">8</div><div style="white-space:pre;"><span class="kw">var</span> counter = <span class="ty">Counter</span>()</div></div><div class="mono" style="display:grid;grid-template-columns:56px minmax(0,1fr);height:20px;font-size:12.5px;line-height:20px;"><div style="text-align:right;padding-right:12px;color:#B4B4B1;">9</div><div style="white-space:pre;">counter.increment()</div></div><div class="mono" style="display:grid;grid-template-columns:56px minmax(0,1fr);height:20px;font-size:12.5px;line-height:20px;"><div style="text-align:right;padding-right:12px;color:#B4B4B1;">10</div><div style="white-space:pre;">counter.increment()</div></div><div class="mono" style="display:grid;grid-template-columns:56px minmax(0,1fr);height:20px;font-size:12.5px;line-height:20px;"><div style="text-align:right;padding-right:12px;color:#B4B4B1;">11</div><div style="white-space:pre;">print(counter.count)   <span class="cm">// 기대 출력: 2</span></div></div>
+      </div>
+    </section>
+    <aside style="display:flex;flex-direction:column;border-left:1px solid #141414;min-width:0;">
+      <div style="display:flex;height:40px;border-bottom:1px solid #D9D9D6;padding:0 24px;gap:24px;">
+        <div style="display:flex;align-items:center;font-weight:600;border-bottom:2px solid #141414;">출력</div>
+        <div style="display:flex;align-items:center;gap:6px;color:#5F5F5C;">테스트 <span class="mono" style="font-size:11px;">3</span></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;height:40px;padding:0 24px;border-bottom:1px solid #D9D9D6;">
+        <span style="font-weight:500;">컴파일 실패</span>
+        <div style="display:flex;align-items:center;gap:16px;" class="mono"><span style="font-size:12px;color:#5F5F5C;">0.41 s</span><span style="display:inline-flex;align-items:center;gap:8px;font-size:12px;">종료 코드 1 <span style="display:inline-block;width:8px;height:8px;background:#C8372D;flex-shrink:0;"></span></span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;padding:16px 24px;border-bottom:1px solid #D9D9D6;">
+        <span class="lbl">stderr</span>
+        <pre class="mono" style="margin:0;font-size:11px;line-height:17px;white-space:pre-wrap;word-break:break-all;overflow:hidden;color:#141414;">main.swift:4:9: error: cannot assign to property: 'self' is immutable
+ 2 |     var count = 0
+ 3 |     func increment() {
+   |     `- note: mark method 'mutating' to make 'self' mutable
+ 4 |         count += 1
+   |         `- error: cannot assign to property: 'self' is immutable
+ 5 |     }
+ 6 | }</pre>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;padding:16px 24px;border-bottom:1px solid #D9D9D6;">
+        <span class="lbl">stdout</span>
+        <span class="mono dim" style="font-size:12px;line-height:18px;">출력 없음</span>
+      </div>
+      <div style="display:flex;flex-direction:column;padding:16px 24px 0;">
+        <div style="display:flex;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid #141414;"><span class="lbl">테스트</span><span class="lbl">컴파일 후 실행됩니다</span></div>
+        <div style="display:flex;align-items:center;gap:12px;height:32px;border-bottom:1px solid #D9D9D6;"><span class="mono dim" style="font-size:12px;width:12px;text-align:center;">–</span><span style="flex-grow:1;">count 는 0 에서 시작한다</span><span class="lbl">미실행</span></div>
+        <div style="display:flex;align-items:center;gap:12px;height:32px;border-bottom:1px solid #D9D9D6;"><span class="mono dim" style="font-size:12px;width:12px;text-align:center;">–</span><span style="flex-grow:1;">increment 를 두 번 호출하면 2</span><span class="lbl">미실행</span></div>
+        <div style="display:flex;align-items:center;gap:12px;height:32px;border-bottom:1px solid #D9D9D6;"><span class="mono dim" style="font-size:12px;width:12px;text-align:center;">–</span><span style="flex-grow:1;">복사본은 원본과 독립적으로 센다</span><span class="lbl">미실행</span></div>
+      </div>
+    </aside>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

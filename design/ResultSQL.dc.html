@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&amp;family=IBM+Plex+Sans+KR:wght@400;500;600;700&amp;display=swap">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #F4F4F2; color: #141414; font-family: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Helvetica Neue", Helvetica, sans-serif; font-size: 13px; line-height: 20px; -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+    a { color: #141414; } a:hover { color: #5F5F5C; }
+    .mono { font-family: "IBM Plex Mono", "SF Mono", Menlo, "Courier New", monospace; }
+    .lbl { font-size: 11px; line-height: 16px; letter-spacing: 0.04em; font-weight: 500; color: #5F5F5C; }
+    .dim { color: #9A9A97; }
+    .kw { font-weight: 600; } .ty { font-weight: 500; } .st { color: #5F5F5C; } .cm { color: #9A9A97; font-style: italic; }
+    .z { color: #B4B4B1; }
+  </style>
+</helmet>
+<div style="width:1280px;height:800px;display:flex;flex-direction:column;background:#F4F4F2;overflow:hidden;">
+  <header style="height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid #141414;flex-shrink:0;"><div style="display:flex;align-items:center;gap:12px;"><span style="display:inline-flex;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M10 3L5 8l5 5"></path></svg></span><span class="lbl">SQL · 레슨 12 / 22</span><span style="font-weight:600;">LEFT JOIN 과 NULL</span></div><div style="display:flex;align-items:center;gap:8px;"><span class="lbl" style="margin-right:8px;">블록 4 / 6 · 테스트 과제</span><div style="display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 16px;font-size:13px;font-weight:500;background:#F4F4F2;color:#141414;border:1px solid #141414;white-space:nowrap;">제출</div><div style="display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 16px;font-size:13px;font-weight:500;background:#141414;color:#F4F4F2;border:1px solid #141414;white-space:nowrap;"><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><path d="M2 1l7 4-7 4z"></path></svg> 실행 <span style="font-family:"IBM Plex Mono","SF Mono",Menlo,monospace;font-size:11px;opacity:0.7;">⌘↩</span></div></div></header>
+  <div style="height:56px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 24px;border-bottom:1px solid #D9D9D6;flex-shrink:0;">
+    <div style="display:flex;align-items:center;gap:16px;"><span class="lbl" style="color:#141414;white-space:nowrap;">04 테스트 과제</span><span style="font-size:14px;">회원별 체크인 횟수를 구하세요. 체크인이 한 번도 없는 회원도 <span class="mono">0</span> 으로 포함해야 합니다.</span></div>
+    <span class="lbl" style="white-space:nowrap;">채점 기준 · 결과셋 비교</span>
+  </div>
+  <section style="display:flex;flex-direction:column;background:#FFFFFF;border-bottom:1px solid #141414;flex-shrink:0;">
+    <div style="height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid #D9D9D6;">
+      <span class="mono" style="font-size:12px;font-weight:500;">query.sql</span>
+      <span class="lbl">sqlite 3.51.1 · murder_mystery.db · 읽기 전용</span>
+    </div>
+    <div style="display:flex;flex-direction:column;padding:12px 0;">
+      <div class="mono" style="display:grid;grid-template-columns:56px minmax(0,1fr);height:20px;font-size:12.5px;line-height:20px;"><div style="text-align:right;padding-right:12px;color:#B4B4B1;">1</div><div style="white-space:pre;"><span class="kw">SELECT</span> m.name,</div></div><div class="mono" style="display:grid;grid-template-columns:56px minmax(0,1fr);height:20px;font-size:12.5px;line-height:20px;"><div style="text-align:right;padding-right:12px;color:#B4B4B1;">2</div><div style="white-space:pre;">       m.membership_status <span class="kw">AS</span> status,</div></div><div class="mono" style="display:grid;grid-template-columns:56px minmax(0,1fr);height:20px;font-size:12.5px;line-height:20px;"><div style="text-align:right;padding-right:12px;color:#B4B4B1;">3</div><div style="white-space:pre;">       <span class="ty">COUNT</span>(c.check_in_date) <span class="kw">AS</span> checkins</div></div><div class="mono" style="display:grid;grid-template-columns:56px minmax(0,1fr);height:20px;font-size:12.5px;line-height:20px;"><div style="text-align:right;padding-right:12px;color:#B4B4B1;">4</div><div style="white-space:pre;"><span class="kw">FROM</span>   get_fit_now_member m</div></div><div class="mono" style="display:grid;grid-template-columns:56px minmax(0,1fr);height:20px;font-size:12.5px;line-height:20px;"><div style="text-align:right;padding-right:12px;color:#B4B4B1;">5</div><div style="white-space:pre;"><span class="kw">JOIN</span>   get_fit_now_check_in c</div></div><div class="mono" style="display:grid;grid-template-columns:56px minmax(0,1fr);height:20px;font-size:12.5px;line-height:20px;"><div style="text-align:right;padding-right:12px;color:#B4B4B1;">6</div><div style="white-space:pre;">       <span class="kw">ON</span> c.membership_id = m.id</div></div><div class="mono" style="display:grid;grid-template-columns:56px minmax(0,1fr);height:20px;font-size:12.5px;line-height:20px;"><div style="text-align:right;padding-right:12px;color:#B4B4B1;">7</div><div style="white-space:pre;"><span class="kw">GROUP  BY</span> m.id</div></div><div class="mono" style="display:grid;grid-template-columns:56px minmax(0,1fr);height:20px;font-size:12.5px;line-height:20px;"><div style="text-align:right;padding-right:12px;color:#B4B4B1;">8</div><div style="white-space:pre;"><span class="kw">ORDER  BY</span> checkins <span class="kw">DESC</span>, m.name;</div></div>
+    </div>
+  </section>
+  <section style="flex-grow:1;display:flex;flex-direction:column;gap:16px;padding:16px 24px 0;min-height:0;">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:baseline;gap:12px;"><span style="font-weight:600;font-size:15px;">결과</span><span class="mono" style="font-size:12px;color:#5F5F5C;">4행 × 3열 · 12 ms</span></div>
+      <div style="display:flex;align-items:center;gap:10px;"><span style="font-weight:500;">예상 결과와 다름</span><span class="mono" style="font-size:12px;color:#5F5F5C;">일치 4 / 6 행</span><span style="display:inline-block;width:8px;height:8px;background:#C8372D;flex-shrink:0;"></span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:24px;">
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;justify-content:space-between;"><span class="lbl" style="color:#141414;">내 결과</span><span class="lbl">4행</span></div>
+        <div style="display:flex;flex-direction:column;background:#FFFFFF;"><div class="lbl" style="display:grid;grid-template-columns:1fr 100px 92px;height:28px;align-items:center;padding:0 12px;border-bottom:1px solid #141414;"><div>name</div><div>status</div><div style="text-align:right;">checkins</div></div><div class="mono" style="display:grid;grid-template-columns:1fr 100px 92px;height:28px;align-items:center;padding:0 12px;border-bottom:1px solid #D9D9D6;font-size:12px;"><div style="display:flex;align-items:center;gap:8px;">Annabel Miller</div><div>gold</div><div style="text-align:right;">5</div></div><div class="mono" style="display:grid;grid-template-columns:1fr 100px 92px;height:28px;align-items:center;padding:0 12px;border-bottom:1px solid #D9D9D6;font-size:12px;"><div style="display:flex;align-items:center;gap:8px;">Jeremy Bowers</div><div>gold</div><div style="text-align:right;">4</div></div><div class="mono" style="display:grid;grid-template-columns:1fr 100px 92px;height:28px;align-items:center;padding:0 12px;border-bottom:1px solid #D9D9D6;font-size:12px;"><div style="display:flex;align-items:center;gap:8px;">Joe Germuska</div><div>regular</div><div style="text-align:right;">2</div></div><div class="mono" style="display:grid;grid-template-columns:1fr 100px 92px;height:28px;align-items:center;padding:0 12px;border-bottom:1px solid #D9D9D6;font-size:12px;"><div style="display:flex;align-items:center;gap:8px;">Morty Schapiro</div><div>silver</div><div style="text-align:right;">1</div></div><div style="display:grid;grid-template-columns:1fr 100px 92px;height:28px;align-items:center;padding:0 12px;border:1px dashed #C8372D;border-top:none;font-size:12px;color:#C8372D;"><div>2행 누락</div><div></div><div></div></div><div style="height:28px;"></div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;justify-content:space-between;"><span class="lbl" style="color:#141414;">예상 결과</span><span class="lbl">6행 · 표시된 2행이 내 결과에 없음</span></div>
+        <div style="display:flex;flex-direction:column;background:#FFFFFF;"><div class="lbl" style="display:grid;grid-template-columns:1fr 100px 92px;height:28px;align-items:center;padding:0 12px;border-bottom:1px solid #141414;"><div>name</div><div>status</div><div style="text-align:right;">checkins</div></div><div class="mono" style="display:grid;grid-template-columns:1fr 100px 92px;height:28px;align-items:center;padding:0 12px;border-bottom:1px solid #D9D9D6;font-size:12px;"><div style="display:flex;align-items:center;gap:8px;">Annabel Miller</div><div>gold</div><div style="text-align:right;">5</div></div><div class="mono" style="display:grid;grid-template-columns:1fr 100px 92px;height:28px;align-items:center;padding:0 12px;border-bottom:1px solid #D9D9D6;font-size:12px;"><div style="display:flex;align-items:center;gap:8px;">Jeremy Bowers</div><div>gold</div><div style="text-align:right;">4</div></div><div class="mono" style="display:grid;grid-template-columns:1fr 100px 92px;height:28px;align-items:center;padding:0 12px;border-bottom:1px solid #D9D9D6;font-size:12px;"><div style="display:flex;align-items:center;gap:8px;">Joe Germuska</div><div>regular</div><div style="text-align:right;">2</div></div><div class="mono" style="display:grid;grid-template-columns:1fr 100px 92px;height:28px;align-items:center;padding:0 12px;border-bottom:1px solid #D9D9D6;font-size:12px;"><div style="display:flex;align-items:center;gap:8px;">Morty Schapiro</div><div>silver</div><div style="text-align:right;">1</div></div><div class="mono" style="display:grid;grid-template-columns:1fr 100px 92px;height:28px;align-items:center;padding:0 12px;border-bottom:1px solid #D9D9D6;font-size:12px;background:#F7E4E2;color:#C8372D;"><div style="display:flex;align-items:center;gap:8px;">Bob Bell <span style="display:inline-block;width:6px;height:6px;background:#C8372D;flex-shrink:0;"></span></div><div>regular</div><div style="text-align:right;">0</div></div><div class="mono" style="display:grid;grid-template-columns:1fr 100px 92px;height:28px;align-items:center;padding:0 12px;border-bottom:1px solid #D9D9D6;font-size:12px;background:#F7E4E2;color:#C8372D;"><div style="display:flex;align-items:center;gap:8px;">Tushar Chandra <span style="display:inline-block;width:6px;height:6px;background:#C8372D;flex-shrink:0;"></span></div><div>silver</div><div style="text-align:right;">0</div></div></div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;border-top:1px solid #D9D9D6;padding-top:12px;">
+      <div style="display:flex;flex-direction:column;gap:4px;max-width:760px;">
+        <div>누락된 2행은 모두 <span class="mono">checkins = 0</span> 입니다. 체크인이 없는 회원은 <span class="mono">JOIN</span>(내부 조인)에서 사라집니다 — 조인의 종류를 다시 보세요.</div>
+        <div class="dim">쿼리 문자열이 아니라 결과셋을 비교합니다. 열 이름과 행 순서는 무시하고 값만 봅니다. 다른 방식으로 풀어도 결과가 같으면 통과입니다.</div>
+      </div>
+      <div style="display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 16px;font-size:13px;font-weight:500;background:#F4F4F2;color:#141414;border:1px solid #141414;white-space:nowrap;">다시 실행</div>
+    </div>
+  </section>
+</div>
+</x-dc>
+</body>
+</html>

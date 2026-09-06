@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&amp;family=IBM+Plex+Sans+KR:wght@400;500;600;700&amp;display=swap">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #F4F4F2; color: #141414; font-family: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Helvetica Neue", Helvetica, sans-serif; font-size: 13px; line-height: 20px; -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+    a { color: #141414; } a:hover { color: #5F5F5C; }
+    .mono { font-family: "IBM Plex Mono", "SF Mono", Menlo, "Courier New", monospace; }
+    .lbl { font-size: 11px; line-height: 16px; letter-spacing: 0.04em; font-weight: 500; color: #5F5F5C; }
+    .dim { color: #9A9A97; }
+    .kw { font-weight: 600; } .ty { font-weight: 500; } .st { color: #5F5F5C; } .cm { color: #9A9A97; font-style: italic; }
+    .z { color: #B4B4B1; }
+  </style>
+</helmet>
+<div style="width:1280px;height:800px;display:flex;flex-direction:column;background:#F4F4F2;overflow:hidden;">
+  <header style="height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid #141414;flex-shrink:0;"><div style="display:flex;align-items:center;gap:12px;"><span style="display:inline-flex;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M10 3L5 8l5 5"></path></svg></span><span class="lbl">Swift · 레슨 07 / 24</span><span style="font-weight:600;">값 타입과 참조 타입</span></div><div style="display:flex;align-items:center;gap:8px;"><span class="lbl">블록 2 / 6</span></div></header>
+  <div style="display:grid;grid-template-columns:repeat(6, minmax(0,1fr));height:44px;border-bottom:1px solid #D9D9D6;"><div style="display:flex;align-items:center;gap:8px;padding:0 20px;border-right:1px solid #D9D9D6;"><span class="mono" style="font-size:11px;color:#5F5F5C;">01</span><span style="font-weight:500;">개념</span><span style="display:inline-flex;color:#141414;"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M2 6.5l3 3 5-7"></path></svg></span></div><div style="display:flex;align-items:center;gap:8px;padding:0 20px;border-right:1px solid #D9D9D6;background:#141414;color:#F4F4F2;border-right:1px solid #141414;"><span class="mono" style="font-size:11px;opacity:0.7;">02</span><span style="font-weight:600;">실행 예제</span><span class="lbl" style="color:#F4F4F2;opacity:0.7;margin-left:auto;">지금</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 20px;border-right:1px solid #D9D9D6;color:#9A9A97;"><span class="mono" style="font-size:11px;">03</span><span>빈칸</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 20px;border-right:1px solid #D9D9D6;color:#9A9A97;"><span class="mono" style="font-size:11px;">04</span><span>테스트 과제</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 20px;border-right:1px solid #D9D9D6;color:#9A9A97;"><span class="mono" style="font-size:11px;">05</span><span>퀴즈</span></div><div style="display:flex;align-items:center;gap:8px;padding:0 20px;border-right:1px solid #D9D9D6;color:#9A9A97;"><span class="mono" style="font-size:11px;">06</span><span>회고</span></div></div>
+  <div style="flex-grow:1;display:flex;flex-direction:column;align-items:center;padding:24px 40px 0;">
+    <div style="width:800px;display:flex;flex-direction:column;gap:16px;">
+      <div style="height:40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #D9D9D6;"><div style="display:flex;align-items:center;gap:12px;"><span class="mono" style="font-size:11px;color:#5F5F5C;">01</span><span style="font-weight:500;color:#141414;">개념</span><span style="color:#5F5F5C;">구조체는 복사되고, 클래스는 공유된다</span></div><div style="display:flex;align-items:center;gap:12px;color:#5F5F5C;"><span style="display:inline-flex;align-items:center;gap:6px;">완료 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M2 6.5l3 3 5-7"></path></svg></span><a href="#" style="text-decoration:none;border-bottom:1px solid #141414;">다시 보기</a></div></div>
+      <article style="display:flex;flex-direction:column;gap:12px;background:#FFFFFF;border-top:2px solid #141414;padding:20px 24px 24px;">
+        <div class="lbl" style="color:#141414;">02 실행 예제 · 지금</div>
+        <h2 style="margin:0;font-size:24px;line-height:32px;font-weight:600;letter-spacing:-0.01em;">복사되는 값, 공유되는 참조</h2>
+        <p style="margin:0;font-size:15px;line-height:24px;max-width:720px;text-wrap:pretty;">구조체는 대입할 때 복사되고, 클래스는 같은 인스턴스를 가리키는 참조가 넘어갑니다. 실행해서 두 print 의 결과가 왜 다른지 확인하세요.</p>
+        <pre class="mono" style="margin:0;padding:12px 16px;background:#F4F4F2;font-size:12px;line-height:18px;white-space:pre;overflow:hidden;"><span class="kw">struct</span> <span class="ty">Point</span> { <span class="kw">var</span> x = 0 }
+<span class="kw">final class</span> <span class="ty">Box</span> { <span class="kw">var</span> x = 0 }
+
+<span class="kw">var</span> p1 = <span class="ty">Point</span>(); <span class="kw">var</span> p2 = p1      <span class="cm">// 복사</span>
+p2.x = 10
+print(p1.x, p2.x)                  <span class="cm">// 0 10</span>
+
+<span class="kw">let</span> b1 = <span class="ty">Box</span>();   <span class="kw">let</span> b2 = b1      <span class="cm">// 참조 공유</span>
+b2.x = 10
+print(b1.x, b2.x)                  <span class="cm">// 10 10</span></pre>
+        <div style="display:flex;flex-direction:column;gap:6px;border:1px solid #D9D9D6;padding:10px 16px;height:80px;">
+          <div style="display:flex;justify-content:space-between;"><span class="lbl">출력</span><span class="lbl">실행 전</span></div>
+          <div class="mono dim" style="font-size:12px;line-height:18px;">—</div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;gap:8px;">
+            <div style="display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 16px;font-size:13px;font-weight:500;background:#141414;color:#F4F4F2;border:1px solid #141414;white-space:nowrap;"><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><path d="M2 1l7 4-7 4z"></path></svg> 실행 <span style="font-family:"IBM Plex Mono","SF Mono",Menlo,monospace;font-size:11px;opacity:0.7;">⌘↩</span></div>
+            <div style="display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 16px;font-size:13px;font-weight:500;background:#F4F4F2;color:#141414;border:1px solid #141414;white-space:nowrap;">다음 블록 · 빈칸</div>
+          </div>
+          <span class="dim">실행하지 않아도 넘어갈 수 있습니다</span>
+        </div>
+      </article>
+      <div style="display:flex;flex-direction:column;">
+        <div style="height:40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #D9D9D6;"><div style="display:flex;align-items:center;gap:12px;"><span class="mono" style="font-size:11px;color:#9A9A97;">03</span><span style="font-weight:500;color:#9A9A97;">빈칸</span><span style="color:#9A9A97;">예제에서 비운 두 곳을 채웁니다</span></div><div style="display:flex;align-items:center;gap:12px;color:#9A9A97;"><span>다음</span></div></div>
+        <div style="height:40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #D9D9D6;"><div style="display:flex;align-items:center;gap:12px;"><span class="mono" style="font-size:11px;color:#9A9A97;">04 – 06</span><span style="font-weight:500;color:#9A9A97;">테스트 과제 · 퀴즈 · 회고</span><span style="color:#9A9A97;">순서대로 열립니다</span></div><div style="display:flex;align-items:center;gap:12px;color:#9A9A97;"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

@@ -33,9 +33,19 @@ struct TokensTests {
         #expect(Spacing.xs == Spacing.unit / 2)
     }
 
+    @Test("폴백 폰트 이름이 이 머신에서 실제로 해석된다")
+    func fallbackFontsResolve() {
+        // "SF Mono" 가 NSFont(name:) 으로 해석되지 않는 것을 실측하고 Menlo 로 바꿨다.
+        // 폴백 이름이 죽어 있으면 화면은 우연히 맞아도 토큰이 거짓말을 한다.
+        #expect(NSFont(name: Typography.sansFallback, size: 13) != nil,
+                "\(Typography.sansFallback) 해석 실패")
+        #expect(NSFont(name: Typography.monoFallback, size: 13) != nil,
+                "\(Typography.monoFallback) 해석 실패")
+    }
+
     @Test("타입 스케일이 디자인 실측값과 일치한다")
     func typeScaleMatchesDesign() {
-        #expect(Typography.Sans.allCases.map(\.rawValue) == [11, 13, 15, 20, 24, 28, 32])
-        #expect(Typography.Mono.allCases.map(\.rawValue) == [11, 12, 12.5])
+        #expect(Typography.Sans.allCases.map(\.rawValue).sorted() == [11, 12, 13, 14, 15, 18, 20, 24, 28, 32])
+        #expect(Typography.Mono.allCases.map(\.rawValue).sorted() == [11, 11.5, 12, 12.5])
     }
 }

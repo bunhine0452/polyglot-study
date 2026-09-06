@@ -10,7 +10,13 @@ internal import Foundation
 /// "창이 실제로 떠서 이렇게 그려졌다"를 남기려면 앱 자신이 찍는 수밖에 없다.
 enum Snapshot {
     /// 창이 레이아웃을 끝내고 첫 프레임을 그릴 시간. 벽시계 단언이라 넉넉히 잡는다.
-    private static let settleDelay: TimeInterval = 2.0
+    ///
+    /// 비동기 작업이 끝난 뒤를 찍어야 하면 `POLYGLOT_SNAPSHOT_DELAY` 로 늘린다 —
+    /// 툴체인 스캔은 도구당 2초 상한 × 10개 순차라 기본 2초로는 "확인 중…" 만 찍힌다.
+    private static var settleDelay: TimeInterval {
+        ProcessInfo.processInfo.environment["POLYGLOT_SNAPSHOT_DELAY"]
+            .flatMap(TimeInterval.init) ?? 2.0
+    }
 
     static func captureAndTerminateIfRequested() {
         guard let path = ProcessInfo.processInfo.environment["POLYGLOT_SNAPSHOT_PATH"],

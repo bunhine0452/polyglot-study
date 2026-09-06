@@ -19,9 +19,9 @@ struct DiagnosticRowView: View {
             statusCell
                 .frame(width: OnboardingLayout.statusWidth, alignment: .leading)
             detailCell
-                .frame(width: OnboardingLayout.detailWidth, alignment: .leading)
+                .frame(minWidth: OnboardingLayout.detailMinWidth, maxWidth: .infinity, alignment: .leading)
             commandCell
-                .frame(width: OnboardingLayout.commandWidth, alignment: .leading)
+                .frame(minWidth: OnboardingLayout.commandMinWidth, maxWidth: OnboardingLayout.commandMinWidth * 1.6, alignment: .leading)
         }
         .padding(.vertical, Spacing.s)
         .frame(minHeight: OnboardingLayout.rowMinHeight, alignment: .leading)
@@ -89,8 +89,11 @@ enum OnboardingLayout {
     static let trackWidth: CGFloat = 120
     static let toolWidth: CGFloat = 120
     static let statusWidth: CGFloat = 128
-    static let detailWidth: CGFloat = 480
-    static let commandWidth: CGFloat = 352
+    /// 디자인 실측은 480/352 지만 그건 아트보드 폭 기준이다. 사이드바 232 와 좌우 여백까지
+    /// 더하면 1440 창을 넘겨 표가 잘린다(실측). 두 열은 **최소 폭 + 신축**으로 둔다 —
+    /// 좁은 창에서는 줄어들고 넓은 창에서는 디자인 비율(약 4:3)을 유지한다.
+    static let detailMinWidth: CGFloat = 320
+    static let commandMinWidth: CGFloat = 240
     /// 스캔 중에도 확정 결과와 같은 높이를 예약한다 — 결과가 채워질 때 표가 튀지 않게.
     static let rowMinHeight: CGFloat = 44
 }

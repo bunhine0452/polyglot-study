@@ -131,8 +131,8 @@ public struct OnboardingView: View {
                 LabelTextView("트랙").frame(width: OnboardingLayout.trackWidth, alignment: .leading)
                 LabelTextView("도구").frame(width: OnboardingLayout.toolWidth, alignment: .leading)
                 LabelTextView("상태").frame(width: OnboardingLayout.statusWidth, alignment: .leading)
-                LabelTextView("확인 결과").frame(width: OnboardingLayout.detailWidth, alignment: .leading)
-                LabelTextView("설치 명령").frame(width: OnboardingLayout.commandWidth, alignment: .leading)
+                LabelTextView("확인 결과").frame(minWidth: OnboardingLayout.detailMinWidth, maxWidth: .infinity, alignment: .leading)
+                LabelTextView("설치 명령").frame(minWidth: OnboardingLayout.commandMinWidth, maxWidth: OnboardingLayout.commandMinWidth * 1.6, alignment: .leading)
             }
             .padding(.bottom, Spacing.s)
             RuleView(color: Palette.ruleHard)

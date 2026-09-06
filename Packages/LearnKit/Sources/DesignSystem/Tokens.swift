@@ -41,12 +41,14 @@ public enum Palette {
 public enum Typography {
     /// 본문·UI. IBM Plex Sans KR, 폴백은 Apple SD Gothic Neo.
     public enum Sans: CGFloat, CaseIterable, Sendable {
-        case micro = 11, label = 13, body = 15, subtitle = 20
-        case title = 24, display = 28, hero = 32
+        case micro = 11, caption = 12, label = 13, note = 14, body = 15
+        case brand = 18, subtitle = 20, title = 24, display = 28, hero = 32
     }
 
     /// 코드·수치. IBM Plex Mono, 폴백은 SF Mono.
     public enum Mono: CGFloat, CaseIterable, Sendable {
+        /// 레지스터 표의 헥스 열 전용. 디자인에서 38회 쓰인다.
+        case register = 11.5
         case micro = 11, label = 12, code = 12.5
     }
 
@@ -56,7 +58,12 @@ public enum Typography {
     /// 폰트 등록 전이거나 실패했을 때의 폴백. 메트릭이 가까운 것으로 골랐다 —
     /// PNG·PDF 내보내기에서는 항상 이쪽이 나온다.
     public static let sansFallback = "Apple SD Gothic Neo"
-    public static let monoFallback = "SF Mono"
+
+    /// `"SF Mono"` 도 `"SFMono-Regular"` 도 `NSFont(name:)` 으로 **해석되지 않는다**(실측).
+    /// 시스템 UI 폰트 계열이라 이름으로 조회할 수 없다. 이름 기반 폴백이 필요한 자리에는
+    /// Menlo 를, 그렇지 않은 자리에는 `.system(design: .monospaced)` 를 쓴다 —
+    /// 후자가 실질적으로 SF Mono 이므로 화면상 결과는 그쪽이 낫다.
+    public static let monoFallback = "Menlo"
 
     /// 12.5pt 모노에서 행 높이가 20px 이 되도록 하는 값. 8px 그리드와 맞물린다.
     public static let codeLineHeight: CGFloat = 20

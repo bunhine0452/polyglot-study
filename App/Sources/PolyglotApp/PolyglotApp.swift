@@ -1,10 +1,19 @@
+internal import Foundation
 internal import DesignSystem
+internal import OnboardingFeature
 internal import SwiftUI
 
 /// 앱 타깃의 **유일한** 컴파일 소스. 화면은 전부 LearnKit 안에 있고 여기서는 셸만 세운다.
 @main
 struct PolyglotApp: App {
-    @State private var selection: ShellDestination = .today
+    @State private var selection: ShellDestination = Self.initialDestination
+
+    /// 디버그용 시작 목적지. 스냅샷으로 특정 화면을 굽거나, 개발 중 매번 클릭하지 않기 위해.
+    /// 값이 없거나 이상하면 조용히 `.today` 로 떨어진다 — 릴리스 동작에 영향을 주지 않는다.
+    private static var initialDestination: ShellDestination {
+        ProcessInfo.processInfo.environment["POLYGLOT_START_DESTINATION"]
+            .flatMap(ShellDestination.init(rawValue:)) ?? .today
+    }
 
     init() {
         Snapshot.captureAndTerminateIfRequested()
@@ -25,11 +34,22 @@ struct PolyglotApp: App {
 private struct RootView: View {
     @Binding var selection: ShellDestination
 
+    /// 툴체인 감지는 서브프로세스를 10번 띄운다. 화면을 오갈 때마다 다시 훑지 않도록
+    /// 모델을 셸 수명에 붙인다.
+    @State private var onboarding = OnboardingModel()
+
     var body: some View {
         AppShell(selection: $selection, badge: badge) { destination in
             ShellContent {
                 ShellHeader(destination.title, trailing: Self.today)
-                PlaceholderPanel(destination: destination)
+                switch destination {
+                case .toolchain:
+                    // 첫 실제 화면. 목 데이터가 아니라 RunnerKit 의 ToolchainProbe 가
+                    // 이 머신을 실제로 훑은 결과를 그린다.
+                    OnboardingView(model: onboarding)
+                case .today, .tracks, .review:
+                    PlaceholderPanel(destination: destination)
+                }
             }
         }
         .frame(minWidth: 1040, minHeight: 680)
@@ -37,7 +57,12 @@ private struct RootView: View {
 
     /// 아직 데이터 계층이 셸에 붙지 않았다. 배지가 붙을 자리만 비워 둔다 —
     /// 화면이 생기면 여기서 실제 카운트를 넘긴다.
-    private func badge(for destination: ShellDestination) -> String? { nil }
+    private func badge(for destination: ShellDestination) -> String? {
+        // 지금 배지를 낼 수 있는 곳은 툴체인뿐이다 — 나머지는 데이터 계층이 아직 안 붙었다.
+        guard destination == .toolchain else { return nil }
+        let unresolved = onboarding.summary.missing + onboarding.summary.problem
+        return unresolved > 0 ? String(unresolved) : nil
+    }
 
     private static let today: String = {
         let formatter = DateFormatter()

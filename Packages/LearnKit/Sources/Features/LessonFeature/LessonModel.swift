@@ -112,7 +112,7 @@ public final class LessonModel {
     private let baseSteps: [Step]
 
     public private(set) var transcript: ConsoleTranscript = .empty
-    public private(set) var resultTable: ResultTable?
+    public private(set) var resultSet: ResultSet?
     public private(set) var diagnostics: [Diagnostic] = []
     public private(set) var runState: RunState = .idle
 
@@ -179,7 +179,7 @@ public final class LessonModel {
 
     public var blocks: [LessonBlock] { content.blocks }
     public var language: LanguageID { content.language }
-    public var presentation: ResultPresentation { LessonPresentation.presentation(for: language) }
+    public var presenter: GradeResult.Presenter { LessonPresentation.presenter(for: language) }
 
     /// 헤더의 `Swift · 레슨 07 / 24`.
     public var trackCaption: String {
@@ -248,7 +248,7 @@ public final class LessonModel {
 
     private func resetTransientState() {
         transcript = .empty
-        resultTable = nil
+        resultSet = nil
         diagnostics = []
         runState = .idle
         blankChecked = false
@@ -263,7 +263,7 @@ public final class LessonModel {
     public func runExample() async {
         guard let example = content.document.example, !runState.isBusy else { return }
         transcript = ConsoleTranscript(isRunning: true)
-        resultTable = nil
+        resultSet = nil
         diagnostics = []
         runState = .preparing
 
@@ -331,8 +331,8 @@ public final class LessonModel {
             transcript.append(String(decoding: data, as: UTF8.self), stream: .error)
         case .diagnostic(let diagnostic):
             diagnostics.append(diagnostic)
-        case .resultSet(let resultSet):
-            resultTable = ResultSetBridge.table(from: resultSet)
+        case .resultSet(let incoming):
+            resultSet = incoming
         case .truncated:
             transcript.markTruncated()
         case .finished(let termination):

@@ -31,7 +31,7 @@ struct LessonStepBar: View {
             HStack(spacing: Spacing.s) {
                 MonoText(step.ordinal, size: .micro, color: numberColor(step))
                 Text(step.name)
-                    .font(LessonFont.sans(.label, weight: isActive ? .semibold : .medium))
+                    .font(AppFont.sans(.label, weight: isActive ? .semibold : .medium))
                     .foregroundStyle(nameColor(step))
                     .lineLimit(1)
                 if step.state == .done {
@@ -90,7 +90,7 @@ struct LessonTopBar: View {
             }
             LabelText(trackCaption)
             Text(title)
-                .font(LessonFont.sans(.label, weight: .semibold))
+                .font(AppFont.sans(.label, weight: .semibold))
                 .foregroundStyle(Palette.ink)
                 .lineLimit(1)
             Spacer(minLength: Spacing.m)

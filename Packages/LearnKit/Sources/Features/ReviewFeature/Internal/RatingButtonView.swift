@@ -15,7 +15,7 @@ struct RatingButtonView: View {
             ZStack(alignment: .topLeading) {
                 VStack(spacing: Spacing.xs) {
                     Text(spec.label)
-                        .font(.reviewSans(.body, weight: .medium))
+                        .font(AppFont.sans(.body, weight: .medium))
                         .foregroundStyle(Palette.ink)
                     MonoText(spec.intervalLabel, size: .label, color: Palette.secondary)
                 }

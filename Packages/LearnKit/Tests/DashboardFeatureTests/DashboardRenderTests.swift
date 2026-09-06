@@ -1,3 +1,4 @@
+import LanguageKit
 import LearnCore
 import SwiftUI
 import Testing
@@ -23,13 +24,19 @@ struct DashboardRenderTests {
         try await fixture.seedReviewStreak(days: Array(0..<14))
 
         let model = fixture.model(toolchainStatus: { language in
+            func ready(_ tool: String, _ version: String) -> TrackToolchainStatus {
+                .probed(tool: tool, .ready(version: version, executablePath: "/usr/bin/\(tool)"))
+            }
             switch language.rawValue {
-            case "swift": .ready(tool: "swiftc", version: "6.3.3")
-            case "sql": .ready(tool: "sqlite3", version: "3.51.1")
-            case "python": .ready(tool: "python3", version: "3.14.3")
-            case "go", "typescript": .missing(tool: language.rawValue)
-            case "java": .stub(tool: "java")
-            default: .unknown
+            case "swift": return ready("swiftc", "6.3.3")
+            case "sql": return ready("sqlite3", "3.51.1")
+            case "python": return ready("python3", "3.14.3")
+            case "go", "typescript":
+                return .probed(
+                    tool: language.rawValue, .missing(installHint: "brew install \(language.rawValue)"))
+            case "java":
+                return .probed(tool: "java", .stub(path: "/usr/bin/java", reason: "런타임 없음"))
+            default: return .unknown
             }
         })
         await model.load()

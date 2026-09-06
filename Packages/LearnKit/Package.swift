@@ -82,7 +82,16 @@ let package = Package(
             swiftSettings: coreSettings
         ),
         .testTarget(name: "LearnCoreTests", dependencies: ["LearnCore"], swiftSettings: coreSettings),
-        .target(name: "DesignSystem", swiftSettings: uiSettings),
+        // `LearnCore` 하나만 본다. 프리젠터가 `GradeResult.Presenter` 와 `ResultSet` 을
+        // **그대로** 받기 위해서다 — 이 의존이 없던 동안 디자인 시스템은 두 타입을 옮겨
+        // 적은 미러(`ResultPresentation`·`ResultTable`)를 들고 있었고, 화면 계층에 그
+        // 둘을 잇는 변환기가 하나 더 있었다.
+        //
+        // `LearnCore` 는 값 타입과 프로토콜만 있는 모듈이다(GRDB·Subprocess 를 모른다).
+        // 스토어·러너가 있는 `LearnPersistence`·`RunnerKit` 은 여기서 보이면 안 되고,
+        // `LanguageKit` 도 붙이지 않는다 — 필요한 쪽은 `ModuleAvailability` 를 쓰는
+        // `DashboardFeature` 이지 디자인 시스템이 아니다.
+        .target(name: "DesignSystem", dependencies: ["LearnCore"], swiftSettings: uiSettings),
         .target(
             name: "OnboardingFeature",
             dependencies: ["LearnCore", "LanguageKit", "RunnerKit", "DesignSystem"],
@@ -91,7 +100,11 @@ let package = Package(
         ),
         .target(
             name: "DashboardFeature",
-            dependencies: ["LearnCore", "LearnPersistence", "DesignSystem"],
+            // `LanguageKit` 은 툴체인 열 때문에 붙는다. 감지 결과를 받는 포트가
+            // `ModuleAvailability` 를 **그대로** 실어 나른다 — 그 타입을 못 보던 동안
+            // 여기 ready·missing·stub 을 다시 적은 열거형이 있었다. 감지를 실제로
+            // 수행하는 `RunnerKit` 은 여전히 보이지 않는다(포트는 결과만 받는다).
+            dependencies: ["LearnCore", "LanguageKit", "LearnPersistence", "DesignSystem"],
             path: "Sources/Features/DashboardFeature",
             swiftSettings: uiSettings
         ),

@@ -11,7 +11,7 @@ struct DiagnosticRowView: View {
     var body: some View {
         HStack(spacing: 0) {
             Text(row.trackName)
-                .font(.appSans(.label, weight: .medium))
+                .font(AppFont.sans(.label, weight: .medium))
                 .foregroundStyle(Palette.ink)
                 .frame(width: OnboardingLayout.trackWidth, alignment: .leading)
             MonoTextView(text: row.toolName, size: .label, color: Palette.secondary)
@@ -35,7 +35,7 @@ struct DiagnosticRowView: View {
             HStack(spacing: Spacing.s) {
                 StatusGlyphView(glyph: .emptySquare, tint: Palette.cellEmpty)
                 Text("확인 중…")
-                    .font(.appSans(.label))
+                    .font(AppFont.sans(.label))
                     .foregroundStyle(Palette.faint)
             }
         case let .resolved(availability):
@@ -43,7 +43,7 @@ struct DiagnosticRowView: View {
             HStack(spacing: Spacing.s) {
                 StatusGlyphView(glyph: presentation.glyph, tint: glyphColor(presentation.glyph))
                 Text(presentation.statusLabel)
-                    .font(.appSans(.label, weight: .medium))
+                    .font(AppFont.sans(.label, weight: .medium))
                     .foregroundStyle(Palette.ink)
             }
         }
@@ -58,7 +58,7 @@ struct DiagnosticRowView: View {
             // 디자인은 이 열을 12px 산스로 그린다. `Typography.Sans` 스케일이 11(micro)에서
             // 13(label)으로 건너뛰어 정확히 12px 인 값이 없다 — micro 로 근사한다.
             Text(availability.presentation.detailText)
-                .font(.appSans(.micro))
+                .font(AppFont.sans(.micro))
                 .foregroundStyle(Palette.secondary)
                 .lineLimit(2)
                 .padding(.trailing, Spacing.l)

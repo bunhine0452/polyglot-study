@@ -12,7 +12,7 @@ struct LabelTextView: View {
 
     var body: some View {
         Text(text)
-            .font(.appSans(.micro, weight: .medium))
+            .font(AppFont.sans(.micro, weight: .medium))
             .tracking(0.4)
             .foregroundStyle(Palette.secondary)
     }

@@ -10,7 +10,7 @@ struct MonoTextView: View {
 
     var body: some View {
         Text(text)
-            .font(.appMono(size))
+            .font(AppFont.mono(size))
             .foregroundStyle(color)
     }
 }

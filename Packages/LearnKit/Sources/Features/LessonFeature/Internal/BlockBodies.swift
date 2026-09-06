@@ -20,9 +20,9 @@ struct ExampleBlockBody: View {
             ProseCodeBlock(block.code, language: block.codeFenceLanguage)
             ResultSlot(.lessonOutput) {
                 ResultPresenterView(
-                    model.presentation,
+                    model.presenter,
                     transcript: model.transcript,
-                    table: model.resultTable
+                    resultSet: model.resultSet
                 )
             }
             if !model.diagnostics.isEmpty {
@@ -32,7 +32,7 @@ struct ExampleBlockBody: View {
                 HStack(spacing: Spacing.s) {
                     StatusDot(matches ? .pass : .fail, label: matches ? "기대와 같음" : "기대와 다름")
                     Text(matches ? "기대 출력과 같습니다." : "기대 출력과 다릅니다.")
-                        .font(LessonFont.sans(.label))
+                        .font(AppFont.sans(.label))
                         .foregroundStyle(matches ? Palette.pass : Palette.fail)
                 }
             }
@@ -55,7 +55,7 @@ struct DiagnosticList: View {
                     .padding(.top, Spacing.xs)
                     MonoText(location(diagnostic), size: .micro, color: Palette.faint)
                     Text(diagnostic.message)
-                        .font(LessonFont.sans(.label))
+                        .font(AppFont.sans(.label))
                         .foregroundStyle(
                             diagnostic.severity == .error ? Palette.fail : Palette.secondary
                         )
@@ -174,7 +174,7 @@ struct TaskBlockBody: View {
                     revealedHints += 1
                 } label: {
                     Text("힌트 보기 (\(revealedHints) / \(block.hints.count))")
-                        .font(LessonFont.sans(.label))
+                        .font(AppFont.sans(.label))
                         .foregroundStyle(Palette.ink)
                         .overlay(alignment: .bottom) {
                             Rule(.hard).offset(y: Rules.thickness)
@@ -207,7 +207,7 @@ struct QuizBlockBody: View {
                     HStack(spacing: Spacing.s) {
                         StatusDot(model.quizIsCorrect == true ? .pass : .fail)
                         Text(model.quizIsCorrect == true ? "정답입니다." : "정답이 아닙니다.")
-                            .font(LessonFont.sans(.label, weight: .medium))
+                            .font(AppFont.sans(.label, weight: .medium))
                             .foregroundStyle(
                                 model.quizIsCorrect == true ? Palette.pass : Palette.fail)
                     }
@@ -266,7 +266,7 @@ struct ReflectionBlockBody: View {
                         axis: .vertical
                     )
                     .textFieldStyle(.plain)
-                    .font(LessonFont.sans(.note))
+                    .font(AppFont.sans(.note))
                     .foregroundStyle(Palette.ink)
                     .lineLimit(3...6)
                     .padding(Spacing.s)

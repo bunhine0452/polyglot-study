@@ -1,0 +1,8 @@
+True
+False
+True
+True
+False
+폭염 경보
+입장 가능
+우산 없이 외출

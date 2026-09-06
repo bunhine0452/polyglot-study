@@ -1,0 +1,13 @@
+# polyglot stableids v1
+python-conditionals-if-elif-else	python	lessons/python-conditionals-if-elif-else.md
+python-dictionaries	python	lessons/python-dictionaries.md
+python-exception-handling	python	lessons/python-exception-handling.md
+python-file-input-output	python	lessons/python-file-input-output.md
+python-for-loop-and-range	python	lessons/python-for-loop-and-range.md
+python-functions-def-return	python	lessons/python-functions-def-return.md
+python-list-basics	python	lessons/python-list-basics.md
+python-list-comprehension	python	lessons/python-list-comprehension.md
+python-print-basics	python	lessons/python-print-basics.md
+python-strings-and-fstring	python	lessons/python-strings-and-fstring.md
+python-variables-and-numeric-operators	python	lessons/python-variables-and-numeric-operators.md
+python-while-loop-break-continue	python	lessons/python-while-loop-break-continue.md

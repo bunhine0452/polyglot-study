@@ -1,0 +1,11 @@
+화
+92
+4600
+{'americano': 4100, 'latte': 4600, 'juice': 5200}
+None
+0
+True False
+americano 4100
+latte 4600
+juice 5200
+합계: 13900

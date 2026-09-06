@@ -1,0 +1,504 @@
+{
+  "displayName" : "파이썬 첫걸음",
+  "files" : [
+    {
+      "bytes" : 76,
+      "path" : "expected/python-conditionals-if-elif-else.txt",
+      "sha256" : "39a4a4515e7062d528da17b62367dfa735d7d0012931e3c49a38f523c5010764"
+    },
+    {
+      "bytes" : 131,
+      "path" : "expected/python-dictionaries.txt",
+      "sha256" : "93753ecb69660bc3b6c5b0822b290f76ff0d2614590d75b97c896933d8982c5b"
+    },
+    {
+      "bytes" : 151,
+      "path" : "expected/python-exception-handling.txt",
+      "sha256" : "90acd88a7e09fe3a96a2b65fffeefe9a6b20c57654ea2cd4085dff100170ec86"
+    },
+    {
+      "bytes" : 190,
+      "path" : "expected/python-file-input-output.txt",
+      "sha256" : "e73963367d8ab617b94a88470268c3987460f269979763d4b06b2613378ee523"
+    },
+    {
+      "bytes" : 102,
+      "path" : "expected/python-for-loop-and-range.txt",
+      "sha256" : "67c60aa7c31cb7f8dfb0ead3510894fa61aed548b6678b9a69d7875f8938de6e"
+    },
+    {
+      "bytes" : 54,
+      "path" : "expected/python-functions-def-return.txt",
+      "sha256" : "c29b49274a97ad757178f912d3d15a35eef49c904b596fb20d3065550419b614"
+    },
+    {
+      "bytes" : 142,
+      "path" : "expected/python-list-basics.txt",
+      "sha256" : "4afd379ff6cf346b63719742c683f5b0f68ff7344a059803b84a035536454d08"
+    },
+    {
+      "bytes" : 120,
+      "path" : "expected/python-list-comprehension.txt",
+      "sha256" : "e054cb358c3ba8a620ef3bf7e901e92fb0c33a40daa0b5c5844899fb248ca29d"
+    },
+    {
+      "bytes" : 64,
+      "path" : "expected/python-print-basics.txt",
+      "sha256" : "f182dd39aaa1a0884a25a8dfda1c9ff600d12569600bc5427b7227b3e5b0c8e6"
+    },
+    {
+      "bytes" : 54,
+      "path" : "expected/python-strings-and-fstring.txt",
+      "sha256" : "8a066909a6faaa4ddffbf489009aaa646054869200f87001d2fab362b824871c"
+    },
+    {
+      "bytes" : 75,
+      "path" : "expected/python-variables-and-numeric-operators.txt",
+      "sha256" : "f5588ddc1f8b59475e9580660a8516d67b1a3303d40e31567c33200bc9f329bf"
+    },
+    {
+      "bytes" : 58,
+      "path" : "expected/python-while-loop-break-continue.txt",
+      "sha256" : "cdf03ac8c207963332c7c3bbb368bb397971d7f902161d3dcc38c75c3b9d7441"
+    },
+    {
+      "bytes" : 5780,
+      "path" : "lessons/python-conditionals-if-elif-else.md",
+      "sha256" : "d717b11538643450d91b5b3dfb82c1b0e0c7602c39706540b166a1ed078a3ef4"
+    },
+    {
+      "bytes" : 5518,
+      "path" : "lessons/python-dictionaries.md",
+      "sha256" : "9e6cca0f713cf93ccf589fd1609f98bbb625904fd27e72e5af3b9eb879faa2c5"
+    },
+    {
+      "bytes" : 6490,
+      "path" : "lessons/python-exception-handling.md",
+      "sha256" : "f603e4686419ea48a70948acfdc5fbd27cf6c0e22f5b765e305e12a9dfd3fcd1"
+    },
+    {
+      "bytes" : 6851,
+      "path" : "lessons/python-file-input-output.md",
+      "sha256" : "6cedd723ee4698995543584077e1e323b0955fbcbb55ed48ae67722332d4ef8c"
+    },
+    {
+      "bytes" : 4986,
+      "path" : "lessons/python-for-loop-and-range.md",
+      "sha256" : "1f231ee5dc705fdfb859c942016b9999c97af5578922f77aec1381bf078ccb83"
+    },
+    {
+      "bytes" : 5485,
+      "path" : "lessons/python-functions-def-return.md",
+      "sha256" : "05a5d94d383bce15c7d6fca0ac56ca8bb7f394ee6b2a8bbac628f6a45a03bc14"
+    },
+    {
+      "bytes" : 5469,
+      "path" : "lessons/python-list-basics.md",
+      "sha256" : "1ca950db0ba2ba70055f318977f2b11bb1d427dd5215fa16dec52a5a1cc8328d"
+    },
+    {
+      "bytes" : 5374,
+      "path" : "lessons/python-list-comprehension.md",
+      "sha256" : "0933aba02695d70b5e51d5138ee7cf519495634620ef68ed1f11c8bf7792b6ff"
+    },
+    {
+      "bytes" : 5544,
+      "path" : "lessons/python-print-basics.md",
+      "sha256" : "b9bf06fc09fc2a4a12d28b06e6b9c8f9ecb92984aae9e4442ee03faaa770b364"
+    },
+    {
+      "bytes" : 5880,
+      "path" : "lessons/python-strings-and-fstring.md",
+      "sha256" : "ad52b99d4d27b4a6806073b9e2453a77bca14fbc799419d7b1f1e148c0a66f8b"
+    },
+    {
+      "bytes" : 5942,
+      "path" : "lessons/python-variables-and-numeric-operators.md",
+      "sha256" : "01a9caf31ef45fb6138d3003fb81fb6722b5ee3316cbd64098797737492b64b1"
+    },
+    {
+      "bytes" : 6215,
+      "path" : "lessons/python-while-loop-break-continue.md",
+      "sha256" : "ea1ad0a468ce132596d8912a01f5e002dcdd6f01052c4b385d4bea04a32bf357"
+    },
+    {
+      "bytes" : 179,
+      "path" : "solutions/python-conditionals-if-elif-else.py",
+      "sha256" : "8b57e1fddfd4e2cc820aa6ba33d7536d410c505b69a36be9e237ca6a15045ee7"
+    },
+    {
+      "bytes" : 123,
+      "path" : "solutions/python-dictionaries.py",
+      "sha256" : "66a3fc43168de1e68432a35cf58805093dcafb923b50496459d695bd38f74ae0"
+    },
+    {
+      "bytes" : 312,
+      "path" : "solutions/python-exception-handling.py",
+      "sha256" : "1687f5654f82036a95d58aa25988728c8e7cac5171ffd4cd2f8fd18b57dd31f9"
+    },
+    {
+      "bytes" : 237,
+      "path" : "solutions/python-file-input-output.py",
+      "sha256" : "3ee773b5ffe83e9d1eb5a4cc0f816a854af98561442595a2956ba96d9ac94f29"
+    },
+    {
+      "bytes" : 152,
+      "path" : "solutions/python-for-loop-and-range.py",
+      "sha256" : "0098d1d65ef5eb4c096aa0f11728bfb4c07fd0201f60a425a00922d7e7b2523c"
+    },
+    {
+      "bytes" : 153,
+      "path" : "solutions/python-functions-def-return.py",
+      "sha256" : "8164183bdbbe807dba498bb139b997ff2f385288fb2d495d27e7c80df97f0ec9"
+    },
+    {
+      "bytes" : 154,
+      "path" : "solutions/python-list-basics.py",
+      "sha256" : "4c96bdb54ea51d1c54da5094991c9a638e2e4844cc75fe7168c34da3a395c46c"
+    },
+    {
+      "bytes" : 77,
+      "path" : "solutions/python-list-comprehension.py",
+      "sha256" : "1f7380840b91b8af484ee887ba953a6311127a4bc916a1ecddeeb06ae68c0a1a"
+    },
+    {
+      "bytes" : 70,
+      "path" : "solutions/python-print-basics.py",
+      "sha256" : "9a2fe0ba87086258d47dd1104755db442e70c2655f4025ae544d42f52f1f1358"
+    },
+    {
+      "bytes" : 99,
+      "path" : "solutions/python-strings-and-fstring.py",
+      "sha256" : "a4cde7e46c0004a35504b82eeecfc4be3fb9d3d8a2b651a0e0dc51d16680e702"
+    },
+    {
+      "bytes" : 110,
+      "path" : "solutions/python-variables-and-numeric-operators.py",
+      "sha256" : "8800a7122bf2956a472b7c4137e68a60496d768a8754cf017cde0bf75beab7fe"
+    },
+    {
+      "bytes" : 262,
+      "path" : "solutions/python-while-loop-break-continue.py",
+      "sha256" : "40b9c581aa8a8900bafa231d6ebf958d09b24ad2c3449f845c7008b00dbdc7b0"
+    },
+    {
+      "bytes" : 884,
+      "path" : "stableids.lock",
+      "sha256" : "dbed622a099dae6b07dc2c4322a67e81c6a87a3a3b6c0b649767f2b4f781793d"
+    },
+    {
+      "bytes" : 381,
+      "path" : "starters/python-conditionals-if-elif-else.py",
+      "sha256" : "8d9db9f1a4e39947ded37451263a66c042316cdc72cfd95142c9a397181bda48"
+    },
+    {
+      "bytes" : 297,
+      "path" : "starters/python-dictionaries.py",
+      "sha256" : "f450287ed4c54e5da8066fc442b6efe00f7ae65265e12f7e3eebde87648f52f3"
+    },
+    {
+      "bytes" : 466,
+      "path" : "starters/python-exception-handling.py",
+      "sha256" : "3a72faa2a0e935b6be0b6c15ae3c9f70062abfc6a06f81a16f403a37524072c9"
+    },
+    {
+      "bytes" : 500,
+      "path" : "starters/python-file-input-output.py",
+      "sha256" : "b48b54cb921cb3329cd384f726f01eb713901c3ce3cac27ce4221c0eff7a7b66"
+    },
+    {
+      "bytes" : 286,
+      "path" : "starters/python-for-loop-and-range.py",
+      "sha256" : "8d73a81aededa938f24ba2a81e52f98add64e605811ef84e872c8d669c3c2a86"
+    },
+    {
+      "bytes" : 274,
+      "path" : "starters/python-functions-def-return.py",
+      "sha256" : "d935e912121324e06c5bb369e91e39a0750204b904252de89777bd176152c531"
+    },
+    {
+      "bytes" : 363,
+      "path" : "starters/python-list-basics.py",
+      "sha256" : "e71f645330ca7f76a18bfbd0e5dca6f49b7240774f9724c96ee25d1ef1650c4b"
+    },
+    {
+      "bytes" : 289,
+      "path" : "starters/python-list-comprehension.py",
+      "sha256" : "46a583a49d72a9e1b0f4f9fcfbe1abd23d0e7c7390a4ce16305f43a56d36cbc8"
+    },
+    {
+      "bytes" : 219,
+      "path" : "starters/python-print-basics.py",
+      "sha256" : "b41bc295a3bc584d3c4a9e69dd4e2caea0221bda3687462fbb09f538545f41f2"
+    },
+    {
+      "bytes" : 309,
+      "path" : "starters/python-strings-and-fstring.py",
+      "sha256" : "ee6ea80534b7df9814fd712b7ccf1c08b7a9df0d76b347478ddbb7dc2416ef47"
+    },
+    {
+      "bytes" : 252,
+      "path" : "starters/python-variables-and-numeric-operators.py",
+      "sha256" : "559fc604a9dc8e4d26fb970123ccd67471c73ffbf6eda47be499eb83a9a19d8b"
+    },
+    {
+      "bytes" : 318,
+      "path" : "starters/python-while-loop-break-continue.py",
+      "sha256" : "800affc3d926b58f4cc237fb0b0bfd640ce32df67150caafe55861c32fdf93ce"
+    },
+    {
+      "bytes" : 1001,
+      "path" : "tests/python-conditionals-if-elif-else.py",
+      "sha256" : "a778214aa11b19c3817b4a442b625d3632c0fa9e757f1b8090787e9aeeb7e3e5"
+    },
+    {
+      "bytes" : 886,
+      "path" : "tests/python-dictionaries.py",
+      "sha256" : "4a7a4a1eb5136d73e4046751b42cf57113451844e998b29d5ea65bbeeca3be52"
+    },
+    {
+      "bytes" : 1134,
+      "path" : "tests/python-exception-handling.py",
+      "sha256" : "bc658144403a9fdde2682a0d64a0cc7702121aa7a52578727e4fd051ccf42fd6"
+    },
+    {
+      "bytes" : 851,
+      "path" : "tests/python-file-input-output.py",
+      "sha256" : "425a588c26139d42c1039c91a52f3d39fbd1ad2d7460f6cbf0b3bb2263e8d67b"
+    },
+    {
+      "bytes" : 532,
+      "path" : "tests/python-for-loop-and-range.py",
+      "sha256" : "02028f342235a4aa9b728562c904a913138b06581b11bbfbbb155bf0d2049202"
+    },
+    {
+      "bytes" : 890,
+      "path" : "tests/python-functions-def-return.py",
+      "sha256" : "11d0d91a155c6230477c7ba9e540952a4f73884334c4107821e2559e93a968f0"
+    },
+    {
+      "bytes" : 893,
+      "path" : "tests/python-list-basics.py",
+      "sha256" : "77ac88fdfcf5733af54edc03cd2f40f8d38dbab5ac8ba5b8b2cc5a0011373619"
+    },
+    {
+      "bytes" : 722,
+      "path" : "tests/python-list-comprehension.py",
+      "sha256" : "3f6ac882c883da83574b1febcfbe4a814d2c6361eaa119ffdc60f021eafa8ec9"
+    },
+    {
+      "bytes" : 804,
+      "path" : "tests/python-print-basics.py",
+      "sha256" : "5761f0092b3c1ddab554e393dbbb0782f01e67aeafb8ac027b65fa5f0b8a770d"
+    },
+    {
+      "bytes" : 606,
+      "path" : "tests/python-strings-and-fstring.py",
+      "sha256" : "6bb92d7ba51d1bbd6d4ace4030a1f083d444ff7774edbd16a4a82c84fb8d69c3"
+    },
+    {
+      "bytes" : 705,
+      "path" : "tests/python-variables-and-numeric-operators.py",
+      "sha256" : "ace9dd390327f0e6b74dd2d9f501be3dc183df3c9ef3192bdc1a44ff0934f0cd"
+    },
+    {
+      "bytes" : 640,
+      "path" : "tests/python-while-loop-break-continue.py",
+      "sha256" : "f643dfb54548c675ba93eb3b017497d2c01c70b9dd5970a16a0995cf6250ff97"
+    }
+  ],
+  "generatedAt" : "2026-09-06T22:20:32Z",
+  "languages" : [
+    "python"
+  ],
+  "lessons" : [
+    {
+      "language" : "python",
+      "objectives" : [
+        "print()로 지정한 문자열을 정확한 형태로 출력할 수 있다",
+        "print()에 쉼표로 여러 값을 전달해 한 줄에 출력할 수 있다",
+        "#로 주석을 작성해 실행 결과에 영향을 주지 않는 코드를 만들 수 있다"
+      ],
+      "order" : 1,
+      "path" : "lessons/python-print-basics.md",
+      "prerequisites" : [
+
+      ],
+      "stableID" : "python-print-basics",
+      "title" : "첫 코드 실행: print()로 화면에 출력하기"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "변수에 값을 할당하고 다시 읽어 출력할 수 있다",
+        "산술 연산자(+, -, *, /, //, %, **)로 수식을 계산할 수 있다",
+        "type()으로 정수와 실수를 구분해 확인할 수 있다"
+      ],
+      "order" : 2,
+      "path" : "lessons/python-variables-and-numeric-operators.md",
+      "prerequisites" : [
+        "python-print-basics"
+      ],
+      "stableID" : "python-variables-and-numeric-operators",
+      "title" : "변수에 값 담기와 숫자 연산"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "len()으로 문자열 길이를 구하고 인덱스로 한 문자를 꺼낼 수 있다",
+        "슬라이싱으로 문자열의 일부를 잘라낼 수 있다",
+        "f-string 안에 변수와 수식을 넣어 문장을 조립해 출력할 수 있다",
+        "upper(), strip() 메서드를 호출해 문자열을 변형할 수 있다"
+      ],
+      "order" : 3,
+      "path" : "lessons/python-strings-and-fstring.md",
+      "prerequisites" : [
+        "python-variables-and-numeric-operators"
+      ],
+      "stableID" : "python-strings-and-fstring",
+      "title" : "문자열 다루기: 인덱싱, 슬라이싱, f-string"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "비교 연산식이 True와 False 중 무엇으로 평가되는지 코드로 확인할 수 있다",
+        "if, elif, else로 조건별로 다른 출력이 나오게 분기를 작성할 수 있다",
+        "and, or, not으로 여러 조건을 조합한 분기를 작성할 수 있다"
+      ],
+      "order" : 4,
+      "path" : "lessons/python-conditionals-if-elif-else.md",
+      "prerequisites" : [
+        "python-strings-and-fstring"
+      ],
+      "stableID" : "python-conditionals-if-elif-else",
+      "title" : "조건에 따라 갈라지는 실행: if, elif, else"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "for와 range()로 지정한 횟수만큼 반복을 실행할 수 있다",
+        "반복 안에서 누적 변수로 합계와 곱을 계산할 수 있다",
+        "for로 문자열의 각 문자를 순서대로 처리할 수 있다"
+      ],
+      "order" : 5,
+      "path" : "lessons/python-for-loop-and-range.md",
+      "prerequisites" : [
+        "python-conditionals-if-elif-else"
+      ],
+      "stableID" : "python-for-loop-and-range",
+      "title" : "정해진 횟수만큼 반복하기: for와 range()"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "while의 조건식이 거짓이 될 때까지 반복하는 코드를 작성할 수 있다",
+        "break로 반복을 즉시 종료하고 continue로 현재 회차를 건너뛸 수 있다",
+        "반복 변수를 갱신하지 않으면 무한 루프가 됨을 확인하고 종료 조건을 넣을 수 있다"
+      ],
+      "order" : 6,
+      "path" : "lessons/python-while-loop-break-continue.md",
+      "prerequisites" : [
+        "python-for-loop-and-range"
+      ],
+      "stableID" : "python-while-loop-break-continue",
+      "title" : "조건이 참인 동안 반복하기: while, break, continue"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "리스트를 만들고 인덱스로 요소를 읽고 바꿀 수 있다",
+        "append()와 pop()으로 리스트에 요소를 추가하고 제거할 수 있다",
+        "in 연산자와 len(), for 순회로 리스트의 내용을 검사할 수 있다"
+      ],
+      "order" : 7,
+      "path" : "lessons/python-list-basics.md",
+      "prerequisites" : [
+        "python-while-loop-break-continue"
+      ],
+      "stableID" : "python-list-basics",
+      "title" : "여러 값을 한 번에: 리스트 만들고 조작하기"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "def로 매개변수를 받는 함수를 정의하고 호출할 수 있다",
+        "return으로 계산 결과를 돌려주고 호출식에서 그 값을 변수에 담을 수 있다",
+        "return이 없는 함수와 있는 함수의 호출 결과 차이를 출력으로 비교할 수 있다",
+        "기본값 매개변수를 가진 함수를 인자를 생략한 채로 호출할 수 있다"
+      ],
+      "order" : 8,
+      "path" : "lessons/python-functions-def-return.md",
+      "prerequisites" : [
+        "python-list-basics"
+      ],
+      "stableID" : "python-functions-def-return",
+      "title" : "코드를 묶어 재사용하기: def와 return"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "딕셔너리를 만들고 키로 값을 읽고 새 키-값 쌍을 추가할 수 있다",
+        "없는 키에 접근했을 때의 오류와 get()의 기본값 동작을 비교해 확인할 수 있다",
+        "items()로 키-값 쌍을 순회하는 for문을 작성할 수 있다"
+      ],
+      "order" : 9,
+      "path" : "lessons/python-dictionaries.md",
+      "prerequisites" : [
+        "python-functions-def-return"
+      ],
+      "stableID" : "python-dictionaries",
+      "title" : "이름표로 찾는 자료: 딕셔너리"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "for문으로 리스트를 만드는 코드를 리스트 컴프리헨션 한 줄로 바꿔 쓸 수 있다",
+        "if 필터가 붙은 컴프리헨션으로 조건을 만족하는 요소만 담은 리스트를 만들 수 있다",
+        "컴프리헨션 결과와 같은 for문 결과가 동일함을 출력으로 비교할 수 있다"
+      ],
+      "order" : 10,
+      "path" : "lessons/python-list-comprehension.md",
+      "prerequisites" : [
+        "python-for-loop-and-range",
+        "python-list-basics"
+      ],
+      "stableID" : "python-list-comprehension",
+      "title" : "반복을 한 줄로: 리스트 컴프리헨션"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "오류가 나는 코드를 try/except로 감싸 프로그램이 멈추지 않게 할 수 있다",
+        "발생한 예외의 종류에 따라 다른 except 블록이 실행됨을 확인할 수 있다",
+        "raise로 직접 예외를 발생시키고 이를 except에서 잡을 수 있다"
+      ],
+      "order" : 11,
+      "path" : "lessons/python-exception-handling.md",
+      "prerequisites" : [
+        "python-functions-def-return"
+      ],
+      "stableID" : "python-exception-handling",
+      "title" : "오류가 나도 멈추지 않기: try와 except"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "open()과 with 블록으로 파일을 열고 닫는 코드를 작성할 수 있다",
+        "write()로 파일에 문자열을 기록하고 read()로 다시 읽어 동일함을 확인할 수 있다",
+        "splitlines()로 읽어 온 파일 내용을 줄 단위 리스트로 분리해 처리할 수 있다"
+      ],
+      "order" : 12,
+      "path" : "lessons/python-file-input-output.md",
+      "prerequisites" : [
+        "python-exception-handling",
+        "python-dictionaries"
+      ],
+      "stableID" : "python-file-input-output",
+      "title" : "결과를 남기기: 파일에 쓰고 읽기"
+    }
+  ],
+  "minAppVersion" : "0.1.0",
+  "packID" : "polyglot-python",
+  "schemaVersion" : 1,
+  "version" : "0.1.0"
+}

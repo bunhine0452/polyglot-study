@@ -12,7 +12,11 @@ public enum ModuleAvailability: Hashable, Sendable {
     case missing(installHint: String)
     /// 실행 파일은 있으나 동작하지 않는다 (CLT 스텁 등).
     case stub(path: String, reason: String)
-    case unsupported(reason: String)
+    /// 동작은 하지만 최소 요구 버전에 못 미친다.
+    ///
+    /// 구조를 유지하는 이유는 UI 때문이다 — "어느 바이너리가 얼마나 낡았는지"를
+    /// 문자열에서 다시 파싱해 내지 않아야 업그레이드 안내를 정확히 그릴 수 있다.
+    case unsupported(path: String, version: String, minimum: String)
 
     public var isReady: Bool {
         if case .ready = self { return true }

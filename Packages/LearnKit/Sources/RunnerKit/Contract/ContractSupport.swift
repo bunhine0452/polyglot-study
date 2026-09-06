@@ -22,34 +22,77 @@ public struct ContractSupport: OptionSet, Hashable, Sendable {
     public static let nonUTF8Output = ContractSupport(rawValue: 1 << 4)
     /// Task 취소에 즉시 반응한다.
     public static let cancellation = ContractSupport(rawValue: 1 << 5)
-    /// 종료코드를 그대로 보고한다.
-    public static let exitCodes = ContractSupport(rawValue: 1 << 6)
+    /// 종료 상태를 그대로 보고한다.
+    public static let terminationStatus = ContractSupport(rawValue: 1 << 6)
     /// stdin 을 프로그램에 연결한다.
     public static let standardInput = ContractSupport(rawValue: 1 << 7)
     /// `Diagnostic` 을 행·열까지 채워 낸다.
     public static let diagnostics = ContractSupport(rawValue: 1 << 8)
     /// 프로세스를 띄우는 백엔드다 — fork bomb·손자 프로세스 케이스가 의미를 가진다.
     public static let processIsolation = ContractSupport(rawValue: 1 << 9)
+    /// `ResourceLimits.cpuSeconds` 초과를 `RunFailure.cpuExceeded` 로 낸다.
+    public static let cpuTimeLimit = ContractSupport(rawValue: 1 << 10)
+    /// `ResourceLimits.memoryMegabytes` 초과를 `RunFailure.memoryExceeded` 로 낸다.
+    public static let memoryLimit = ContractSupport(rawValue: 1 << 11)
+    /// `ResourceLimits.fileSizeBytes` 초과를 `RunFailure.fileSizeExceeded` 로 낸다.
+    public static let fileSizeLimit = ContractSupport(rawValue: 1 << 12)
 
-    /// 프로세스를 안 띄우는 백엔드까지 포함해 **모두가 지켜야 하는** 최소 집합.
+    /// 상한과 무관하게 **모두가 지켜야 하는** 최소 집합.
+    ///
+    /// 여기 있는 넷은 자원 상한이 아니라 **바이트 파이프라인과 수명의 정확성**이다.
+    /// 어떤 백엔드든 이걸 못 지키면 계약을 어긴 것이지 skip 할 일이 아니다.
+    /// 상한 계열(벽시계·CPU·메모리·출력·파일·프로세스)은 `EnforcedLimits` 에서 유도된다.
     public static let baseline: ContractSupport = [
-        .wallClockTimeout, .infiniteLoopTermination, .outputTruncation,
-        .hugeSingleLine, .nonUTF8Output, .cancellation, .exitCodes,
+        .hugeSingleLine, .nonUTF8Output, .cancellation, .terminationStatus,
     ]
 
     public static let all: ContractSupport = [
-        .baseline, .standardInput, .diagnostics, .processIsolation,
+        .baseline, .wallClockTimeout, .infiniteLoopTermination, .outputTruncation,
+        .standardInput, .diagnostics, .processIsolation,
+        .cpuTimeLimit, .memoryLimit, .fileSizeLimit,
     ]
 
-    /// `RunnerCapabilities` 에서 유도할 수 있는 것만 얹은 기본값.
+    /// 러너가 스스로 선언한 것에서 유도한다.
     ///
-    /// 타임아웃·취소·절단은 능력이 아니라 **의무**라 baseline 에 항상 들어간다.
-    /// 백엔드가 못 지키면 계약을 어긴 것이지 skip 할 일이 아니다.
-    public static func inferred(from capabilities: RunnerCapabilities) -> ContractSupport {
+    /// 상한 계열은 **`enforcedLimits` 가 유일한 출처**다. 예전에는 벽시계·절단을
+    /// baseline 에 박아두고 fork bomb 케이스만 하드코딩으로 영영 skip 했는데,
+    /// 그러면 "이 백엔드가 무엇을 못 막는지"가 하네스 안에 숨는다. 이제는 러너가
+    /// 선언하고 하네스는 그걸 읽기만 한다.
+    public static func inferred(from runner: any CodeRunner) -> ContractSupport {
+        inferred(capabilities: runner.capabilities, enforcedLimits: runner.enforcedLimits)
+    }
+
+    public static func inferred(
+        capabilities: RunnerCapabilities,
+        enforcedLimits: EnforcedLimits
+    ) -> ContractSupport {
         var support: ContractSupport = .baseline
+        if enforcedLimits.contains(.wallClock) {
+            support.insert(.wallClockTimeout)
+            support.insert(.infiniteLoopTermination)
+        }
+        if enforcedLimits.contains(.outputBytes) { support.insert(.outputTruncation) }
+        if enforcedLimits.contains(.cpuTime) { support.insert(.cpuTimeLimit) }
+        if enforcedLimits.contains(.memory) { support.insert(.memoryLimit) }
+        if enforcedLimits.contains(.fileSize) { support.insert(.fileSizeLimit) }
+        if enforcedLimits.contains(.processCount) { support.insert(.processIsolation) }
         if capabilities.contains(.standardInput) { support.insert(.standardInput) }
         if capabilities.contains(.compileDiagnostics) { support.insert(.diagnostics) }
         return support
+    }
+
+    /// 사람이 읽는 이름. skip 사유를 찍을 때 쓴다.
+    public var names: [String] {
+        let table: [(ContractSupport, String)] = [
+            (.wallClockTimeout, "wallClockTimeout"), (.infiniteLoopTermination, "infiniteLoopTermination"),
+            (.outputTruncation, "outputTruncation"), (.hugeSingleLine, "hugeSingleLine"),
+            (.nonUTF8Output, "nonUTF8Output"), (.cancellation, "cancellation"),
+            (.terminationStatus, "terminationStatus"), (.standardInput, "standardInput"),
+            (.diagnostics, "diagnostics"), (.processIsolation, "processIsolation"),
+            (.cpuTimeLimit, "cpuTimeLimit"), (.memoryLimit, "memoryLimit"),
+            (.fileSizeLimit, "fileSizeLimit"),
+        ]
+        return table.filter { contains($0.0) }.map(\.1)
     }
 }
 
@@ -70,6 +113,9 @@ public struct ContractCaseID: RawRepresentable, Hashable, Sendable, CustomString
     public static let standardInput = ContractCaseID("standard-input")
     public static let forkBomb = ContractCaseID("fork-bomb")
     public static let grandchildProcess = ContractCaseID("grandchild-process")
+    public static let cpuExhaustion = ContractCaseID("cpu-exhaustion")
+    public static let memoryExhaustion = ContractCaseID("memory-exhaustion")
+    public static let fileSizeFlood = ContractCaseID("file-size-flood")
 }
 
 /// 케이스 하나의 정의. 프로그램(픽스처)과 분리돼 있어서 언어가 늘어도 이 목록은 안 늘어난다.
@@ -92,6 +138,8 @@ public enum ContractFailureKind: String, Hashable, Sendable {
     /// 나눈 이유(멈춘 코드 vs 느린 코드)가 계약 스위트에서도 그대로 유효하다.
     case cpuExceeded
     case memoryExceeded
+    /// `RLIMIT_FSIZE` 초과. "출력 파일이 너무 크다"는 나머지 셋과 조언이 다르다.
+    case fileSizeExceeded
     case cancelled
     case toolchainMissing
     case backend
@@ -103,6 +151,7 @@ public enum ContractFailureKind: String, Hashable, Sendable {
             case .wallClockExceeded: self = .wallClockExceeded
             case .cpuExceeded: self = .cpuExceeded
             case .memoryExceeded: self = .memoryExceeded
+            case .fileSizeExceeded: self = .fileSizeExceeded
             case .cancelled: self = .cancelled
             case .toolchainMissing: self = .toolchainMissing
             case .backend: self = .backend
@@ -113,10 +162,18 @@ public enum ContractFailureKind: String, Hashable, Sendable {
     }
 }
 
+/// 종료 상태에 거는 기대.
+public enum TerminationExpectation: Hashable, Sendable {
+    case succeeded
+    /// 실패로 끝난다. `code` 가 nil 이면 종료 코드는 따지지 않는다 — 종료 코드라는
+    /// 개념이 없는 백엔드(인프로세스)도 이 기대를 만족해야 하기 때문이다.
+    case failed(code: Int32?)
+}
+
 /// 한 케이스에 걸린 기대. 하나의 실행에 여러 개를 걸 수 있다.
 public enum ContractExpectation: Hashable, Sendable {
-    /// 정상 종료. 종료코드까지 볼지는 선택.
-    case finishes(exitCode: Int32?)
+    /// 스트림이 `finished` 로 끝나고 종료 상태가 이것이다.
+    case finishes(TerminationExpectation)
     /// 지정한 종류로 실패한다.
     case fails(ContractFailureKind)
     /// 취소가 제한 시간 안에 먹힌다.
@@ -131,6 +188,8 @@ public enum ContractExpectation: Hashable, Sendable {
     case stdoutContains(String)
     /// severity=error 인 진단이 하나 이상 오고, 있으면 이 문자열을 담는다.
     case emitsErrorDiagnostic(containing: String?)
+    /// `RunEvent.resultSet` 으로 이 모양의 표가 하나 온다.
+    case emitsResultSet(rows: Int, columns: Int)
     /// 전체 실행이 이 시간 안에 끝난다.
     case completesWithin(milliseconds: Int)
 }

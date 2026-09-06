@@ -1,4 +1,5 @@
 internal import Foundation
+public import LearnCore
 
 /// 결과셋 채점 기준. 레슨 메타데이터에서 온다.
 public struct SQLGradingCriteria: Hashable, Sendable {
@@ -70,7 +71,7 @@ public struct SQLComparison: Hashable, Sendable {
     public var failures: [Failure]
     public var diff: SQLResultDiff
     /// 열 매칭을 적용해 잘라낸 제출 결과. 표 프리젠터가 그대로 그린다.
-    public var projectedActual: SQLResultSet?
+    public var projectedActual: ResultSet?
 
     public var summary: String {
         matches ? "정답" : failures.map(\.description).joined(separator: " / ")
@@ -89,7 +90,7 @@ public struct SQLResultComparator: Sendable {
         self.criteria = criteria
     }
 
-    public func compare(expected: SQLResultSet, actual: SQLResultSet) -> SQLComparison {
+    public func compare(expected: ResultSet, actual: ResultSet) -> SQLComparison {
         var failures: [SQLComparison.Failure] = []
 
         guard let mapping = matchColumns(expected: expected.columns, actual: actual.columns, failures: &failures) else {
@@ -135,8 +136,8 @@ public struct SQLResultComparator: Sendable {
 
     /// - Returns: 정답 열 인덱스 → 제출 열 인덱스. 못 맞추면 nil 과 실패 사유.
     private func matchColumns(
-        expected: [SQLColumn],
-        actual: [SQLColumn],
+        expected: [ResultSet.Column],
+        actual: [ResultSet.Column],
         failures: inout [SQLComparison.Failure]
     ) -> [Int]? {
         var byName: [String: [Int]] = [:]

@@ -7,27 +7,27 @@ public import LearnCore
 /// 실행기가 계약을 못 지킨 경우 — 타임아웃·취소·메모리 초과·백엔드 오류 — 뿐이다.
 public struct SQLExecutionResult: Sendable {
     /// 행을 낸 마지막 문장의 결과셋. 전부 비-SELECT 였으면 nil.
-    public var resultSet: SQLResultSet?
+    public var resultSet: ResultSet?
     /// 실제로 준비·실행된 문장 수.
     public var statementCount: Int
     public var diagnostics: [Diagnostic]
-    /// `maxRows` 에 걸려 행이 잘렸다.
-    public var truncatedRows: Bool
     public var durationMilliseconds: Int
 
     public init(
-        resultSet: SQLResultSet? = nil,
+        resultSet: ResultSet? = nil,
         statementCount: Int = 0,
         diagnostics: [Diagnostic] = [],
-        truncatedRows: Bool = false,
         durationMilliseconds: Int = 0
     ) {
         self.resultSet = resultSet
         self.statementCount = statementCount
         self.diagnostics = diagnostics
-        self.truncatedRows = truncatedRows
         self.durationMilliseconds = durationMilliseconds
     }
+
+    /// `maxRows` 에 걸려 행이 잘렸다. 절단 여부는 결과셋 자신이 들고 다닌다 —
+    /// 스트림으로 나갈 때 플래그가 결과와 떨어지면 소비자가 다시 짝지어야 한다.
+    public var truncatedRows: Bool { resultSet?.isTruncated ?? false }
 
     public var failed: Bool { diagnostics.contains { $0.severity == .error } }
 }

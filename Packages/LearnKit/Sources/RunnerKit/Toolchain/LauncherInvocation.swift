@@ -14,13 +14,6 @@ public struct LauncherInvocation: Sendable, Hashable {
     public var limits: ResourceLimits
     /// 런처가 status 라인을 쓸 fd. 부모가 미리 열어 상속시켜야 한다.
     public var statusFileDescriptor: Int32
-    /// `RLIMIT_FSIZE` 바이트.
-    ///
-    /// `ResourceLimits` 에는 디스크 쓰기 상한이 없다 — `outputBytes` 는 stdout/stderr
-    /// 상한이라 의미가 다르다. 계약이 넓어지기 전까지는 여기서 기본값을 준다.
-    public var fileSizeBytes: Int
-
-    public static let defaultFileSizeBytes = 64 << 20
 
     public init(
         launcherPath: String,
@@ -28,8 +21,7 @@ public struct LauncherInvocation: Sendable, Hashable {
         arguments: [String] = [],
         workingDirectory: String? = nil,
         limits: ResourceLimits = .lesson,
-        statusFileDescriptor: Int32 = 3,
-        fileSizeBytes: Int = LauncherInvocation.defaultFileSizeBytes
+        statusFileDescriptor: Int32 = 3
     ) {
         self.launcherPath = launcherPath
         self.executablePath = executablePath
@@ -37,7 +29,6 @@ public struct LauncherInvocation: Sendable, Hashable {
         self.workingDirectory = workingDirectory
         self.limits = limits
         self.statusFileDescriptor = statusFileDescriptor
-        self.fileSizeBytes = fileSizeBytes
     }
 
     /// `launcherPath` 를 제외한 인자 목록 — `Process.arguments` 에 그대로 넣는다.
@@ -45,7 +36,8 @@ public struct LauncherInvocation: Sendable, Hashable {
         var argv: [String] = []
         argv.append(contentsOf: ["--cpu", String(max(0, limits.cpuSeconds))])
         argv.append(contentsOf: ["--nproc", String(max(0, limits.maxProcesses))])
-        argv.append(contentsOf: ["--fsize", String(max(0, fileSizeBytes))])
+        // `RLIMIT_FSIZE` 는 계약이 준다 — 런처가 임의 기본값을 만들지 않는다.
+        argv.append(contentsOf: ["--fsize", String(max(0, limits.fileSizeBytes))])
         argv.append(contentsOf: ["--wall", String(max(0, limits.wallClockSeconds))])
         argv.append(contentsOf: ["--status-fd", String(statusFileDescriptor)])
         if let workingDirectory {

@@ -31,7 +31,8 @@ enum SQLTestDatabase {
             (1, 'Seoul'), (1, 'Seoul'), (2, 'Busan'), (3, 'Seoul'), (3, 'Seoul');
         """
 
-    static func create(at url: URL) throws {
+    /// - Parameter schema: 기본은 위 샘플. 레슨마다 DB 가 다른 상황을 재현할 때만 바꾼다.
+    static func create(at url: URL, schema: String = SQLTestDatabase.schema) throws {
         var handle: OpaquePointer?
         let flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE
         guard sqlite3_open_v2(url.path, &handle, flags, nil) == SQLITE_OK, let database = handle else {

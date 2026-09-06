@@ -89,10 +89,10 @@ enum ToolchainLauncherHarness {
                 wallClockSeconds: wallClockSeconds,
                 cpuSeconds: cpuSeconds,
                 memoryMegabytes: memoryMegabytes,
+                fileSizeBytes: fileSizeBytes,
                 maxProcesses: maxProcesses
             ),
-            statusFileDescriptor: statusFileDescriptor,
-            fileSizeBytes: fileSizeBytes
+            statusFileDescriptor: statusFileDescriptor
         )
     }
 

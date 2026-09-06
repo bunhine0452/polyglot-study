@@ -9,8 +9,9 @@ public struct ContractObservation: Sendable {
     public var diagnostics: [Diagnostic] = []
     public var phases: [RunPhase] = []
     public var truncated = false
-    public var finishedExitCode: Int32?
-    public var finishedDurationMilliseconds: Int?
+    /// `RunEvent.resultSet` 으로 흘러온 구조화된 표들.
+    public var resultSets: [ResultSet] = []
+    public var termination: RunTermination?
     public var failureKind: ContractFailureKind?
     public var failureDescription: String?
     public var elapsedMilliseconds = 0
@@ -103,7 +104,7 @@ public struct RunnerContractTests: Sendable {
     ) {
         self.runner = runner
         self.language = language
-        self.support = support ?? ContractSupport.inferred(from: runner.capabilities)
+        self.support = support ?? ContractSupport.inferred(from: runner)
         self.catalog = catalog
         self.backendName = backendName ?? String(describing: type(of: runner))
     }
@@ -115,10 +116,13 @@ public struct RunnerContractTests: Sendable {
         ContractCase(id: .hugeSingleLine, title: "거대 단일행 전달", requires: .hugeSingleLine),
         ContractCase(id: .nonUTF8Output, title: "비UTF8 출력 보존", requires: .nonUTF8Output),
         ContractCase(id: .cancellation, title: "취소 반응", requires: .cancellation),
-        ContractCase(id: .exitCode, title: "종료코드 보고", requires: .exitCodes),
+        ContractCase(id: .exitCode, title: "종료 상태 보고", requires: .terminationStatus),
         ContractCase(id: .standardInput, title: "stdin 연결", requires: .standardInput),
         ContractCase(id: .forkBomb, title: "fork bomb 봉쇄", requires: .processIsolation),
         ContractCase(id: .grandchildProcess, title: "손자 프로세스 회수", requires: .processIsolation),
+        ContractCase(id: .cpuExhaustion, title: "CPU 시간 소진", requires: .cpuTimeLimit),
+        ContractCase(id: .memoryExhaustion, title: "메모리 상한", requires: .memoryLimit),
+        ContractCase(id: .fileSizeFlood, title: "파일 크기 상한", requires: .fileSizeLimit),
     ]
 
     public func run(only: Set<ContractCaseID>? = nil) async -> ContractReport {
@@ -168,16 +172,7 @@ public struct RunnerContractTests: Sendable {
     }
 
     private func missingSupportNames(_ required: ContractSupport) -> String {
-        let missing = required.subtracting(support)
-        var names: [String] = []
-        let table: [(ContractSupport, String)] = [
-            (.wallClockTimeout, "wallClockTimeout"), (.infiniteLoopTermination, "infiniteLoopTermination"),
-            (.outputTruncation, "outputTruncation"), (.hugeSingleLine, "hugeSingleLine"),
-            (.nonUTF8Output, "nonUTF8Output"), (.cancellation, "cancellation"),
-            (.exitCodes, "exitCodes"), (.standardInput, "standardInput"),
-            (.diagnostics, "diagnostics"), (.processIsolation, "processIsolation"),
-        ]
-        for (flag, name) in table where missing.contains(flag) { names.append(name) }
+        let names = required.subtracting(support).names
         return names.isEmpty ? "필요 기능" : names.joined(separator: "+")
     }
 
@@ -243,11 +238,12 @@ public struct RunnerContractTests: Sendable {
                     observation.stderr.append(data)
                 case .diagnostic(let diagnostic):
                     observation.diagnostics.append(diagnostic)
+                case .resultSet(let set):
+                    observation.resultSets.append(set)
                 case .truncated:
                     observation.truncated = true
-                case .finished(let exitCode, let duration):
-                    observation.finishedExitCode = exitCode
-                    observation.finishedDurationMilliseconds = duration
+                case .finished(let termination):
+                    observation.termination = termination
                 }
             }
         } catch {
@@ -263,21 +259,31 @@ public struct RunnerContractTests: Sendable {
 
     private func evaluate(_ expectation: ContractExpectation, _ observation: ContractObservation) -> String? {
         switch expectation {
-        case .finishes(let exitCode):
+        case .finishes(let expected):
             if let kind = observation.failureKind {
-                return "정상 종료를 기대했는데 \(kind.rawValue) 로 실패 (\(observation.failureDescription ?? ""))"
+                return "\(Self.describe(expected)) 를 기대했는데 \(kind.rawValue) 로 실패 (\(observation.failureDescription ?? ""))"
             }
-            guard let actual = observation.finishedExitCode else {
+            guard let termination = observation.termination else {
                 return "finished 이벤트가 오지 않았습니다"
             }
-            if let exitCode, actual != exitCode {
-                return "종료코드 \(exitCode) 를 기대했는데 \(actual)"
+            switch (expected, termination.status) {
+            case (.succeeded, .succeeded):
+                return nil
+            case (.failed(let wanted), .failed(let actual)):
+                // 기대한 코드가 nil 이면 "실패했다"는 사실만 본다 — 종료 코드가 없는
+                // 백엔드도 같은 픽스처를 통과해야 하기 때문이다.
+                guard let wanted else { return nil }
+                return wanted == actual
+                    ? nil
+                    : "종료코드 \(wanted) 를 기대했는데 \(actual.map(String.init) ?? "코드 없음")"
+            default:
+                return "\(Self.describe(expected)) 를 기대했는데 \(Self.describe(termination.status))"
             }
-            return nil
 
         case .fails(let kind):
             guard let actual = observation.failureKind else {
-                return "\(kind.rawValue) 실패를 기대했는데 정상 종료(exit=\(observation.finishedExitCode.map(String.init) ?? "-"))"
+                let status = observation.termination.map { Self.describe($0.status) } ?? "무응답"
+                return "\(kind.rawValue) 실패를 기대했는데 \(status)"
             }
             return actual == kind ? nil : "\(kind.rawValue) 를 기대했는데 \(actual.rawValue) (\(observation.failureDescription ?? ""))"
 
@@ -285,7 +291,7 @@ public struct RunnerContractTests: Sendable {
             guard let reaction = observation.cancellationReactionMilliseconds else {
                 return "취소를 걸지 않았습니다 (하네스 오류)"
             }
-            if observation.finishedExitCode != nil, observation.failureKind == nil {
+            if observation.termination != nil, observation.failureKind == nil {
                 return "취소했는데 정상 완료했습니다"
             }
             return reaction <= milliseconds ? nil : "취소 반응이 \(reaction)ms — 상한 \(milliseconds)ms"
@@ -312,10 +318,40 @@ public struct RunnerContractTests: Sendable {
                 ? nil
                 : "'\(containing)' 를 담은 error 진단이 없습니다 (받은 것: \(errors.map(\.message)))"
 
+        case .emitsResultSet(let rows, let columns):
+            guard let set = observation.resultSets.first else {
+                return "resultSet 이벤트가 오지 않았습니다"
+            }
+            if observation.resultSets.count != 1 {
+                return "resultSet 이벤트가 \(observation.resultSets.count)번 왔습니다 — 1번 기대"
+            }
+            if set.rowCount != rows || set.columnCount != columns {
+                return "결과셋이 \(set.rowCount)행 \(set.columnCount)열 — \(rows)행 \(columns)열 기대"
+            }
+            return nil
+
         case .completesWithin(let milliseconds):
             return observation.elapsedMilliseconds <= milliseconds
                 ? nil
                 : "\(observation.elapsedMilliseconds)ms 걸렸습니다 — 상한 \(milliseconds)ms"
+        }
+    }
+}
+
+/// 실패 메시지용 문구. 종료 상태는 세 갈래(성공·코드 있는 실패·코드 없는 실패)라
+/// 기본 문자열 보간으로는 무엇이 어긋났는지 읽히지 않는다.
+extension RunnerContractTests {
+    static func describe(_ expectation: TerminationExpectation) -> String {
+        switch expectation {
+        case .succeeded: "성공 종료"
+        case .failed(let code): code.map { "실패 종료(코드 \($0))" } ?? "실패 종료"
+        }
+    }
+
+    static func describe(_ status: RunTermination.Status) -> String {
+        switch status {
+        case .succeeded: "성공 종료"
+        case .failed(let code): code.map { "실패 종료(코드 \($0))" } ?? "실패 종료(코드 없음)"
         }
     }
 }

@@ -245,8 +245,7 @@ enum SQLiteCage {
                         database: database,
                         options: options,
                         context: context,
-                        interrupt: interrupt,
-                        truncated: &result.truncatedRows
+                        interrupt: interrupt
                     ) {
                         result.resultSet = set
                     }
@@ -281,9 +280,8 @@ enum SQLiteCage {
         database: OpaquePointer,
         options: Options,
         context: SQLiteCageContext,
-        interrupt: SQLiteInterruptBox,
-        truncated: inout Bool
-    ) throws -> SQLResultSet? {
+        interrupt: SQLiteInterruptBox
+    ) throws -> ResultSet? {
         let columnCount = Int(sqlite3_column_count(statement))
         guard columnCount > 0 else {
             let rc = sqlite3_step(statement)
@@ -296,15 +294,16 @@ enum SQLiteCage {
             return nil
         }
 
-        var columns: [SQLColumn] = []
+        var columns: [ResultSet.Column] = []
         columns.reserveCapacity(columnCount)
         for index in 0..<columnCount {
             let name = sqlite3_column_name(statement, Int32(index)).map { String(cString: $0) } ?? "column\(index + 1)"
             let declared = sqlite3_column_decltype(statement, Int32(index)).map { String(cString: $0) }
-            columns.append(SQLColumn(name: name, declaredType: declared))
+            columns.append(ResultSet.Column(name: name, declaredType: declared))
         }
 
-        var rows: [[SQLValue]] = []
+        var rows: [[ResultSet.Value]] = []
+        var truncated = false
         while true {
             let rc = sqlite3_step(statement)
             if rc == SQLITE_ROW {
@@ -312,7 +311,7 @@ enum SQLiteCage {
                     truncated = true
                     break
                 }
-                var row: [SQLValue] = []
+                var row: [ResultSet.Value] = []
                 row.reserveCapacity(columnCount)
                 for index in 0..<columnCount {
                     row.append(value(statement: statement, column: Int32(index)))
@@ -326,10 +325,10 @@ enum SQLiteCage {
             }
             throw SQLStatementError(message: String(cString: sqlite3_errmsg(database)))
         }
-        return SQLResultSet(columns: columns, rows: rows)
+        return ResultSet(columns: columns, rows: rows, isTruncated: truncated)
     }
 
-    private static func value(statement: OpaquePointer, column: Int32) -> SQLValue {
+    private static func value(statement: OpaquePointer, column: Int32) -> ResultSet.Value {
         switch sqlite3_column_type(statement, column) {
         case SQLITE_INTEGER:
             return .integer(sqlite3_column_int64(statement, column))

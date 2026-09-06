@@ -15,6 +15,9 @@ public struct ContractFixture: Hashable, Sendable {
     public var arguments: [String]
     public var standardInput: Data?
     public var limits: ResourceLimits
+    /// 이 픽스처가 대상으로 삼는 읽기 전용 자원. 계약 케이스 대부분은 비어 있고,
+    /// 레슨 DB 위에서만 의미가 있는 케이스가 생기면 여기로 온다.
+    public var resources: [String: URL]
     public var expectations: [ContractExpectation]
 
     public init(
@@ -25,6 +28,7 @@ public struct ContractFixture: Hashable, Sendable {
         arguments: [String] = [],
         standardInput: Data? = nil,
         limits: ResourceLimits = .lesson,
+        resources: [String: URL] = [:],
         expectations: [ContractExpectation]
     ) {
         self.caseID = caseID
@@ -34,6 +38,7 @@ public struct ContractFixture: Hashable, Sendable {
         self.arguments = arguments
         self.standardInput = standardInput
         self.limits = limits
+        self.resources = resources
         self.expectations = expectations
     }
 
@@ -43,7 +48,8 @@ public struct ContractFixture: Hashable, Sendable {
             entryPoint: entryPoint,
             arguments: arguments,
             standardInput: standardInput,
-            limits: limits
+            limits: limits,
+            resources: resources
         )
     }
 }
@@ -122,19 +128,21 @@ extension ContractFixtureCatalog {
             SELECT i, hex(randomblob(48)) FROM gen;
             """,
             limits: ResourceLimits(wallClockSeconds: 20, outputBytes: 1 << 20),
-            [.truncatesOutput, .finishes(exitCode: 0)]
+            [.truncatesOutput, .finishes(.succeeded)]
         ),
         sql(
             .hugeSingleLine,
             "SELECT hex(zeroblob(120000)) AS blob_hex;",
             limits: ResourceLimits(wallClockSeconds: 20),
-            [.emitsLine(atLeastBytes: 240_000), .finishes(exitCode: 0)]
+            [.emitsLine(atLeastBytes: 240_000), .finishes(.succeeded)]
         ),
         // CAST(blob AS TEXT) 는 바이트를 검증 없이 재해석한다. 0xFF 0xFE 는 UTF-8 이 아니다.
         sql(
             .nonUTF8Output,
             "SELECT CAST(x'FFFE' AS TEXT) AS raw;",
-            [.emitsNonUTF8Output, .finishes(exitCode: 0)]
+            // 같은 실행이 바이트 스트림과 구조화된 표 **둘 다** 내야 한다.
+            // 표 통로가 조용히 끊겨도 stdout 만 보면 눈치채지 못하므로 여기서 함께 잰다.
+            [.emitsNonUTF8Output, .emitsResultSet(rows: 1, columns: 1), .finishes(.succeeded)]
         ),
         sql(
             .cancellation,
@@ -147,11 +155,13 @@ extension ContractFixtureCatalog {
             limits: ResourceLimits(wallClockSeconds: 60, cpuSeconds: 60),
             [.cancelsWithin(milliseconds: 5_000)]
         ),
-        // 존재하지 않는 테이블 → 종료코드 1 + 위치가 찍힌 진단.
+        // 존재하지 않는 테이블 → 실패 종료 + 위치가 찍힌 진단.
+        // 인프로세스에는 종료 코드가 없으므로 코드는 따지지 않는다 — 같은 픽스처를
+        // 서브프로세스 백엔드가 재사용할 때는 코드가 채워져 와도 통과한다.
         sql(
             .exitCode,
             "SELECT 1;\nSELECT * FROM table_that_does_not_exist;",
-            [.finishes(exitCode: 1), .emitsErrorDiagnostic(containing: "table_that_does_not_exist")]
+            [.finishes(.failed(code: nil)), .emitsErrorDiagnostic(containing: "table_that_does_not_exist")]
         ),
     ]
 }
@@ -198,11 +208,11 @@ extension ContractFixtureCatalog {
                 limits: ResourceLimits(wallClockSeconds: 60),
                 [.cancelsWithin(milliseconds: 5_000)]),
         fixture(.exitCode, .python, path: "main.py", "import sys\nsys.exit(42)\n",
-                [.finishes(exitCode: 42)]),
+                [.finishes(.failed(code: 42))]),
         fixture(.standardInput, .python, path: "main.py",
                 "print(input().upper())\n",
                 standardInput: Data("hello\n".utf8),
-                [.stdoutContains("HELLO"), .finishes(exitCode: 0)]),
+                [.stdoutContains("HELLO"), .finishes(.succeeded)]),
         // 런처의 setsid + killpg 를 재는 케이스. 인프로세스에는 의미가 없다.
         fixture(.forkBomb, .python, path: "main.py",
                 "import os\nwhile True:\n    os.fork()\n",
@@ -212,6 +222,20 @@ extension ContractFixtureCatalog {
                 "import subprocess\nsubprocess.Popen(['sh', '-c', 'sleep 300'])\nprint('spawned')\n",
                 limits: ResourceLimits(wallClockSeconds: 3),
                 [.completesWithin(milliseconds: 10_000)]),
+        // 벽시계는 넉넉히 주고 CPU 만 조인다 — 이래야 "멈춘 코드"가 아니라
+        // "느린 코드"로 분류되는지가 실제로 갈린다.
+        fixture(.cpuExhaustion, .python, path: "main.py",
+                "x = 0\nwhile True:\n    x += 1\n",
+                limits: ResourceLimits(wallClockSeconds: 60, cpuSeconds: 1),
+                [.fails(.cpuExceeded), .completesWithin(milliseconds: 20_000)]),
+        fixture(.memoryExhaustion, .python, path: "main.py",
+                "blocks = []\nwhile True:\n    blocks.append(bytearray(8 * 1024 * 1024))\n",
+                limits: ResourceLimits(wallClockSeconds: 30, cpuSeconds: 30, memoryMegabytes: 64),
+                [.fails(.memoryExceeded), .completesWithin(milliseconds: 30_000)]),
+        fixture(.fileSizeFlood, .python, path: "main.py",
+                "with open('big.bin', 'wb') as f:\n    while True:\n        f.write(b'x' * (1 << 20))\n",
+                limits: ResourceLimits(wallClockSeconds: 30, cpuSeconds: 30, fileSizeBytes: 1 << 20),
+                [.fails(.fileSizeExceeded), .completesWithin(milliseconds: 30_000)]),
     ]
 
     static let swiftFixtures: [ContractFixture] = [
@@ -234,15 +258,33 @@ extension ContractFixtureCatalog {
                 limits: ResourceLimits(wallClockSeconds: 60),
                 [.cancelsWithin(milliseconds: 5_000)]),
         fixture(.exitCode, .swift, path: "main.swift", "exit(42)\n",
-                [.finishes(exitCode: 42)]),
+                [.finishes(.failed(code: 42))]),
         fixture(.standardInput, .swift, path: "main.swift",
                 "print(readLine()!.uppercased())\n",
                 standardInput: Data("hello\n".utf8),
-                [.stdoutContains("HELLO"), .finishes(exitCode: 0)]),
+                [.stdoutContains("HELLO"), .finishes(.succeeded)]),
         // 런처가 프로세스 그룹째 회수하는지. Process 로 띄운 손자는 부모가 죽어도 남는다.
         fixture(.grandchildProcess, .swift, path: "main.swift",
                 "import Foundation\nlet p = Process()\np.executableURL = URL(fileURLWithPath: \"/bin/sh\")\np.arguments = [\"-c\", \"sleep 300\"]\ntry p.run()\nprint(\"spawned\")\n",
                 limits: ResourceLimits(wallClockSeconds: 3),
                 [.completesWithin(milliseconds: 20_000)]),
+        fixture(.cpuExhaustion, .swift, path: "main.swift",
+                "var x = 0\nwhile true { x &+= 1 }\n",
+                limits: ResourceLimits(wallClockSeconds: 60, cpuSeconds: 1),
+                [.fails(.cpuExceeded), .completesWithin(milliseconds: 20_000)]),
+        fixture(.memoryExhaustion, .swift, path: "main.swift",
+                "import Foundation\nvar blocks: [Data] = []\nwhile true { blocks.append(Data(count: 8 << 20)) }\n",
+                limits: ResourceLimits(wallClockSeconds: 30, cpuSeconds: 30, memoryMegabytes: 64),
+                [.fails(.memoryExceeded), .completesWithin(milliseconds: 30_000)]),
+        fixture(.fileSizeFlood, .swift, path: "main.swift",
+                """
+                import Foundation
+                FileManager.default.createFile(atPath: "big.bin", contents: nil)
+                let handle = FileHandle(forWritingAtPath: "big.bin")!
+                let block = Data(count: 1 << 20)
+                while true { handle.write(block) }
+                """,
+                limits: ResourceLimits(wallClockSeconds: 30, cpuSeconds: 30, fileSizeBytes: 1 << 20),
+                [.fails(.fileSizeExceeded), .completesWithin(milliseconds: 30_000)]),
     ]
 }

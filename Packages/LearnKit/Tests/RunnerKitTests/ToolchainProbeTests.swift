@@ -171,7 +171,8 @@ struct ToolchainProbeTests {
         case let .ready(version, path): return ("ready", version, path)
         case let .missing(hint): return ("missing", "-", hint)
         case let .stub(path, reason): return ("stub", "-", "\(path) — \(reason)")
-        case let .unsupported(reason): return ("unsupported", "-", reason)
+        case let .unsupported(path, version, minimum):
+            return ("unsupported", version, "\(path) — 최소 \(minimum) 필요")
         }
     }
 }

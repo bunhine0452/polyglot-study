@@ -1,16 +1,17 @@
 import Foundation
 import Testing
+import LearnCore
 @testable import RunnerKit
 
 @Suite("SQL 결과셋 diff")
 struct SQLResultDiffTests {
 
-    private func rows(_ values: [Int]) -> [[SQLValue]] {
+    private func rows(_ values: [Int]) -> [[ResultSet.Value]] {
         values.map { [.integer(Int64($0)), .text("row\($0)")] }
     }
 
-    private func set(_ values: [Int]) -> SQLResultSet {
-        SQLResultSet(columnNames: ["id", "label"], rows: rows(values))
+    private func set(_ values: [Int]) -> ResultSet {
+        ResultSet(columnNames: ["id", "label"], rows: rows(values))
     }
 
     @Test("같은 결과셋은 빈 diff")
@@ -31,11 +32,11 @@ struct SQLResultDiffTests {
 
     @Test("첫 불일치 셀 좌표를 잡는다")
     func findsFirstMismatchedCell() {
-        let expected = SQLResultSet(columnNames: ["a", "b"], rows: [
+        let expected = ResultSet(columnNames: ["a", "b"], rows: [
             [.integer(1), .text("x")],
             [.integer(2), .text("y")],
         ])
-        let actual = SQLResultSet(columnNames: ["a", "b"], rows: [
+        let actual = ResultSet(columnNames: ["a", "b"], rows: [
             [.integer(1), .text("x")],
             [.integer(2), .text("CHANGED")],
         ])
@@ -79,18 +80,18 @@ struct SQLResultDiffTests {
 
     @Test("INTEGER 와 REAL 은 diff 에서도 같은 값")
     func diffUsesGradingNormalization() {
-        let expected = SQLResultSet(columnNames: ["n"], rows: [[.integer(10)]])
-        let actual = SQLResultSet(columnNames: ["n"], rows: [[.real(10.0)]])
+        let expected = ResultSet(columnNames: ["n"], rows: [[.integer(10)]])
+        let actual = ResultSet(columnNames: ["n"], rows: [[.real(10.0)]])
         #expect(SQLResultDiff.compute(expected: expected, actual: actual, orderMatters: true).isEmpty)
     }
 
     @Test("1만 행 전부 오답이어도 100ms 안에 끝난다")
     func tenThousandRowsUnderOneHundredMilliseconds() {
-        let expected = SQLResultSet(
+        let expected = ResultSet(
             columnNames: ["id", "name", "city"],
             rows: (0..<10_000).map { [.integer(Int64($0)), .text("name\($0)"), .text("city\($0 % 17)")] }
         )
-        let actual = SQLResultSet(
+        let actual = ResultSet(
             columnNames: ["id", "name", "city"],
             rows: (0..<10_000).map { [.integer(Int64($0 + 500_000)), .text("wrong\($0)"), .text("nowhere")] }
         )

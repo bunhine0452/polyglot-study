@@ -18,10 +18,10 @@ struct ToolchainLauncherContractTests {
                 wallClockSeconds: 10,
                 cpuSeconds: 5,
                 memoryMegabytes: 512,
+                fileSizeBytes: 1024,
                 maxProcesses: 16
             ),
-            statusFileDescriptor: 3,
-            fileSizeBytes: 1024
+            statusFileDescriptor: 3
         )
 
         #expect(invocation.argumentVector == [
@@ -45,6 +45,33 @@ struct ToolchainLauncherContractTests {
             limits: ResourceLimits(wallClockSeconds: 1, cpuSeconds: 1, memoryMegabytes: 1, maxProcesses: 1)
         )
         #expect(!invocation.argumentVector.contains("--cwd"))
+    }
+
+    @Test("--fsize 는 ResourceLimits 에서 온다 — 런처가 임의 기본값을 만들지 않는다")
+    func fileSizeComesFromLimits() {
+        let invocation = LauncherInvocation(
+            launcherPath: "/l",
+            executablePath: "/bin/echo",
+            limits: ResourceLimits(fileSizeBytes: 7 << 20)
+        )
+        let argv = invocation.argumentVector
+        let index = try! #require(argv.firstIndex(of: "--fsize"))
+        #expect(argv[index + 1] == String(7 << 20))
+
+        // 기본값도 계약에서 온다 — 64MiB.
+        let defaulted = LauncherInvocation(launcherPath: "/l", executablePath: "/bin/echo")
+        let defaultIndex = try! #require(defaulted.argumentVector.firstIndex(of: "--fsize"))
+        #expect(defaulted.argumentVector[defaultIndex + 1] == String(64 << 20))
+    }
+
+    @Test("SIGXFSZ 는 fileSizeExceeded 로 매핑된다 — 멈춘 코드가 아니라 큰 출력이다")
+    func fileSizeExceededMapping() {
+        let limits = ResourceLimits(wallClockSeconds: 10, fileSizeBytes: 4096)
+        let outcome = LauncherOutcome(statuses: LauncherStatus.parse(stream: "SPAWNED 1 1\nSIGNAL \(SIGXFSZ)"))
+        #expect(outcome.fileSizeExceeded)
+        #expect(!outcome.wallClockExceeded)
+        #expect(!outcome.cpuExceeded)
+        #expect(outcome.failure(limits: limits) == .fileSizeExceeded(bytes: 4096))
     }
 
     @Test("메모리 상한은 런처 인자로 나가지 않는다 — macOS 는 RLIMIT_AS 를 지원하지 않는다")
@@ -87,7 +114,7 @@ struct ToolchainLauncherContractTests {
         SIGNAL 9
         """))
         #expect(timedOut.wallClockExceeded)
-        #expect(matches(timedOut.failure(limits: limits), .wallClockExceeded(seconds: 2)))
+        #expect(timedOut.failure(limits: limits) == .wallClockExceeded(seconds: 2))
 
         let selfKilled = LauncherOutcome(statuses: LauncherStatus.parse(stream: """
         SPAWNED 100 100
@@ -95,7 +122,7 @@ struct ToolchainLauncherContractTests {
         """))
         #expect(!selfKilled.wallClockExceeded)
         // 사용자가 스스로 죽인 것은 실패가 아니다 — 종료 상태로만 보고한다.
-        #expect(matches(selfKilled.failure(limits: limits), nil))
+        #expect(selfKilled.failure(limits: limits) == nil)
     }
 
     @Test("SIGXCPU 는 wallClockExceeded 가 아니라 cpuExceeded 로 매핑된다")
@@ -104,14 +131,14 @@ struct ToolchainLauncherContractTests {
         let outcome = LauncherOutcome(statuses: LauncherStatus.parse(stream: "SPAWNED 1 1\nSIGNAL \(SIGXCPU)"))
         #expect(outcome.cpuExceeded)
         #expect(!outcome.wallClockExceeded)
-        #expect(matches(outcome.failure(limits: limits), .cpuExceeded(seconds: 5)))
+        #expect(outcome.failure(limits: limits) == .cpuExceeded(seconds: 5))
     }
 
     @Test("메모리 폴러가 죽였다면 SIGNAL 9 는 memoryExceeded 다")
     func memoryKilledMapping() {
         let limits = ResourceLimits(memoryMegabytes: 256)
         let outcome = LauncherOutcome(statuses: LauncherStatus.parse(stream: "SPAWNED 1 1\nSIGNAL 9"))
-        #expect(matches(outcome.failure(limits: limits, memoryKilled: true), .memoryExceeded(megabytes: 256)))
+        #expect(outcome.failure(limits: limits, memoryKilled: true) == .memoryExceeded(megabytes: 256))
     }
 
     @Test("ERR 은 런처 자신의 실패이므로 backend 오류로 올라간다")
@@ -125,17 +152,18 @@ struct ToolchainLauncherContractTests {
     }
 }
 
-/// `RunFailure` 는 계약상 `Equatable` 이 아니다 (연관값 비교가 의미 없는 케이스가 있다).
-/// 테스트에서만 쓰는 비교자를 따로 둔다 — 계약을 테스트 편의로 넓히지 않는다.
-func matches(_ lhs: RunFailure?, _ rhs: RunFailure?) -> Bool {
-    switch (lhs, rhs) {
-    case (nil, nil): return true
-    case let (.toolchainMissing(a)?, .toolchainMissing(b)?): return a == b
-    case let (.wallClockExceeded(a)?, .wallClockExceeded(b)?): return a == b
-    case let (.cpuExceeded(a)?, .cpuExceeded(b)?): return a == b
-    case let (.memoryExceeded(a)?, .memoryExceeded(b)?): return a == b
-    case (.cancelled?, .cancelled?): return true
-    case let (.backend(a)?, .backend(b)?): return a == b
-    default: return false
+@Suite("RunFailure 동일성")
+struct RunFailureEqualityTests {
+    @Test("계약이 Equatable 을 제공한다 — 테스트마다 비교자를 다시 쓰지 않는다")
+    func equatable() {
+        #expect(RunFailure.wallClockExceeded(seconds: 2) == .wallClockExceeded(seconds: 2))
+        #expect(RunFailure.wallClockExceeded(seconds: 2) != .wallClockExceeded(seconds: 3))
+        // 멈춘 코드와 느린 코드는 초가 같아도 다른 실패다.
+        #expect(RunFailure.wallClockExceeded(seconds: 2) != .cpuExceeded(seconds: 2))
+        #expect(RunFailure.fileSizeExceeded(bytes: 4096) == .fileSizeExceeded(bytes: 4096))
+        #expect(RunFailure.fileSizeExceeded(bytes: 4096) != .memoryExceeded(megabytes: 4096))
+        #expect(RunFailure.cancelled == .cancelled)
+        #expect(RunFailure.backend("a") != .backend("b"))
+        #expect(RunFailure.toolchainMissing(hint: "brew") == .toolchainMissing(hint: "brew"))
     }
 }

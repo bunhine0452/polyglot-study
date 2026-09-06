@@ -1,0 +1,11 @@
+CREATE TABLE delivery (
+  id INTEGER PRIMARY KEY,
+  city TEXT NOT NULL,
+  fee INTEGER NOT NULL CHECK (fee >= 0)
+);
+INSERT OR IGNORE INTO delivery VALUES (1, '서울', 3000);
+INSERT OR IGNORE INTO delivery VALUES (2, '부산', 2500);
+INSERT OR IGNORE INTO delivery VALUES (1, '중복', 1000);
+INSERT OR IGNORE INTO delivery VALUES (3, '제주', -500);
+INSERT OR IGNORE INTO delivery VALUES (3, '제주', 4900);
+SELECT id, city, fee FROM delivery ORDER BY id;

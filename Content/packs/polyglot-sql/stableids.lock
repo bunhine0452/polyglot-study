@@ -1,0 +1,13 @@
+# polyglot stableids v1
+sql-aggregate-functions	sql	lessons/sql-aggregate-functions.md
+sql-create-table-constraints	sql	lessons/sql-create-table-constraints.md
+sql-exists-correlated-subqueries	sql	lessons/sql-exists-correlated-subqueries.md
+sql-group-by-having	sql	lessons/sql-group-by-having.md
+sql-inner-joins	sql	lessons/sql-inner-joins.md
+sql-insert-update-delete	sql	lessons/sql-insert-update-delete.md
+sql-left-outer-joins	sql	lessons/sql-left-outer-joins.md
+sql-null-handling	sql	lessons/sql-null-handling.md
+sql-order-by-limit-distinct	sql	lessons/sql-order-by-limit-distinct.md
+sql-select-from-where	sql	lessons/sql-select-from-where.md
+sql-subqueries	sql	lessons/sql-subqueries.md
+sql-window-functions	sql	lessons/sql-window-functions.md

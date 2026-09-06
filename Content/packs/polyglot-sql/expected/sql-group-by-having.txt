@@ -1,0 +1,3 @@
+category | n | avg_price
+bag | 1 | 45000.0
+paper | 2 | 6650.0

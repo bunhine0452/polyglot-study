@@ -1,0 +1,4 @@
+category | product | price
+paper | 연필 | 600
+pen | 볼펜 | 800
+paper | 노트 | 1200

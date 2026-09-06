@@ -1,0 +1,2 @@
+n_rows | total | mean | lo | hi
+4 | 24 | 6.0 | 2 | 9

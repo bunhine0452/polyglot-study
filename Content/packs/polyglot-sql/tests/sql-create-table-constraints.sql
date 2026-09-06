@@ -1,0 +1,4 @@
+SELECT 1 AS id, '서울' AS city, 3000 AS fee
+UNION ALL SELECT 2, '부산', 2500
+UNION ALL SELECT 3, '제주', 4900
+ORDER BY id;

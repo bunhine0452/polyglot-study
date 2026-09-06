@@ -1,0 +1,60 @@
+name: lessongen (manual)
+
+# lessongen 은 실왕복마다 OpenRouter 크레딧이 나간다({#lessongen-runlog} 의 비용 가드
+# 참고). PR·push 어디에도 걸지 않고 workflow_dispatch 로만 사람이 명시적으로 켠다.
+#
+# args 입력은 `swift run --package-path Tools lessongen` 뒤에 그대로 붙는다 —
+# 예: "outline --help", "lesson --pack Content/packs/polyglot-mvp --limit 1",
+#     "repair --pack Content/packs/polyglot-mvp --report .build/report.json".
+# 정확한 서브커맨드 표면은 `swift run --package-path Tools lessongen --help` 로 확인한다
+# (이 워크플로가 그 표면을 다시 정의하지 않는 이유 — lessongen 은 Tools 소유 세션의
+# 관할이라 여기서 CLI 옵션을 박제해 두면 CLI 가 바뀔 때마다 이 파일도 고쳐야 한다).
+#
+# --max-usd 로 지출 상한을 넣는 것을 강력히 권장한다(GenerationOptions 의 정지선 —
+# 이미 나간 요청은 되돌릴 수 없다).
+#
+# 이 워크플로는 실행하지 않았다 — 실행하면 실제로 과금된다. YAML 파싱만
+# 확인했다(docs/ci.md 참고). workflow_dispatch 는 저장소 쓰기 권한이 있어야 트리거할
+# 수 있으므로 args 를 run: 스텝에 직접 보간해도 PR 기반 워크플로와 같은 신뢰 경계
+# 문제가 없다 — 그래도 값을 로그에 남기지 않으려 env 경유로 전달한다.
+"on":
+  workflow_dispatch:
+    inputs:
+      args:
+        description: "lessongen 뒤에 그대로 붙일 인자 (예: lesson --pack Content/packs/polyglot-mvp --limit 1 --max-usd 2.00)"
+        required: true
+        type: string
+
+concurrency:
+  group: lessongen-manual
+  cancel-in-progress: false
+
+jobs:
+  lessongen:
+    name: lessongen
+    runs-on: macos-14
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: 툴체인 확인
+        run: swift --version
+      - name: lessongen 실행
+        env:
+          # 이름만 참조한다 — 값은 여기 파일 어디에도 없다.
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OPENROUTER_MODEL: ${{ secrets.OPENROUTER_MODEL }}
+          OPENROUTER_MODEL_OUTLINE: ${{ secrets.OPENROUTER_MODEL_OUTLINE }}
+          OPENROUTER_MODEL_LESSON: ${{ secrets.OPENROUTER_MODEL_LESSON }}
+          OPENROUTER_MODEL_PROSE: ${{ secrets.OPENROUTER_MODEL_PROSE }}
+          OPENROUTER_MODEL_REPAIR: ${{ secrets.OPENROUTER_MODEL_REPAIR }}
+          LESSONGEN_ARGS: ${{ inputs.args }}
+        run: |
+          set -euo pipefail
+          eval "swift run --package-path Tools lessongen $LESSONGEN_ARGS"
+      - name: 실행 로그 업로드 (요청·응답·usage·cost — 키는 포함되지 않는다)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lessongen-run-log
+          path: .lessongen/runs/**
+          if-no-files-found: ignore

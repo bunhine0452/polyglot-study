@@ -30,6 +30,9 @@ let package = Package(
         // 마스킹·계약 스위트)만 산다. **여기에는 어떤 공급자의 와이어 타입도 없다** —
         // 로컬 MLX 백엔드가 붙는 날 이 타깃이 그대로 재사용되어야 하기 때문이다.
         // `LanguageKit` 이 `CodeRunner` 를 들고 백엔드는 `RunnerKit` 에 두는 것과 같은 배치다.
+        /// packtool 이 쓰고 lessongen 이 읽는 유일한 계약. 두 실행 파일 밖에 둬야
+        /// 한쪽이 다른 쪽 내부 타입에 손을 뻗지 않는다.
+        .target(name: "PackReport", swiftSettings: toolSettings),
         .target(name: "LLMKit", swiftSettings: toolSettings),
         // OpenRouter 구현. OpenAI 호환 chat/completions 를 URLSession 으로 직접 친다.
         // 요청 조립과 응답 해석은 순수 함수로 떼어 두어 네트워크 없이 검증된다.
@@ -55,7 +58,7 @@ let package = Package(
         ),
         // 콘텐츠 팩 검증·빌드·서명 CLI. 실구현은 플래너의 {#packtool-*} 항목이고 다른
         // 작업이다 — 여기서는 자리만 잡는다. 의존성이 비어 있는 것은 의도다.
-        .executableTarget(name: "packtool", swiftSettings: toolSettings),
+        .executableTarget(name: "packtool", dependencies: ["PackReport"], swiftSettings: toolSettings),
 
         .target(
             name: "TestSupport",
@@ -63,6 +66,7 @@ let package = Package(
             path: "Tests/TestSupport",
             swiftSettings: toolSettings
         ),
+        .testTarget(name: "PackReportTests", dependencies: ["PackReport"], swiftSettings: toolSettings),
         .testTarget(
             name: "LLMKitTests",
             dependencies: ["LLMKit", "TestSupport"],

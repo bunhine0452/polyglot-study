@@ -23,7 +23,9 @@ struct ConsoleEditorLayout: View {
                 engineLabel: EditorModel.toolName(for: model.task.language),
                 language: model.task.language,
                 code: $model.code,
-                isEditable: model.canRun
+                isEditable: model.canRun,
+                // Swift 트랙에서만 값이 있다. `{#lsp-completion}`.
+                completionDelegate: model.languageSupport
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
 

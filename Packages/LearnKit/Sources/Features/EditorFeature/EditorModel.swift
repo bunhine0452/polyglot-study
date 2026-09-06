@@ -117,6 +117,13 @@ public final class EditorModel {
     private let runFactory: EditorRunFactory?
     private let graderFactory: EditorGraderFactory?
 
+    /// Swift 언어 서버 지원. **Swift 트랙에서만 만들어진다** — 다른 언어 트랙에
+    /// LSP 를 붙이는 것은 이 작업의 범위 밖이다.
+    ///
+    /// `nil` 인 경우가 둘이다: Swift 가 아닌 과제이거나, 아직 `startLanguageSupport()`
+    /// 를 부르지 않았거나. 어느 쪽이든 화면은 그대로 동작한다.
+    private(set) var languageSupport: SwiftLanguageSupport?
+
     public init(
         task: EditorTask,
         runFactory: EditorRunFactory? = nil,
@@ -137,12 +144,31 @@ public final class EditorModel {
 
     /// `{#inline-diagnostic-row}` 가 그릴 재료. `InlineDiagnosticRow` 는 화면 내부
     /// 프리젠테이션 타입이라 internal 이다 — 뷰(같은 모듈)와 `@testable` 테스트만 본다.
+    ///
+    /// `{#lsp-diagnostics}`: 언어 서버 진단과 `swiftc` 진단이 **같은 컴포넌트**로
+    /// 그려지고 출처는 라벨로만 구분된다. 언어 서버 쪽이 앞이다 — 지금 편집 중인
+    /// 코드를 보고 있어 스냅샷이 더 신선하다.
     var diagnosticRows: [InlineDiagnosticRow] {
-        EditorDiagnosticPresentation.rows(
-            code: lastRunSource,
-            diagnostics: diagnostics,
-            toolName: EditorModel.toolName(for: task.language)
-        )
+        var groups: [DiagnosticSourceGroup] = []
+        if let languageSupport, !languageSupport.diagnostics.isEmpty {
+            groups.append(
+                DiagnosticSourceGroup(
+                    toolName: EditorModel.languageServerName,
+                    code: languageSupport.diagnosticsSnapshot,
+                    diagnostics: languageSupport.diagnostics
+                )
+            )
+        }
+        if !diagnostics.isEmpty {
+            groups.append(
+                DiagnosticSourceGroup(
+                    toolName: EditorModel.toolName(for: task.language),
+                    code: lastRunSource,
+                    diagnostics: diagnostics
+                )
+            )
+        }
+        return EditorDiagnosticPresentation.rows(groups: groups)
     }
 
     /// SQL 결과 화면(`{#screen-sql-result}`)이 그릴 두 표. 아직 채점 전이면 nil.
@@ -171,6 +197,42 @@ public final class EditorModel {
     public func submit() async {
         guard canSubmit else { return }
         await grade()
+    }
+
+    // MARK: - 언어 서버 (`{#sourcekit-lsp-swift}`)
+
+    /// Swift 과제라면 언어 서버를 띄운다. 화면이 나타날 때 한 번 부른다.
+    ///
+    /// **실패해도 던지지 않는다.** 서버가 없는 머신에서는 완성과 실시간 진단만 없고
+    /// 편집·실행·채점·`swiftc` 진단은 전부 그대로다. 이유는 `languageSupport.status`
+    /// 에 남는다.
+    ///
+    /// - Parameter serviceFactory: 테스트가 진짜 서버 대신 끼우는 통로.
+    func startLanguageSupport(
+        serviceFactory: SwiftLanguageSupport.ServiceFactory? = nil
+    ) async {
+        guard task.language == .swift, languageSupport == nil else { return }
+        let support = SwiftLanguageSupport(
+            fileName: task.entryFileName, serviceFactory: serviceFactory
+        )
+        languageSupport = support
+        await support.start(text: code)
+    }
+
+    /// 화면이 사라질 때. 서버 프로세스를 거둔다.
+    func stopLanguageSupport() async {
+        let support = languageSupport
+        languageSupport = nil
+        await support?.stop()
+    }
+
+    /// 편집기 본문이 바뀌었다. 뷰의 `onChange(of: model.code)` 가 부른다.
+    ///
+    /// 모델이 `code` 의 `didSet` 으로 알아채지 않는 이유: `@Observable` 아래에서
+    /// 저장 프로퍼티의 관찰자는 SwiftUI 의 갱신 경로와 얽히기 쉽다. 뷰가 명시적으로
+    /// 부르는 편이 언제 나가는지가 눈에 보인다.
+    func codeDidChange() async {
+        await languageSupport?.documentDidChange(text: code)
     }
 
     private func performRun() async {
@@ -274,6 +336,10 @@ public final class EditorModel {
         default: .console
         }
     }
+
+    /// 인라인 진단 행에서 언어 서버 진단에 붙는 라벨. `swiftc` 와 **다른 이름**이어야
+    /// `{#lsp-diagnostics}` 의 "출처만 라벨로 구분" 이 성립한다.
+    static let languageServerName = "sourcekit-lsp"
 
     static func toolName(for language: LanguageID) -> String {
         switch language {

@@ -18,8 +18,17 @@ struct EditorCodePanel: View {
     @Binding var code: String
     /// `false` 면 채점 중이거나 실행 중이라 편집을 잠근다.
     var isEditable: Bool = true
+    /// Swift 트랙에서만 붙는다. `{#lsp-completion}` — 완성은 편집기가 이 delegate 로
+    /// 물어 오고, 언제 물을지는 아래 `triggerCharacters` 가 정한다.
+    var completionDelegate: SwiftLanguageSupport?
 
     @State private var editorState = SourceEditorState()
+
+    /// 서버가 `initialize` 응답에서 광고한 트리거 문자. **하드코딩하지 않는다** —
+    /// sourcekit-lsp 는 `.` 과 `(` 를 주지만 그건 서버가 정하는 것이다.
+    private var triggerCharacters: Set<String> {
+        completionDelegate?.triggerCharacters ?? []
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -36,8 +45,9 @@ struct EditorCodePanel: View {
             SourceEditor(
                 $code,
                 language: Self.codeLanguage(for: language),
-                configuration: EditorUIConfiguration.make(),
-                state: $editorState
+                configuration: EditorUIConfiguration.make(triggerCharacters: triggerCharacters),
+                state: $editorState,
+                completionDelegate: completionDelegate
             )
             .disabled(!isEditable)
             .frame(maxWidth: .infinity, maxHeight: .infinity)

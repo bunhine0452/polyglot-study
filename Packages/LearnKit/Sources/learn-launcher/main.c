@@ -39,6 +39,15 @@
  *
  * 메모리 상한은 여기 없다 — macOS 는 RLIMIT_AS / RLIMIT_DATA 를 지원하지 않는다(EINVAL).
  * 부모(Swift)가 SPAWNED 로 받은 pgid 를 proc_listpids 로 폴링해 killpg 한다.
+ *
+ * 샌드박스도 여기 없다. `sandbox-exec` 체인은 이 파일을 고치지 않고 argv 조립만으로
+ * 얹는다 — `RunnerKit/Sandbox/SandboxedInvocation.swift` 를 보라.
+ *
+ *   learn-launcher ... -- /usr/bin/sandbox-exec -D ... -p <프로파일> -- <실제 프로그램>
+ *
+ * `sandbox-exec` 는 sandbox_init 후 **같은 프로세스에서** execv 하므로 위에서 건
+ * setsid / setrlimit / chdir / FD_CLOEXEC 이 전부 그대로 살아남는다. 런처는 "rlimit 을
+ * 걸고 execv 한다"는 한 가지 일만 하고, 무엇을 exec 할지는 호출자가 정한다.
  */
 
 #include <errno.h>

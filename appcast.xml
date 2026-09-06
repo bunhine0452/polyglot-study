@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>Polyglot Study</title>
+    <link>https://bunhine0452.github.io/polyglot-study/appcast.xml</link>
+    <description>Polyglot Study 업데이트 피드</description>
+    <language>ko</language>
+    <!--
+      아직 릴리스가 없다. 항목이 없는 appcast 는 404 와 다르다 — 업데이터가
+      "받을 것 없음" 으로 정상 종료한다. 첫 릴리스는 App/Scripts/release.sh 가
+      이 파일을 통째로 다시 굽는다.
+    -->
+  </channel>
+</rss>

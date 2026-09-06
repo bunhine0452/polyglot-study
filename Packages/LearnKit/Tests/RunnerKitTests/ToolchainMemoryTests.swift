@@ -25,11 +25,24 @@ struct ToolchainMemoryTests {
         let members = ProcessGroupMemory.members(ofProcessGroup: group)
         #expect(members.contains(getpid()))
 
-        let own = ProcessGroupMemory.physicalFootprintBytes(ofProcess: getpid())
-        #expect((own ?? 0) > 0)
+        #expect((ProcessGroupMemory.physicalFootprintBytes(ofProcess: getpid()) ?? 0) > 0)
 
-        let total = ProcessGroupMemory.physicalFootprintBytes(ofProcessGroup: group)
-        #expect(total >= (own ?? 0), "그룹 합계가 자기 자신보다 작을 수 없다")
+        // 그룹 합계와 자기 사용량은 **원자적으로** 잴 수 없다. 두 샘플 사이에 병렬 테스트가
+        // 할당·해제를 하면 풋프린트가 오르내리고, 합계가 먼저 잰 자기 값보다 작아진다
+        // (실측: total 108,790,480 < own 108,937,936 — 148KB 가 그 사이에 해제됐다).
+        // 그래서 합계 측정을 자기 값 두 개로 감싸 **하한**과 비교하고, 그래도 창에 걸리면
+        // 몇 번 더 본다. 진짜 결함(합계가 0 이거나 자신을 안 세는 것)이면 전 시도가 실패한다.
+        var lastTotal: UInt64 = 0
+        var lastFloor: UInt64 = 0
+        let satisfied = (1...5).contains { _ in
+            let before = ProcessGroupMemory.physicalFootprintBytes(ofProcess: getpid()) ?? 0
+            let total = ProcessGroupMemory.physicalFootprintBytes(ofProcessGroup: group)
+            let after = ProcessGroupMemory.physicalFootprintBytes(ofProcess: getpid()) ?? 0
+            lastTotal = total
+            lastFloor = min(before, after)
+            return total >= lastFloor
+        }
+        #expect(satisfied, "그룹 합계가 자기 자신의 하한보다 작다 — total \(lastTotal), floor \(lastFloor)")
     }
 
     @Test("존재하지 않는 그룹은 빈 목록")

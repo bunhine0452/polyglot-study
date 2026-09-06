@@ -41,9 +41,9 @@ owner: claude-code
 - [x] lessongen 의 LLM HTTP 클라이언트를 URLSession 으로 작성 — 공급자는 LLMProvider 프로토콜 뒤, 구현은 OpenRouter chat/completions — 완료: 실왕복 1회 성공하고 429·5xx 에 지수 백오프 {#lessongen-http-client}
   - [x] API 키는 OPENROUTER_API_KEY 환경변수(없으면 .env)에서만 읽고 플래그·설정파일·로그 어디에도 싣지 않음 — 실행 로그 전수 grep 에 키 0건 {#api-key-handling}
 - [x] lessongen outline — 트랙 개요를 구조화 출력 1회로 뽑아 stableID·학습목표·선수개념을 갖춘 JSON 으로 커밋, 사람이 리뷰한 뒤에만 진행 {#lessongen-outline}
-- [!] lessongen lesson — 레슨을 JSON 으로 받아 Swift 코드가 디렉티브 마크다운으로 직렬화. 모델에게 마크다운을 시키지 않음 — 완료: 생성물이 구조·문법 단계를 첫 시도에 통과 {#lessongen-lesson}
+- [x] lessongen lesson — 레슨을 JSON 으로 받아 Swift 코드가 디렉티브 마크다운으로 직렬화. 모델에게 마크다운을 시키지 않음 — 완료: 생성물이 구조·문법 단계를 첫 시도에 통과 {#lessongen-lesson}
   - [x] 트랙 전체 팬아웃은 동시성 제한 병렬 요청으로 — OpenRouter Batch(/api/beta/batches, 통상 50%)는 있으나 현 모델의 :batch 변종이 프로모션가의 2배이고 seed 미지원이라 이득이 없음 {#lessongen-batch-fanout}
-  - [!] 고정 시스템 프롬프트를 안정 접두사로 두고 session_id 로 업스트림을 고정 — 현 모델은 자동 캐싱(쓰기 무료·읽기 0.2배)이라 cache_control 이 불필요하고 캐시가 업스트림에 붙어 있어 라우팅 고정이 진짜 조건. 완료: 2회차부터 cached_tokens 가 0 이 아님 {#lessongen-prompt-caching}
+  - [x] 고정 시스템 프롬프트를 안정 접두사로 두고 session_id 로 업스트림을 고정 — 현 모델은 자동 캐싱(쓰기 무료·읽기 0.2배)이라 cache_control 이 불필요하고 캐시가 업스트림에 붙어 있어 라우팅 고정이 진짜 조건. 완료: 2회차부터 cached_tokens 가 0 이 아님 {#lessongen-prompt-caching}
 - [x] lessongen repair — packtool 리포트를 읽어 실패 레슨만 재생성하고 러너 원문을 프롬프트에 담아 재요청 — 완료: 컴파일 에러·stdout 불일치·테스트 실패 3종이 통과로 수렴 {#lessongen-repair}
   - [x] 3회 실패 시 격리 — 해당 레슨을 팩에서 빼고 명단과 함께 non-zero 종료, 절대 머지시키지 않음 {#lessongen-quarantine}
 - [x] 실행 로그와 비용 가드 — 실행별 디렉터리에 요청·응답·usage·cost·검증 리포트를 남기고 최대 지출 초과 시 중단. 임의 모델은 temperature·seed 를 받으므로 재현을 목표로 삼되, 진짜 변수는 시드가 아니라 어느 업스트림이 답했는가라서 모델 id·seed·temperature·upstream provider·generation id 를 함께 기록 {#lessongen-runlog}
@@ -170,4 +170,5 @@ owner: claude-code
 | 2026-09-07T07:20:15+09:00 | #lessongen-prompt-caching | claude-code | !→! | .oculpm/journal/20260907/Errors/0719_error_prompt-cache-cold-despite-pin.md | 가설 반증됨 — Wafer 로 고정해 순차 3회를 태워도 cached_tokens 가 0. 접두사는 두 레슨에서 5527B 바이트 동일(무료 확인), 23개 엔드포인트 전부 캐시 읽기 가격 게시(무료 확인). 원인은 공급자 쪽. 더 안 태운다: out 이 비용을 지배해(in 1995 / out 3625) 완벽한 입력 캐시의 이득이 15~20%뿐이고 폴백 금지의 가용성 대가와 맞바꿔야 한다. 배선·관측은 남는다 |
 | 2026-09-07T07:33:12+09:00 | #sparkle-eddsa-keys | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0733_feature_sparkle-auto-update.md | 공개키가 SUPublicEDKey 에, 개인키는 로그인 키체인에만. 저장소 전수 grep 에 개인키 0건 (BEGIN PRIVATE KEY 0건, *.pem/*.der/*.key 0건) — 공개키만 Info.plist·문서에 있다 |
 | 2026-09-07T07:33:22+09:00 | #sparkle-appcast | claude-code | ☐→~ | .oculpm/journal/20260907/Features_to_add/0733_feature_sparkle-auto-update.md | 생성기는 release.sh 에 편입돼 릴리스 1회로 서명(88자)·길이가 갱신되는 것까지 단언으로 확인. 남은 것은 피드 URL — polyglotstudy.github.io 는 아무도 소유하지 않은 추정 주소라 release.sh 가 그 호스트로는 릴리스를 거부하도록 게이트를 걸었다. 원격·Pages 가 생겨 실주소를 확보해야 닫힌다 |
+| 2026-09-07T07:56:35+09:00 | #lessongen-prompt-caching | claude-code | !→x | .oculpm/journal/20260907/Errors/0752_error_prompt-cache-verdict-corrected.md | 앞선 "캐시가 안 붙는다" 판정을 정정한다 — 표본 3회가 부족했다. 트랙 생성 14회에서 4회가 각 1856 토큰(고정 접두사 크기)을 캐시에서 읽었고 입력의 20.3%. 적중은 간헐적이다 — 동시성 4에서 같이 날아간 요청은 서로를 데우지 못한다. 고정 없이도 14회가 전부 Wafer 로 갔다(보장은 아니므로 --provider 는 보험으로 유지) |
 <!-- oculpm:plan-log end -->

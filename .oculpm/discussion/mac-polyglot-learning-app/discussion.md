@@ -214,6 +214,15 @@ Tools/
 | 2026-09-06T12:45:00+09:00 | claude-code | 병렬 리서치 4갈래(실행 런타임·에디터 UI·앱 아키텍처·커리큘럼) 결과를 종합. 방안 C 권고 |
 | 2026-09-06T12:45:00+09:00 | claude-code | 리서치 충돌 해소: Runestone 은 iOS 전용이라 macOS 후보에서 제외(Package.swift 확인). Unicorn Engine 은 GPL-2.0 — 쟁점 1 로 분리 |
 | 2026-09-06T12:45:00+09:00 | claude-code | 콘텐츠를 Claude API 생성으로 정하면서 본문 재배포 라이선스 제약 대부분이 무효화됨. 대신 생성물 자동 검증 게이트가 필수 요구사항으로 승격 |
+| 2026-09-06T13:55:00+09:00 | claude-code | Opus 5 병렬 계획 세션 4갈래(영속화·실행기·콘텐츠·UI) 결과를 polyglot-core / polyglot-surface 두 플랜으로 승격 |
+| 2026-09-06T13:55:00+09:00 | claude-code | 정정 — swift-fsrs 최신 태그 v5.0.0 에는 FSRS-6 이 없다(BasicSchedulerV6 와 21-length defaultWv6 는 main 에만). 커밋 SHA 핀 필수, 벤더링 표면도 200줄이 아니라 약 2,600줄 |
+| 2026-09-06T13:55:00+09:00 | claude-code | 정정 — SQLiteData 1.12.0 은 swift-tools-version 6.4 라 설치된 Swift 6.3.3 으로 해석 불가. 도입 보류하고 GRDB 자체 ValueObservation 을 AsyncSequence 로 노출 |
+| 2026-09-06T13:55:00+09:00 | claude-code | 정정 — CodeEditLanguages 는 CESE 0.15.2 의 exact 전이 의존이라 제거 불가. 대신 CEL 0.1.20 이 python·sql·swift 그래머를 이미 포함해 MVP 그래머 비용이 0 |
+| 2026-09-06T13:55:00+09:00 | claude-code | 정정 — 이 문서의 BlockDirective 예시는 파싱되지 않는다. 중괄호 없는 디렉티브 뒤 같은 줄 텍스트는 조용히 버려지고, 인자 값에 콜론·괄호·따옴표를 못 쓴다 |
+| 2026-09-06T13:55:00+09:00 | claude-code | 정정 — Textual 의 MarkupParser 는 문서 전체를 AttributedString 으로 렌더해 퀴즈·빈칸 컨트롤을 담을 수 없다. 산문만 태우는 하이브리드로 변경 (플랫폼 하한 macOS 15 이슈 동반) |
+| 2026-09-06T13:55:00+09:00 | claude-code | 정정 — 로그인 셸의 python3 는 /usr/bin 의 3.9.6 이다. 3.13.12 는 miniconda 경로라 PATH 상 뒤. 툴체인 감지는 전수 열거 후 버전 정책으로 선택해야 한다 |
+| 2026-09-06T13:55:00+09:00 | claude-code | 정정 — swiftc 에 JSON 진단이 없다(clang 전용). diagnostic-style llvm 텍스트 파싱 + print-diagnostic-groups 로 ruleID 확보 |
+| 2026-09-06T13:55:00+09:00 | claude-code | 결정 — Pyodide 를 MVP 에서 제외하고 Python 은 로컬 python3 서브프로세스로. input() 실습 가능 여부와 무한루프 정지 확실성이 결정적 |
 <!-- oculpm:discussion-log end -->
 
 ## 다음 단계

@@ -24,3 +24,4 @@ design/polyglot-study-app.html
 # SwiftPM
 Packages/*/.build/
 .claude/worktrees/
+Tools/.build/

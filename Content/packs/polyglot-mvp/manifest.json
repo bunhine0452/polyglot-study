@@ -1,0 +1,144 @@
+{
+  "displayName" : "Polyglot MVP 샘플 팩",
+  "files" : [
+    {
+      "bytes" : 469,
+      "path" : "assets/shop-seed.sql",
+      "sha256" : "90e055addd81fb04265ac608bae6358e5338230559168a683c9b20e6344c0839"
+    },
+    {
+      "bytes" : 22,
+      "path" : "expected/py-0001-fstring-run.txt",
+      "sha256" : "54ede7db9b2d062cb5c00965b0225c323bd1bf3e9fd4cf5fb874a384f75dc7ec"
+    },
+    {
+      "bytes" : 40,
+      "path" : "expected/sql-0001-aggregate-run.txt",
+      "sha256" : "fb732613259d7eb442afbe5d65ac2aa053eb8d8001c9455142396deff0884a94"
+    },
+    {
+      "bytes" : 10,
+      "path" : "expected/swift-0001-optional-run.txt",
+      "sha256" : "498d8a3f0264604b96fa08dd5df68eb405ededca74ca4538558e40fabf9e8337"
+    },
+    {
+      "bytes" : 2709,
+      "path" : "lessons/py-0001-fstring.md",
+      "sha256" : "30020b3e45a54936feabf5069ad59a4c92b2e046c0cf57483a1ca53df91e26f8"
+    },
+    {
+      "bytes" : 2533,
+      "path" : "lessons/sql-0001-aggregate.md",
+      "sha256" : "a922faefb1bb9abf29f96eee824b4cd7f1aafc5ca4e33e50abe2159a1000684c"
+    },
+    {
+      "bytes" : 2898,
+      "path" : "lessons/swift-0001-optional.md",
+      "sha256" : "daec432b83e00e908cdc08b7bcc4ea78938141f4e8ccd11c047e6bed27a0b4bb"
+    },
+    {
+      "bytes" : 187,
+      "path" : "solutions/py-0001-initials.py",
+      "sha256" : "cb610894ce7df743ac37ca2b4f3974b718819b4522f93641555dfbaa91c57887"
+    },
+    {
+      "bytes" : 227,
+      "path" : "solutions/sql-0001-top-products.sql",
+      "sha256" : "90510290e37be3d09e5a6d9b92399eba62025162a26c2f51264dad0e03e204be"
+    },
+    {
+      "bytes" : 219,
+      "path" : "solutions/swift-0001-safe-divide.swift",
+      "sha256" : "796600d6eab6287318a63738a2f90e96d58b1b06c676b379fb83d057bd494bd6"
+    },
+    {
+      "bytes" : 184,
+      "path" : "stableids.lock",
+      "sha256" : "273d09cea71881bd92613cc936af599617722d4d1bccfe7b380f6b093858566d"
+    },
+    {
+      "bytes" : 151,
+      "path" : "starters/py-0001-initials.py",
+      "sha256" : "ba97ffe018a324199b49cb617f96f910b2fd4a6c527111b96ca9e21e95a5b740"
+    },
+    {
+      "bytes" : 162,
+      "path" : "starters/sql-0001-top-products.sql",
+      "sha256" : "70c6a8ab6d2e50e13059d6ffb1cf030d10f71e118a410417464bf33196a7616c"
+    },
+    {
+      "bytes" : 178,
+      "path" : "starters/swift-0001-safe-divide.swift",
+      "sha256" : "3a2093eabfad88269a00327e77838299ab98b572ae565fd44bdfd217019f3bf5"
+    },
+    {
+      "bytes" : 363,
+      "path" : "tests/py-0001-initials.py",
+      "sha256" : "466739bf0aa282e3743c26a74c8c85c9efeae3093bd616c9614ae776b5bd9426"
+    },
+    {
+      "bytes" : 241,
+      "path" : "tests/sql-0001-top-products.sql",
+      "sha256" : "f653ad3d5fb13cad9810e5d2b471504444db26881824113a107ee41e2920da27"
+    },
+    {
+      "bytes" : 300,
+      "path" : "tests/swift-0001-safe-divide.swift",
+      "sha256" : "467458bc5aa6af525610b35fc01c718109bcb9e571cc84497e5c676d04775776"
+    }
+  ],
+  "generatedAt" : "2026-09-06T00:00:00Z",
+  "languages" : [
+    "python",
+    "sql",
+    "swift"
+  ],
+  "lessons" : [
+    {
+      "language" : "python",
+      "objectives" : [
+        "f-string 으로 값을 문자열에 끼워 넣는다",
+        "서식 문법 세 가지의 가독성 차이를 설명한다"
+      ],
+      "order" : 1,
+      "path" : "lessons/py-0001-fstring.md",
+      "prerequisites" : [
+
+      ],
+      "stableID" : "py-0001-fstring",
+      "title" : "f-string 으로 문자열 만들기"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "COUNT·SUM·AVG 로 여러 행을 하나로 접는다",
+        "GROUP BY 가 결과 행 수를 어떻게 바꾸는지 설명한다"
+      ],
+      "order" : 1,
+      "path" : "lessons/sql-0001-aggregate.md",
+      "prerequisites" : [
+
+      ],
+      "stableID" : "sql-0001-aggregate",
+      "title" : "집계 함수와 GROUP BY"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "옵셔널에서 값을 꺼내는 세 가지 방법을 구분한다",
+        "실패할 수 있는 함수의 반환 타입을 옵셔널로 설계한다"
+      ],
+      "order" : 1,
+      "path" : "lessons/swift-0001-optional.md",
+      "prerequisites" : [
+
+      ],
+      "stableID" : "swift-0001-optional",
+      "title" : "옵셔널 다루기"
+    }
+  ],
+  "minAppVersion" : "0.1.0",
+  "packID" : "polyglot-mvp",
+  "schemaVersion" : 1,
+  "version" : "1.0.0"
+}

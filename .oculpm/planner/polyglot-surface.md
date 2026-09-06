@@ -30,25 +30,25 @@ owner: claude-code
 
 ## packtool · lessongen · CI 게이트 {#content-toolchain}
 - [x] Tools 를 별도 SPM 패키지로 만들고 LearnKit 을 path 의존으로 — 완료: packtool 과 lessongen 두 실행 파일이 나오고 앱 산출물은 ArgumentParser 를 링크하지 않음 {#tools-package}
-- [ ] packtool validate 의 구조·문법 단계 — 매니페스트 디코딩·sha256 대조·디렉티브 파싱·참조 파일 존재 — 완료: 툴체인 없는 머신에서도 돌고 망가진 픽스처 8종이 서로 다른 메시지로 실패 {#packtool-structural}
-- [ ] packtool validate 의 실행 게이트 — MVP 3트랙 샘플 팩의 모든 예제·과제 블록이 실제 CodeRunner 를 타고 통과, 하나라도 어긋나면 non-zero. 통과 못 한 팩은 머지 금지 {#packtool-execution}
-  - [ ] 예제 블록을 실행해 expected 사이드카와 바이트 단위 대조, 불일치 시 줄 단위 diff 출력, CRLF·후행 개행 정규화 규칙을 스펙에 명시 {#example-stdout-compare}
-  - [ ] 과제 블록은 solution 이 숨은 테스트를 통과하고 starter 는 실패하는지 둘 다 확인 — starter 가 이미 통과하는 무의미한 과제가 AI 생성물의 가장 흔한 실패 {#task-solution-and-starter}
-- [ ] 퀴즈·빈칸 의미 검증 — 정답 키가 실제 선택지에 존재하는지, 선택지가 2개 이상인지, 정답 본문이 비어 있지 않은지를 행·열 위치와 함께 보고 {#packtool-semantic}
-- [ ] packtool 리포트를 JSON 과 JUnit XML 두 형식으로 — CI 어노테이션과 lessongen 재생성 루프가 같은 파일을 읽음, 레슨별 stableID·실패 단계·러너 원문 포함 {#packtool-report}
+- [x] packtool validate 의 구조·문법 단계 — 매니페스트 디코딩·sha256 대조·디렉티브 파싱·참조 파일 존재 — 완료: 툴체인 없는 머신에서도 돌고 망가진 픽스처 8종이 서로 다른 메시지로 실패 {#packtool-structural}
+- [x] packtool validate 의 실행 게이트 — MVP 3트랙 샘플 팩의 모든 예제·과제 블록이 실제 CodeRunner 를 타고 통과, 하나라도 어긋나면 non-zero. 통과 못 한 팩은 머지 금지 {#packtool-execution}
+  - [x] 예제 블록을 실행해 expected 사이드카와 바이트 단위 대조, 불일치 시 줄 단위 diff 출력, CRLF·후행 개행 정규화 규칙을 스펙에 명시 {#example-stdout-compare}
+  - [x] 과제 블록은 solution 이 숨은 테스트를 통과하고 starter 는 실패하는지 둘 다 확인 — starter 가 이미 통과하는 무의미한 과제가 AI 생성물의 가장 흔한 실패 {#task-solution-and-starter}
+- [x] 퀴즈·빈칸 의미 검증 — 정답 키가 실제 선택지에 존재하는지, 선택지가 2개 이상인지, 정답 본문이 비어 있지 않은지를 행·열 위치와 함께 보고 {#packtool-semantic}
+- [x] packtool 리포트를 JSON 과 JUnit XML 두 형식으로 — CI 어노테이션과 lessongen 재생성 루프가 같은 파일을 읽음, 레슨별 stableID·실패 단계·러너 원문 포함 {#packtool-report}
 - [ ] packtool build — solutions 를 벗기고 sha256 재계산해 배포용 팩을 결정적으로 굽기 — 완료: 두 번 빌드한 tar 바이트가 동일하고 배포 팩에 solutions 없음 {#packtool-build}
   - [ ] packtool sign 과 verify — 정규 매니페스트 바이트에 대한 분리 서명, 키는 환경변수로만 받고 서명 없는 팩과 변조된 팩은 거부 {#packtool-sign}
 - [x] lessongen 의 LLM HTTP 클라이언트를 URLSession 으로 작성 — 공급자는 LLMProvider 프로토콜 뒤, 구현은 OpenRouter chat/completions — 완료: 실왕복 1회 성공하고 429·5xx 에 지수 백오프 {#lessongen-http-client}
   - [x] API 키는 OPENROUTER_API_KEY 환경변수(없으면 .env)에서만 읽고 플래그·설정파일·로그 어디에도 싣지 않음 — 실행 로그 전수 grep 에 키 0건 {#api-key-handling}
 - [x] lessongen outline — 트랙 개요를 구조화 출력 1회로 뽑아 stableID·학습목표·선수개념을 갖춘 JSON 으로 커밋, 사람이 리뷰한 뒤에만 진행 {#lessongen-outline}
-- [ ] lessongen lesson — 레슨을 JSON 으로 받아 Swift 코드가 디렉티브 마크다운으로 직렬화. 모델에게 마크다운을 시키지 않음 — 완료: 생성물이 구조·문법 단계를 첫 시도에 통과 {#lessongen-lesson}
-  - [ ] 트랙 전체 팬아웃은 동시성 제한 병렬 요청으로 — OpenRouter Batch(/api/beta/batches, 통상 50%)는 있으나 현 모델의 :batch 변종이 프로모션가의 2배이고 seed 미지원이라 이득이 없음 {#lessongen-batch-fanout}
-  - [ ] 고정 시스템 프롬프트를 안정 접두사로 두고 session_id 로 업스트림을 고정 — 현 모델은 자동 캐싱(쓰기 무료·읽기 0.2배)이라 cache_control 이 불필요하고 캐시가 업스트림에 붙어 있어 라우팅 고정이 진짜 조건. 완료: 2회차부터 cached_tokens 가 0 이 아님 {#lessongen-prompt-caching}
-- [ ] lessongen repair — packtool 리포트를 읽어 실패 레슨만 재생성하고 러너 원문을 프롬프트에 담아 재요청 — 완료: 컴파일 에러·stdout 불일치·테스트 실패 3종이 통과로 수렴 {#lessongen-repair}
-  - [ ] 3회 실패 시 격리 — 해당 레슨을 팩에서 빼고 명단과 함께 non-zero 종료, 절대 머지시키지 않음 {#lessongen-quarantine}
-- [ ] 실행 로그와 비용 가드 — 실행별 디렉터리에 요청·응답·usage·cost·검증 리포트를 남기고 최대 지출 초과 시 중단. 임의 모델은 temperature·seed 를 받으므로 재현을 목표로 삼되, 진짜 변수는 시드가 아니라 어느 업스트림이 답했는가라서 모델 id·seed·temperature·upstream provider·generation id 를 함께 기록 {#lessongen-runlog}
-- [ ] GitHub Actions — macOS 러너에서 packtool validate 를 packs 변경 PR 의 필수 체크로 걸고 lessongen 은 workflow_dispatch 에서만 실행 {#ci-gate}
-  - [ ] 툴체인 부재 시 스킵이 아니라 실패가 기본 — 명시 플래그를 줄 때만 스킵하고 리포트에 기록, 경량 러너는 구조·문법만 돌고 게이트로 세지 않음 {#toolchain-skip-policy}
+- [!] lessongen lesson — 레슨을 JSON 으로 받아 Swift 코드가 디렉티브 마크다운으로 직렬화. 모델에게 마크다운을 시키지 않음 — 완료: 생성물이 구조·문법 단계를 첫 시도에 통과 {#lessongen-lesson}
+  - [x] 트랙 전체 팬아웃은 동시성 제한 병렬 요청으로 — OpenRouter Batch(/api/beta/batches, 통상 50%)는 있으나 현 모델의 :batch 변종이 프로모션가의 2배이고 seed 미지원이라 이득이 없음 {#lessongen-batch-fanout}
+  - [!] 고정 시스템 프롬프트를 안정 접두사로 두고 session_id 로 업스트림을 고정 — 현 모델은 자동 캐싱(쓰기 무료·읽기 0.2배)이라 cache_control 이 불필요하고 캐시가 업스트림에 붙어 있어 라우팅 고정이 진짜 조건. 완료: 2회차부터 cached_tokens 가 0 이 아님 {#lessongen-prompt-caching}
+- [x] lessongen repair — packtool 리포트를 읽어 실패 레슨만 재생성하고 러너 원문을 프롬프트에 담아 재요청 — 완료: 컴파일 에러·stdout 불일치·테스트 실패 3종이 통과로 수렴 {#lessongen-repair}
+  - [x] 3회 실패 시 격리 — 해당 레슨을 팩에서 빼고 명단과 함께 non-zero 종료, 절대 머지시키지 않음 {#lessongen-quarantine}
+- [x] 실행 로그와 비용 가드 — 실행별 디렉터리에 요청·응답·usage·cost·검증 리포트를 남기고 최대 지출 초과 시 중단. 임의 모델은 temperature·seed 를 받으므로 재현을 목표로 삼되, 진짜 변수는 시드가 아니라 어느 업스트림이 답했는가라서 모델 id·seed·temperature·upstream provider·generation id 를 함께 기록 {#lessongen-runlog}
+- [~] GitHub Actions — macOS 러너에서 packtool validate 를 packs 변경 PR 의 필수 체크로 걸고 lessongen 은 workflow_dispatch 에서만 실행 {#ci-gate}
+  - [~] 툴체인 부재 시 스킵이 아니라 실패가 기본 — 명시 플래그를 줄 때만 스킵하고 리포트에 기록, 경량 러너는 구조·문법만 돌고 게이트로 세지 않음 {#toolchain-skip-policy}
 
 ## UI 기반 — 타깃·토큰·에디터 {#ui-foundation}
 - [ ] Polyglot.xcodeproj 를 앱 타깃 하나만 담는 얇은 셸로 만들고 코드는 전부 로컬 SPM 참조로 — 완료: 앱 타깃 컴파일 소스가 2개 이하이고 xcodebuild build 통과 {#xcode-app-target}
@@ -78,14 +78,14 @@ owner: claude-code
   - [x] 진도 셀 3상태 — 완료는 잉크 채움, 현재는 종이에 잉크 1px, 미래는 종이에 흐린 1px. LazyHGrid 가 아닌 고정 Grid 로 2px 간격 유지 {#progress-cell-states}
 - [x] 레슨 — 6블록 스텝바와 완료 블록 40px 접힘 행과 활성 블록 카드 — 완료: 한 화면에 펼쳐진 블록이 항상 1개이고 미도래 블록은 흐려진 40px 행으로 남음 {#screen-lesson}
   - [x] 실행 예제 블록의 출력 영역을 실행 전 빈 상태로 80px 예약하고 RunEvent 스트림을 그 자리에 흘림 — 시작·도착·완료 3시점 모두 카드 높이 불변 {#lesson-output-slot}
-- [ ] 에디터와 콘솔 — 48px 헤더, 56px 과제 바, 좌우 2단 레이아웃 — 완료: 우측 패널이 출력·테스트 탭과 상태 행과 stderr 원문과 테스트 결과를 담고 폭 520px 고정 {#screen-editor-console}
-  - [ ] 인라인 진단 행 — 거터 6px 사각과 코드 아래 한국어 설명과 위치·도구·개수 라벨을 Diagnostic 에서 조립, 진단이 붙은 행만 배경 전환 {#inline-diagnostic-row}
-  - [ ] 빨강 사용을 종료 코드 옆 8px 사각 하나로 제한하는 규칙을 뷰 레벨에서 강제 — 이 화면에서 실패색을 쓰는 지점이 코드상 1곳뿐 {#red-budget-guard}
+- [x] 에디터와 콘솔 — 48px 헤더, 56px 과제 바, 좌우 2단 레이아웃 — 완료: 우측 패널이 출력·테스트 탭과 상태 행과 stderr 원문과 테스트 결과를 담고 폭 520px 고정 {#screen-editor-console}
+  - [x] 인라인 진단 행 — 거터 6px 사각과 코드 아래 한국어 설명과 위치·도구·개수 라벨을 Diagnostic 에서 조립, 진단이 붙은 행만 배경 전환 {#inline-diagnostic-row}
+  - [x] 빨강 사용을 종료 코드 옆 8px 사각 하나로 제한하는 규칙을 뷰 레벨에서 강제 — 이 화면에서 실패색을 쓰는 지점이 코드상 1곳뿐 {#red-budget-guard}
 - [ ] sourcekit-lsp 연동 — Swift 트랙에만 완성과 진단 두 기능. Xcode 26.6 동봉이라 서버 조달·설치 안내 비용이 0 — 완료: initialize 응답 수신 {#sourcekit-lsp-swift}
   - [ ] completion 요청을 CESE 의 트리거 문자와 delegate 에 연결 — 점 입력 후 200ms 안에 후보가 뜨고 취소 시 요청이 실제로 취소됨 {#lsp-completion}
   - [ ] publishDiagnostics 를 LearnCore.Diagnostic 으로 매핑해 인라인 진단 행에 재사용 — swiftc 진단과 같은 컴포넌트로 렌더하고 출처만 라벨로 구분 {#lsp-diagnostics}
-- [ ] SQL 결과표 diff — 내 결과와 예상 결과 2단 표 — 완료: 누락 행이 실패 틴트 배경에 6px 적색 사각으로 표시되고 하단에 결과셋 비교 캡션이 고정 {#screen-sql-result}
-  - [ ] 행 수가 다를 때 짧은 쪽에 누락 플레이스홀더 행을 채워 두 표의 높이를 맞춤 — 하단 캡션 y 좌표가 항상 고정 {#sql-row-padding}
+- [x] SQL 결과표 diff — 내 결과와 예상 결과 2단 표 — 완료: 누락 행이 실패 틴트 배경에 6px 적색 사각으로 표시되고 하단에 결과셋 비교 캡션이 고정 {#screen-sql-result}
+  - [x] 행 수가 다를 때 짧은 쪽에 누락 플레이스홀더 행을 채워 두 표의 높이를 맞춤 — 하단 캡션 y 좌표가 항상 고정 {#sql-row-padding}
 - [x] FSRS 복습 — 12칸 진행 헤더와 질문·답 카드와 동일 크기 4버튼 — 완료: 4버튼의 폭·높이·배경·테두리가 완전 동일하고 각 아래 다음 간격이 실제 FSRS-6 계산값 {#screen-review}
   - [x] 어떤 답을 골라도 카드가 사라지지 않는다는 문구를 상수로 두고 좋음 을 시각적으로 유도하지 않는 규칙을 주석으로 고정 {#review-no-nudge}
 - [ ] ARM64 레지스터 패널을 Assembly 트랙 착수 시점까지 후순위로 분리 — registers 프리젠터는 준비중 뷰로 처리하고 디자인은 별도 마일스톤 문서로만 남김 {#screen-registers-deferred}
@@ -149,4 +149,17 @@ owner: claude-code
 | 2026-09-06T23:03:05+09:00 | #font-registration-path | claude-code | ☐→x | .oculpm/journal/20260906/Chores/2302_chore_font-bundling-codesign-public-repo.md | 3웨이트씩 7.6MB 커밋, OFL 1.1 확인, CTFontManagerRegisterFontsForURL(.process) + 스냅샷 픽셀 diff 로 Plex 렌더 실증 |
 | 2026-09-06T23:03:12+09:00 | #helper-signing | claude-code | ☐→x | .oculpm/journal/20260906/Chores/2302_chore_font-bundling-codesign-public-repo.md | learn-launcher 를 LearnKit 에서 별도 빌드해 Contents/Helpers 에 개별 서명 (ad-hoc, 인증서 없음), deep 없이 verify --deep --strict 통과 |
 | 2026-09-06T23:03:23+09:00 | #github-public-repo | claude-code | ☐→x | .oculpm/journal/20260906/Chores/2302_chore_font-bundling-codesign-public-repo.md | README·CONTRIBUTING·NOTICE 작성, Unicorn Engine GPL 경고, CodeEditLanguages/Symbols LICENSE 부재 기록, 스크린샷 Plex 렌더로 교체 |
+| 2026-09-07T06:16:58+09:00 | #packtool-structural | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0615_feature_packtool-validation-gate.md | 매니페스트 디코딩·잠금 위반·디스크 양방향 대조·참조 파일 존재. 깨뜨린 픽스처 10종이 서로 다른 메시지로 실패 (기준 8종 초과) |
+| 2026-09-07T06:17:05+09:00 | #example-stdout-compare | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0615_feature_packtool-validation-gate.md | BOM·CRLF·후행 개행 셋만 정규화하고 줄 끝 공백은 접지 않는다 — LineDiff 로 줄 단위 증거 |
+| 2026-09-07T06:17:12+09:00 | #task-solution-and-starter | claude-code | ☐→x | .oculpm/journal/20260907/Bugs/0616_bug_swift-grading-mutual-exclusion.md | solution 통과·starter 실패 둘 다 단언. 다만 이 게이트가 처음엔 거짓 실패를 냈다 — SwiftPM 템플릿 공유 결함을 SwiftGradingGate 로 고친 뒤에야 신뢰 가능 |
+| 2026-09-07T06:17:18+09:00 | #packtool-semantic | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0615_feature_packtool-validation-gate.md | 파싱을 통과한 값에 퀴즈·빈칸 정합성을 독립적으로 재단언, 전부 line:column 동반 |
+| 2026-09-07T06:17:24+09:00 | #packtool-report | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0615_feature_packtool-validation-gate.md | 별도 PackReport 타깃이 두 실행 파일의 유일한 접점. text/json(canonicalJSON)/JUnit 3형식, stagesRun 으로 스킵을 통과로 못 읽게 |
+| 2026-09-07T06:17:31+09:00 | #toolchain-skip-policy | claude-code | ☐→~ | .oculpm/journal/20260907/Features_to_add/0615_feature_packtool-validation-gate.md | 툴 쪽 절반만 완료 — 부재 시 실패가 기본, --allow-missing-toolchain 에서만 스킵하고 stagesRun 에 기록. "경량 러너를 게이트로 세지 않음" 은 #ci-gate 에 얹혀 있어 아직 미검증 |
+| 2026-09-07T06:17:37+09:00 | #inline-diagnostic-row | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0615_feature_editor-console-sql-result-screens.md | EditorDiagnosticPresentation 순수 함수로 분리해 뷰 없이 테스트 — 진단 붙은 행만 배경 전환 |
+| 2026-09-07T06:17:44+09:00 | #red-budget-guard | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0615_feature_editor-console-sql-result-screens.md | RedBudgetTests 가 소스를 훑어 Palette.fail 1곳(종료 코드 배지)임을 단언. SQL diff 화면은 적색 사각이 구조적 필수라 예산 밖으로 명시 제외 |
+| 2026-09-07T06:17:50+09:00 | #sql-row-padding | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0615_feature_editor-console-sql-result-screens.md | SQLDiffPresentation 이 짧은 쪽에 누락 플레이스홀더를 채워 두 표 높이를 맞춤 — 하단 캡션 y 고정 |
+| 2026-09-07T06:17:57+09:00 | #lessongen-batch-fanout | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0616_feature_lessongen-lesson-and-repair-loop.md | BoundedFanout 동시성 제한 병렬. Batch 엔드포인트는 쓰지 않음 — 재판단 근거는 1946 리팩터 일지 |
+| 2026-09-07T06:18:05+09:00 | #lessongen-prompt-caching | claude-code | ☐→! | .oculpm/journal/20260907/Features_to_add/0616_feature_lessongen-lesson-and-repair-loop.md | 배선은 끝났으나 완료 기준 미달 — 실왕복 7회에서 session_id 를 보내도 업스트림이 NextBit·Wafer·Reka 로 갈려 cached_tokens 가 계속 0. 다음 수: provider.only/order 로 업스트림 고정 실측 |
+| 2026-09-07T06:18:11+09:00 | #lessongen-quarantine | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0616_feature_lessongen-lesson-and-repair-loop.md | 3회 실패 시 레슨·사이드카를 팩에서 지우고 명단과 함께 non-zero. 시도 장부가 실행을 넘어 이어짐 |
+| 2026-09-07T06:18:18+09:00 | #lessongen-runlog | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0616_feature_lessongen-lesson-and-repair-loop.md | 실행별 디렉터리에 요청·응답·usage·cost·model·seed·temperature·upstream·generation id. --max-usd 초과 시 새 요청 중단. 결산이 캐시 미적중과 갈린 업스트림을 직접 찍음 |
 <!-- oculpm:plan-log end -->

@@ -31,11 +31,23 @@ let package = Package(
         .library(name: "DashboardFeature", targets: ["DashboardFeature"]),
         .library(name: "LessonFeature", targets: ["LessonFeature"]),
         .library(name: "ReviewFeature", targets: ["ReviewFeature"]),
+        .library(name: "EditorUI", targets: ["EditorUI"]),
     ],
     dependencies: [
         .package(url: "https://github.com/groue/GRDB.swift.git", .upToNextMinor(from: "7.11.1")),
         .package(url: "https://github.com/swiftlang/swift-subprocess.git", from: "1.0.0"),
         .package(url: "https://github.com/swiftlang/swift-markdown.git", from: "0.8.0"),
+        // 벤더링된 CodeEditSourceEditor. 0.15.2 에 업스트림 PR #355(머지 대기, 죽은
+        // CodeEditSymbols 의존 제거)를 적용했다 — `swift build`/`swift test` CLI 경로에서
+        // CodeEditSymbols 의 Package.swift 가 리소스를 선언하지 않아 Bundle.module 생성이
+        // 실패하는 문제였다(`xcodebuild` 경로는 원래 통과했다). 경위·로컬 수정 목록은
+        // `Vendor/CodeEditSourceEditor/VENDORING.md`.
+        //
+        // 그 아래에서 전이 의존하는 CodeEditLanguages(`exact: 0.1.20`)는 이쪽에서 손댈 수
+        // 없고(exact 핀), 그 저장소 자체에 LICENSE 파일이 없다 — CodeEdit 조직의 나머지
+        // 저장소(CodeEdit·CodeEditSourceEditor·CodeEditTextView)가 전부 MIT 이고 README
+        // 태그라인이 "Open source, free forever" 라 정책이 아니라 누락으로 판단한다.
+        .package(path: "../../Vendor/CodeEditSourceEditor"),
     ],
     targets: [
         .target(name: "LearnCore", swiftSettings: coreSettings),
@@ -95,10 +107,21 @@ let package = Package(
             path: "Sources/Features/ReviewFeature",
             swiftSettings: uiSettings
         ),
+        // 벤더링된 CodeEditSourceEditor 위에 무채색 테마·조인 설정을 얹는 층. 자세한 경위는
+        // 위 `dependencies` 의 주석과 `Vendor/CodeEditSourceEditor/VENDORING.md`.
+        .target(
+            name: "EditorUI",
+            dependencies: [
+                "DesignSystem",
+                .product(name: "CodeEditSourceEditor", package: "CodeEditSourceEditor"),
+            ],
+            swiftSettings: uiSettings
+        ),
         .testTarget(name: "ContentKitTests", dependencies: ["ContentKit"], swiftSettings: coreSettings),
         .testTarget(name: "DashboardFeatureTests", dependencies: ["DashboardFeature"], swiftSettings: uiSettings),
         .testTarget(name: "LessonFeatureTests", dependencies: ["LessonFeature"], swiftSettings: uiSettings),
         .testTarget(name: "ReviewFeatureTests", dependencies: ["ReviewFeature"], swiftSettings: uiSettings),
+        .testTarget(name: "EditorUITests", dependencies: ["EditorUI"], swiftSettings: uiSettings),
         .testTarget(name: "DesignSystemTests", dependencies: ["DesignSystem"], swiftSettings: uiSettings),
         .testTarget(name: "OnboardingFeatureTests", dependencies: ["OnboardingFeature"], swiftSettings: uiSettings),
         .testTarget(

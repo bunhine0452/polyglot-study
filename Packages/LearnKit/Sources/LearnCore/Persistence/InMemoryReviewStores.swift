@@ -191,6 +191,46 @@ public actor InMemoryCardStateStore: CardStateStore {
             .map { $0 }
     }
 
+    /// GRDB 구현의 큐 SQL 과 **같은 규칙**을 Swift 로 옮긴 것. 두 구현이 같은 큐를 내야 한다
+    /// (`CoreContractTests` 가 대조한다). 성능은 흉내내지 않는다 — 여기는 전량 순회다.
+    public func queue(
+        languageID: LanguageID,
+        now: EpochMillis,
+        studyDayStart: EpochMillis,
+        policy: DueQueuePolicy
+    ) async throws -> [DueQueueEntry] {
+        let inTrack = snapshots.values.filter { $0.languageID == languageID && $0.dueAt <= now }
+
+        // 오늘 큐를 통해 푼 카드를 갈래별로 센다. 같은 카드를 여러 번 풀어도 한 번이고,
+        // 이미 미래로 밀려나 due 가 아닌 카드도 오늘 쓴 몫에는 포함된다.
+        let todaysLog = try await reviewLog.entries(after: nil, limit: .max)
+            .filter { $0.reviewedAt >= studyDayStart && $0.source == .review }
+            .filter { snapshots[$0.cardID]?.languageID == languageID }
+        let newDone = Set(todaysLog.filter { $0.stateBefore == .new }.map(\.cardID)).count
+        let reviewDone = Set(todaysLog.filter { $0.stateBefore == .review }.map(\.cardID)).count
+
+        func take(_ bucket: DueQueueBucket, _ phases: Set<CardPhase>, _ limit: Int) -> [DueQueueEntry] {
+            inTrack
+                .filter { phases.contains($0.phase) }
+                .sorted { ($0.dueAt, $0.cardID.rawValue) < ($1.dueAt, $1.cardID.rawValue) }
+                .prefix(max(0, limit))
+                .map { DueQueueEntry(snapshot: $0, bucket: bucket) }
+        }
+
+        let picked =
+            take(.learning, [.learning, .relearning], policy.sessionLimit)
+            + take(.review, [.review], min(policy.sessionLimit, policy.reviewAllowance - reviewDone))
+            + take(.new, [.new], min(policy.sessionLimit, policy.newAllowance - newDone))
+
+        return picked
+            .sorted {
+                ($0.bucket.rawValue, $0.snapshot.dueAt, $0.cardID.rawValue)
+                    < ($1.bucket.rawValue, $1.snapshot.dueAt, $1.cardID.rawValue)
+            }
+            .prefix(policy.sessionLimit)
+            .map { $0 }
+    }
+
     public func staleCards(limit: Int) async throws -> [CardStaleness] {
         let activeID = try await reviewLog.activeParameterSet().id
         var result: [CardStaleness] = []

@@ -23,7 +23,9 @@ enum GoldenSchema {
             REFERENCES review_log(id) ON DELETE RESTRICT,
         parameter_set_id TEXT NOT NULL
             REFERENCES scheduler_parameters(id) ON DELETE RESTRICT,
-        rebuilt_at INTEGER NOT NULL,
+        rebuilt_at INTEGER NOT NULL, elapsed_days INTEGER NOT NULL DEFAULT 0
+        CONSTRAINT chk_card_state_elapsed_days CHECK (elapsed_days >= 0), learning_step_index INTEGER NOT NULL DEFAULT 0
+        CONSTRAINT chk_card_state_learning_step CHECK (learning_step_index >= 0),
         CONSTRAINT chk_card_state_state
             CHECK (state IN ('new', 'learning', 'review', 'relearning')),
         CONSTRAINT chk_card_state_stability
@@ -37,6 +39,8 @@ enum GoldenSchema {
     ) STRICT;
     CREATE INDEX idx_card_state_due
         ON card_state(language_id, due_at);
+    CREATE INDEX idx_card_state_queue
+        ON card_state(language_id, state, due_at, card_id);
     CREATE VIEW card_state_stale AS
     SELECT
         cs.card_id AS card_id,

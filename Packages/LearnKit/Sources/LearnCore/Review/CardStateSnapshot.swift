@@ -16,11 +16,16 @@
 ///   필요한 걸 비정규화한다.
 /// - `rebuiltAt` — 이 행을 언제 계산했나. 알고리즘은 이 값을 읽지 않는다.
 ///
-/// - Warning: `card_state` 테이블에는 `CardSchedulingState.elapsedDays` 와
-///   `learningStepIndex` 에 대응하는 컬럼이 **없다**(출시된 스키마이고 마이그레이션은 불변이다).
-///   저장했다 다시 읽으면 두 값은 0 이다. 즉 이 캐시에서 되살린 상태로 곧장
-///   `ReviewScheduler.apply` 를 부르면 학습 단계 카드의 스텝 인덱스가 처음으로 되감긴다.
-///   정확한 상태가 필요하면 `review_log` 를 리플레이해라 — 캐시가 아니라 로그가 진실이다.
+/// ## 왕복은 무손실이다
+///
+/// 마이그레이션 006 이전에는 `elapsedDays` 와 `learningStepIndex` 에 대응하는 컬럼이 없어
+/// 저장했다 다시 읽으면 두 값이 0 이었고, 그 상태로 `ReviewScheduler.apply` 를 부르면 학습
+/// 단계 카드의 스텝 인덱스가 처음으로 되감겼다. 006 이 컬럼을 채웠으므로 이제
+/// `CardStateSnapshot` → 행 → `CardStateSnapshot` 은 **모든 필드가 보존된다**.
+///
+/// 그렇다고 캐시가 진실이 된 것은 아니다. 행이 뒤처졌는지(`card_state_stale`)는 여전히
+/// 따로 판정해야 하고, 뒤처졌으면 `review_log` 리플레이가 정본이다. 달라진 것은
+/// "최신인 행조차 두 필드를 잃는다" 는 결함이 사라졌다는 것이다.
 public struct CardStateSnapshot: Hashable, Sendable, Codable {
     /// 로그에서 재계산되는 알고리즘 상태 전부.
     public var scheduling: CardSchedulingState
@@ -43,8 +48,8 @@ public struct CardStateSnapshot: Hashable, Sendable, Codable {
 
     /// 컬럼 목록 그대로 받는 편의 생성자.
     ///
-    /// 인자가 `card_state` 의 컬럼과 1:1 이라 행을 손으로 만들 때 읽기 쉽다. 대신 컬럼이 없는
-    /// `elapsedDays`·`learningStepIndex` 는 표현하지 못한다 — 0 으로 들어간다.
+    /// 인자가 `card_state` 의 컬럼과 1:1 이라 행을 손으로 만들 때 읽기 쉽다. 006 이후로는
+    /// **정말로 1:1 이다** — 표현하지 못하는 필드가 없다.
     public init(
         cardID: CardID,
         languageID: LanguageID,
@@ -55,7 +60,9 @@ public struct CardStateSnapshot: Hashable, Sendable, Codable {
         phase: CardPhase,
         reps: Int = 0,
         lapses: Int = 0,
+        elapsedDays: Int = 0,
         scheduledDays: Int = 0,
+        learningStepIndex: Int = 0,
         derivedFromLogID: ReviewLogID? = nil,
         parameterSetID: ParameterSetID = .fsrs6Default,
         rebuiltAt: EpochMillis
@@ -68,7 +75,9 @@ public struct CardStateSnapshot: Hashable, Sendable, Codable {
                 difficulty: difficulty,
                 dueAt: dueAt,
                 lastReviewedAt: lastReviewedAt,
+                elapsedDays: elapsedDays,
                 scheduledDays: scheduledDays,
+                learningStepIndex: learningStepIndex,
                 reps: reps,
                 lapses: lapses,
                 derivedFromLogID: derivedFromLogID,
@@ -126,9 +135,19 @@ extension CardStateSnapshot {
         set { scheduling.lapses = newValue }
     }
 
+    public var elapsedDays: Int {
+        get { scheduling.elapsedDays }
+        set { scheduling.elapsedDays = newValue }
+    }
+
     public var scheduledDays: Int {
         get { scheduling.scheduledDays }
         set { scheduling.scheduledDays = newValue }
+    }
+
+    public var learningStepIndex: Int {
+        get { scheduling.learningStepIndex }
+        set { scheduling.learningStepIndex = newValue }
     }
 
     public var derivedFromLogID: ReviewLogID? {

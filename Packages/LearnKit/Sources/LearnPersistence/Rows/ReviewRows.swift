@@ -165,7 +165,11 @@ struct CardStateRow: FetchableRecord, PersistableRecord {
     var state: String
     var reps: Int
     var lapses: Int
+    /// 마이그레이션 006. 006 이전 행은 0 이고, 그 행들은 같은 마이그레이션이 stale 로 표시했다.
+    var elapsedDays: Int
     var scheduledDays: Int
+    /// 마이그레이션 006. 위와 같다.
+    var learningStepIndex: Int
     var derivedFromLogID: Int64?
     var parameterSetID: String
     var rebuiltAt: Int64
@@ -180,7 +184,9 @@ struct CardStateRow: FetchableRecord, PersistableRecord {
         state = row["state"]
         reps = row["reps"]
         lapses = row["lapses"]
+        elapsedDays = row["elapsed_days"]
         scheduledDays = row["scheduled_days"]
+        learningStepIndex = row["learning_step_index"]
         derivedFromLogID = row["derived_from_log_id"]
         parameterSetID = row["parameter_set_id"]
         rebuiltAt = row["rebuilt_at"]
@@ -196,7 +202,9 @@ struct CardStateRow: FetchableRecord, PersistableRecord {
         container["state"] = state
         container["reps"] = reps
         container["lapses"] = lapses
+        container["elapsed_days"] = elapsedDays
         container["scheduled_days"] = scheduledDays
+        container["learning_step_index"] = learningStepIndex
         container["derived_from_log_id"] = derivedFromLogID
         container["parameter_set_id"] = parameterSetID
         container["rebuilt_at"] = rebuiltAt
@@ -212,15 +220,16 @@ struct CardStateRow: FetchableRecord, PersistableRecord {
         state = snapshot.phase.sqlText
         reps = snapshot.reps
         lapses = snapshot.lapses
+        elapsedDays = snapshot.elapsedDays
         scheduledDays = snapshot.scheduledDays
+        learningStepIndex = snapshot.learningStepIndex
         derivedFromLogID = snapshot.derivedFromLogID?.rawValue
         parameterSetID = snapshot.parameterSetID.rawValue
         rebuiltAt = snapshot.rebuiltAt.sqlValue
     }
 
-    /// - Important: `CardSchedulingState.elapsedDays` 와 `learningStepIndex` 는 컬럼이 없어
-    ///   0 으로 되살아난다. 두 값은 로그 리플레이로만 정확히 복원된다 —
-    ///   `CardStateSnapshot` 의 경고 참고.
+    /// 마이그레이션 006 이후 이 왕복은 **무손실**이다 — `CardSchedulingState` 의 모든 필드에
+    /// 대응 컬럼이 있다. 남은 컬럼 드리프트는 이름과 표현(`state` TEXT ↔ `CardPhase` Int)뿐이다.
     func toSnapshot() throws -> CardStateSnapshot {
         guard let phase = CardPhase(sqlText: state) else {
             throw StoreError.storage(message: "card_state.state: \(state)")
@@ -235,7 +244,9 @@ struct CardStateRow: FetchableRecord, PersistableRecord {
             phase: phase,
             reps: reps,
             lapses: lapses,
+            elapsedDays: elapsedDays,
             scheduledDays: scheduledDays,
+            learningStepIndex: learningStepIndex,
             derivedFromLogID: derivedFromLogID.map { ReviewLogID($0) },
             parameterSetID: ParameterSetID(parameterSetID),
             rebuiltAt: EpochMillis(sqlValue: rebuiltAt)

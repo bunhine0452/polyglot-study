@@ -142,6 +142,39 @@ extension LearnDatabase {
         }
     }
 
+    /// 특정 마이그레이션까지만 적용한 인메모리 DB.
+    ///
+    /// 마이그레이션 하나를 제대로 검증하려면 **그 앞까지만 적용된 DB** 가 필요하다. 006 의 본체는
+    /// "이미 있는 행을 어떻게 다루는가" 인데, 전부 적용된 DB 에는 애초에 기존 행이 없다.
+    /// 나머지는 `applyRemainingMigrations()` 로 이어 붙인다.
+    static func inMemory(upTo identifier: String) throws -> LearnDatabase {
+        let queue = try DatabaseQueue()
+        let environment = try queue.write { db in try EnvironmentProbe.measure(db) }
+        try environment.validate(expectedJournalMode: "memory")
+        try SchemaMigrations.migrator().migrate(queue, upTo: identifier)
+        return LearnDatabase(writer: queue, environment: environment)
+    }
+
+    /// 남은 마이그레이션을 마저 적용한다. `inMemory(upTo:)` 와 짝이다.
+    func applyRemainingMigrations() throws {
+        try SchemaMigrations.migrator().migrate(writer)
+    }
+
+    /// due 큐 쿼리의 `EXPLAIN QUERY PLAN`. 스토어가 실제로 실행하는 SQL·인자를 그대로 쓴다.
+    func dueQueuePlan(
+        languageID: LanguageID,
+        now: EpochMillis,
+        studyDayStart: EpochMillis,
+        policy: DueQueuePolicy
+    ) throws -> [String] {
+        try GRDBCardStateStore(writer: writer).queryPlan(
+            languageID: languageID,
+            now: now,
+            studyDayStart: studyDayStart,
+            policy: policy
+        )
+    }
+
     /// 단일 정수 조회. 스키마 불변식을 SQL 로 직접 확인할 때.
     func scalarInt(_ sql: String) throws -> Int? {
         try writer.read { db in try Int.fetchOne(db, sql: sql) }

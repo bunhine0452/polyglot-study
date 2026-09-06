@@ -124,8 +124,11 @@ struct CardStateTests {
     /// 걸린다. 이력이 없는 카드는 0 이 실제로 정답이라 건드리지 않는다.
     @Test("006 은 두 컬럼을 0 으로 채우고, 이력이 있는 기존 행만 stale 로 표시한다")
     func migration006MarksLegacyRowsStale() throws {
-        let database = try LearnDatabase.inMemory(upTo: "005-lesson-progress")
-        #expect(try database.appliedMigrations() == Array(SchemaMigrations.identifiers.dropLast()))
+        let stopAt = "005-lesson-progress"
+        let database = try LearnDatabase.inMemory(upTo: stopAt)
+        // 식별자는 번호 접두사라 사전순 = 적용순이다 — `stopAt` 까지가 정확히 적용된 목록이다.
+        // (`dropLast()` 로 쓰면 006 이 마지막이라는 가정이 박히고, 007 이 붙는 순간 깨진다.)
+        #expect(try database.appliedMigrations() == SchemaMigrations.identifiers.prefix { $0 <= stopAt })
 
         try database.executeRaw("""
             INSERT INTO review_log
@@ -291,18 +294,80 @@ struct CardStateTests {
 
     // MARK: - 제약
 
-    @Test("난이도 범위를 벗어난 값은 CHECK 가 거부한다")
-    func difficultyRangeIsEnforced() throws {
+    /// 마이그레이션 007. 넓힌 것은 **0.0 하나**이지 범위 자체가 아니다.
+    ///
+    /// 0 을 받게 하면서 위아래 경계가 함께 풀리면 오염된 난이도가 조용히 들어오고, 그 값은
+    /// FSRS 로 되먹여지는 순간 스케줄 전체를 망가뜨린다. 경계 바깥 네 값을 전부 못박는다.
+    @Test(
+        "난이도 범위를 벗어난 값은 CHECK 가 거부한다",
+        arguments: [42.0, 10.5, 0.5, -1.0]
+    )
+    func difficultyRangeIsEnforced(difficulty: Double) throws {
         let harness = try TestDatabase(.inMemory)
         let failure = #expect(throws: RawSQLFailure.self) {
             try harness.database.executeRaw("""
                 INSERT INTO card_state
                     (card_id, language_id, stability, difficulty, due_at, state,
                      reps, lapses, scheduled_days, parameter_set_id, rebuilt_at)
-                VALUES ('c', 'python', 1.0, 42.0, 1, 'review', 0, 0, 0, 'fsrs6-default', 1)
+                VALUES ('c', 'python', 1.0, \(difficulty), 1, 'review', 0, 0, 0, 'fsrs6-default', 1)
                 """)
         }
         #expect(failure?.extendedResultCode == SQLiteResultCode.constraintCheck)
+    }
+
+    /// 마이그레이션 007 이 고친 결함. `{#m002-card-state}`
+    ///
+    /// FSRS 난이도는 **첫 복습 전까지 정의되지 않는다** — `CardSchedulingState.difficulty` 의
+    /// 기본값 0 이 그 "아직 없음" 이고, `newCard(...)` 가 만드는 카드가 그 값을 그대로 든다.
+    /// 007 이전의 `chk_card_state_difficulty` 는 1.0...10.0 만 받았으므로 신규 카드는 **캐시에
+    /// 저장하는 것 자체가 불가능**했다. `state = 'new'` 를 허용하는 CHECK 와 신규 카드를 읽는
+    /// due 큐 버킷(`introducing`)이 이미 있었으니, 제약 하나만 나머지 설계와 어긋나 있었다.
+    ///
+    /// 세 테스트 경로가 전부 이 자리를 비껴갔다 — 스케줄링 테스트는 CHECK 없는 인메모리
+    /// 페이크를, 영속화 테스트는 손으로 넣은 유효한 난이도를, 재구축 드라이버는 복습이 1회
+    /// 이상인 카드만 썼다. 그래서 여기서는 **스토어를 통해** 넣고 **스토어를 통해** 되읽는다.
+    @Test("한 번도 복습하지 않은 카드가 그대로 저장되고 돌아온다", arguments: DatabaseFlavor.allCases)
+    func newCardRoundTrips(flavor: DatabaseFlavor) async throws {
+        let harness = try TestDatabase(flavor)
+        let scheduling = CardSchedulingState.newCard(
+            CardID("py-untouched"),
+            createdAt: Fixture.epoch,
+            parameterSetID: .fsrs6Default
+        )
+        #expect(scheduling.difficulty == 0, "센티널이 0 이 아니면 이 테스트의 전제가 무너진다")
+        #expect(scheduling.phase == .new)
+
+        let snapshot = CardStateSnapshot(
+            scheduling: scheduling,
+            languageID: .python,
+            rebuiltAt: Fixture.epoch
+        )
+        try await harness.database.cardStateStore.upsert(snapshot)
+
+        #expect(try await harness.database.cardStateStore.snapshot(forCard: CardID("py-untouched")) == snapshot)
+    }
+
+    /// 저장만 되고 큐에 안 뜨면 반쪽짜리다 — 큐 SQL 의 `introducing` CTE
+    /// (= `DueQueueBucket.new`)가 실제로 그 행을 집어야 한다.
+    @Test("신규 카드가 due 큐의 신규 버킷으로 나온다", arguments: DatabaseFlavor.allCases)
+    func newCardReachesTheQueue(flavor: DatabaseFlavor) async throws {
+        let harness = try TestDatabase(flavor)
+        try await harness.database.cardStateStore.upsert(
+            CardStateSnapshot(
+                scheduling: .newCard(CardID("py-fresh"), createdAt: Fixture.epoch, parameterSetID: .fsrs6Default),
+                languageID: .python,
+                rebuiltAt: Fixture.epoch
+            )
+        )
+
+        let queue = try await harness.database.cardStateStore.queue(
+            languageID: .python,
+            now: Fixture.days(1),
+            studyDayStart: Fixture.epoch,
+            policy: .default
+        )
+        #expect(queue.map(\.snapshot.cardID) == [CardID("py-fresh")])
+        #expect(queue.first?.bucket == .new)
     }
 
     @Test("존재하지 않는 review_log 를 워터마크로 가리킬 수 없다")

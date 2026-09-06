@@ -63,8 +63,11 @@ struct CardStateRebuildE2ETests {
 
     @Test("005 DB → 006 → stale 표시 → 재구축 → 두 컬럼이 리플레이 값과 일치한다")
     func staleRowsFromMigration006AreRecovered() async throws {
-        let database = try LearnDatabase.inMemory(upTo: "005-lesson-progress")
-        #expect(try database.appliedMigrations() == Array(SchemaMigrations.identifiers.dropLast()))
+        let stopAt = "005-lesson-progress"
+        let database = try LearnDatabase.inMemory(upTo: stopAt)
+        // 식별자는 번호 접두사라 사전순 = 적용순이다 — `stopAt` 까지가 정확히 적용된 목록이다.
+        // (`dropLast()` 로 쓰면 006 이 마지막이라는 가정이 박히고, 007 이 붙는 순간 깨진다.)
+        #expect(try database.appliedMigrations() == SchemaMigrations.identifiers.prefix { $0 <= stopAt })
 
         // ── 005 시절의 데이터 ────────────────────────────────────────────────
         let log = database.reviewLogStore

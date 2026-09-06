@@ -23,15 +23,21 @@ enum GoldenSchema {
             REFERENCES review_log(id) ON DELETE RESTRICT,
         parameter_set_id TEXT NOT NULL
             REFERENCES scheduler_parameters(id) ON DELETE RESTRICT,
-        rebuilt_at INTEGER NOT NULL, elapsed_days INTEGER NOT NULL DEFAULT 0
-        CONSTRAINT chk_card_state_elapsed_days CHECK (elapsed_days >= 0), learning_step_index INTEGER NOT NULL DEFAULT 0
-        CONSTRAINT chk_card_state_learning_step CHECK (learning_step_index >= 0),
+        rebuilt_at INTEGER NOT NULL,
+        elapsed_days INTEGER NOT NULL DEFAULT 0
+            CONSTRAINT chk_card_state_elapsed_days CHECK (elapsed_days >= 0),
+        learning_step_index INTEGER NOT NULL DEFAULT 0
+            CONSTRAINT chk_card_state_learning_step CHECK (learning_step_index >= 0),
         CONSTRAINT chk_card_state_state
             CHECK (state IN ('new', 'learning', 'review', 'relearning')),
         CONSTRAINT chk_card_state_stability
             CHECK (stability >= 0.0),
-        CONSTRAINT chk_card_state_difficulty
-            CHECK (difficulty >= 1.0 AND difficulty <= 10.0),
+        -- difficulty = 0.0 은 값이 아니라 **센티널**이다: "첫 복습 전이라 FSRS 난이도가
+        -- 아직 없다". FSRS 가 실제로 만들어 내는 난이도는 1.0...10.0 뿐이고, 0.0 은
+        -- 그 구간 밖이라 실제 값과 섞이지 않는다. 같은 행의 stability 도 신규 카드에서
+        -- 0 이며 chk_card_state_stability 가 그 0 을 받는다 — 같은 관례다.
+        CONSTRAINT chk_card_state_difficulty_unrated_or_1_to_10
+            CHECK (difficulty = 0.0 OR (difficulty >= 1.0 AND difficulty <= 10.0)),
         CONSTRAINT chk_card_state_counters
             CHECK (reps >= 0 AND lapses >= 0 AND scheduled_days >= 0),
         CONSTRAINT chk_card_state_last_reviewed

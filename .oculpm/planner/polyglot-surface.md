@@ -36,8 +36,8 @@ owner: claude-code
   - [x] 과제 블록은 solution 이 숨은 테스트를 통과하고 starter 는 실패하는지 둘 다 확인 — starter 가 이미 통과하는 무의미한 과제가 AI 생성물의 가장 흔한 실패 {#task-solution-and-starter}
 - [x] 퀴즈·빈칸 의미 검증 — 정답 키가 실제 선택지에 존재하는지, 선택지가 2개 이상인지, 정답 본문이 비어 있지 않은지를 행·열 위치와 함께 보고 {#packtool-semantic}
 - [x] packtool 리포트를 JSON 과 JUnit XML 두 형식으로 — CI 어노테이션과 lessongen 재생성 루프가 같은 파일을 읽음, 레슨별 stableID·실패 단계·러너 원문 포함 {#packtool-report}
-- [ ] packtool build — solutions 를 벗기고 sha256 재계산해 배포용 팩을 결정적으로 굽기 — 완료: 두 번 빌드한 tar 바이트가 동일하고 배포 팩에 solutions 없음 {#packtool-build}
-  - [ ] packtool sign 과 verify — 정규 매니페스트 바이트에 대한 분리 서명, 키는 환경변수로만 받고 서명 없는 팩과 변조된 팩은 거부 {#packtool-sign}
+- [x] packtool build — solutions 를 벗기고 sha256 재계산해 배포용 팩을 결정적으로 굽기 — 완료: 두 번 빌드한 tar 바이트가 동일하고 배포 팩에 solutions 없음 {#packtool-build}
+  - [x] packtool sign 과 verify — 정규 매니페스트 바이트에 대한 분리 서명, 키는 환경변수로만 받고 서명 없는 팩과 변조된 팩은 거부 {#packtool-sign}
 - [x] lessongen 의 LLM HTTP 클라이언트를 URLSession 으로 작성 — 공급자는 LLMProvider 프로토콜 뒤, 구현은 OpenRouter chat/completions — 완료: 실왕복 1회 성공하고 429·5xx 에 지수 백오프 {#lessongen-http-client}
   - [x] API 키는 OPENROUTER_API_KEY 환경변수(없으면 .env)에서만 읽고 플래그·설정파일·로그 어디에도 싣지 않음 — 실행 로그 전수 grep 에 키 0건 {#api-key-handling}
 - [x] lessongen outline — 트랙 개요를 구조화 출력 1회로 뽑아 stableID·학습목표·선수개념을 갖춘 JSON 으로 커밋, 사람이 리뷰한 뒤에만 진행 {#lessongen-outline}
@@ -162,4 +162,5 @@ owner: claude-code
 | 2026-09-07T06:18:05+09:00 | #lessongen-prompt-caching | claude-code | ☐→! | .oculpm/journal/20260907/Features_to_add/0616_feature_lessongen-lesson-and-repair-loop.md | 배선은 끝났으나 완료 기준 미달 — 실왕복 7회에서 session_id 를 보내도 업스트림이 NextBit·Wafer·Reka 로 갈려 cached_tokens 가 계속 0. 다음 수: provider.only/order 로 업스트림 고정 실측 |
 | 2026-09-07T06:18:11+09:00 | #lessongen-quarantine | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0616_feature_lessongen-lesson-and-repair-loop.md | 3회 실패 시 레슨·사이드카를 팩에서 지우고 명단과 함께 non-zero. 시도 장부가 실행을 넘어 이어짐 |
 | 2026-09-07T06:18:18+09:00 | #lessongen-runlog | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0616_feature_lessongen-lesson-and-repair-loop.md | 실행별 디렉터리에 요청·응답·usage·cost·model·seed·temperature·upstream·generation id. --max-usd 초과 시 새 요청 중단. 결산이 캐시 미적중과 갈린 업스트림을 직접 찍음 |
+| 2026-09-07T06:42:28+09:00 | #packtool-sign | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0642_feature_packtool-build-and-sign.md | Ed25519 분리 서명, 키는 POLYGLOT_PACK_SIGNING_KEY/PUBLIC_KEY 환경변수 전용. verify 는 서명+해시 둘 다 — 서명만으로는 레슨 본문 변조를 못 잡는다(실증). 미서명·변조·다른 키가 서로 다른 판정 |
 <!-- oculpm:plan-log end -->

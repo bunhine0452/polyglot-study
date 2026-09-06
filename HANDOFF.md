@@ -9,27 +9,34 @@ Swift 6.3 / SwiftUI, **macOS 14 하한 확정**, MIT 오픈소스, Developer ID 
 
 ## 지금 실행할 수 있는 것 / 아직 없는 것
 
-**아직 앱이 아니다.** `.xcodeproj` 가 없고 SwiftUI 코드가 0줄이다. 지금 있는 것은
-라이브러리·CLI·테스트뿐이다.
+**앱이 뜬다.** `.xcodeproj` 없이 SPM `executableTarget` + 번들 조립 스크립트로 `.app` 을
+만든다. 화면 다섯(온보딩·대시보드·레슨·복습·에디터콘솔/SQL결과)이 목 데이터가 아니라
+실제 러너·채점기·`ToolchainProbe` 를 탄다.
 
 실행 가능:
 
 ```bash
-cd Packages/LearnKit && swift test          # 607개
-swift test --package-path Tools             # 135개
-swift run --package-path Tools lessongen --help
-swift run --package-path Tools lessongen outline --language python --lessons 3
+cd Packages/LearnKit && swift test          # 912개
+swift test --package-path Tools             # 300개
+
+# 콘텐츠 파이프라인 — 생성 → 검증 → 굽기 → 서명 → 검증
+swift run --package-path Tools lessongen lesson --help
+swift run --package-path Tools packtool validate Content/packs/polyglot-mvp
+swift run --package-path Tools packtool build Content/packs/polyglot-mvp -o dist/pack.tar --sign
+swift run --package-path Tools packtool verify dist/pack.tar.staging
 ```
 
-없는 것: 앱 타깃, DesignSystem, EditorUI, 화면 7종, packtool 실제 구현(스텁), 레슨 콘텐츠(샘플 1팩).
+없는 것: sourcekit-lsp 연동, 레지스터 화면(Assembly 트랙까지 후순위), CI 워크플로,
+공증·DMG·Sparkle, 레슨 콘텐츠(아직 샘플 1팩·레슨 3개).
 
 ## 상태
 
-- 커밋 42개, 워킹트리 깨끗. **LearnKit 607 + Tools 135 = 742 테스트**, 양쪽 빌드 경고 0.
-- 플랜 3개: `polyglot-core` **55/55 완료**, `polyglot-surface` 12/53, `polyglot-tutor` 0/40.
+- 커밋 74개, 워킹트리 깨끗. **LearnKit 912 + Tools 300 = 1212 테스트**, 양쪽 빌드 경고 0.
+- 플랜 3개: `polyglot-core` **55/55 완료**, `polyglot-surface` 42/53, `polyglot-tutor` 0/25.
 - 동작: GRDB 마이그레이션 7단계, FSRS-6 스케줄러, SQLite 인프로세스 러너, 서브프로세스
   러너(Swift·Python 실행·채점), C 런처(rlimit·killpg), sandbox-exec 격리, 툴체인 자동 감지,
-  콘텐츠 팩 포맷·레슨 파서, OpenRouter 클라이언트(실왕복 검증됨).
+  콘텐츠 팩 포맷·레슨 파서, OpenRouter 클라이언트(실왕복 검증됨), 앱 셸과 화면 5종,
+  `packtool` 4단계 검증 게이트와 결정적 배포 팩·서명, `lessongen` 생성·수리 루프.
 
 ## 시작 전 반드시 읽을 것
 
@@ -37,20 +44,27 @@ swift run --package-path Tools lessongen outline --language python --lessons 3
 2. `.oculpm/planner/polyglot-surface.md` · `polyglot-tutor.md` — 항목마다 완료 기준이 붙어 있다.
 3. `.oculpm/discussion/mac-polyglot-learning-app/discussion.md` — **하단 토의 로그의 정정 항목을
    특히.** 본문에 낡은 기록이 남아 있을 수 있고 로그가 최신이다.
-4. `.oculpm/journal/20260906/` — 일지 9건. 같은 함정을 다시 밟지 마라.
+4. `.oculpm/journal/20260906/` · `20260907/` — 일지 19건. 같은 함정을 다시 밟지 마라.
 
-## 다음 작업 — 두 갈래
+## 다음 작업
 
-**(A) 콘텐츠 파이프라인 완성** — `{#packtool-structural}` → `{#packtool-execution}` →
-`{#packtool-report}`. 전제가 갖춰져 있다(ContentKit 공개 API + 완성된 `CodeRunner` 백엔드).
-`{#task-solution-and-starter}` 가 게이트의 핵심이다 — "starter 가 이미 통과하는 무의미한 과제"가
-AI 생성물의 가장 흔한 실패다. 설정된 모델(`z-ai/glm-5.3-flash`) 등급에서는 **repair 루프가
-선택이 아니라 전제**다.
+콘텐츠 파이프라인은 **닫혔다** — 생성(`lessongen lesson`) → 검증(`packtool validate` 4단계)
+→ 수리(`lessongen repair`) → 굽기(`packtool build`) → 서명·검증이 전부 실측으로 왕복한다.
+남은 갈래는 셋.
 
-**(B) 처음으로 실행 가능한 앱** — `{#xcode-app-target}` → `{#designsystem-tokens}` →
-`{#ds-primitives}` → `{#app-shell-chrome}` → `{#screen-onboarding}`.
-온보딩 화면을 첫 화면으로 고르는 이유는 이미 동작하는 `ToolchainProbe` 에 바로 물리기 때문이다 —
-목 데이터 없이 진짜 감지 결과가 뜬다. 디자인은 `design/Onboarding.dc.html` 에 있다.
+**(A) 게이트를 CI 에 건다** — `{#ci-gate}` → `{#toolchain-skip-policy}`(툴 쪽 절반은 이미 끝).
+macOS 러너에서 `packtool validate` 를 packs 변경 PR 의 필수 체크로. `lessongen` 은
+`workflow_dispatch` 에서만 — 크레딧이 나간다.
+
+**(B) 콘텐츠를 실제로 채운다** — 지금 팩에 레슨이 셋뿐이다. 파이프라인이 닫혔으니
+`lessongen lesson` 팬아웃 → `packtool validate` → `repair` 로 트랙을 굽는 것이 가능하다.
+막힌 것 하나: `{#lessongen-prompt-caching}` — `session_id` 를 보내도 OpenRouter 가
+업스트림을 갈라 캐시가 매번 차갑다. 팬아웃 전에 `provider.only`/`order` 로 고정해 재측정하는
+편이 비용에 유리하다.
+
+**(C) 에디터를 완성한다** — `{#sourcekit-lsp-swift}` → `{#lsp-completion}` →
+`{#lsp-diagnostics}`. Xcode 26.6 에 `sourcekit-lsp` 가 동봉돼 조달 비용이 0 이고,
+진단은 이미 있는 인라인 진단 행 컴포넌트에 그대로 얹힌다.
 
 ## 작업 방식
 
@@ -90,6 +104,20 @@ python3 이 셋 있고 로그인 셸은 `/usr/bin` 의 3.9.6 을 준다(감지�
 - `sandbox-exec` 규칙 경로는 반드시 `realpath(3)`. SBPL 은 **마지막 매치가 이긴다**(deny 를 뒤에).
 - `/usr/bin/swiftc`·`/usr/bin/python3` 는 **xcrun 셰이더**다. `xcrun --find` 로 해석한 경로를
   실행해라 — 샌드박스에서 xcrun 캐시 쓰기가 거부돼 stderr 가 오염된다. 프로파일을 여는 건 탈출구다.
+
+**서명·아카이브**
+
+- **CryptoKit 의 Ed25519 는 결정적이지 않다.** 같은 키로 같은 바이트에 두 번 서명하면 다른
+  64바이트가 나오고 둘 다 유효하다(논스에 난수를 섞는다). RFC 8032 의 순수 Ed25519 를
+  기대하고 "서명까지 재현된다" 고 적었다가 테스트에 잡혔다. 재현성 계약은 서명 파일을
+  뺀 트리 전부다.
+- `/usr/bin/tar` 는 mtime·uid·gid·uname·gname 을 파일 시스템에서 읽어 결정적이지 않다.
+  `TarWriter` 로 ustar 를 직접 쓴다. name 필드가 100바이트라 그보다 긴 경로는 거부한다.
+- **`SDKROOT` 이 비어 있으면 swiftc 가 표준 라이브러리를 못 찾는다** — 멀쩡한 Swift 레슨이
+  전부 컴파일 실패로 뒤집힌다. 실행 게이트 앞에서 `xcrun` 으로 채운다.
+- `SwiftTestingGrader` 는 예열된 SwiftPM 템플릿 **하나**를 공유한다. 동시 채점은
+  `SwiftGradingGate` 로 상호 배제해야 한다 — 액터만으로는 부족하다(메서드 안에서 `await`
+  하면 재진입이 허용된다). 같은 종류의 버그를 세 번 밟았다.
 
 **툴체인·라이브러리**
 

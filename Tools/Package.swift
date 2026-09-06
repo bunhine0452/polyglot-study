@@ -56,9 +56,33 @@ let package = Package(
             ],
             swiftSettings: toolSettings
         ),
-        // 콘텐츠 팩 검증·빌드·서명 CLI. 실구현은 플래너의 {#packtool-*} 항목이고 다른
-        // 작업이다 — 여기서는 자리만 잡는다. 의존성이 비어 있는 것은 의도다.
-        .executableTarget(name: "packtool", dependencies: ["PackReport"], swiftSettings: toolSettings),
+        // 팩 검증 게이트의 로직 전부. CLI 와 나눠 둔 이유는 테스트다 — 실행 파일
+        // 타깃에 로직이 있으면 단계별 단위 테스트를 붙일 수 없고, 게이트는 자기 자신이
+        // 검증되지 않으면 아무것도 보장하지 못한다.
+        .target(
+            name: "PackValidate",
+            dependencies: [
+                "PackReport",
+                .product(name: "LearnCore", package: "LearnKit"),
+                .product(name: "LanguageKit", package: "LearnKit"),
+                .product(name: "ContentKit", package: "LearnKit"),
+                // 실행 게이트가 태우는 백엔드. `SubprocessRunner`(python·swift) 와
+                // `InProcessRunner`(sql) 를 앱과 **같은 코드로** 태워야 게이트가 의미를 갖는다.
+                .product(name: "RunnerKit", package: "LearnKit"),
+            ],
+            swiftSettings: toolSettings
+        ),
+        // 콘텐츠 팩 검증·빌드·서명 CLI. `validate` 만 구현돼 있고
+        // `build`·`sign` 은 플래너의 {#packtool-build} {#packtool-sign} 이다.
+        .executableTarget(
+            name: "packtool",
+            dependencies: [
+                "PackReport",
+                "PackValidate",
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+            ],
+            swiftSettings: toolSettings
+        ),
 
         .target(
             name: "TestSupport",
@@ -67,6 +91,17 @@ let package = Package(
             swiftSettings: toolSettings
         ),
         .testTarget(name: "PackReportTests", dependencies: ["PackReport"], swiftSettings: toolSettings),
+        .testTarget(
+            name: "PackValidateTests",
+            dependencies: [
+                "PackValidate",
+                "PackReport",
+                .product(name: "ContentKit", package: "LearnKit"),
+            ],
+            swiftSettings: toolSettings
+        ),
+        // CLI 표면(플래그·종료 코드·리포트 형식)만 본다. 로직은 PackValidateTests 가 본다.
+        .testTarget(name: "packtoolTests", dependencies: ["packtool"], swiftSettings: toolSettings),
         .testTarget(
             name: "LLMKitTests",
             dependencies: ["LLMKit", "TestSupport"],

@@ -1,0 +1,102 @@
+{
+  "displayName" : "packtool 픽스처 팩",
+  "files" : [
+    {
+      "bytes" : 209,
+      "path" : "assets/seed.sql",
+      "sha256" : "bf9d496dfccd10b884f224ccc4432d0f7132519b2130240ff848ecc777c807ec"
+    },
+    {
+      "bytes" : 14,
+      "path" : "expected/fx-0001-echo-run.txt",
+      "sha256" : "1c8eb85217cc5b8ddd7e3c488a20efce3b958d59199f3b51b503c57c7b7c3828"
+    },
+    {
+      "bytes" : 21,
+      "path" : "expected/fx-0002-count-run.txt",
+      "sha256" : "9269e74a85c385ce8493fb90bb0aee4e1de9610ee69f22a356dcef45eefc3cdf"
+    },
+    {
+      "bytes" : 1234,
+      "path" : "lessons/fx-0001-echo.md",
+      "sha256" : "729e9137e5e415dae3470d90234c8f72dc0da439c5f9a638b8d656ae559104f1"
+    },
+    {
+      "bytes" : 1370,
+      "path" : "lessons/fx-0002-count.md",
+      "sha256" : "03bdbb7de4a00e96a8d5c9d413328ae0903f2ee1782d4299367c742311946128"
+    },
+    {
+      "bytes" : 77,
+      "path" : "solutions/fx-0001-echo.py",
+      "sha256" : "a2c6fcd4d6f6476f8093b0905e395fbd64092229f3c587fdafa3f931115f4854"
+    },
+    {
+      "bytes" : 72,
+      "path" : "solutions/fx-0002-count.sql",
+      "sha256" : "5a27dd13f11f837ccc52daa62c6c5572ac7cdc4648b0ef0aa60ca625834d39c0"
+    },
+    {
+      "bytes" : 111,
+      "path" : "stableids.lock",
+      "sha256" : "20b1bf5011bec00438abf8179932bb03ee0e79270279414f80c7d7c4b526d9fd"
+    },
+    {
+      "bytes" : 90,
+      "path" : "starters/fx-0001-echo.py",
+      "sha256" : "b4d2de0fc0d6ff545357a4081cebccfd43ed35f3d47699e7de9ff617a1f81693"
+    },
+    {
+      "bytes" : 104,
+      "path" : "starters/fx-0002-count.sql",
+      "sha256" : "2166e4826f4a03bedb0cafbb00206f6f4bf12c0ad82992c376c3b404a107435f"
+    },
+    {
+      "bytes" : 218,
+      "path" : "tests/fx-0001-echo.py",
+      "sha256" : "1734b14532b02d77d80fbb016ad8d789b50c014db89061c5c7710076c22d6aa3"
+    },
+    {
+      "bytes" : 176,
+      "path" : "tests/fx-0002-count.sql",
+      "sha256" : "e5596c2cde82314d3396c43435515044019842e3b40082698b9cf18e1e33c0d5"
+    }
+  ],
+  "generatedAt" : "2026-09-06T00:00:00Z",
+  "languages" : [
+    "python",
+    "sql"
+  ],
+  "lessons" : [
+    {
+      "language" : "python",
+      "objectives" : [
+        "print 로 표준 출력에 값을 내보낸다"
+      ],
+      "order" : 1,
+      "path" : "lessons/fx-0001-echo.md",
+      "prerequisites" : [
+
+      ],
+      "stableID" : "fx-0001-echo",
+      "title" : "표준 출력에 찍기"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "GROUP BY 로 행을 그룹으로 접는다"
+      ],
+      "order" : 1,
+      "path" : "lessons/fx-0002-count.md",
+      "prerequisites" : [
+
+      ],
+      "stableID" : "fx-0002-count",
+      "title" : "그룹별로 세기"
+    }
+  ],
+  "minAppVersion" : "0.1.0",
+  "packID" : "fixture-mvp",
+  "schemaVersion" : 1,
+  "version" : "1.0.0"
+}

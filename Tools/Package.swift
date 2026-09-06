@@ -37,13 +37,24 @@ let package = Package(
         // OpenRouter 구현. OpenAI 호환 chat/completions 를 URLSession 으로 직접 친다.
         // 요청 조립과 응답 해석은 순수 함수로 떼어 두어 네트워크 없이 검증된다.
         .target(name: "OpenRouterKit", dependencies: ["LLMKit"], swiftSettings: toolSettings),
-        // 트랙 개요 도메인 — 스키마·프롬프트·조립·검증. CLI 는 여기에 얇게 얹힌다.
+        // 트랙 개요·레슨 본문·수리 루프의 도메인. 스키마·프롬프트·조립·검증·직렬화.
+        // CLI 는 여기에 얇게 얹힌다.
+        //
         // **LLMKit 만 의존한다** — 어느 공급자를 쓸지는 CLI 가 정한다.
+        //
+        // `ContentKit` 을 무는 이유는 하나다. 이 타깃이 만드는 것은 **디렉티브
+        // 마크다운**이고, 그 문법의 유일한 권위는 `LessonParser`·`DirectiveSourceLint`
+        // 다. 직렬화기가 자기 산출물을 그 파서에 곧바로 태워 보고 나서야 파일을 쓰기
+        // 때문에 (`LessonSerializer.serializeChecked`), 생성물이 `packtool` 의 문법
+        // 단계에 처음 닿는 순간이 **디스크에 쓰이기 전**이다. 문법 규칙을 여기 다시
+        // 적으면 두 벌이 되고 곧 어긋난다.
         .target(
             name: "LessonGenKit",
             dependencies: [
                 "LLMKit",
+                "PackReport",
                 .product(name: "LearnCore", package: "LearnKit"),
+                .product(name: "ContentKit", package: "LearnKit"),
             ],
             swiftSettings: toolSettings
         ),
@@ -79,7 +90,12 @@ let package = Package(
         ),
         .testTarget(
             name: "LessonGenKitTests",
-            dependencies: ["LessonGenKit", "TestSupport"],
+            dependencies: [
+                "LessonGenKit",
+                "TestSupport",
+                "PackReport",
+                .product(name: "ContentKit", package: "LearnKit"),
+            ],
             swiftSettings: toolSettings
         ),
     ]

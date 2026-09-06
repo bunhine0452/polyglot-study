@@ -35,6 +35,7 @@ struct PolyglotApp: App {
         .windowResizability(.contentMinSize)
         // 시스템 크롬(신호등·타이틀바·메뉴바)은 OS 가 그린다. 숨기면 신호등이 사이드바
         // 브랜드 블록 위로 겹친다 — 디자인에 그 자리가 없다.
+        .commands { UpdatesCommands() }
     }
 }
 
@@ -56,6 +57,9 @@ private struct RootView: View {
             }
         }
         .frame(minWidth: 1040, minHeight: 680)
+        // 업데이트 프로브({#sparkle-updates} 검증). 환경 변수가 없으면 즉시 반환한다.
+        // App.init() 이 아니라 여기인 이유: SPUUpdater 는 실행 루프를 요구한다.
+        .task { SparkleProbe.startIfRequested() }
     }
 
     /// 아직 데이터 계층이 셸에 붙지 않았다. 배지가 붙을 자리만 비워 둔다 —

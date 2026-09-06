@@ -26,7 +26,12 @@ let package = Package(
     name: "PolyglotApp",
     platforms: [.macOS(.v14)],
     dependencies: [
-        .package(path: "../Packages/LearnKit")
+        .package(path: "../Packages/LearnKit"),
+        // Sparkle 는 소스가 아니라 **바이너리 XCFramework** 로 온다({#sparkle-updates}).
+        // `exact:` 로 조이는 것은 이 저장소의 다른 의존과 같은 정책이고, 여기서는 이유가
+        // 하나 더 있다 — Sparkle 은 `Contents/Frameworks/` 에 통째로 임베드되어 앱과
+        // 함께 서명되므로, 버전이 조용히 올라가면 서명 대상 파일 목록이 바뀐다.
+        .package(url: "https://github.com/sparkle-project/Sparkle", exact: "2.9.6"),
     ],
     targets: [
         .executableTarget(
@@ -39,6 +44,7 @@ let package = Package(
                 .product(name: "ReviewFeature", package: "LearnKit"),
                 .product(name: "ContentKit", package: "LearnKit"),
                 .product(name: "LearnPersistence", package: "LearnKit"),
+                .product(name: "Sparkle", package: "Sparkle"),
             ],
             // LearnKit 의 uiSettings 와 동일해야 한다 — 격리 도메인이 타깃 경계에서
             // 어긋나면 뷰 코드에 @MainActor 가 다시 번진다.
@@ -46,6 +52,14 @@ let package = Package(
                 .defaultIsolation(MainActor.self),
                 .enableUpcomingFeature("InternalImportsByDefault"),
                 .enableUpcomingFeature("MemberImportVisibility"),
+            ],
+            // SPM 은 "앱 번들" 개념이 없어서 XCFramework 를 `.build/` 안의 경로로만
+            // rpath 에 넣는다. 조립된 `.app` 에서도 Sparkle.framework 를 찾게 하려면
+            // 번들 상대 rpath 가 하나 더 필요하다 — Scripts/build-app.sh 가 프레임워크를
+            // `Contents/Frameworks/` 에 복사하는 것과 짝이다. 이게 없으면 앱은 빌드는
+            // 되지만 실행 시 dyld 가 Sparkle 을 못 찾아 즉사한다.
+            linkerSettings: [
+                .unsafeFlags(["-Xlinker", "-rpath", "-Xlinker", "@executable_path/../Frameworks"])
             ]
         )
     ]

@@ -137,6 +137,15 @@ Sparkle 은 SPM 바이너리 타깃이라 `swift build` 가 링크만 하고 번
 
 - **git 원격과 GitHub Pages 가 없다.** 실제 피드 주소로 왕복한 적이 없다. `SUFeedURL` 이
   실재하는 주소인지 확인해야 한다.
+
+  이건 문서의 경고로만 두지 않았다 — `release.sh` 가 **확보되지 않은 호스트로는 릴리스를
+  거부한다**(`UNVERIFIED_FEED_HOSTS`). 이 상태로 배포물을 구우면 나중에 그 호스트를
+  가로챈 사람이 업데이트 피드를 쥐기 때문이다. EdDSA 검증이 임의 코드는 막지만, 우리가
+  서명한 **구버전으로의 다운그레이드**와 업데이트 차단은 막지 못한다.
+
+  주소를 실제로 확보했다면 `Info.plist` 의 `SUFeedURL` 을 그 주소로 바꾸고
+  `release.sh` 의 `UNVERIFIED_FEED_HOSTS` 에서 호스트를 지워라. 검증 목적이면
+  `--feed-url` 로 덮어쓰거나 `POLYGLOT_FEED_HOST_VERIFIED=1` 을 줘라.
 - **Developer ID 인증서가 없다.** 배포본은 ad-hoc 서명이라 다른 맥에서 Gatekeeper 에
   막힌다. 업데이트 경로 자체와는 별개 문제다.
 - **키체인 승인**을 아직 아무도 누르지 않았다. 배포용 키로 appcast 를 처음 구울 때

@@ -87,13 +87,20 @@ public struct PackValidator: Sendable {
 
         // ── 실행: 앞 세 단계가 깨끗한 레슨만 태운다.
         var skipNotes: [String] = []
-        if options.runExecution {
+        if options.runExecution && pack.manifest.isDistribution {
+            // 배포 팩에는 solutions 가 없다. 과제 게이트의 절반(solution 통과)을 물리적으로
+            // 태울 수 없으므로 **돌지 않았다고 기록한다** — 반쪽만 돌린 실행 게이트를
+            // stagesRun 에 `.execution` 으로 올리면 그게 거짓말이다. 실행 게이트는
+            // 굽기 **전** 소스 팩에서 돈다.
+            skipNotes.append(
+                "배포 팩이라 실행 게이트를 돌리지 않았다 — solutions 가 벗겨져 과제를 태울 수 없다")
+        } else if options.runExecution {
             let clean = parsed.filter { table.isClean($0.entry.stableID.rawValue) }
             let stage = ExecutionStage(pack: pack, options: options)
             let result = await stage.run(clean)
             for failure in result.packLevelFailures { table.addPackLevel(failure) }
             for (lesson, failure) in result.failures { table.add(failure, to: lesson) }
-            skipNotes = result.skipNotes
+            skipNotes += result.skipNotes
             // 앞 단계에서 걸러진 레슨이 있으면 실행 게이트는 팩 전체를 태우지 못한 것이다.
             let coveredEverything = clean.count == parsed.count && !parsed.isEmpty
             if result.ranEverything && coveredEverything {

@@ -23,7 +23,7 @@ public enum PackManifestBuilder {
         var entries: [PackManifest.FileEntry] = []
         for item in try PackDirectoryWalk.items(in: directory) {
             if item.isDirectory || item.isSymbolicLink { continue }
-            if item.relativePath == PackLayout.manifestFileName { continue }
+            if PackLayout.unregisteredRootFiles.contains(item.relativePath) { continue }
             let path = try PackRelativePath(validating: item.relativePath)
             guard PackLayout.isRegisterable(path) else {
                 throw PackInstallError.fileOutsideLayout(path: item.relativePath)

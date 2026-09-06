@@ -14,6 +14,7 @@ Polyglot Study 의 레슨은 앱 바이너리가 아니라 **콘텐츠 팩**으�
 ```
 <pack>/
   manifest.json          팩 메타데이터. files 에 자기 자신은 넣지 않는다
+  manifest.json.sig      정규 매니페스트 바이트에 대한 분리 서명 (packtool sign, 선택)
   stableids.lock         stableID 불변 잠금 파일
   lessons/    <id>.md    디렉티브 마크다운 레슨 본문
   starters/   <path>     과제 시작 코드 — 학습자에게 주어지는 것
@@ -23,7 +24,9 @@ Polyglot Study 의 레슨은 앱 바이너리가 아니라 **콘텐츠 팩**으�
   assets/     <path>     이미지·샘플 DB 등 읽기 전용 자원
 ```
 
-- `manifest.json` 을 뺀 **모든** 파일이 `files` 에 등록돼야 한다. 등록되지 않은 파일이
+- `manifest.json` 과 `manifest.json.sig` 를 뺀 **모든** 파일이 `files` 에 등록돼야 한다.
+  둘이 예외인 이유는 같다 — 자기 참조라 등록될 수 없다. 매니페스트는 자기 해시를 담을 수
+  없고, 서명은 그 매니페스트가 확정된 **다음에야** 만들어진다. 등록되지 않은 파일이
   디스크에 있으면 설치가 거부된다(양방향 대조).
 - 위 6개 디렉터리와 루트의 `stableids.lock` 밖에는 아무것도 둘 수 없다.
 - `solutions/` 는 `packtool build` 가 배포 팩에서 벗긴다.
@@ -85,6 +88,7 @@ Polyglot Study 의 레슨은 앱 바이너리가 아니라 **콘텐츠 팩**으�
 | `lessons[].prerequisites` | 이 팩 안의 `stableID` 만 |
 | `files[].sha256` | 소문자 hex 64자 |
 | `files[].bytes` | 0 이상 |
+| `distribution` | 선택. 배포 팩에서만 `true`. 소스 팩에는 **키 자체가 없다** (6절) |
 
 `PackManifest` 는 **와이어 포맷 그대로**다 — 버전과 경로가 `String` 인 것은 의도한 것이다.
 잘못된 semver 가 `Decodable` 단계에서 터지면 "왜 거부됐는지"가 Foundation 의 에러 문자열
@@ -105,7 +109,7 @@ Polyglot Study 의 레슨은 앱 바이너리가 아니라 **콘텐츠 팩**으�
 
 ### 정규 바이트 규칙
 
-`manifest.json` 은 서명 대상이 될 바이트열이므로 인코딩이 결정적이어야 한다.
+`manifest.json` 은 서명 대상이 되는 바이트열이므로(6절) 인코딩이 결정적이어야 한다.
 
 - UTF-8, LF, 파일 끝에 개행 하나.
 - 키는 UTF-8 사전순 정렬, 들여쓰기 2칸.
@@ -367,7 +371,92 @@ f-string 안에서 `!r` 변환 플래그는 무엇을 하는가?
 
 ---
 
-## 6. 설치
+## 6. 배포 팩 — `packtool build` · `sign` · `verify`
+
+배포되는 것은 소스 팩이 아니라 **배포 팩**이다. 다른 점은 셋뿐이다.
+
+- `solutions/` 가 없다 (`PackLayout.strippedInDistribution`).
+- 매니페스트에 `"distribution": true` 가 있다. 소스 팩에는 이 키가 **아예 없다** —
+  `nil` 은 인코딩되지 않으므로 이미 구워진 팩의 정규 바이트가 이 필드 때문에 바뀌지 않는다.
+- `manifest.json.sig` 가 있을 수 있다.
+
+`distribution` 을 명령행 플래그가 아니라 매니페스트에 두는 이유는 서명이다. 서명이 정규
+매니페스트 바이트에 걸리므로 "이 팩은 solutions 가 없는 것이 정상" 이라는 사실도 함께
+서명된다. 플래그였다면 검증기를 부르는 쪽이 게이트를 끌 수 있었을 것이다.
+
+### 굽는 순서 — 뒤집을 수 없다
+
+```
+packtool validate <소스>     실행 게이트까지 (solutions 가 있어야 돌아간다)
+packtool build <소스> --sign  solutions 를 벗기고 해시 재계산 → 서명 → tar
+packtool verify <배포 팩>     서명 + 해시
+```
+
+구운 뒤에는 `solutions/` 가 없어 실행 게이트를 돌릴 수 없다. 그래서 검증이 먼저다.
+배포 팩에 `validate` 를 걸면 정적 세 단계만 돌고 `stagesRun` 에서 `execution` 이 빠진다 —
+**돌지 않은 것을 통과로 적지 않는다.**
+
+`build` 는 굽기 전에 구조·문법·의미 세 단계를 스스로 돌리고, 하나라도 실패하면 굽지 않는다.
+
+### 재현성
+
+같은 소스를 두 번 구우면 **tar 바이트가 같다.** tar 를 직접 쓰는 이유가 이것이다 —
+`/usr/bin/tar` 는 mtime·uid·gid·uname·gname 을 파일 시스템에서 읽어 헤더에 싣는다.
+
+| 필드 | 값 |
+|---|---|
+| mtime | `manifest.generatedAt` (빌드 시각이 아니다) |
+| uid · gid | 0 |
+| uname · gname | 빈 문자열 |
+| mode | 파일 `0644` · 디렉터리 `0755` |
+| 엔트리 순서 | 경로 사전순 |
+| 최상위 | `<packID>-<version>/` 하나 |
+
+gzip 을 걸지 않는 것도 같은 이유다(gzip 헤더에 압축 시각이 들어간다). ustar 의 name
+필드가 100바이트라 그보다 긴 경로는 조용히 잘리지 않고 **거부**된다.
+
+**예외는 서명 파일 하나다.** Apple 의 CryptoKit 은 Ed25519 논스에 난수를 섞는다 —
+같은 키로 같은 바이트에 두 번 서명하면 다른 64바이트가 나오고 둘 다 유효하다(실측).
+그래서 재현성 계약의 대상은 `manifest.json.sig` 를 뺀 트리 전부다.
+
+### 서명
+
+분리 서명이고 대상은 `manifest.json` **바이트 그대로**다. 매니페스트가 나머지 전부를
+sha256 으로 덮고 있으므로 그 한 파일이면 충분하다 — 파일을 바꾸면 해시가 어긋나고,
+해시를 맞추려면 매니페스트를 고쳐야 하고, 그러면 서명이 깨진다.
+
+```
+polyglot-pack-signature v1
+algorithm: ed25519
+publicKey: <base64 32B>
+signature: <base64 64B>
+```
+
+서명이 자기 공개키를 들고 다니는 것은 **"다른 키로 서명됐다" 와 "변조됐다" 를 갈라서
+보고**하기 위해서다. 신뢰의 근거는 아니다 — 검증기는 `POLYGLOT_PACK_PUBLIC_KEY` 와
+대조하고, 다르면 서명을 계산해 보지도 않는다.
+
+`verify` 는 **서명과 해시를 둘 다** 본다. 서명만 보면 레슨 본문이 바뀐 팩을 통과시킨다
+(매니페스트를 손대지 않았으니 서명은 유효하다). 그 변조를 잡는 것은 `files[].sha256`
+대조이고, 그 대조표가 진짜인지를 보장하는 것이 서명이다. 둘은 한 쌍이다.
+
+| 상황 | 판정 |
+|---|---|
+| 서명 파일 없음 | `.missing` — 없으면 통과가 아니다 |
+| 다른 키로 서명 | `.publicKeyMismatch(expected:actual:)` |
+| 매니페스트 변조 | `.signatureInvalid` |
+| 매니페스트가 정규형이 아님 | `.manifestNotCanonical` |
+| 레슨·사이드카 변조 | `ContentPackError.checksumMismatch` / `.sizeMismatch` |
+| 대조할 공개키가 망가짐 | `.expectedPublicKeyMalformed` (팩이 아니라 부르는 쪽의 문제) |
+
+키는 **환경변수에서만** 읽는다 — 개인키는 `POLYGLOT_PACK_SIGNING_KEY`, 공개키는
+`POLYGLOT_PACK_PUBLIC_KEY`. 플래그로 받으면 셸 히스토리와 `ps` 출력과 CI 로그에 남는다.
+키 쌍은 `packtool keygen --private-key-out <파일>` 로 만들고, 개인키는 0600 파일로만
+나간다 — **stdout 에는 공개키만 찍힌다.**
+
+---
+
+## 7. 설치
 
 ```
 <Application Support>/ContentPacks/
@@ -416,7 +505,7 @@ f-string 안에서 `!r` 변환 플래그는 무엇을 하는가?
 
 ---
 
-## 7. 공개 API 요약
+## 8. 공개 API 요약
 
 `packtool` 과 앱이 쓰는 표면.
 
@@ -434,3 +523,5 @@ f-string 안에서 `!r` 변환 플래그는 무엇을 하는가?
 | `DirectiveSourceLint` | 렉시컬 사전 검사 (`packtool` 의 문법 단계) |
 | `ContentPack` | 디스크의 팩 하나 — 레슨 읽기, 해시 대조, 참조 검사 |
 | `PackStore`, `PackInstaller`, `PackSourceScan` | 설치·롤백·경로 하드닝 |
+| `PackSignature`, `PackSigning` | 서명 파일 형식, Ed25519 서명·검증 |
+| `PackSignatureVerification` | 디스크의 팩 하나를 서명 + 해시로 검증 |

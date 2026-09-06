@@ -71,6 +71,16 @@ public struct PackManifest: Hashable, Sendable, Codable {
     /// `manifest.json` 자신을 제외한 팩의 **모든** 파일. 설치기가 이 목록과 디스크를
     /// 양방향으로 대조하므로, 목록에 없는 파일이 디스크에 있어도 거부된다.
     public var files: [FileEntry]
+    /// 배포 팩인가. `packtool build` 가 `solutions/` 를 벗기면서 `true` 로 굽는다.
+    ///
+    /// **원본 팩에는 이 키가 아예 없다** — `nil` 은 인코딩되지 않으므로 이미 구워진
+    /// 팩들의 정규 바이트가 이 필드 때문에 바뀌지 않는다.
+    ///
+    /// 플래그가 아니라 매니페스트에 두는 이유는 서명 때문이다. 서명이 정규 매니페스트
+    /// 바이트에 걸리므로 "이 팩은 solutions 가 없는 것이 정상" 이라는 사실도 함께
+    /// 서명된다. `--distribution` 같은 명령행 플래그였다면 검증기를 부르는 쪽이
+    /// 게이트를 끌 수 있었을 것이다.
+    public var distribution: Bool?
 
     public init(
         schemaVersion: Int = PackManifest.currentSchemaVersion,
@@ -81,7 +91,8 @@ public struct PackManifest: Hashable, Sendable, Codable {
         generatedAt: String,
         languages: [LanguageID],
         lessons: [LessonEntry],
-        files: [FileEntry]
+        files: [FileEntry],
+        distribution: Bool? = nil
     ) {
         self.schemaVersion = schemaVersion
         self.packID = packID
@@ -92,9 +103,13 @@ public struct PackManifest: Hashable, Sendable, Codable {
         self.languages = languages
         self.lessons = lessons
         self.files = files
+        self.distribution = distribution
     }
 
     // MARK: - 파생
+
+    /// `solutions/` 가 벗겨진 배포 팩인가.
+    public var isDistribution: Bool { distribution == true }
 
     public var parsedVersion: SemanticVersion? { try? SemanticVersion(parsing: version) }
     public var parsedMinAppVersion: SemanticVersion? { try? SemanticVersion(parsing: minAppVersion) }

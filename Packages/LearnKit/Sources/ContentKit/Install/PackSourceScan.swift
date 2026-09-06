@@ -52,7 +52,7 @@ public struct PackSourceScan: Sendable {
             }
             // 디렉터리 이름도 경로 규칙을 지켜야 하지만 `files` 에는 들어가지 않는다.
             if item.isDirectory { continue }
-            if path.rawValue == PackLayout.manifestFileName { continue }
+            if PackLayout.unregisteredRootFiles.contains(path.rawValue) { continue }
             guard PackLayout.isRegisterable(path) else {
                 throw .fileOutsideLayout(path: path.rawValue)
             }

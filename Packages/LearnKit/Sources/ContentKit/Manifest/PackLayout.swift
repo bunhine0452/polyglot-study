@@ -3,6 +3,7 @@
 /// ```
 /// <pack>/
 ///   manifest.json          팩 메타데이터 (스키마 v1). files 에 자기 자신은 넣지 않는다.
+///   manifest.json.sig      정규 매니페스트 바이트에 대한 분리 서명 (packtool sign)
 ///   stableids.lock         stableID 불변 잠금 파일
 ///   lessons/    <id>.md    디렉티브 마크다운 레슨 본문
 ///   starters/   <path>     과제 시작 코드 (학습자에게 주어지는 것)
@@ -13,6 +14,8 @@
 /// ```
 public enum PackLayout {
     public static let manifestFileName = "manifest.json"
+    /// 분리 서명. 매니페스트 **뒤에** 만들어지므로 `files` 에 들어갈 수 없다.
+    public static let signatureFileName = "manifest.json.sig"
     public static let lockFileName = "stableids.lock"
 
     public static let lessonsDirectory = "lessons"
@@ -31,6 +34,13 @@ public enum PackLayout {
     /// 최상위에 그냥 놓일 수 있는 파일. `manifest.json` 은 자기 해시를 담을 수 없으므로
     /// `files` 에 등록되지 않고, 나머지는 등록된다.
     public static let rootFiles: [String] = [lockFileName]
+
+    /// `files` 에 **등록되지 않는** 루트 파일 둘. 스캐너가 여기를 건너뛴다.
+    ///
+    /// 자기 참조라 등록될 수 없다는 점이 같다 — 매니페스트는 자기 해시를 담을 수 없고,
+    /// 서명은 그 매니페스트가 확정된 다음에야 만들어진다. 이 둘을 건너뛰지 않으면
+    /// 양방향 대조가 "디스크에 있는데 files 에 없다" 로 팩을 거부한다.
+    public static let unregisteredRootFiles: [String] = [manifestFileName, signatureFileName]
 
     /// 배포 팩에서 벗겨지는 디렉터리. `packtool build` 가 여기를 지운다.
     public static let strippedInDistribution: [String] = [solutionsDirectory]

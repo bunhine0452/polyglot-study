@@ -64,6 +64,23 @@ enum SyntaxStage {
     ) {
         let id = entry.stableID.rawValue
         for path in document.referencedFiles {
+            // 배포 팩에서는 `solutions/` 가 **없는 것이 정상**이다. 그렇다고 검사를
+            // 끄지는 않는다 — 있어야 할 것이 있는지 대신 **없어야 할 것이 없는지**를
+            // 본다. 게이트가 "모르겠으면 통과" 로 기울면 게이트가 아니다.
+            if pack.manifest.isDistribution, isStripped(path) {
+                let onDisk = FileManager.default.fileExists(atPath: pack.url(for: path).path)
+                if registered.contains(path.rawValue) || onDisk {
+                    table.add(
+                        .init(
+                            stage: .structural, kind: .brokenReference,
+                            summary: "배포 팩에 벗겨졌어야 할 \(path.rawValue) 가 남아 있다",
+                            evidence: onDisk
+                                ? "디스크에 파일이 있다: \(pack.url(for: path).path)"
+                                : "매니페스트 files 에 등록돼 있다"),
+                        to: id)
+                }
+                continue
+            }
             guard registered.contains(path.rawValue) else {
                 table.add(
                     .init(
@@ -83,5 +100,10 @@ enum SyntaxStage {
                     to: id)
             }
         }
+    }
+
+    private static func isStripped(_ path: PackRelativePath) -> Bool {
+        guard let directory = path.topLevelDirectory else { return false }
+        return PackLayout.strippedInDistribution.contains(directory)
     }
 }

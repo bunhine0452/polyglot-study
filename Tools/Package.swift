@@ -83,13 +83,26 @@ let package = Package(
             ],
             swiftSettings: toolSettings
         ),
-        // 콘텐츠 팩 검증·빌드·서명 CLI. `validate` 만 구현돼 있고
-        // `build`·`sign` 은 플래너의 {#packtool-build} {#packtool-sign} 이다.
+        // 배포 팩을 굽는 쪽. 검증(`PackValidate`)과 나눠 둔 이유는 의존성이다 — 굽기는
+        // 툴체인도 러너도 쓰지 않는다(`ContentKit` 하나만 본다). 검증 게이트를 부르는
+        // 것은 CLI 의 일이고, 그래야 "굽기" 자체를 러너 없이 테스트할 수 있다.
+        .target(
+            name: "PackBuild",
+            dependencies: [
+                .product(name: "LearnCore", package: "LearnKit"),
+                .product(name: "ContentKit", package: "LearnKit"),
+            ],
+            swiftSettings: toolSettings
+        ),
+        // 콘텐츠 팩 검증·빌드·서명 CLI. 로직은 전부 PackValidate·PackBuild 에 있고
+        // 여기는 플래그·종료 코드·출력 형식만 본다.
         .executableTarget(
             name: "packtool",
             dependencies: [
                 "PackReport",
                 "PackValidate",
+                "PackBuild",
+                .product(name: "ContentKit", package: "LearnKit"),
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ],
             swiftSettings: toolSettings
@@ -102,6 +115,14 @@ let package = Package(
             swiftSettings: toolSettings
         ),
         .testTarget(name: "PackReportTests", dependencies: ["PackReport"], swiftSettings: toolSettings),
+        .testTarget(
+            name: "PackBuildTests",
+            dependencies: [
+                "PackBuild",
+                .product(name: "ContentKit", package: "LearnKit"),
+            ],
+            swiftSettings: toolSettings
+        ),
         .testTarget(
             name: "PackValidateTests",
             dependencies: [

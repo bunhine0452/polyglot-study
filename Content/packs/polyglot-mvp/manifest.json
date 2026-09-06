@@ -12,9 +12,9 @@
       "sha256" : "54ede7db9b2d062cb5c00965b0225c323bd1bf3e9fd4cf5fb874a384f75dc7ec"
     },
     {
-      "bytes" : 40,
+      "bytes" : 73,
       "path" : "expected/sql-0001-aggregate-run.txt",
-      "sha256" : "fb732613259d7eb442afbe5d65ac2aa053eb8d8001c9455142396deff0884a94"
+      "sha256" : "4ffbd7aeeefd8ed81d2fb1a4dae5289e1dd6449462e1501d27142cc3587daaa0"
     },
     {
       "bytes" : 10,
@@ -82,9 +82,9 @@
       "sha256" : "f653ad3d5fb13cad9810e5d2b471504444db26881824113a107ee41e2920da27"
     },
     {
-      "bytes" : 300,
+      "bytes" : 326,
       "path" : "tests/swift-0001-safe-divide.swift",
-      "sha256" : "467458bc5aa6af525610b35fc01c718109bcb9e571cc84497e5c676d04775776"
+      "sha256" : "977a3f9fa81910ff765fa4c92ce4ee6166a7cc9c73aa2b55443b35b04eea90b5"
     }
   ],
   "generatedAt" : "2026-09-06T00:00:00Z",

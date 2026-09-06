@@ -29,6 +29,9 @@ struct BlockGate: Sendable {
     let launcherPath: String?
     let seedDatabase: URL?
     let swiftGrader: SwiftTestingGrader
+    /// Swift 채점은 예열 템플릿 하나를 공유하므로 동시에 돌 수 없다. 자세한 근거는
+    /// `SwiftGradingGate` 주석에.
+    private let swiftGate = SwiftGradingGate()
 
     // MARK: - 예제
 
@@ -210,9 +213,11 @@ struct BlockGate: Sendable {
 
     private func gradeSwift(submission: String, tests: String) async -> GradeOutcome {
         do {
-            let grading = try await swiftGrader.grade(
-                solution: [SourceFile(path: "Solution.swift", contents: submission)],
-                tests: [SourceFile(path: "Tests.swift", contents: tests)])
+            let grading = try await swiftGate.exclusive {
+                try await swiftGrader.grade(
+                    solution: [SourceFile(path: "Solution.swift", contents: submission)],
+                    tests: [SourceFile(path: "Tests.swift", contents: tests)])
+            }
             return GradeOutcome(
                 passed: grading.passed,
                 evidence: describe(grading.result) + "\n[swift test 원문]\n" + grading.rawOutput)

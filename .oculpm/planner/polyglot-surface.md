@@ -56,8 +56,8 @@ owner: claude-code
 - [ ] DesignSystem 타깃에 색 12종·타입 스케일 2종·룰 2종·8px 그리드를 Swift 상수로 — 완료: 디자인 파일의 모든 색 리터럴이 토큰에 대응되고 뷰 코드에 hex 하드코딩 0건 {#designsystem-tokens}
   - [x] 색 토큰 실측값 그대로 — paper F4F4F2 · ink 141414 · secondary 5F5F5C · faint 9A9A97 · ruleSoft D9D9D6 · cellEmpty C9C9C6 · pass 2F8F4E · fail C8372D · failWash F7E4E2 {#color-tokens}
   - [x] 산스 11/13/15/20/24/28/32 와 모노 11/12/12.5 를 분리한 Typography 열거형 + 전역 monospacedDigit 로 숫자 폭 고정 {#type-scale}
-- [ ] IBM Plex Sans KR 과 Mono 를 SPM 리소스로 번들하고 CTFontManagerRegisterFontsForURL 로 런타임 등록 — 완료: 네트워크를 끊어도 폴백이 아닌 Plex 로 렌더 {#plex-font-bundling}
-  - [ ] ATSApplicationFontsPath 는 앱 번들 Resources 에만 먹으므로 Bundle.module 경로에는 쓰지 않고 process 스코프 등록으로 처리 {#font-registration-path}
+- [x] IBM Plex Sans KR 과 Mono 를 SPM 리소스로 번들하고 CTFontManagerRegisterFontsForURL 로 런타임 등록 — 완료: 네트워크를 끊어도 폴백이 아닌 Plex 로 렌더 {#plex-font-bundling}
+  - [x] ATSApplicationFontsPath 는 앱 번들 Resources 에만 먹으므로 Bundle.module 경로에는 쓰지 않고 process 스코프 등록으로 처리 {#font-registration-path}
 - [x] 라운딩과 그림자를 타입 차원에서 봉인한 프리미티브 6종 — Rule·StatusDot·SegmentedProgress·MonoText·FlatButton·LabelText, cornerRadius 와 shadow 파라미터를 아예 노출하지 않음 {#ds-primitives}
 - [x] 232px 고정 사이드바와 4개 내비를 NavigationSplitView 없이 HStack 과 1px 룰로 구성 — 완료: 시스템 기본 라운딩·머티리얼 배경이 전혀 나타나지 않고 활성 항목이 잉크 반전 {#app-shell-chrome}
 - [x] EditorUI 타깃 신설 + CodeEditSourceEditor 를 exact 0.15.2 로 핀하고 Package.resolved 커밋 — 완료: CESE 0.15.2 · CodeEditTextView 0.12.1 · CodeEditLanguages 0.1.20 고정 {#editorui-target-pin}
@@ -91,15 +91,15 @@ owner: claude-code
 - [ ] ARM64 레지스터 패널을 Assembly 트랙 착수 시점까지 후순위로 분리 — registers 프리젠터는 준비중 뷰로 처리하고 디자인은 별도 마일스톤 문서로만 남김 {#screen-registers-deferred}
 
 ## 서명·공증·배포 {#distribution}
-- [ ] Hardened Runtime 을 켜고 App Sandbox 를 끈 서명 설정 확정 — 완료: entitlements 출력에 app-sandbox 가 없고 codesign 에 runtime 플래그가 찍힐 {#codesign-hardened-runtime}
-  - [ ] 번들된 C 런처 헬퍼를 앱과 같은 Team ID 로 runtime 옵션과 함께 개별 서명 — deep 옵션은 쓰지 않고 verify strict 가 헬퍼 포함 통과 {#helper-signing}
+- [x] Hardened Runtime 을 켜고 App Sandbox 를 끈 서명 설정 확정 — 완료: entitlements 출력에 app-sandbox 가 없고 codesign 에 runtime 플래그가 찍힐 {#codesign-hardened-runtime}
+  - [x] 번들된 C 런처 헬퍼를 앱과 같은 Team ID 로 runtime 옵션과 함께 개별 서명 — deep 옵션은 쓰지 않고 verify strict 가 헬퍼 포함 통과 {#helper-signing}
 - [ ] notarytool submit 부터 stapler staple 을 거쳐 DMG 까지 스크립트 하나로 — 완료: 네트워크 격리된 다른 맥에서 Gatekeeper 경고 없이 실행되고 spctl 이 accepted {#notarize-staple-dmg}
   - [ ] 자격증명을 notarytool 키체인 프로파일로 저장하고 앱 암호를 스크립트·로그·인자 어디에도 싣지 않음 — 스크립트 전문 grep 에 0건 {#notary-credentials}
   - [ ] 앱뿐 아니라 DMG 자체도 서명·공증·스테이플 — DMG 파일 단독으로 stapler validate 통과 {#dmg-notarize}
 - [ ] Sparkle 2.9.6 자동 업데이트를 EdDSA 서명으로 연결 — 완료: 구버전 앱이 appcast 를 읽어 신버전을 받고 서명 검증 후 설치까지 완료 {#sparkle-updates}
   - [ ] 생성한 공개키를 SUPublicEDKey 에 넣고 개인키는 로그인 키체인에만 보관 — 저장소 전체 grep 에 개인키 0건 {#sparkle-eddsa-keys}
   - [ ] 피드 URL 을 GitHub Pages 의 appcast.xml 로 두고 appcast 생성기를 릴리스 스크립트에 편입 — 릴리스 1회로 서명과 길이가 갱신 {#sparkle-appcast}
-- [ ] GitHub 공개 준비 — README 와 CONTRIBUTING 작성. LICENSE 는 이미 MIT 로 커밋됨. README 라이선스 절에 Unicorn Engine 도입 시 MIT 선택이 무효화된다는 경고 한 줄 {#github-public-repo}
+- [x] GitHub 공개 준비 — README 와 CONTRIBUTING 작성. LICENSE 는 이미 MIT 로 커밋됨. README 라이선스 절에 Unicorn Engine 도입 시 MIT 선택이 무효화된다는 경고 한 줄 {#github-public-repo}
 - [ ] 릴리스 CI — swift test 와 xcodebuild build 와 packtool validate 3게이트를 PR 에 걸고, 공증과 appcast 잡은 태그 푸시에만 Actions secrets 로 실행 {#release-ci}
 
 <!-- oculpm:plan-log begin v1 -->
@@ -146,4 +146,7 @@ owner: claude-code
 | 2026-09-06T22:35:00+09:00 | #screen-lesson | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 화면 4종 조립 — 870 테스트, 스크린샷 확인 |
 | 2026-09-06T22:35:00+09:00 | #screen-review | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 화면 4종 조립 — 870 테스트, 스크린샷 확인 |
 | 2026-09-06T22:35:00+09:00 | #theme-weight-limitation | claude-code | [ ]→[x] | journal/20260906/Features_to_add/2101_feature_first-running-app.md | 화면 4종 조립 — 870 테스트, 스크린샷 확인 |
+| 2026-09-06T23:03:05+09:00 | #font-registration-path | claude-code | ☐→x | .oculpm/journal/20260906/Chores/2302_chore_font-bundling-codesign-public-repo.md | 3웨이트씩 7.6MB 커밋, OFL 1.1 확인, CTFontManagerRegisterFontsForURL(.process) + 스냅샷 픽셀 diff 로 Plex 렌더 실증 |
+| 2026-09-06T23:03:12+09:00 | #helper-signing | claude-code | ☐→x | .oculpm/journal/20260906/Chores/2302_chore_font-bundling-codesign-public-repo.md | learn-launcher 를 LearnKit 에서 별도 빌드해 Contents/Helpers 에 개별 서명 (ad-hoc, 인증서 없음), deep 없이 verify --deep --strict 통과 |
+| 2026-09-06T23:03:23+09:00 | #github-public-repo | claude-code | ☐→x | .oculpm/journal/20260906/Chores/2302_chore_font-bundling-codesign-public-repo.md | README·CONTRIBUTING·NOTICE 작성, Unicorn Engine GPL 경고, CodeEditLanguages/Symbols LICENSE 부재 기록, 스크린샷 Plex 렌더로 교체 |
 <!-- oculpm:plan-log end -->

@@ -1,4 +1,5 @@
 import Testing
+@testable import Solution
 
 @Test("몫을 돌려준다")
 func dividesEvenly() {

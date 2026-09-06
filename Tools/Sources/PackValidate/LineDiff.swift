@@ -1,4 +1,4 @@
-public import Foundation
+internal import Foundation
 
 /// 기대 stdout 과 실제 stdout 의 **줄 단위** 차이.
 ///

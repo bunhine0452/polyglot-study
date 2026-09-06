@@ -46,14 +46,14 @@ public struct OnboardingView: View {
             HStack(alignment: .bottom, spacing: Spacing.xl) {
                 VStack(alignment: .leading, spacing: Spacing.s) {
                     Text("툴체인 진단")
-                        .font(.appSans(.display, weight: .semibold))
+                        .font(AppFont.sans(.display, weight: .semibold))
                         .foregroundStyle(Palette.ink)
                     Text(
                         "10개 도구를 --version 으로 직접 실행해 종료 코드까지 확인했습니다 " +
                         "(도구당 2초 제한). 이 앱은 아무것도 대신 설치하지 않습니다 — " +
                         "필요한 명령을 복사해 터미널에서 직접 실행하세요."
                     )
-                    .font(.appSans(.body))
+                    .font(AppFont.sans(.body))
                     .foregroundStyle(Palette.ink)
                     .fixedSize(horizontal: false, vertical: true)
                 }
@@ -99,7 +99,7 @@ public struct OnboardingView: View {
             summaryItem(glyph: .emptySquare, tint: Palette.faint, label: "미설치", count: model.summary.missing)
             summaryItem(glyph: .filledFail, tint: Palette.fail, label: "문제", count: model.summary.problem)
             Text("스텁 — 실행 파일은 있지만 실행이 실패하는 상태. 설치된 것으로 오인하기 쉽습니다.")
-                .font(.appSans(.label))
+                .font(AppFont.sans(.label))
                 .foregroundStyle(Palette.faint)
         }
     }
@@ -108,7 +108,7 @@ public struct OnboardingView: View {
         HStack(spacing: Spacing.s) {
             StatusGlyphView(glyph: glyph, tint: tint)
             Text(label)
-                .font(.appSans(.label, weight: .medium))
+                .font(AppFont.sans(.label, weight: .medium))
                 .foregroundStyle(Palette.ink)
             MonoTextView(text: "\(count)", size: .label, color: Palette.secondary)
         }
@@ -144,7 +144,7 @@ public struct OnboardingView: View {
     private var footer: some View {
         HStack(spacing: Spacing.l) {
             Text("미설치 트랙은 나중에 설치해도 됩니다. 설치한 뒤 '다시 검사'를 누르면 바로 활성화됩니다.")
-                .font(.appSans(.label))
+                .font(AppFont.sans(.label))
                 .foregroundStyle(Palette.faint)
             Spacer(minLength: Spacing.l)
             FlatButtonView(title: "다시 검사", style: .outline, isEnabled: !model.isScanning) {

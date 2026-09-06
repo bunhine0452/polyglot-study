@@ -17,7 +17,7 @@ struct FlatButtonView: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(.appSans(.label, weight: .medium))
+                .font(AppFont.sans(.label, weight: .medium))
                 .padding(.horizontal, Spacing.m)
                 .frame(height: 36)
         }

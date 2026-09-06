@@ -1,30 +1,5 @@
-internal import AppKit
 internal import DesignSystem
 internal import SwiftUI
-
-/// `Typography` 토큰의 이름을 실제 `Font` 로 바꾼다.
-///
-/// `DesignSystem.AppFont` 가 같은 일을 하지만 **internal** 이라 다른 모듈에서 보이지
-/// 않는다. 프리미티브 6종이 덮지 못하는 자리(제목 24pt, 본문 15pt, 라벨 13pt)가 이
-/// 화면에 있어 지역 헬퍼를 둔다 — 온보딩 화면도 같은 이유로 같은 헬퍼를 갖고 있다.
-enum LessonFont {
-    static func sans(_ size: Typography.Sans, weight: Font.Weight = .regular) -> Font {
-        if let family = resolvedSans {
-            return .custom(family, fixedSize: size.rawValue).weight(weight)
-        }
-        return .system(size: size.rawValue, weight: weight)
-    }
-
-    static let resolvedSans: String? = {
-        let families = Set(NSFontManager.shared.availableFontFamilies)
-        for candidate in [Typography.sansFamily, Typography.sansFallback] {
-            if families.contains(candidate) || NSFont(name: candidate, size: 12) != nil {
-                return candidate
-            }
-        }
-        return nil
-    }()
-}
 
 /// 이 화면의 치수. 디자인 실측이지만 **폭은 최대값으로만 쓴다** — 아트보드 폭을 고정
 /// 폭으로 박으면 사이드바 232 를 더했을 때 창을 넘긴다(온보딩 표에서 실제로 잘렸다).

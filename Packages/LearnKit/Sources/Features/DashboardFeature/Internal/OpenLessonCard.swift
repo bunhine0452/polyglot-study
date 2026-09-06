@@ -25,7 +25,7 @@ struct OpenLessonCard: View {
     private func filled(_ resume: ResumePoint) -> some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
             Text(resume.lessonTitle)
-                .font(.dashSans(.title, weight: .semibold))
+                .font(AppFont.sans(.title, weight: .semibold))
                 .tracking(-0.24)
                 .foregroundStyle(Palette.ink)
                 .lineLimit(1)
@@ -42,7 +42,7 @@ struct OpenLessonCard: View {
         HStack(spacing: Spacing.m) {
             FlatButton("이어서 하기", shortcutHint: "↩") { onResume(resume) }
             Text("남은 블록 \(resume.remainingBlocks) · 약 \(resume.remainingMinutes)분")
-                .font(.dashSans(.label))
+                .font(AppFont.sans(.label))
                 .foregroundStyle(Palette.faint)
         }
         .padding(.top, Spacing.xs)
@@ -62,18 +62,18 @@ struct OpenLessonCard: View {
                 + Text(block).foregroundStyle(Palette.ink).fontWeight(.medium)
                 + Text("에서 멈춤").foregroundStyle(Palette.secondary)
         )
-        .font(.dashSans(.label))
+        .font(AppFont.sans(.label))
     }
 
     /// 열린 레슨이 없는 상태. 없는 긴장을 지어내지 않는다 — 무엇이 없는지만 말한다.
     private var empty: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
             Text("열린 레슨 없음")
-                .font(.dashSans(.title, weight: .semibold))
+                .font(AppFont.sans(.title, weight: .semibold))
                 .tracking(-0.24)
                 .foregroundStyle(Palette.faint)
             Text("트랙에서 레슨을 열면 멈춘 자리가 여기 남습니다.")
-                .font(.dashSans(.label))
+                .font(AppFont.sans(.label))
                 .foregroundStyle(Palette.secondary)
         }
     }

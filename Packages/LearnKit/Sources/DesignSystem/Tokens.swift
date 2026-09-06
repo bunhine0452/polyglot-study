@@ -33,6 +33,11 @@ public enum Palette {
     public static let pass = Color(hex: 0x2F8F4E)
     public static let fail = Color(hex: 0xC8372D)
     /// SQL 결과 diff 의 누락 행 배경 전용. 다른 곳에 쓰지 마라.
+    ///
+    /// - Note: 지금은 쓰는 곳이 없다. 표 프리젠터가 `LearnCore.ResultSet` 을 그대로
+    ///   그리는데 그 타입에는 diff 표식이 없기 때문이다(비교는 `RunnerKit` 이 한다).
+    ///   표식이 값 타입으로 올라오면 그때 다시 여기로 온다 —
+    ///   `Presenters/ResultPresenterView.swift` 의 `TablePresenterView` 주석 참고.
     public static let failWash = Color(hex: 0xF7E4E2)
 }
 

@@ -17,70 +17,23 @@ public enum ProseParser {
         parse(lines: normalizedLines(source), depth: 0)
     }
 
-    /// 방출기가 붙인 매달린 들여쓰기의 한 단. 마크다운 방출기들이 쓰는 폭이다.
-    static let emittedIndentWidth = 4
-    /// 벗기기를 반복할 상한. 디렉티브 중첩 깊이가 그만큼 될 일은 없다.
-    static let maximumIndentStripPasses = 4
-
     /// `"\r\n"` 은 Swift 에서 **Character 하나**라 `split(separator: "\n")` 이 CRLF 를
-    /// 뭉친다(실측). 그래서 먼저 정규화하고, 방출기 들여쓰기를 벗긴다.
+    /// 뭉친다(실측). 그래서 먼저 정규화한다.
+    ///
+    /// - Note: 예전에는 여기서 방출기가 붙인 매달린 들여쓰기를 한 단씩 벗기는
+    ///   `strippingEmittedIndent(_:)` 를 함께 돌렸다. `ContentKit.Body.prose` 가
+    ///   디렉티브 본문을 붙어 있는 채로 `MarkupFormatter` 에 넘기는 바람에 모든 줄이
+    ///   (디렉티브 깊이 × 4)칸 밀려 나왔기 때문이다. 그 왕복 결함을 근원에서 고쳤으므로
+    ///   (`ContentKit/Lesson/DirectiveBody.swift` 의 `detachedFromParent`,
+    ///   `ContentKitTests/ProseRoundTripTests` 가 다섯 증상을 고정한다) 벗기기는
+    ///   지웠다. 남겨 둘 이유도 없었다 — 그 규칙은 손으로 쓴 4칸 들여쓰기 코드블록을
+    ///   문단으로 오해할 수 있는 **추측**이었고, 이제 그 입력은 오지 않는다.
     static func normalizedLines(_ source: String) -> [String] {
-        let lines =
-            source
+        source
             .replacingOccurrences(of: "\r\n", with: "\n")
             .replacingOccurrences(of: "\r", with: "\n")
             .split(separator: "\n", omittingEmptySubsequences: false)
             .map(String.init)
-        return strippingEmittedIndent(lines)
-    }
-
-    /// 마크다운 **방출기**가 붙인 매달린 들여쓰기를 벗긴다.
-    ///
-    /// **왜 필요한가 — 실측.** `ContentKit.Body.prose` 는 디렉티브 본문의 노드를
-    /// `MarkupFormatter` 로 되돌리는데, 그 포맷터가 **첫 줄을 뺀 모든 줄에** 디렉티브
-    /// 중첩 깊이 × 4칸을 붙인다. 그래서 레슨 소스의 평평한 목록
-    ///
-    /// ```text
-    /// - 첫째
-    /// - 둘째
-    /// ```
-    ///
-    /// 이 `- 첫째\n    - 둘째` 로 나오고, CommonMark 로 다시 읽으면 **중첩 목록**이 된다.
-    /// 문단·인용·코드 펜스도 같은 폭으로 밀린다. 이건 `Body.prose` 쪽 왕복 결함이고,
-    /// 그 파일이 고쳐지면 이 함수는 통째로 지워도 된다 — 그때도 아래 규칙은 무해하다.
-    ///
-    /// **규칙.** 빈 줄로 끊기지 않는 줄 묶음에서 첫 줄이 열 0에 있고 나머지가 전부 공백
-    /// 4칸 이상으로 시작하면, 나머지에서 4칸을 벗긴다. 조건이 계속 성립하는 동안 반복한다
-    /// (깊이 2 디렉티브는 8칸이다). 이 모양은 손으로 쓴 마크다운에서는 거의 나오지 않고,
-    /// 진짜 중첩은 상대 들여쓰기가 함께 밀려 있어 **상대 구조가 보존된다**.
-    static func strippingEmittedIndent(_ lines: [String]) -> [String] {
-        var lines = lines
-        var pass = 0
-        while pass < maximumIndentStripPasses, stripOneIndentLevel(&lines) { pass += 1 }
-        return lines
-    }
-
-    private static func stripOneIndentLevel(_ lines: inout [String]) -> Bool {
-        var changed = false
-        var index = 0
-        while index < lines.count {
-            guard !lines[index].trimmed.isEmpty else {
-                index += 1
-                continue
-            }
-            var end = index
-            while end + 1 < lines.count, !lines[end + 1].trimmed.isEmpty { end += 1 }
-            if end > index, lines[index].leadingSpaceCount == 0,
-                (index + 1...end).allSatisfy({ lines[$0].leadingSpaceCount >= emittedIndentWidth })
-            {
-                for line in (index + 1)...end {
-                    lines[line] = String(lines[line].dropFirst(emittedIndentWidth))
-                }
-                changed = true
-            }
-            index = end + 1
-        }
-        return changed
     }
 
     // MARK: - 주 루프
@@ -347,10 +300,6 @@ struct ListMarker {
 // MARK: - 줄 유틸
 
 extension StringProtocol {
-    /// 앞선 **공백 문자 그대로**의 수. 벗겨낼 때는 이 값을 쓴다 — 탭을 4로 세어 놓고
-    /// `dropFirst(4)` 하면 글자 네 개를 먹는다.
-    var leadingSpaceCount: Int { prefix(while: { $0 == " " }).count }
-
     /// 탭은 4칸으로 센다.
     var leadingSpaces: Int {
         var count = 0

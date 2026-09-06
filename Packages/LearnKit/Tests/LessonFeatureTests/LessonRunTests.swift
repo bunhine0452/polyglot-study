@@ -103,9 +103,12 @@ struct LessonRunTests {
         #expect(model.transcript.isEmpty)
     }
 
-    @Test("결과셋은 표 모델로 옮겨진다")
-    func resultSetBecomesTable() async throws {
-        let resultSet = ResultSet(
+    /// 결과셋은 **옮겨 담지 않는다**. 예전에는 `DesignSystem.ResultTable` 로 한 번
+    /// 베껴 넣었지만, 디자인 시스템이 `LearnCore` 를 보게 되면서 표 프리젠터가
+    /// `ResultSet` 을 그대로 받는다.
+    @Test("결과셋이 모델에 그대로 실린다")
+    func resultSetIsCarriedThrough() async throws {
+        let incoming = ResultSet(
             columns: [.init(name: "category"), .init(name: "n", declaredType: "INTEGER")],
             rows: [
                 [.text("paper"), .integer(2)],
@@ -113,18 +116,21 @@ struct LessonRunTests {
             ]
         )
         let model = try Self.exampleModel([
-            .resultSet(resultSet),
+            .resultSet(incoming),
             .finished(RunTermination.exitCode(0, durationMilliseconds: 3)),
         ])
         await model.runExample()
 
-        let table = try #require(model.resultTable)
-        #expect(table.columns.map(\.name) == ["category", "n"])
-        #expect(table.columns[1].declaredType == "INTEGER")
-        #expect(table.rows.count == 2)
-        #expect(table.rows[0].cells.map(\.text) == ["paper", "2"])
-        #expect(table.rows[1].cells[1].isNull)
-        #expect(table.rows[1].cells[1].text == "NULL")
+        #expect(model.resultSet == incoming)
+
+        // 표가 그리는 값이 도메인 값에서 바로 나온다 — 변환기가 끼어들지 않는다.
+        let resultSet = try #require(model.resultSet)
+        #expect(resultSet.columns.map(\.name) == ["category", "n"])
+        #expect(resultSet.columns[1].declaredType == "INTEGER")
+        #expect(resultSet.rowCount == 2)
+        #expect(resultSet.rows[0].map(\.displayText) == ["paper", "2"])
+        #expect(resultSet.rows[1][1].isNull)
+        #expect(resultSet.rows[1][1].displayText == "NULL")
     }
 
     @Test("절단 이벤트가 한 줄로 표시된다")
@@ -186,28 +192,13 @@ struct LessonRunTests {
     }
 }
 
-@Suite("레슨 프리젠터 · 도메인 4케이스 → 표시 4케이스")
+/// 예전에 여기 있던 "도메인 4케이스 → 표시 4케이스가 1:1로 대응한다" 테스트 둘은
+/// 지웠다. 표시용 사본(`DesignSystem.ResultPresentation`)이 사라져 **대응시킬 것이
+/// 없어졌기** 때문이다 — 화면이 `GradeResult.Presenter` 를 그대로 들고 다닌다.
+/// 네 케이스가 세 갈래로 접히는 규칙은 이제 그 규칙이 사는 곳
+/// (`DesignSystemTests.PresenterRouterTests`)에서만 고정한다.
+@Suite("레슨 프리젠터 · 언어 → 프리젠터")
 struct LessonPresentationTests {
-    @Test("GradeResult.Presenter 네 케이스가 빠짐없이, 서로 다르게 대응된다")
-    func fourCasesMapOneToOne() {
-        #expect(GradeResult.Presenter.allCases.count == 4)
-        let mapped = GradeResult.Presenter.allCases.map(LessonPresentation.presentation(for:))
-        #expect(Set(mapped).count == 4)
-        #expect(mapped == [.console, .table, .browser, .registers])
-        // 철자가 같아야 로그·저장값이 두 열거형 사이에서 왕복한다.
-        for presenter in GradeResult.Presenter.allCases {
-            #expect(LessonPresentation.presentation(for: presenter).rawValue == presenter.rawValue)
-        }
-    }
-
-    @Test("실제 뷰가 있는 것은 콘솔과 표 둘, 나머지는 준비중으로 간다")
-    func routes() {
-        #expect(LessonPresentation.presentation(for: .console).route == .console)
-        #expect(LessonPresentation.presentation(for: .table).route == .table)
-        #expect(LessonPresentation.presentation(for: .browser).route == .preparing)
-        #expect(LessonPresentation.presentation(for: .registers).route == .preparing)
-    }
-
     @Test("MVP 3트랙의 프리젠터가 백엔드 능력에서 나온다")
     func mvpLanguages() {
         #expect(LessonPresentation.presenter(for: .python) == .console)
@@ -219,8 +210,8 @@ struct LessonPresentationTests {
 
     @Test("레슨 모델의 프리젠터가 레슨 언어를 따른다")
     func modelUsesLessonLanguage() throws {
-        #expect(try SampleLesson.model(SampleLesson.swift).presentation == .console)
-        #expect(try SampleLesson.model(SampleLesson.python).presentation == .console)
-        #expect(try SampleLesson.model(SampleLesson.sql).presentation == .table)
+        #expect(try SampleLesson.model(SampleLesson.swift).presenter == .console)
+        #expect(try SampleLesson.model(SampleLesson.python).presenter == .console)
+        #expect(try SampleLesson.model(SampleLesson.sql).presenter == .table)
     }
 }

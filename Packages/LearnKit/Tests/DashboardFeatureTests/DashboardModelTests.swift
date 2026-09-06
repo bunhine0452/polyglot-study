@@ -1,4 +1,5 @@
 import DesignSystem
+import LanguageKit
 import LearnCore
 import Testing
 
@@ -98,10 +99,13 @@ struct DashboardTrackTableTests {
     func toolchainColumnComesFromInjectedProbe() async throws {
         let fixture = DashboardFixture()
         let injected = fixture.model(toolchainStatus: { language in
+            // 포트가 `LanguageKit.ModuleAvailability` 를 그대로 실어 나른다 — 앱에서는
+            // `RunnerKit.ToolchainProbe` 가 낸 값이 여기 그대로 들어온다.
             switch language.rawValue {
-            case "swift": .ready(tool: "swiftc", version: "6.3.3")
-            case "go": .missing(tool: "go")
-            case "java": .stub(tool: "java")
+            case "swift":
+                .probed(tool: "swiftc", .ready(version: "6.3.3", executablePath: "/usr/bin/swiftc"))
+            case "go": .probed(tool: "go", .missing(installHint: "brew install go"))
+            case "java": .probed(tool: "java", .stub(path: "/usr/bin/java", reason: "런타임 없음"))
             default: .unknown
             }
         })
@@ -122,6 +126,15 @@ struct DashboardTrackTableTests {
         await bare.load()
         #expect(bare.rows.allSatisfy { $0.toolchain == .unknown })
         #expect(bare.rows.allSatisfy { $0.toolchain.label == "확인 중…" })
+    }
+
+    /// 디자인에 없는 4번째 판정. 온보딩과 같은 자리로 접는다 (`{#availability-mapping}`).
+    @Test("최소 버전 미달은 미설치와 같은 표현으로 접힌다")
+    func unsupportedFoldsIntoMissing() {
+        let unsupported = TrackToolchainStatus.probed(
+            tool: "go", .unsupported(path: "/usr/bin/go", version: "1.16", minimum: "1.22"))
+        #expect(unsupported.label == "go · 미설치")
+        #expect(unsupported.dot == .empty)
     }
 }
 

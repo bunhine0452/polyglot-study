@@ -59,7 +59,7 @@ struct TrackTableRow: View {
     private var nameCell: some View {
         HStack(alignment: .firstTextBaseline, spacing: Spacing.s) {
             Text(row.name)
-                .font(.dashSans(.label, weight: .medium))
+                .font(AppFont.sans(.label, weight: .medium))
                 .foregroundStyle(primaryColor)
             LabelText(row.stage.label, color: row.stage.isDimmed ? Palette.faint : Palette.secondary)
         }
@@ -69,7 +69,7 @@ struct TrackTableRow: View {
     private var progressCell: some View {
         if row.stage == .comingSoon {
             Text(row.pendingContentLabel)
-                .font(.dashSans(.label))
+                .font(AppFont.sans(.label))
                 .foregroundStyle(Palette.faint)
         } else {
             HStack(spacing: DashboardLayout.cardSpacing) {
@@ -90,7 +90,7 @@ struct TrackTableRow: View {
         if let resume = row.resume {
             VStack(alignment: .leading, spacing: 0) {
                 Text(resume.headline)
-                    .font(.dashSans(.label))
+                    .font(AppFont.sans(.label))
                     .foregroundStyle(Palette.ink)
                     .lineLimit(1)
                 if let caption = row.resumeCaption {
@@ -99,7 +99,7 @@ struct TrackTableRow: View {
             }
         } else {
             Text(row.stage == .notStarted ? "아직 시작 안 함" : "—")
-                .font(.dashSans(.label))
+                .font(AppFont.sans(.label))
                 .foregroundStyle(Palette.faint)
         }
     }

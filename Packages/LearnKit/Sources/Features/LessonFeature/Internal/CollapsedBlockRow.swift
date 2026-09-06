@@ -26,11 +26,11 @@ struct CollapsedBlockRow: View {
             HStack(spacing: LessonLayout.rowGap) {
                 MonoText(ordinal, size: .micro, color: numberColor)
                 Text(name)
-                    .font(LessonFont.sans(.label, weight: .medium))
+                    .font(AppFont.sans(.label, weight: .medium))
                     .foregroundStyle(nameColor)
                     .fixedSize()
                 Text(summary)
-                    .font(LessonFont.sans(.label))
+                    .font(AppFont.sans(.label))
                     .foregroundStyle(summaryColor)
                     .lineLimit(1)
                     .truncationMode(.tail)
@@ -50,14 +50,14 @@ struct CollapsedBlockRow: View {
             HStack(spacing: LessonLayout.rowGap) {
                 HStack(spacing: Spacing.unit - 2) {
                     Text("완료")
-                        .font(LessonFont.sans(.label))
+                        .font(AppFont.sans(.label))
                         .foregroundStyle(Palette.secondary)
                     CheckGlyph(size: 12, color: Palette.secondary)
                 }
                 if let onRevisit {
                     Button(action: onRevisit) {
                         Text("다시 보기")
-                            .font(LessonFont.sans(.label))
+                            .font(AppFont.sans(.label))
                             .foregroundStyle(Palette.ink)
                             .overlay(alignment: .bottom) {
                                 Rule(.hard).offset(y: Rules.thickness)
@@ -69,7 +69,7 @@ struct CollapsedBlockRow: View {
             }
         case .next:
             Text("다음")
-                .font(LessonFont.sans(.label))
+                .font(AppFont.sans(.label))
                 .foregroundStyle(Palette.faint)
         case .remaining:
             EmptyView()

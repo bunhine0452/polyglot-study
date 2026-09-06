@@ -1,3 +1,5 @@
+import AppKit
+import Foundation
 import SwiftUI
 import Testing
 
@@ -138,15 +140,114 @@ struct SegmentedProgressAssemblyTests {
 struct AppFontTests {
     /// 해석 결과는 토큰이 지목한 두 이름 중 하나이거나 `nil`(시스템 폰트)이다.
     /// 임의의 제3의 폰트로 새는 경로가 없다는 것이 여기서 지키는 것이다.
+    ///
+    /// **표기는 두 가지**다 — 토큰은 PostScript 형(`"IBMPlexSansKR"`)으로 적혀 있지만,
+    /// 같은 폰트가 표시명(`"IBM Plex Sans KR"`)으로 등록돼 있으면 해석기는 그쪽을
+    /// 돌려준다. 그래서 이름 그대로가 아니라 **정규화한 키**로 견준다.
+    static func resolvesToOneOf(_ resolved: String?, _ tokens: [String]) -> Bool {
+        guard let resolved else { return true }  // nil = 시스템 폰트. 허용된 종착지다.
+        let allowed = Set(tokens.map(AppFont.normalizedFamilyKey))
+        return allowed.contains(AppFont.normalizedFamilyKey(resolved))
+    }
+
     @Test("모노는 Plex → SF Mono → 시스템 순으로만 떨어진다")
     func monoFallbackChain() {
-        let allowed: [String?] = [Typography.monoFamily, Typography.monoFallback, nil]
-        #expect(allowed.contains(AppFont.resolvedMono), "예상 밖 모노 폰트: \(String(describing: AppFont.resolvedMono))")
+        #expect(
+            Self.resolvesToOneOf(
+                AppFont.resolvedMono, [Typography.monoFamily, Typography.monoFallback]),
+            "예상 밖 모노 폰트: \(String(describing: AppFont.resolvedMono))")
     }
 
     @Test("산스도 같은 순서로만 떨어진다")
     func sansFallbackChain() {
-        let allowed: [String?] = [Typography.sansFamily, Typography.sansFallback, nil]
-        #expect(allowed.contains(AppFont.resolvedSans), "예상 밖 산스 폰트: \(String(describing: AppFont.resolvedSans))")
+        #expect(
+            Self.resolvesToOneOf(
+                AppFont.resolvedSans, [Typography.sansFamily, Typography.sansFallback]),
+            "예상 밖 산스 폰트: \(String(describing: AppFont.resolvedSans))")
+    }
+
+    @Test("등록되지 않은 이름만 주면 해석은 nil 이다 — 아무 폰트나 집지 않는다")
+    func unknownNamesResolveToNil() {
+        #expect(AppFont.resolve(["결코-존재하지-않는-패밀리-A", "결코-존재하지-않는-패밀리-B"]) == nil)
+    }
+
+    @Test("PostScript 형과 표시명 둘 다 같은 패밀리로 해석된다")
+    func bothFamilyNameSpellingsResolve() throws {
+        // 이 머신에 실제로 등록된 패밀리 중 이름에 공백이 있는 것 하나를 고른다.
+        // 특정 폰트를 가정하지 않는다 — 두 표기가 **같은 곳**으로 가는지만 본다.
+        let displayName = try #require(
+            NSFontManager.shared.availableFontFamilies.first { $0.contains(" ") },
+            "공백이 든 패밀리명이 하나도 없다 — 이 머신의 폰트 목록이 이상하다")
+        let postScriptish = displayName.replacingOccurrences(of: " ", with: "")
+
+        #expect(AppFont.resolve([displayName]) == displayName)
+        #expect(AppFont.resolve([postScriptish]) == displayName)
+    }
+
+    @Test("첫 후보가 없으면 둘째로, 순서를 지킨다")
+    func candidateOrderIsHonored() throws {
+        let present = try #require(NSFontManager.shared.availableFontFamilies.first)
+        #expect(AppFont.resolve(["결코-존재하지-않는-패밀리", present]) == present)
+    }
+}
+
+/// 화면 넷이 각자 만들었던 폰트 해석 사본이 되살아나지 않는지 본다.
+///
+/// 사본이 생긴 이유는 단 하나 — `AppFont` 가 internal 이었다는 것 — 이고 그건 고쳤다.
+/// 남은 위험은 새 화면이 습관으로 같은 헬퍼를 또 만드는 것이라, 소스를 직접 읽는다.
+@Suite("폰트 · 사본 봉인")
+struct FontResolutionSealingTests {
+    static var featureRoot: URL {
+        URL(fileURLWithPath: #filePath)  // .../Tests/DesignSystemTests/PrimitivesTests.swift
+            .deletingLastPathComponent()  // .../Tests/DesignSystemTests
+            .deletingLastPathComponent()  // .../Tests
+            .deletingLastPathComponent()  // .../LearnKit
+            .appendingPathComponent("Sources/Features")
+    }
+
+    static var swiftFiles: [URL] {
+        get throws {
+            var found: [URL] = []
+            var stack = [featureRoot]
+            while let directory = stack.popLast() {
+                for entry in try FileManager.default.contentsOfDirectory(
+                    at: directory, includingPropertiesForKeys: [.isDirectoryKey]
+                ) {
+                    if (try entry.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) == true {
+                        stack.append(entry)
+                    } else if entry.pathExtension == "swift" {
+                        found.append(entry)
+                    }
+                }
+            }
+            return found.sorted { $0.path < $1.path }
+        }
+    }
+
+    @Test("소스 경로 계산이 맞다 — 빈 디렉터리를 훑고 통과하지 않게")
+    func sourceRootIsWhereWeThink() throws {
+        let names = Set(try Self.swiftFiles.map(\.lastPathComponent))
+        for required in ["OnboardingView.swift", "ReviewView.swift", "DashboardView.swift"] {
+            #expect(names.contains(required), "\(required) 를 못 찾았다")
+        }
+    }
+
+    @Test("화면 코드가 폰트를 직접 해석하지 않는다 — AppFont 하나만 판다")
+    func featuresDoNotResolveFontsThemselves() throws {
+        // `NSFontManager`·`NSFont(name:` 는 해석기의 재료이고, `Font.custom` 은 그 결과다.
+        // 화면에 이 셋 중 하나라도 있으면 사본이 다시 생긴 것이다.
+        let banned = ["NSFontManager", "NSFont(name:", "Font.custom(", ".custom("]
+        var hits: [String] = []
+        for file in try Self.swiftFiles {
+            let source = try String(contentsOf: file, encoding: .utf8)
+            for (offset, line) in source.split(separator: "\n", omittingEmptySubsequences: false)
+                .enumerated()
+            where !line.trimmingCharacters(in: .whitespaces).hasPrefix("//") {
+                for needle in banned where line.contains(needle) {
+                    hits.append("\(file.lastPathComponent):\(offset + 1) — \(needle)")
+                }
+            }
+        }
+        #expect(hits.isEmpty, "폰트 해석 사본이 돌아왔다:\n\(hits.joined(separator: "\n"))")
     }
 }

@@ -16,7 +16,7 @@ struct ActiveBlockCard: View {
             VStack(alignment: .leading, spacing: LessonLayout.rowGap) {
                 LabelText(header, color: Palette.ink)
                 Text(model.content.title)
-                    .font(LessonFont.sans(.title, weight: .semibold))
+                    .font(AppFont.sans(.title, weight: .semibold))
                     .tracking(-0.24)
                     .foregroundStyle(Palette.ink)
                     .fixedSize(horizontal: false, vertical: true)
@@ -76,7 +76,7 @@ struct ActiveBlockCard: View {
             }
             Spacer(minLength: Spacing.m)
             Text(footerNote)
-                .font(LessonFont.sans(.label))
+                .font(AppFont.sans(.label))
                 .foregroundStyle(Palette.faint)
                 .multilineTextAlignment(.trailing)
         }

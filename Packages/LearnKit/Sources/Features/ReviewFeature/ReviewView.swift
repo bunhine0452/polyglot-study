@@ -55,7 +55,7 @@ public struct ReviewView: View {
                     Image(systemName: "chevron.left")
                         .foregroundStyle(Palette.ink)
                     Text("복습")
-                        .font(.reviewSans(.label, weight: .semibold))
+                        .font(AppFont.sans(.label, weight: .semibold))
                         .foregroundStyle(Palette.ink)
                     LabelText("오늘")
                 }
@@ -78,7 +78,7 @@ public struct ReviewView: View {
                 HStack(spacing: Spacing.s) {
                     LabelText("연속 복습")
                     Text("\(model.streakDays)일째")
-                        .font(.reviewSans(.label, weight: .semibold))
+                        .font(AppFont.sans(.label, weight: .semibold))
                         .foregroundStyle(Palette.ink)
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
@@ -108,11 +108,11 @@ public struct ReviewView: View {
 
             HStack(alignment: .top) {
                 Text(ReviewCopy.intervalExplanation)
-                    .font(.reviewSans(.label))
+                    .font(AppFont.sans(.label))
                     .foregroundStyle(Palette.faint)
                 Spacer(minLength: Spacing.l)
                 Text(ReviewCopy.noCardRemovalNotice)
-                    .font(.reviewSans(.label))
+                    .font(AppFont.sans(.label))
                     .foregroundStyle(Palette.faint)
             }
         }
@@ -122,7 +122,7 @@ public struct ReviewView: View {
         VStack(alignment: .leading, spacing: Spacing.m) {
             LabelText("질문", color: Palette.ink)
             Text(content.question)
-                .font(.reviewSans(.subtitle, weight: .medium))
+                .font(AppFont.sans(.subtitle, weight: .medium))
                 .foregroundStyle(Palette.ink)
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -137,7 +137,7 @@ public struct ReviewView: View {
         VStack(alignment: .leading, spacing: Spacing.m) {
             LabelText("답")
             Text(content.answer)
-                .font(.reviewSans(.body))
+                .font(AppFont.sans(.body))
                 .foregroundStyle(Palette.ink)
                 .fixedSize(horizontal: false, vertical: true)
             if let codeExample = content.codeExample {

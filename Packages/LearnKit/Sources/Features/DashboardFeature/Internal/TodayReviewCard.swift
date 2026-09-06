@@ -15,16 +15,16 @@ struct TodayReviewCard: View {
             VStack(alignment: .leading, spacing: Spacing.xs) {
                 HStack(alignment: .firstTextBaseline, spacing: Spacing.unit - 2) {
                     Text("\(summary.total)")
-                        .font(.dashSans(.hero, weight: .semibold))
+                        .font(AppFont.sans(.hero, weight: .semibold))
                         .tracking(-0.64)
                         .monospacedDigit()
                         .foregroundStyle(summary.total > 0 ? Palette.ink : Palette.faint)
                     Text("장")
-                        .font(.dashSans(.body))
+                        .font(AppFont.sans(.body))
                         .foregroundStyle(summary.total > 0 ? Palette.ink : Palette.faint)
                 }
                 Text(summary.breakdownLine ?? "오늘 도착한 복습이 없습니다.")
-                    .font(.dashSans(.label))
+                    .font(AppFont.sans(.label))
                     .foregroundStyle(Palette.secondary)
                     .lineLimit(1)
             }
@@ -39,7 +39,7 @@ struct TodayReviewCard: View {
                     VStack(alignment: .leading, spacing: 0) {
                         LabelText("연속 복습")
                         Text(streakLabel)
-                            .font(.dashSans(.body, weight: .semibold))
+                            .font(AppFont.sans(.body, weight: .semibold))
                             .monospacedDigit()
                             .foregroundStyle(Palette.ink)
                     }

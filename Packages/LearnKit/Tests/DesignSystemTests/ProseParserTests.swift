@@ -208,69 +208,48 @@ struct ProseParserTests {
         #expect(ProseParser.parse("   \n\n  ").isEmpty)
     }
 
-    // MARK: - 방출기 들여쓰기
+    // MARK: - 들여쓰기는 소스가 적은 그대로 읽는다
+    //
+    // 예전에는 여기에 "방출기가 민 4칸을 벗긴다" 는 테스트가 넷 있었다. `ContentKit`
+    // 이 디렉티브 깊이만큼 들여쓴 산문을 내놓았기 때문인데, 그 왕복 결함을 근원에서
+    // 고쳐서(`ContentKitTests/ProseRoundTripTests`) 벗기기를 통째로 지웠다. 남은
+    // 계약은 하나 — **들여쓰기를 추측하지 않는다**.
 
-    @Test("방출기가 4칸씩 민 평평한 목록이 다시 평평해진다")
-    func flatListSurvivesEmitterIndent() throws {
-        // `ContentKit.Body.prose` 가 실제로 내놓는 모양이다(실측):
-        // 레슨 소스의 `- 첫째 / - 둘째` 가 이렇게 나온다.
-        let blocks = ProseParser.parse("- 첫째\n    - 둘째\n    - 셋째")
-        guard case .list(let list) = try #require(blocks.first) else {
-            Issue.record("목록이 아니다")
-            return
-        }
-        #expect(list.items.count == 3)
-        #expect(list.items[0] == [.paragraph("첫째")])
-        #expect(list.items[1] == [.paragraph("둘째")])
-        #expect(list.items[2] == [.paragraph("셋째")])
-    }
-
-    @Test("중첩 목록은 상대 구조를 잃지 않는다 — 세 단계가 그대로")
-    func nestedListSurvivesEmitterIndent() throws {
-        // 같은 방출기가 3단 중첩을 0/6/8 로 민다(실측). 4칸을 벗기면 0/2/4 가 된다.
-        let blocks = ProseParser.parse("- 바깥\n      - 안쪽\n        - 더 안쪽")
-        guard case .list(let outer) = try #require(blocks.first) else {
-            Issue.record("목록이 아니다")
-            return
-        }
-        #expect(outer.items.count == 1)
-        guard case .list(let middle) = outer.items[0].last else {
-            Issue.record("중간 목록이 없다")
-            return
-        }
-        #expect(middle.items.count == 1)
-        #expect(middle.items[0].last?.kindName == "list")
-    }
-
-    @Test("펜스 안의 코드도 같은 폭만큼만 벗겨진다 — 상대 들여쓰기는 남는다")
-    func fenceBodyKeepsRelativeIndent() {
-        let blocks = ProseParser.parse("```python\n    def f():\n        return 1\n    ```")
-        #expect(blocks == [.code(ProseCode(language: "python", text: "def f():\n    return 1"))])
-    }
-
-    @Test("첫 줄이 열 0 이 아니거나 한 줄이라도 4칸 미만이면 벗기지 않는다")
-    func strippingIsNarrow() {
-        // 손으로 쓴 2칸 중첩은 건드리지 않는다 — 여전히 중첩이다.
-        guard case .list(let list)? = ProseParser.parse("- 바깥\n  - 안쪽").first else {
+    @Test("손으로 쓴 2칸 중첩은 중첩으로 읽는다")
+    func handWrittenNestingIsNesting() throws {
+        guard case .list(let list) = try #require(ProseParser.parse("- 바깥\n  - 안쪽").first) else {
             Issue.record("목록이 아니다")
             return
         }
         #expect(list.items.count == 1)
         #expect(list.items[0].map(\.kindName) == ["paragraph", "list"])
-
-        // 펜스 본문 중 한 줄이라도 열 0 이면 통째로 그대로 둔다.
-        let code = ProseParser.parse("```python\ndef f():\n    return 1\n```")
-        #expect(code == [.code(ProseCode(language: "python", text: "def f():\n    return 1"))])
     }
 
-    @Test("깊이 2 디렉티브의 8칸도 벗겨진다")
-    func twoLevelIndentIsStripped() {
-        #expect(ProseParser.parse("힌트 첫 줄\n        힌트 둘째 줄") == [.paragraph("힌트 첫 줄 힌트 둘째 줄")])
+    @Test("4칸 들여쓴 항목도 추측 없이 중첩으로 읽는다 — CommonMark 그대로")
+    func fourSpaceNestingIsAlsoNesting() throws {
+        guard case .list(let outer) = try #require(ProseParser.parse("- 첫째\n    - 둘째").first)
+        else {
+            Issue.record("목록이 아니다")
+            return
+        }
+        #expect(outer.items.count == 1)
+        #expect(outer.items[0].map(\.kindName) == ["paragraph", "list"])
+    }
+
+    @Test("펜스 본문의 상대 들여쓰기가 그대로 남는다")
+    func fenceBodyKeepsItsIndent() {
+        let blocks = ProseParser.parse("```python\ndef f():\n    return 1\n```")
+        #expect(blocks == [.code(ProseCode(language: "python", text: "def f():\n    return 1"))])
+    }
+
+    @Test("들여쓴 펜스는 여는 펜스 폭만큼만 벗긴다")
+    func indentedFenceStripsOpeningIndent() {
+        let blocks = ProseParser.parse("  ```python\n      def f():\n  ```")
+        #expect(blocks == [.code(ProseCode(language: "python", text: "    def f():"))])
     }
 
     @Test("탭으로 시작하는 줄을 글자 단위로 잘라먹지 않는다")
     func tabsAreNotEaten() {
-        // 탭 한 개는 폭으로는 4칸이지만 공백 문자는 0개다 — 벗기지 않는다.
         #expect(ProseParser.parse("첫 줄\n\t둘째 줄") == [.paragraph("첫 줄 둘째 줄")])
     }
 

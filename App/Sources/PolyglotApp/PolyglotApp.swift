@@ -20,6 +20,9 @@ struct PolyglotApp: App {
     }
 
     init() {
+        // 화면이 그려지기 전에 — AppFont.resolvedSans/resolvedMono 는 첫 접근 시 1회
+        // 평가되는 static let 이라, 그보다만 먼저면 된다. {#plex-font-bundling}
+        FontRegistration.registerBundledFonts()
         Snapshot.captureAndTerminateIfRequested()
     }
 

@@ -62,7 +62,9 @@ struct CardStateTests {
             phase: .relearning,
             reps: 11,
             lapses: 3,
+            elapsedDays: 27,
             scheduledDays: 30,
+            learningStepIndex: 2,
             derivedFromLogID: logID,
             parameterSetID: .fsrs6Default,
             rebuiltAt: Fixture.days(1)
@@ -72,14 +74,14 @@ struct CardStateTests {
         #expect(try await harness.database.cardStateStore.snapshot(forCard: CardID("py-007")) == original)
     }
 
-    /// 두 세션이 각자 정의한 카드 상태를 하나로 합치면서 드러난 구멍을 **못박아 둔다**.
+    /// 두 세션이 각자 정의한 카드 상태를 하나로 합치면서 드러났던 구멍. **이제 메워졌다.**
     ///
-    /// 스케줄링 쪽 `CardSchedulingState` 에는 `elapsedDays` 와 `learningStepIndex` 가 있는데
-    /// `card_state` 테이블에는 그 컬럼이 없다(마이그레이션 002 는 불변이다). 그래서 캐시를
-    /// 거쳐 돌아온 상태로 곧장 다음 리뷰를 스케줄하면 학습 스텝이 처음으로 되감긴다.
-    /// **캐시가 아니라 `review_log` 리플레이가 정본**이라는 규칙이 여기서 선택이 아니라 필수가 된다.
-    @Test("컬럼이 없는 두 필드는 저장에서 유실된다 — 캐시가 아니라 로그가 정본이다", arguments: DatabaseFlavor.allCases)
-    func columnlessSchedulingFieldsAreLost(flavor: DatabaseFlavor) async throws {
+    /// 마이그레이션 006 이전에는 `card_state` 에 `elapsed_days`·`learning_step_index` 컬럼이 없어
+    /// 캐시를 거쳐 돌아온 상태로 다음 리뷰를 스케줄하면 학습 스텝이 처음으로 되감겼다.
+    /// 이 테스트는 그때 유실을 못박던 테스트를 **의미만 뒤집은 것**이다 — 같은 시나리오,
+    /// 반대 기대. 컬럼을 다시 잃으면 여기가 먼저 빨개진다.
+    @Test("학습 단계 카드의 두 필드가 왕복에서 보존된다 — 006 이 메운 구멍", arguments: DatabaseFlavor.allCases)
+    func learningStepSurvivesRoundTrip(flavor: DatabaseFlavor) async throws {
         let harness = try TestDatabase(flavor)
         var snapshot = Fixture.cardState(card: "py-learning")
         snapshot.scheduling.phase = .learning
@@ -89,15 +91,89 @@ struct CardStateTests {
         try await harness.database.cardStateStore.upsert(snapshot)
         let fetched = try await harness.database.cardStateStore.snapshot(forCard: CardID("py-learning"))
 
-        #expect(fetched?.scheduling.elapsedDays == 0, "컬럼이 없는데 값이 살아 돌아왔다")
-        #expect(fetched?.scheduling.learningStepIndex == 0)
-        // 나머지는 전부 왕복한다 — 유실은 딱 두 필드다.
-        #expect(fetched?.scheduling == {
-            var expected = snapshot.scheduling
-            expected.elapsedDays = 0
-            expected.learningStepIndex = 0
-            return expected
-        }())
+        #expect(fetched?.scheduling.elapsedDays == 7, "elapsed_days 가 되감겼다")
+        #expect(fetched?.scheduling.learningStepIndex == 1, "학습 스텝이 되감겼다")
+        // 부분 보존이 아니라 **전부** 보존이다.
+        #expect(fetched?.scheduling == snapshot.scheduling)
+        #expect(fetched == snapshot)
+    }
+
+    /// 되감김이 다음 스케줄에 미치던 영향까지 확인한다.
+    ///
+    /// 유실 시절에는 스텝 3 짜리 카드를 저장했다 읽으면 0 이 나왔고, 그 상태를 그대로
+    /// `apply` 에 넣으면 학습이 처음부터 다시 시작됐다. 값 하나가 아니라 **스텝 진행 전체**가
+    /// 보존되는지를 여러 값으로 훑는다.
+    @Test("학습 스텝 인덱스가 값과 무관하게 보존된다", arguments: [0, 1, 2, 7])
+    func everyLearningStepRoundTrips(step: Int) async throws {
+        let harness = try TestDatabase(.inMemory)
+        var snapshot = Fixture.cardState(card: "py-step-\(step)")
+        snapshot.scheduling.phase = .relearning
+        snapshot.scheduling.learningStepIndex = step
+        snapshot.scheduling.elapsedDays = step * 2
+
+        try await harness.database.cardStateStore.upsert(snapshot)
+        let fetched = try await harness.database.cardStateStore.snapshot(forCard: snapshot.cardID)
+        #expect(fetched?.learningStepIndex == step)
+        #expect(fetched?.elapsedDays == step * 2)
+    }
+
+    /// 006 의 본체는 컬럼 두 개가 아니라 **기존 행을 어떻게 다루는가** 다.
+    ///
+    /// 005 까지만 적용한 DB 에 006 이전 모양의 행을 넣고 006 을 태운다. 두 컬럼은 0 으로 채워지되,
+    /// 그 0 이 틀렸을 수 있는 행(= 이력이 있는 행)은 워터마크가 지워져 `card_state_stale` 에
+    /// 걸린다. 이력이 없는 카드는 0 이 실제로 정답이라 건드리지 않는다.
+    @Test("006 은 두 컬럼을 0 으로 채우고, 이력이 있는 기존 행만 stale 로 표시한다")
+    func migration006MarksLegacyRowsStale() throws {
+        let database = try LearnDatabase.inMemory(upTo: "005-lesson-progress")
+        #expect(try database.appliedMigrations() == Array(SchemaMigrations.identifiers.dropLast()))
+
+        try database.executeRaw("""
+            INSERT INTO review_log
+                (card_id, reviewed_at, rating, state_before, elapsed_days, scheduled_days,
+                 review_duration_ms, scheduler_id, parameter_set_id, source)
+            VALUES ('py-old', 1000, 3, 'learning', 1, 1, 100, 'fsrs6', 'fsrs6-default', 'scheduled')
+            """)
+        // 006 이전 스키마에는 elapsed_days·learning_step_index 컬럼이 아예 없다.
+        try database.executeRaw("""
+            INSERT INTO card_state
+                (card_id, language_id, stability, difficulty, due_at, state,
+                 reps, lapses, scheduled_days, derived_from_log_id, parameter_set_id, rebuilt_at)
+            VALUES
+                ('py-old', 'python', 1.0, 5.0, 2000, 'learning', 1, 0, 0, 1, 'fsrs6-default', 1),
+                ('py-fresh', 'python', 0.0, 5.0, 2000, 'new', 0, 0, 0, NULL, 'fsrs6-default', 1)
+            """)
+
+        try database.applyRemainingMigrations()
+        #expect(try database.appliedMigrations() == SchemaMigrations.identifiers)
+
+        #expect(try database.scalarInt("SELECT elapsed_days FROM card_state WHERE card_id = 'py-old'") == 0)
+        #expect(try database.scalarInt("SELECT learning_step_index FROM card_state WHERE card_id = 'py-old'") == 0)
+        #expect(try database.scalarInt("SELECT log_drift FROM card_state_stale WHERE card_id = 'py-old'") == 1)
+        #expect(try database.scalarInt("SELECT parameter_drift FROM card_state_stale WHERE card_id = 'py-old'") == 0)
+
+        // 리플레이할 이력이 없는 카드는 0 이 정답이므로 stale 이 아니다.
+        #expect(try database.scalarInt("""
+            SELECT log_drift + parameter_drift FROM card_state_stale WHERE card_id = 'py-fresh'
+            """) == 0)
+
+        // 캐시는 비우지 않는다 — 재구축이 끝날 때까지 큐가 텅 비면 안 된다.
+        #expect(try database.scalarInt("SELECT COUNT(*) FROM card_state") == 2)
+    }
+
+    /// 006 의 CHECK 는 002 의 나머지 제약과 같은 규칙을 따른다 — 카운터는 음수가 될 수 없다.
+    @Test("음수 learning_step_index 는 CHECK 가 거부한다")
+    func learningStepIndexRangeIsEnforced() throws {
+        let harness = try TestDatabase(.inMemory)
+        let failure = #expect(throws: RawSQLFailure.self) {
+            try harness.database.executeRaw("""
+                INSERT INTO card_state
+                    (card_id, language_id, stability, difficulty, due_at, state,
+                     reps, lapses, elapsed_days, scheduled_days, learning_step_index,
+                     parameter_set_id, rebuilt_at)
+                VALUES ('c', 'python', 1.0, 5.0, 1, 'learning', 0, 0, 0, 0, -1, 'fsrs6-default', 1)
+                """)
+        }
+        #expect(failure?.extendedResultCode == SQLiteResultCode.constraintCheck)
     }
 
     @Test("리뷰가 없는 신규 카드는 derived_from_log_id 가 nil 이다", arguments: DatabaseFlavor.allCases)

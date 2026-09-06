@@ -19,14 +19,15 @@ public struct CardSchedulingState: Hashable, Sendable, Codable {
     public var lastReviewedAt: EpochMillis?
     /// 직전 리뷰와 그 앞 리뷰 사이의 일수. FSRS 가 계산한 값을 그대로 옮긴 것.
     ///
-    /// - Important: `card_state` 테이블에는 이 컬럼이 **없다**. `CardStateSnapshot` 을
-    ///   거쳐 저장했다가 다시 읽으면 0 이 된다 — 정확한 값이 필요하면 로그를 리플레이해라.
+    /// `card_state.elapsed_days` 로 저장된다 (마이그레이션 006).
     public var elapsedDays: Int
     /// 지금 걸려 있는 간격(일). 학습 단계 카드는 0.
     public var scheduledDays: Int
     /// `learning`/`relearning` 일 때만 의미 있는 학습 스텝 인덱스(0-기반).
     ///
-    /// - Important: `elapsedDays` 와 같이 `card_state` 에 컬럼이 없다. 아래 주석 참고.
+    /// `card_state.learning_step_index` 로 저장된다 (마이그레이션 006). 006 이전에는 컬럼이
+    /// 없어 저장→로드에서 0 으로 되감겼고, 그게 학습 단계 카드의 스텝을 처음으로 되돌리는
+    /// 조용한 버그였다. 지금은 왕복이 무손실이다 — `CardStateTests` 가 그걸 못박는다.
     public var learningStepIndex: Int
     public var reps: Int
     public var lapses: Int

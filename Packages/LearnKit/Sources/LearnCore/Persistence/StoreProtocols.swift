@@ -68,12 +68,31 @@ public protocol CardStateStore: Sendable {
     /// 캐시를 통째로 버린다. `review_log` 는 건드리지 않는다.
     func deleteAll() async throws
 
-    /// 트랙별 due 큐. 항상 `language_id` 로 먼저 좁히고 `(language_id, due_at)` 인덱스를 탄다.
+    /// 트랙별 due 카드 원자료. 항상 `language_id` 로 먼저 좁히고 `(language_id, due_at)` 인덱스를 탄다.
+    ///
+    /// 혼합도 상한도 적용하지 않는다 — 그건 `queue(languageID:now:studyDayStart:policy:)` 의 일이다.
+    /// 이쪽은 재구축·통계처럼 "이 언어의 due 카드 전부" 가 필요한 경로용이다.
     func dueCards(
         languageID: LanguageID,
         dueAtOrBefore: EpochMillis,
         limit: Int
     ) async throws -> [CardStateSnapshot]
+
+    /// 오늘의 복습 큐. `{#queue-mixing}`
+    ///
+    /// 혼합 비율과 일일 상한을 **여기서** 적용한다. 호출자는 결과를 그대로 화면에 올리면 되고,
+    /// 다시 자르면 안 된다 — 자르는 순간 오늘의 남은 몫 계산이 틀어진다.
+    ///
+    /// - Parameters:
+    ///   - now: due 판정 기준 시각. 이 시각 이하로 잡힌 카드만 나온다.
+    ///   - studyDayStart: 오늘 학습일의 시작(`DayBoundary.startOfStudyDay`). 이 시각 이후의
+    ///     큐 리뷰가 오늘 쓴 몫으로 집계된다.
+    func queue(
+        languageID: LanguageID,
+        now: EpochMillis,
+        studyDayStart: EpochMillis,
+        policy: DueQueuePolicy
+    ) async throws -> [DueQueueEntry]
 
     /// stale 판정 헬퍼 — 재구축 자체는 `LearnScheduling` 이 한다. 여기는 "무엇이 뒤처졌나" 까지.
     func staleCards(limit: Int) async throws -> [CardStaleness]

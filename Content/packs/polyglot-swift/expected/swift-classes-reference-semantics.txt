@@ -1,0 +1,4 @@
+struct a.x = 1, b.x = 100
+class a.x = 100, b.x = 100
+a === b: true
+a === c: false

@@ -1,13 +1,23 @@
 # polyglot stableids v1
 sql-aggregate-functions	sql	lessons/sql-aggregate-functions.md
+sql-case-expressions	sql	lessons/sql-case-expressions.md
 sql-create-table-constraints	sql	lessons/sql-create-table-constraints.md
+sql-create-view	sql	lessons/sql-create-view.md
+sql-cte-with	sql	lessons/sql-cte-with.md
+sql-date-text-functions	sql	lessons/sql-date-text-functions.md
 sql-exists-correlated-subqueries	sql	lessons/sql-exists-correlated-subqueries.md
 sql-group-by-having	sql	lessons/sql-group-by-having.md
 sql-inner-joins	sql	lessons/sql-inner-joins.md
 sql-insert-update-delete	sql	lessons/sql-insert-update-delete.md
 sql-left-outer-joins	sql	lessons/sql-left-outer-joins.md
+sql-multi-table-joins	sql	lessons/sql-multi-table-joins.md
 sql-null-handling	sql	lessons/sql-null-handling.md
 sql-order-by-limit-distinct	sql	lessons/sql-order-by-limit-distinct.md
 sql-select-from-where	sql	lessons/sql-select-from-where.md
+sql-self-joins	sql	lessons/sql-self-joins.md
+sql-set-operations	sql	lessons/sql-set-operations.md
+sql-string-functions	sql	lessons/sql-string-functions.md
 sql-subqueries	sql	lessons/sql-subqueries.md
+sql-transactions	sql	lessons/sql-transactions.md
+sql-upsert-on-conflict	sql	lessons/sql-upsert-on-conflict.md
 sql-window-functions	sql	lessons/sql-window-functions.md

@@ -35,3 +35,15 @@ Swift 트랙의 채점 하네스 계약이다. 어기면 컴파일조차 되지 
 - Foundation 을 되도록 쓰지 마라. 표준 라이브러리만으로 쓸 수 있으면 그렇게 해라.
 - 동시성(async/await·Task)은 이 트랙 범위 밖이다.
 - 한 파일에서 같은 이름을 두 번 선언하지 마라 — 예제와 과제가 같은 이름을 써도 된다(별개 파일이다).
+
+## tests 파일의 throws (실측 2026-09-07 — 게이트가 잡은 실패)
+
+`try` 를 쓰는 `@Test` 함수에는 **반드시 `throws` 를 붙여라.**
+
+    @Test func 이름() throws {
+        let result = try analyzer.analyze("...", top: 2)
+    }
+
+`throws` 없이 `try` 를 쓰면 `errors thrown from here are not handled` 로 컴파일이 깨지고
+과제 전체가 실패한다. 반대로 오류가 나는지만 보는 검사는 `try` 가 필요 없다 —
+`#expect(throws: MyError.self) { ... }` 는 `throws` 없는 함수에 그대로 쓴다.

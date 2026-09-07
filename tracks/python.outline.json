@@ -266,9 +266,282 @@
       "stableID" : "python.file-input-output",
       "summary" : "프로그램이 끝나도 남는 형태로 데이터를 저장한다. 파일에 쓰고 다시 읽어오는 전체 흐름을 직접 실행해 확인하는 마지막 레슨이다.",
       "title" : "결과를 남기기: 파일에 쓰고 읽기"
+    },
+    {
+      "concepts" : [
+        "tuple",
+        "tuple unpacking",
+        "enumerate()"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "튜플을 만들고 인덱스로 요소를 꺼낼 수 있다",
+        "여러 변수를 한 번에 대입하는 언패킹으로 튜플을 풀어낼 수 있다",
+        "enumerate()로 for 반복에서 인덱스와 값을 동시에 언패킹해 쓸 수 있다"
+      ],
+      "ordinal" : 13,
+      "prerequisites" : [
+        "python.list-basics",
+        "python.for-loop-and-range"
+      ],
+      "stableID" : "python.tuples-and-unpacking",
+      "summary" : "바뀌지 않는 값 묶음인 튜플을 다루고, 언패킹으로 여러 변수에 한 번에 값을 나눠 담는 레슨.",
+      "title" : "값을 묶고 풀기: 튜플과 언패킹"
+    },
+    {
+      "concepts" : [
+        "set",
+        "set()",
+        "add()",
+        "in operator on set",
+        "len() on set"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "set()으로 집합을 만들어 중복을 자동으로 제거할 수 있다",
+        "add()로 요소를 추가하고 in 연산자로 포함 여부를 확인할 수 있다",
+        "리스트를 set으로 바꿔 중복이 몇 개였는지 실행으로 확인할 수 있다"
+      ],
+      "ordinal" : 14,
+      "prerequisites" : [
+        "python.list-basics",
+        "python.dictionaries"
+      ],
+      "stableID" : "python.sets-and-uniqueness",
+      "summary" : "중복을 허용하지 않는 집합 자료형으로 고유한 값만 뽑아내는 레슨.",
+      "title" : "중복 없이 담기: 집합(set)과 고유한 값"
+    },
+    {
+      "concepts" : [
+        "split()",
+        "join()",
+        "strip()",
+        "replace()"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "split()으로 문장을 공백이나 구분자 기준으로 잘라 리스트를 만들 수 있다",
+        "join()으로 문자열 리스트를 하나의 문자열로 합칠 수 있다",
+        "strip()과 replace()로 문자열의 불필요한 부분을 정리할 수 있다"
+      ],
+      "ordinal" : 15,
+      "prerequisites" : [
+        "python.strings-and-fstring",
+        "python.list-basics"
+      ],
+      "stableID" : "python.string-methods-split-join",
+      "summary" : "split, join, strip, replace로 문자열을 자르고 붙이고 다듬는 레슨.",
+      "title" : "문자열 가공: split, join, strip, replace"
+    },
+    {
+      "concepts" : [
+        "default parameter",
+        "keyword argument",
+        "positional argument"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "매개변수에 기본값을 정해 호출 시 생략 가능한 함수를 만들 수 있다",
+        "키워드 인자로 인자의 이름을 지정해 함수를 호출할 수 있다",
+        "기본값이 있는 함수를 다양한 방식으로 호출하며 결과를 비교할 수 있다"
+      ],
+      "ordinal" : 16,
+      "prerequisites" : [
+        "python.functions-def-return",
+        "python.dictionaries"
+      ],
+      "stableID" : "python.function-arguments",
+      "summary" : "매개변수 기본값과 키워드 인자로 더 유연하게 호출되는 함수를 만드는 레슨.",
+      "title" : "더 유연한 함수: 기본값과 키워드 인자"
+    },
+    {
+      "concepts" : [
+        "lambda",
+        "sorted()",
+        "key argument",
+        "list.sort()"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "sorted()와 list.sort()로 리스트를 오름차순·내림차순 정렬할 수 있다",
+        "lambda로 짧은 함수를 그 자리에서 만들어 쓸 수 있다",
+        "sorted()의 key 인자에 lambda를 넣어 원하는 기준으로 정렬할 수 있다"
+      ],
+      "ordinal" : 17,
+      "prerequisites" : [
+        "python.functions-def-return",
+        "python.function-arguments",
+        "python.list-basics"
+      ],
+      "stableID" : "python.lambda-and-sorted-key",
+      "summary" : "lambda와 sorted()의 key 인자로 원하는 기준대로 데이터를 정렬하는 레슨.",
+      "title" : "기준대로 정렬하기: lambda와 sorted()의 key"
+    },
+    {
+      "concepts" : [
+        "nested list",
+        "nested dict",
+        "list of dicts"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "리스트 안의 리스트에서 이중 인덱스로 요소를 꺼낼 수 있다",
+        "딕셔너리의 리스트를 for 반복과 f-string으로 출력할 수 있다",
+        "딕셔너리 안의 리스트에 append()로 값을 추가할 수 있다"
+      ],
+      "ordinal" : 18,
+      "prerequisites" : [
+        "python.list-basics",
+        "python.dictionaries",
+        "python.for-loop-and-range"
+      ],
+      "stableID" : "python.nested-data-structures",
+      "summary" : "리스트와 딕셔너리를 겹쳐 담은 중첩 자료구조를 읽고 수정하는 레슨.",
+      "title" : "겹겹이 쌓인 자료: 중첩 리스트와 중첩 딕셔너리"
+    },
+    {
+      "concepts" : [
+        "import",
+        "math module",
+        "random module",
+        "module attribute access"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "import로 math 모듈을 불러와 math.sqrt() 같은 기능을 쓸 수 있다",
+        "random 모듈로 무작위 숫자를 뽑고 목록에서 무작위로 고를 수 있다",
+        "import한 모듈의 함수를 점(.)으로 접근해 실행 결과를 확인할 수 있다"
+      ],
+      "ordinal" : 19,
+      "prerequisites" : [
+        "python.functions-def-return",
+        "python.list-basics"
+      ],
+      "stableID" : "python.modules-and-import",
+      "summary" : "import로 이미 만들어진 모듈의 기능을 가져와 쓰는 레슨.",
+      "title" : "남의 코드 가져다 쓰기: import와 모듈"
+    },
+    {
+      "concepts" : [
+        "dict.get()",
+        "dict.items()",
+        "dict.setdefault()"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "get()으로 키가 없어도 오류 없이 기본값을 꺼낼 수 있다",
+        "items()로 키와 값을 동시에 순회할 수 있다",
+        "setdefault()와 get()으로 반복을 돌며 값의 개수를 세는 코드를 작성할 수 있다"
+      ],
+      "ordinal" : 20,
+      "prerequisites" : [
+        "python.dictionaries",
+        "python.for-loop-and-range",
+        "python.exception-handling"
+      ],
+      "stableID" : "python.dict-methods-counting",
+      "summary" : "get, items, setdefault로 딕셔너리를 한 단계 더 깊게 다루며 값의 개수를 세는 레슨.",
+      "title" : "딕셔너리 한 단계 더: get, items, 개수 세기"
+    },
+    {
+      "concepts" : [
+        "csv module",
+        "csv.reader()",
+        "csv.writer()",
+        "json module",
+        "json.dump()",
+        "json.load()"
+      ],
+      "estimatedMinutes" : 35,
+      "objectives" : [
+        "csv 모듈로 CSV 파일의 각 행을 읽어 리스트로 다룰 수 있다",
+        "csv.writer()로 데이터를 CSV 파일에 쓸 수 있다",
+        "json.load()와 json.dump()로 딕셔너리를 JSON 파일에 저장하고 다시 읽을 수 있다"
+      ],
+      "ordinal" : 21,
+      "prerequisites" : [
+        "python.file-input-output",
+        "python.nested-data-structures",
+        "python.modules-and-import"
+      ],
+      "stableID" : "python.csv-and-json-processing",
+      "summary" : "csv와 json 모듈로 실제 파일 형식의 데이터를 읽고 쓰는 레슨.",
+      "title" : "실전 데이터 파일: CSV와 JSON 다루기"
+    },
+    {
+      "concepts" : [
+        "class",
+        "__init__",
+        "self",
+        "instance",
+        "method"
+      ],
+      "estimatedMinutes" : 35,
+      "objectives" : [
+        "class로 설계도를 정의하고 인스턴스를 만들 수 있다",
+        "__init__에서 self를 사용해 인스턴스마다 속성값을 설정할 수 있다",
+        "인스턴스 메서드를 정의하고 호출해 속성을 읽고 바꿀 수 있다"
+      ],
+      "ordinal" : 22,
+      "prerequisites" : [
+        "python.functions-def-return",
+        "python.dictionaries",
+        "python.function-arguments"
+      ],
+      "stableID" : "python.classes-and-objects",
+      "summary" : "class로 나만의 자료형을 만들고, __init__과 메서드로 객체를 동작시키는 레슨.",
+      "title" : "나만의 자료형 만들기: class와 객체"
+    },
+    {
+      "concepts" : [
+        "generator",
+        "yield",
+        "generator expression"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "yield를 쓰는 함수를 정의해 값을 하나씩 순서대로 뽑아낼 수 있다",
+        "for 반복으로 제너레이터가 내놓는 값들을 차례로 사용할 수 있다",
+        "제너레이터 표현식과 리스트 컴프리헨션의 차이를 실행으로 비교할 수 있다"
+      ],
+      "ordinal" : 23,
+      "prerequisites" : [
+        "python.functions-def-return",
+        "python.for-loop-and-range",
+        "python.list-comprehension"
+      ],
+      "stableID" : "python.generators-and-yield",
+      "summary" : "yield로 값을 하나씩 천천히 만들어 내는 제너레이터를 작성하는 레슨.",
+      "title" : "값을 하나씩: 제너레이터와 yield"
+    },
+    {
+      "concepts" : [
+        "str methods",
+        "dict methods",
+        "functions",
+        "file input output",
+        "sorted()"
+      ],
+      "estimatedMinutes" : 40,
+      "objectives" : [
+        "텍스트 파일을 읽어 단어별 개수를 세는 딕셔너리를 만들 수 있다",
+        "단어 개수 기준으로 정렬해 상위 항목을 출력할 수 있다",
+        "결과를 파일에 저장하고 함수로 단계별로 나눠 작성할 수 있다"
+      ],
+      "ordinal" : 24,
+      "prerequisites" : [
+        "python.string-methods-split-join",
+        "python.dict-methods-counting",
+        "python.lambda-and-sorted-key",
+        "python.file-input-output",
+        "python.functions-def-return"
+      ],
+      "stableID" : "python.text-analysis-capstone",
+      "summary" : "지금까지 배운 파일 처리, 문자열 가공, 딕셔너리, 정렬을 한 프로그램으로 합쳐 텍스트 파일을 분석하는 마무리 레슨.",
+      "title" : "종합 실전: 텍스트 파일 단어 분석기 만들기"
     }
   ],
   "schemaVersion" : 1,
-  "trackSummary" : "print 한 줄에서 시작해 변수, 문자열, 조건문, 반복문, 리스트, 함수, 딕셔너리를 거쳐 예외 처리와 파일 입출력까지, 매 레슨 직접 실행해 결과로 확인하는 파이썬 입문 트랙이다. 각 레슨의 테스트 과제는 숨은 테스트로 자동 채점되므로 스스로 정답 여부를 확인하며 나아갈 수 있다.",
-  "trackTitle" : "파이썬 첫걸음: 실행으로 배우는 기초 문법"
+  "trackSummary" : "print() 한 줄부터 시작해 조건문, 반복문, 자료구조, 함수, 파일 입출력까지 차근차근 쌓고, 튜플·집합·정렬·클래스·제너레이터로 한 단계 나아가 마지막에는 텍스트 분석기를 직접 만드는 파이썬 입문 트랙. 모든 레슨에서 코드를 직접 실행하며 배운다.",
+  "trackTitle" : "파이썬 기초: 실행하며 배우는 첫 프로그래밍"
 }

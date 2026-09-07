@@ -12,6 +12,16 @@
       "sha256" : "1b0b4685ef7c9152ce0ac75832c253d5b956b6b802818f81d2a986def7ba3c2d"
     },
     {
+      "bytes" : 23,
+      "path" : "expected/swift-capstone-word-frequency.txt",
+      "sha256" : "fa8773d488b07fc615a8296424cccc763a7e4b5ecaa31f3c69b843fb27d01f79"
+    },
+    {
+      "bytes" : 82,
+      "path" : "expected/swift-classes-reference-semantics.txt",
+      "sha256" : "466fde4693bd734533ddabcc3868f51220cdea880260176136669f0cdc0bca44"
+    },
+    {
       "bytes" : 83,
       "path" : "expected/swift-closures-map-filter.txt",
       "sha256" : "8b04d3251bf053832134fd28e5d4493b7e5508c6c6df9a948020931bdc71e4a7"
@@ -27,9 +37,34 @@
       "sha256" : "072aaf2e09dc27d39bea6433a0ca369bedb073c2a3c91872e5223b0cd57b1198"
     },
     {
+      "bytes" : 63,
+      "path" : "expected/swift-enums-associated-values.txt",
+      "sha256" : "1f33cfdeb0c72dc7d9bed1b5bbb06b68d5ed2a6100251f2e9365a8fe8a7adecc"
+    },
+    {
+      "bytes" : 25,
+      "path" : "expected/swift-equatable-hashable.txt",
+      "sha256" : "c1a40e0870f2ded044c3138112aadbff35555f49287a43b03ab52c496a72a328"
+    },
+    {
+      "bytes" : 102,
+      "path" : "expected/swift-error-handling-throws.txt",
+      "sha256" : "1fa79175149c8ed6d7031287fc267ea63c2afc7d96d405dd2ef804da486f9741"
+    },
+    {
+      "bytes" : 42,
+      "path" : "expected/swift-extensions-computed-properties.txt",
+      "sha256" : "fc8b2d97db5693f6a42db1dd2ee0352ca49564a440e450a8d2da84c44157567b"
+    },
+    {
       "bytes" : 91,
       "path" : "expected/swift-functions-and-return-values.txt",
       "sha256" : "79e8e95384aa0e69ddf683af0944e65af3db2eddf2ff2cd9326ada0c15256d8d"
+    },
+    {
+      "bytes" : 57,
+      "path" : "expected/swift-generics-basics.txt",
+      "sha256" : "311c45bf761f5b9866c1482c64e61eb47fc3aa2f753e03699035c0caedbc65f0"
     },
     {
       "bytes" : 68,
@@ -42,9 +77,34 @@
       "sha256" : "24f55cef2ae92ef5f61e657ebefc9205bf241231c81d2f9e5b43f1de3e545840"
     },
     {
+      "bytes" : 78,
+      "path" : "expected/swift-optional-chaining-and-optional-map.txt",
+      "sha256" : "e5a516b1c9603a7a6ff64b0cc247d398be19a6762677a5663ba0ad62f78b7ba9"
+    },
+    {
       "bytes" : 60,
       "path" : "expected/swift-optionals-and-nil.txt",
       "sha256" : "8c9d432b544ad18047323b49b90f7507d54a264cb59b2ef5f3100239641222b2"
+    },
+    {
+      "bytes" : 47,
+      "path" : "expected/swift-protocols-and-conformance.txt",
+      "sha256" : "63b2ffdc021e86d1869d4236038069314453cf317d8e5e322a70d119ef8501aa"
+    },
+    {
+      "bytes" : 8,
+      "path" : "expected/swift-recursion-basics.txt",
+      "sha256" : "33245c7bec67e992740940390d9e6c383cfa00fed609a931f839576305f54455"
+    },
+    {
+      "bytes" : 121,
+      "path" : "expected/swift-reduce-and-compactmap.txt",
+      "sha256" : "23f7f7f014885f3eced99610434361ed1cbb48b21595c21ccaf86ec21ae27c46"
+    },
+    {
+      "bytes" : 53,
+      "path" : "expected/swift-sets-and-operations.txt",
+      "sha256" : "31ced1c40445697ce9ce1564e8c3cf087cb14d606e3dac4bec9db2a358c463da"
     },
     {
       "bytes" : 121,
@@ -72,6 +132,16 @@
       "sha256" : "f0d4abb4320be819ec2a2a6fb596390b17f1c9c30e1c8ea62e514cc81b658d29"
     },
     {
+      "bytes" : 4786,
+      "path" : "lessons/swift-capstone-word-frequency.md",
+      "sha256" : "e07f66a250e055745d9791d85f02a1e9954229c971f342fcbee6fb6956b09dd2"
+    },
+    {
+      "bytes" : 4543,
+      "path" : "lessons/swift-classes-reference-semantics.md",
+      "sha256" : "e1831877399a7ca98e40b74e7fbe3b39d211e3a756fc092f8158bccaf7fcd380"
+    },
+    {
       "bytes" : 4130,
       "path" : "lessons/swift-closures-map-filter.md",
       "sha256" : "53f4562afae67d7669c91798a3341796e8bb3193c7841834f2b721542b67bbb2"
@@ -87,9 +157,34 @@
       "sha256" : "40f30436a455179dae3a5fc43b7140b7b4d56ef4c43728fd145d8ae57bcd1bc0"
     },
     {
+      "bytes" : 5137,
+      "path" : "lessons/swift-enums-associated-values.md",
+      "sha256" : "1e834295777677b7885b85ecceaff9a3f42b9f7bdd04c26d967a9de35aa69da3"
+    },
+    {
+      "bytes" : 4719,
+      "path" : "lessons/swift-equatable-hashable.md",
+      "sha256" : "3a71fd0a69d53984828cfc35a68cd07f82cd5bbdb04f7935aee96978008a0e6f"
+    },
+    {
+      "bytes" : 5849,
+      "path" : "lessons/swift-error-handling-throws.md",
+      "sha256" : "ce3c4ce401bd54af92ef3aad5d913c8d7ac26f692f7eec3644b73275e8e10f17"
+    },
+    {
+      "bytes" : 4991,
+      "path" : "lessons/swift-extensions-computed-properties.md",
+      "sha256" : "01efe6f3471a22f0d612ca245d3d523ab4c9a3ac458658dc8536611c57349139"
+    },
+    {
       "bytes" : 4015,
       "path" : "lessons/swift-functions-and-return-values.md",
       "sha256" : "f1330e03b691437099a509cf41fec0a264e32b668a99d4dfb8731d457e92f460"
+    },
+    {
+      "bytes" : 4398,
+      "path" : "lessons/swift-generics-basics.md",
+      "sha256" : "54d7da4ce1de724a2cd83e82468920613092a4d7cd4c2169cc7c1f6c5ff5197c"
     },
     {
       "bytes" : 4627,
@@ -102,9 +197,34 @@
       "sha256" : "50daf927b3d0aade849004aa91ed4a306945910ea9a9667cc0c80da10daf939f"
     },
     {
+      "bytes" : 5246,
+      "path" : "lessons/swift-optional-chaining-and-optional-map.md",
+      "sha256" : "d2d9ddc025d18d280ac12e9453e01d59e982d31c4eed4c13007099d1de0ca4ac"
+    },
+    {
       "bytes" : 4092,
       "path" : "lessons/swift-optionals-and-nil.md",
       "sha256" : "b5a062da9428f6f1032f3064ef26c70351e86d58f6151ef76772c1d61d846f92"
+    },
+    {
+      "bytes" : 4517,
+      "path" : "lessons/swift-protocols-and-conformance.md",
+      "sha256" : "2b9e0bcf2d18e9a6deeb3402da82c3991a0fac783998e74cf8d51095dace559b"
+    },
+    {
+      "bytes" : 4300,
+      "path" : "lessons/swift-recursion-basics.md",
+      "sha256" : "e0647f5bc36296be5bd5e1e4397d93cf315f31ae432c38270fbb379f47aa23c3"
+    },
+    {
+      "bytes" : 5513,
+      "path" : "lessons/swift-reduce-and-compactmap.md",
+      "sha256" : "af35a1da230450c43cbe33535e2f303fa84fb514025430e19df90d1ad639a35b"
+    },
+    {
+      "bytes" : 5041,
+      "path" : "lessons/swift-sets-and-operations.md",
+      "sha256" : "ad3a8f471584914119614aec89dc95b909d860d8da04867cab42946df19fcf93"
     },
     {
       "bytes" : 3992,
@@ -132,6 +252,16 @@
       "sha256" : "03a6fc99cddb2248412a9dcfc022be8579f9f603382d4c60b14ec9e19927e66f"
     },
     {
+      "bytes" : 1076,
+      "path" : "solutions/swift-capstone-word-frequency.swift",
+      "sha256" : "e95f600d880a485755e5d115b09ef9bb15494c939fe06c9e0272d77ec3450894"
+    },
+    {
+      "bytes" : 407,
+      "path" : "solutions/swift-classes-reference-semantics.swift",
+      "sha256" : "4800267f48f2b679b552ec5c6c86db4d06b78e8085b1b932b264328fc37f01e3"
+    },
+    {
       "bytes" : 100,
       "path" : "solutions/swift-closures-map-filter.swift",
       "sha256" : "55627df07c9dc9a900ecc7de4f4e8358c4261172ae6a43b5d6f3a1fd863408a9"
@@ -147,9 +277,34 @@
       "sha256" : "9923d8032d2bdec92e9f4de4df7c23c1c033bdbf25069a2cdb96d9587ed26322"
     },
     {
+      "bytes" : 395,
+      "path" : "solutions/swift-enums-associated-values.swift",
+      "sha256" : "2997f900d875b693ec5036e6bed66a11f6a526533c8743e9c154379f133b2eea"
+    },
+    {
+      "bytes" : 398,
+      "path" : "solutions/swift-equatable-hashable.swift",
+      "sha256" : "bbf8db07cf0712f385418f105925f4c95407457df154394d688219d68af381e7"
+    },
+    {
+      "bytes" : 369,
+      "path" : "solutions/swift-error-handling-throws.swift",
+      "sha256" : "3c289967511ead599c206cd24a555ccc39ccd040ddd38dfe5e5c32d1f8272968"
+    },
+    {
+      "bytes" : 336,
+      "path" : "solutions/swift-extensions-computed-properties.swift",
+      "sha256" : "6362695387cd2a6cc602af0b9c2dbf0d2d98d063ecd39b8d70e326050a74c15e"
+    },
+    {
       "bytes" : 372,
       "path" : "solutions/swift-functions-and-return-values.swift",
       "sha256" : "ed299878eb05583aeacf7aebccfd9a0df1cadf53a2b5838ca799e554fe725ef3"
+    },
+    {
+      "bytes" : 337,
+      "path" : "solutions/swift-generics-basics.swift",
+      "sha256" : "f1d87cbd4df3a9e4cddd27c2cf160ad3dcb2af14c4e42037e33575550573bb84"
     },
     {
       "bytes" : 659,
@@ -162,9 +317,34 @@
       "sha256" : "760f54a2283487bd70256907a6033de4d5619728f8176d4c9a222443823ca662"
     },
     {
+      "bytes" : 422,
+      "path" : "solutions/swift-optional-chaining-and-optional-map.swift",
+      "sha256" : "a20825725bed644b7a18987afa012ef40af1487e48279f1f5fa095b84f5258fd"
+    },
+    {
       "bytes" : 200,
       "path" : "solutions/swift-optionals-and-nil.swift",
       "sha256" : "e04d7d2a454b258cd1074776f43830160b56e0ba3be6b471170083e48ce53f45"
+    },
+    {
+      "bytes" : 457,
+      "path" : "solutions/swift-protocols-and-conformance.swift",
+      "sha256" : "0f2e58bc4772f143618a6397eb6cb644e8517a8cb833066f6769dc955024c013"
+    },
+    {
+      "bytes" : 235,
+      "path" : "solutions/swift-recursion-basics.swift",
+      "sha256" : "94ac9d14bba8d11317c78c50117299bd0cff3b083d271fc924cb40176035db1a"
+    },
+    {
+      "bytes" : 420,
+      "path" : "solutions/swift-reduce-and-compactmap.swift",
+      "sha256" : "c26afdd87cd199d8d38c4da9fb9a8f2735f690b01dfad2b1b1d9dd4176931b49"
+    },
+    {
+      "bytes" : 369,
+      "path" : "solutions/swift-sets-and-operations.swift",
+      "sha256" : "b557455b8b8b76cc75514fd713374f9e5c0afab751b651c8a419da3c48ec1967"
     },
     {
       "bytes" : 236,
@@ -182,9 +362,9 @@
       "sha256" : "b9f656060b4adf787c30587a43b8f846e6b79eddf54a44a8ab948f7e5e78c9ad"
     },
     {
-      "bytes" : 938,
+      "bytes" : 1854,
       "path" : "stableids.lock",
-      "sha256" : "fa8868c6d1a7fd9562733f53c0b4ea29377e293e1de107a0f58804a4dfd8958d"
+      "sha256" : "8a041f60b1320f1bd972849ec6458e63bba90c0ee5dce66e72e41deaa5615091"
     },
     {
       "bytes" : 223,
@@ -195,6 +375,16 @@
       "bytes" : 168,
       "path" : "starters/swift-basic-types-and-type-inference.swift",
       "sha256" : "5250323a3b47a7950335e61e0bafd9ef4c9b8740c011c756f287c1ba09463d51"
+    },
+    {
+      "bytes" : 850,
+      "path" : "starters/swift-capstone-word-frequency.swift",
+      "sha256" : "a20787d613a9c28724aee7a176fd4189c0d77daf1793a9c7ce0fc76dc51503c1"
+    },
+    {
+      "bytes" : 532,
+      "path" : "starters/swift-classes-reference-semantics.swift",
+      "sha256" : "213ec303c1491acc13b760cfc75a7fcd170eeff7e357720137a65b109f2b444e"
     },
     {
       "bytes" : 176,
@@ -212,9 +402,34 @@
       "sha256" : "05d941c78c4813563ea94526b198163bba8b3b8bb83f34628f0dbf1a1dd07373"
     },
     {
+      "bytes" : 209,
+      "path" : "starters/swift-enums-associated-values.swift",
+      "sha256" : "833749f67395dd3fc2785a93cbe27ef5728439ae2bf2850f607205b98a4c2f84"
+    },
+    {
+      "bytes" : 370,
+      "path" : "starters/swift-equatable-hashable.swift",
+      "sha256" : "97b1c6071455d7a742447c2dd25dde2b2449402e9f84d2d07a9c43f25e64d2c0"
+    },
+    {
+      "bytes" : 459,
+      "path" : "starters/swift-error-handling-throws.swift",
+      "sha256" : "48da8c61e32332826e85375d5f0173ac99add8f80ab343a95336a129bf3e9931"
+    },
+    {
+      "bytes" : 265,
+      "path" : "starters/swift-extensions-computed-properties.swift",
+      "sha256" : "61d50a098088f3c1ec2d6632eefc4e8e58fb5df91fc4be7a1a4153db1326e1db"
+    },
+    {
       "bytes" : 233,
       "path" : "starters/swift-functions-and-return-values.swift",
       "sha256" : "93d7a0cbc73a93f3f108220390047c9a1d6cb3242259f7d361fd31982d0d6b0c"
+    },
+    {
+      "bytes" : 327,
+      "path" : "starters/swift-generics-basics.swift",
+      "sha256" : "781cdfb882ebd3d8aef6901094316e07d207e41be6b05f101a38a39382551428"
     },
     {
       "bytes" : 318,
@@ -227,9 +442,34 @@
       "sha256" : "1d80dea28241d98e159ea2003a5a858f3362f19dd4839490aa2636728f0b8014"
     },
     {
+      "bytes" : 442,
+      "path" : "starters/swift-optional-chaining-and-optional-map.swift",
+      "sha256" : "285058b5e633ee671e3eb7f602931da834622da7f6c99ccbf9302fd9e74741de"
+    },
+    {
       "bytes" : 306,
       "path" : "starters/swift-optionals-and-nil.swift",
       "sha256" : "2c4511a9475752db9f18fe93d54a0f78ffeb0136b5b5c3e24df16bcf59388cc4"
+    },
+    {
+      "bytes" : 401,
+      "path" : "starters/swift-protocols-and-conformance.swift",
+      "sha256" : "4599542fe57aa65a5e833b4b5f60df6805ac192ceae198041e6837fe1a75a044"
+    },
+    {
+      "bytes" : 300,
+      "path" : "starters/swift-recursion-basics.swift",
+      "sha256" : "0abb526c49d340d0db6969b27a9a5f1e12c35644fb9ddd48bd7ea377e681c29d"
+    },
+    {
+      "bytes" : 492,
+      "path" : "starters/swift-reduce-and-compactmap.swift",
+      "sha256" : "4af98f163b01c86deb522bd2fbfe6a1919a4528d96e726e2f0b610cc90d2804e"
+    },
+    {
+      "bytes" : 421,
+      "path" : "starters/swift-sets-and-operations.swift",
+      "sha256" : "ab7324a3b19fa4b04d33278c50be9138a0fd3189b943cd78777a91c40928bfdb"
     },
     {
       "bytes" : 173,
@@ -257,6 +497,16 @@
       "sha256" : "65d598dc094b1a1060c51216da538915fb81546a91422e1a32006dafb4f69a3a"
     },
     {
+      "bytes" : 1178,
+      "path" : "tests/swift-capstone-word-frequency.swift",
+      "sha256" : "3b7e3eee0759b8ad3ce3a0b93eb29abeb23c3603e17098f99e2a8f247b2caa56"
+    },
+    {
+      "bytes" : 928,
+      "path" : "tests/swift-classes-reference-semantics.swift",
+      "sha256" : "672fe7691343cc55e989bf97689ee40155c4738a6d42af19dac6d0845f56171a"
+    },
+    {
       "bytes" : 355,
       "path" : "tests/swift-closures-map-filter.swift",
       "sha256" : "96dc4534950c5c656ea39d689e6d98b8e3c3dda319e798401d1a06e549f86197"
@@ -272,9 +522,34 @@
       "sha256" : "35e0a6b0532a9106fb5a6a19a580f9cbc83c451499d0477d1664602ebe5a1618"
     },
     {
+      "bytes" : 530,
+      "path" : "tests/swift-enums-associated-values.swift",
+      "sha256" : "3bc58315dc1e37c86f64b5a2513ea116913099f22321363e6990a0dbd388392a"
+    },
+    {
+      "bytes" : 690,
+      "path" : "tests/swift-equatable-hashable.swift",
+      "sha256" : "a66bd8d6fdf1a6b86b846011e5f3fa877304739f50eb5e82658c9a4b65543fcd"
+    },
+    {
+      "bytes" : 828,
+      "path" : "tests/swift-error-handling-throws.swift",
+      "sha256" : "80c9aeba63ca5e6bd199fe7fd74db8c3083375c4a7833128ea6011e924cb78f3"
+    },
+    {
+      "bytes" : 890,
+      "path" : "tests/swift-extensions-computed-properties.swift",
+      "sha256" : "1fc26225a133e7c04ecf2a4d48398030195bb6b40707f06e75a061301d76d7e4"
+    },
+    {
       "bytes" : 547,
       "path" : "tests/swift-functions-and-return-values.swift",
       "sha256" : "c434927fd76458cd4784e6aeb08761a9b5a5262416aae2d98d8763de09b1d7f9"
+    },
+    {
+      "bytes" : 608,
+      "path" : "tests/swift-generics-basics.swift",
+      "sha256" : "2d91bc319645b6be9414ca3dab81964c99ef3d3c90086e443b24b16b0da263e8"
     },
     {
       "bytes" : 1048,
@@ -287,9 +562,34 @@
       "sha256" : "04a23618159f3ffe2f6951eb431d310603153a754ddf66f66f0c167419494274"
     },
     {
+      "bytes" : 968,
+      "path" : "tests/swift-optional-chaining-and-optional-map.swift",
+      "sha256" : "9c54cfe78df02c10620c001f9cff48fd7b982ca799014d62423214db9308c8b2"
+    },
+    {
       "bytes" : 445,
       "path" : "tests/swift-optionals-and-nil.swift",
       "sha256" : "b86e3204d8b9e33345886b7fd12e70d9e16eb9eb67a84edb7cc107995e03d785"
+    },
+    {
+      "bytes" : 744,
+      "path" : "tests/swift-protocols-and-conformance.swift",
+      "sha256" : "e3e19f58e26d43ada7ead55e19d8be5db64a018d8b52dc595f685084f2fc1b33"
+    },
+    {
+      "bytes" : 446,
+      "path" : "tests/swift-recursion-basics.swift",
+      "sha256" : "71a6e32788e8cf459831af7652806ae931173359ec3868057ed5c3fc3bec04fd"
+    },
+    {
+      "bytes" : 887,
+      "path" : "tests/swift-reduce-and-compactmap.swift",
+      "sha256" : "8795393d3f06afc34b0f21bdf62f208d66df179c9579fe2c89eb54d51ac35756"
+    },
+    {
+      "bytes" : 900,
+      "path" : "tests/swift-sets-and-operations.swift",
+      "sha256" : "eb09a3d4e0a4f405b0a7eb1ca1813891250bee88794a154dedf6a43d249b5232"
     },
     {
       "bytes" : 485,
@@ -512,6 +812,208 @@
       ],
       "stableID" : "swift-closures-map-filter",
       "title" : "클로저와 map, filter"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "reduce 를 사용해 배열을 단일 값으로 합칠 수 있다",
+        "compactMap 으로 nil 을 제거하면서 변환할 수 있다",
+        "sorted(by:) 에 클로저를 넘겨 원하는 기준으로 정렬할 수 있다"
+      ],
+      "order" : 13,
+      "path" : "lessons/swift-reduce-and-compactmap.md",
+      "prerequisites" : [
+        "swift-closures-map-filter",
+        "swift-optionals-and-nil",
+        "swift-arrays-and-element-access"
+      ],
+      "stableID" : "swift-reduce-and-compactmap",
+      "title" : "reduce, compactMap, 정렬 기준"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "enum 으로 나열형 타입을 선언할 수 있다",
+        "연관 값을 가진 case 를 정의하고 생성할 수 있다",
+        "switch 의 값 바인딩으로 연관 값을 꺼내 사용할 수 있다"
+      ],
+      "order" : 14,
+      "path" : "lessons/swift-enums-associated-values.md",
+      "prerequisites" : [
+        "swift-conditionals-if-switch",
+        "swift-loops-for-while"
+      ],
+      "stableID" : "swift-enums-associated-values",
+      "title" : "열거형: enum 과 연관 값"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "protocol 로 메서드와 프로퍼티 요구를 선언할 수 있다",
+        "구조체가 프로토콜을 채택해 요구를 구현할 수 있다",
+        "프로토콜 타입으로 서로 다른 타입을 하나의 배열에 담을 수 있다"
+      ],
+      "order" : 15,
+      "path" : "lessons/swift-protocols-and-conformance.md",
+      "prerequisites" : [
+        "swift-structs-properties-methods",
+        "swift-arrays-and-element-access"
+      ],
+      "stableID" : "swift-protocols-and-conformance",
+      "title" : "프로토콜: 능력의 약속"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "extension 으로 기존 타입에 메서드를 추가할 수 있다",
+        "computed property 를 정의해 계산된 값을 반환할 수 있다",
+        "extension 에서 프로토콜 채택을 추가할 수 있다"
+      ],
+      "order" : 16,
+      "path" : "lessons/swift-extensions-computed-properties.md",
+      "prerequisites" : [
+        "swift-protocols-and-conformance",
+        "swift-structs-properties-methods"
+      ],
+      "stableID" : "swift-extensions-computed-properties",
+      "title" : "extension 과 계산 프로퍼티"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "class 로 타입을 선언하고 인스턴스를 만들 수 있다",
+        "구조체 복사와 클래스 참조 공유의 차이를 실행 결과로 설명할 수 있다",
+        "=== 로 두 참조가 같은 인스턴스인지 비교할 수 있다"
+      ],
+      "order" : 17,
+      "path" : "lessons/swift-classes-reference-semantics.md",
+      "prerequisites" : [
+        "swift-structs-properties-methods",
+        "swift-functions-and-return-values"
+      ],
+      "stableID" : "swift-classes-reference-semantics",
+      "title" : "클래스와 참조 의미"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "<T> 로 제네릭 함수를 작성할 수 있다",
+        "제네릭 타입을 선언하고 다양한 타입으로 인스턴스를 만들 수 있다",
+        "Equatable 제약으로 사용할 수 있는 연산을 제한할 수 있다"
+      ],
+      "order" : 18,
+      "path" : "lessons/swift-generics-basics.md",
+      "prerequisites" : [
+        "swift-functions-and-return-values",
+        "swift-structs-properties-methods",
+        "swift-protocols-and-conformance"
+      ],
+      "stableID" : "swift-generics-basics",
+      "title" : "제네릭 입문: 타입을 매개변수로"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "Error 프로토콜을 채택한 열거형으로 오류를 정의할 수 있다",
+        "throws 함수를 작성하고 throw 로 오류를 던질 수 있다",
+        "do-catch 로 오류를 잡아 분기 처리할 수 있다"
+      ],
+      "order" : 19,
+      "path" : "lessons/swift-error-handling-throws.md",
+      "prerequisites" : [
+        "swift-enums-associated-values",
+        "swift-functions-and-return-values",
+        "swift-conditionals-if-switch"
+      ],
+      "stableID" : "swift-error-handling-throws",
+      "title" : "오류 처리: throws 와 do-catch"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "Set 을 만들고 insert 와 remove 로 원소를 관리할 수 있다",
+        "union 과 intersection 으로 집합을 계산할 수 있다",
+        "contains 로 원소 포함 여부를 확인할 수 있다"
+      ],
+      "order" : 20,
+      "path" : "lessons/swift-sets-and-operations.md",
+      "prerequisites" : [
+        "swift-arrays-and-element-access",
+        "swift-loops-for-while",
+        "swift-closures-map-filter"
+      ],
+      "stableID" : "swift-sets-and-operations",
+      "title" : "집합: Set 과 집합 연산"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "옵셔널 체이닝으로 중첩 프로퍼티와 메서드에 안전하게 접근할 수 있다",
+        "옵셔널에 map 을 적용해 내부 값을 변환할 수 있다",
+        "체이닝 결과를 ?? 로 기본값과 바꿔치기할 수 있다"
+      ],
+      "order" : 21,
+      "path" : "lessons/swift-optional-chaining-and-optional-map.md",
+      "prerequisites" : [
+        "swift-optionals-and-nil",
+        "swift-optional-binding-patterns",
+        "swift-closures-map-filter"
+      ],
+      "stableID" : "swift-optional-chaining-and-optional-map",
+      "title" : "옵셔널 체이닝과 옵셔널의 map"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "기저 사례와 재귀 사례를 구분해 재귀 함수를 작성할 수 있다",
+        "재귀로 팩토리얼과 거듭제곱을 계산할 수 있다",
+        "기저 사례가 없어 호출이 멈추지 않는 코드를 식별할 수 있다"
+      ],
+      "order" : 22,
+      "path" : "lessons/swift-recursion-basics.md",
+      "prerequisites" : [
+        "swift-functions-and-return-values",
+        "swift-loops-for-while"
+      ],
+      "stableID" : "swift-recursion-basics",
+      "title" : "재귀의 기초"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "Equatable 을 채택해 == 를 직접 구현할 수 있다",
+        "Hashable 을 채택해 hash(into:) 를 구현할 수 있다",
+        "커스텀 타입을 Set 의 원소로 담고 비교할 수 있다"
+      ],
+      "order" : 23,
+      "path" : "lessons/swift-equatable-hashable.md",
+      "prerequisites" : [
+        "swift-protocols-and-conformance",
+        "swift-sets-and-operations"
+      ],
+      "stableID" : "swift-equatable-hashable",
+      "title" : "Equatable 과 Hashable 채택"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "문자열을 단어 배열로 분해할 수 있다",
+        "딕셔너리와 클로저로 단어 빈도를 집계할 수 있다",
+        "정렬과 프로토콜을 조합해 상위 N 개 단어를 반환할 수 있다",
+        "빈 입력에 대해 오류를 던지는 방식으로 계약을 지킬 수 있다"
+      ],
+      "order" : 24,
+      "path" : "lessons/swift-capstone-word-frequency.md",
+      "prerequisites" : [
+        "swift-string-interpolation",
+        "swift-dictionaries-key-value",
+        "swift-closures-map-filter",
+        "swift-reduce-and-compactmap",
+        "swift-equatable-hashable",
+        "swift-error-handling-throws"
+      ],
+      "stableID" : "swift-capstone-word-frequency",
+      "title" : "종합 프로젝트: 단어 빈도 분석기"
     }
   ],
   "minAppVersion" : "0.1.0",

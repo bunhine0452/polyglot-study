@@ -9,7 +9,7 @@ Swift 6.3 / SwiftUI, **macOS 14 하한 확정**, MIT 오픈소스, Developer ID 
 
 ## 지금 실행할 수 있는 것 / 아직 없는 것
 
-**앱이 뜨고, MVP 세 트랙 36편이 전부 보이고, 코드를 써서 채점까지 간다.**
+**앱이 뜨고, MVP 세 트랙 70편이 전부 보이고, 코드를 써서 채점까지 간다.**
 도달 가능한 화면은 여섯이다 — 온보딩·대시보드·트랙·레슨·에디터·복습.
 
 ```bash
@@ -40,14 +40,8 @@ swift run --package-path Tools packtool verify dist/p.tar.staging
 
 ## 상태
 
-> **⚠ 브랜치 상태부터 확인해라.** 릴리스 배선 커밋 6건이 `feat/release-wiring` 에 있고
-> **아직 푸시되지 않았다.** `main` 은 `origin/main` 그대로다. 다음 세션의 첫 행동은
-> 이 브랜치를 올려 PR 을 여는 것이다 (아래 "첫 할 일").
->
-> ```bash
-> git log --oneline origin/main..feat/release-wiring   # 6건 (feat 4 + docs 2)
-> git status --short                                    # 비어 있어야 한다
-> ```
+> **브랜치는 정리돼 있다.** 릴리스 배선 6건은 PR #2 로 CI 5게이트를 통과해 `main` 에
+> 머지됐고(`06b9f7b`), 브랜치는 원격·로컬 모두 지웠다. 워크트리 1개, `.git` 16MB.
 
 - **저장소 공개**: https://github.com/bunhine0452/polyglot-study
   Pages 살아 있음 — `https://bunhine0452.github.io/polyglot-study/appcast.xml` (HTTP 200).
@@ -58,19 +52,28 @@ swift run --package-path Tools packtool verify dist/p.tar.staging
 - **전체 스위트 5회 반복 통과**(2026-09-07): LearnKit 814(RunnerKit 제외) + RunnerKit 273(직렬)
   + Tools 307, 15/15 초록.
 - 플랜: `polyglot-core` **55/55(archived)**, `polyglot-surface` **54/58**, `polyglot-tutor` 0/25.
-- CI **5게이트**가 PR 필수 체크로 걸려 있고 실제 러너에서 통과한 이력이 있다(PR #1) —
+  (`{#release-ci}` 는 PR 게이트 절반이 PR #2 에서 증명됐고 태그 잡만 인증서 대기라 `!` 다.)
+- CI **5게이트**가 PR 필수 체크로 걸려 있고 실제 러너에서 두 번 통과했다(PR #1, PR #2) —
   swift test 셋(RunnerKit 직렬 / LearnKit 나머지 / Tools), build-app.sh, packtool validate.
-- 콘텐츠: **MVP 3트랙 36편**(python·sql·swift 각 12편) 전부 4단계 게이트 통과.
-  누적 생성 비용 약 $0.19, 레슨당 약 $0.005.
+  **다섯 잡이 병렬이라 벽시계는 약 9분이다**(PR #2 실측: RunnerKit 8m25s · LearnKit 7m18s ·
+  build-app 6m26s · packtool validate 4m42s · Tools 4m23s). "20~30분" 은 잡을 가르기 전 값이다.
+- 콘텐츠: **MVP 3트랙 70편**(python 24 · sql 22 · swift 24) 전부 4단계 게이트 통과.
+  `TrackCatalog` 의 계획값과 팩의 실제 편수가 이제 같다. 누적 생성 비용 약 $0.30.
 
 ## 첫 할 일
 
-1. `feat/release-wiring` 을 푸시하고 PR 을 연다. **5게이트가 초록인지 확인하고 머지**,
-   그다음 `git worktree list` 로 잔여 워크트리 0개인지 보고 브랜치를 지운다.
-   - CI 는 `macos-26` 러너에서 20~30분 걸린다. 게이트를 지켜보는 동안 **push 하지 마라** —
-     `concurrency.cancel-in-progress` 로 자기 잡을 취소시켜 영영 완주하지 못한다.
-2. 머지 후에는 **코드로 풀 수 있는 릴리스 항목이 없다**(아래). 아래 "열린 결정" 둘을
-   먼저 정하는 편이 다음 작업 범위를 정한다.
+**코드로 풀 수 있는 릴리스 항목이 없다**(아래). 남은 넷은 Developer ID 인증서에 막혀 있고
+둘은 Assembly 트랙 착수 시점으로 이월됐다. MVP 범위 결정 둘은 2026-09-07 에 닫혔다
+(아래 "결정된 것"). 그러니 다음 세션의 선택지는 셋이다.
+
+1. **인증서를 산다** — 사용자가 Apple Developer Program($99/년)을 결제하면
+   `{#notarize-staple-dmg}` 계열 3개와 `{#release-ci}` 의 태그 잡이 한꺼번에 열린다.
+   결제 전에는 공증 스크립트를 붙들지 마라.
+2. **튜터를 착수한다** — `polyglot-tutor` 0/25. 첫 항목 `{#nl-embedding-spike}` 가 게이트다.
+3. **디자인을 맞춘다** — 트랙 화면에 아트보드가 없다(아래 "열린 결정").
+
+게이트를 지켜보는 동안 같은 브랜치에 **push 하지 마라** — `concurrency.cancel-in-progress`
+로 자기 잡을 취소시켜 영영 완주하지 못한다.
 
 ## 릴리스까지 남은 것
 
@@ -292,18 +295,15 @@ python3 이 셋 있고 로그인 셸은 `/usr/bin` 의 3.9.6 을 준다(감지�
 oculpm 이 `.env*` 경로를 일지 파일 목록에서 차단한다. 실왕복은 크레딧이 나가므로 최소로 —
 재시도·백오프 검증은 루프백 서버로 한다.
 
+## 결정된 것 (2026-09-07, 사용자)
+
+- **MVP 는 `TrackCatalog` 의 계획값까지 채운다** — python 24 · sql 22 · swift 24 = 70편.
+  2026-09-07 에 34편을 추가해 달성했다. 카탈로그의 숫자와 팩의 실제 편수가 이제 일치하므로
+  "카탈로그와 팩이 다르다" 던 항목은 닫혔다.
+- **나머지 7개 트랙은 "준비 중" 으로 둔 채 낸다.** 대시보드·트랙 화면 둘 다 흐리게
+  "N 레슨 · 콘텐츠 준비 중" 으로 그리고 선택도 되지 않는다. 코드 변경 없음.
+
 ## 열린 결정
-
-**먼저 정해야 다음 범위가 잡히는 둘.**
-
-- **MVP 를 3트랙 36편으로 낼 것인가, 트랙당 더 채울 것인가.** 지금 앱은 트랙당 12편을
-  보여주고 그 숫자를 팩에서 읽으므로 어느 쪽이든 화면은 정직하다. 더 채운다면
-  `lessongen outline` → `lesson` → `validate` 루프가 이미 돌아가고 비용은 레슨당 약 $0.005 다.
-- **나머지 7개 트랙을 "준비 중" 으로 둔 채 낼 것인가.** 지금은 대시보드·트랙 화면 둘 다
-  흐리게 "N 레슨 · 콘텐츠 준비 중" 으로 그린다. 릴리스에 포함해도 거짓말은 아니지만,
-  10트랙을 광고하는 첫인상이 3트랙 제품과 어긋나는지가 판단할 지점이다.
-
-**그 밖에.**
 
 - `SubmissionRecord` 의 `passed`/`failureKind` 를 `.passed`/`.failed(kind)` 한 열거형으로 합칠지.
   지금은 도메인 타입이 DB CHECK 가 거부하는 조합을 표현할 수 있다(아무도 안 밟고 있음).

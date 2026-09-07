@@ -1,0 +1,6 @@
+largest=7
+largest=banana
+Box(42)
+Box(hi)
+index=2
+missing

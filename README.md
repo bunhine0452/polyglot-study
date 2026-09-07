@@ -10,7 +10,7 @@ macOS 14+ · Swift 6.3 / SwiftUI · MIT.
 
 ## 지금 어디까지 왔는가
 
-**정직하게 말하면: 앱이 MVP 세 트랙 36편을 읽고 코드를 쓰고 채점까지 간다. 남은 것은 배포다 —
+**정직하게 말하면: 앱이 MVP 세 트랙 70편을 읽고 코드를 쓰고 채점까지 간다. 남은 것은 배포다 —
 공증과 DMG 는 Developer ID 인증서가 있어야 시작된다.**
 
 | 영역 | 상태 |
@@ -18,10 +18,10 @@ macOS 14+ · Swift 6.3 / SwiftUI · MIT.
 | 코어 (스케줄러 · 실행 · 영속화) | **완료.** FSRS-6 복습 스케줄러, 6종 언어 백엔드를 아우르는 `CodeRunner` 프로토콜, GRDB 기반 저장소, sandbox-exec 격리 서브프로세스 러너·C 런처. SQL 은 인프로세스 SQLite 를 실행마다 클론해 돌리고 쓰기는 열되 파일 크기를 64MB 로 묶는다. `Packages/LearnKit` 테스트 1058개가 이를 검증한다. |
 | 화면 | **앱에서 뜨는 것은 6개** — 온보딩(툴체인 진단) · 대시보드 · 트랙 · 레슨 · 에디터+콘솔(SQL 은 결과 diff) · 복습. 대시보드에서 트랙으로, 트랙의 레슨 목록에서 레슨으로, 레슨의 과제 블록에서 에디터로 이어진다. ARM64 레지스터 패널은 Assembly 트랙 착수까지 후순위다(`docs/milestones/`). |
 | 에디터 | **앱에 붙었고 sourcekit-lsp 가 함께 뜬다.** 레슨의 과제 블록에서 열리고, 팩의 시작 코드를 싣고, 실행·제출이 진짜 백엔드(`swiftc`·`python3`·인프로세스 SQLite)를 탄다. Swift 트랙은 완성과 진단까지 동작한다(완성은 워밍 후 중앙값 28ms, 진단은 swiftc 와 같은 인라인 컴포넌트로 렌더하고 출처만 라벨로 구분). |
-| 레슨 콘텐츠 | **MVP 세 트랙 완성 — 파이썬 12편 · SQL 12편 · Swift 12편.** 36편 전부가 `packtool validate` 의 네 단계를 통과한다 — 예제는 실제로 실행돼 expected 와 바이트 대조되고, 과제는 solution 통과와 starter 실패를 둘 다 확인받는다. 세 팩은 앱 번들에 실려 첫 실행에 `PackStore` 로 설치된다. 나머지 7개 트랙은 화면상 "준비 중" 으로 뜬다. |
+| 레슨 콘텐츠 | **MVP 세 트랙 완성 — 파이썬 24편 · SQL 22편 · Swift 24편.** 70편 전부가 `packtool validate` 의 네 단계를 통과한다 — 예제는 실제로 실행돼 expected 와 바이트 대조되고, 과제는 solution 통과와 starter 실패를 둘 다 확인받는다. 세 팩은 앱 번들에 실려 첫 실행에 `PackStore` 로 설치된다. 나머지 7개 트랙은 화면상 "준비 중" 으로 뜬다. |
 | 콘텐츠 파이프라인 (`packtool`) | **완료.** `validate` 가 구조·문법·의미·실행 네 단계를 돌리고 예제는 expected 와 바이트 대조, 과제는 solution 통과와 **starter 실패**를 둘 다 확인한다. `build` 는 solutions 를 벗겨 결정적 tar 로 굽고(두 번 구우면 바이트 동일), `sign`/`verify` 가 Ed25519 분리 서명과 해시를 함께 본다. |
-| 레슨 생성기 (`lessongen`) | **완료.** `outline` · `lesson` · `repair` 가 모두 돈다. 세 트랙 36편이 이 루프로 만들어졌고, 실행 게이트가 16건의 결함을 잡아 `repair` 가 고쳤다 — 재검증 실패 0건. 레슨당 약 $0.005. |
-| CI | **PR 필수 체크 3게이트.** `swift test`(양쪽 패키지) · 앱 번들 조립 · `packtool validate` 가 PR 마다 돈다. `lessongen` 은 크레딧이 나가므로 `workflow_dispatch` 전용이다. |
+| 레슨 생성기 (`lessongen`) | **완료.** `outline` · `lesson` · `repair` 가 모두 돈다. 세 트랙 70편이 이 루프로 만들어졌고, 실행 게이트가 결함을 잡아 `repair` 가 고쳤다 — 재검증 실패 0건. 레슨당 약 $0.005. |
+| CI | **PR 필수 체크 5게이트.** `swift test` 셋(RunnerKit 직렬 · LearnKit 나머지 · Tools) · 앱 번들 조립 · `packtool validate` 가 PR 마다 돈다. PR #2 에서 다섯 잡이 병렬로 돌아 벽시계 약 9분이었다(최장은 RunnerKit 8분 25초). `lessongen` 은 크레딧이 나가므로 `workflow_dispatch` 전용이다. |
 | 서명·배포 | **Sparkle 자동 업데이트 왕복 검증됨.** 구버전이 appcast 를 읽어 신버전을 받고 EdDSA 검증 후 설치까지 가는 것과, 서명이 어긋난 업데이트가 거부되는 것을 자동 테스트로 확인한다(`App/Scripts/verify-sparkle.sh`). 공증·DMG 는 **Developer ID 인증서가 없어** 아직 못 한다 — 지금 산출물은 ad-hoc 서명이다. |
 
 진행 상황의 항목별 근거는 `.oculpm/planner/polyglot-surface.md` 에 있고, 각 판단의 경위와

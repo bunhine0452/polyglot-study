@@ -1,13 +1,25 @@
 # polyglot stableids v1
+python-classes-and-objects	python	lessons/python-classes-and-objects.md
 python-conditionals-if-elif-else	python	lessons/python-conditionals-if-elif-else.md
+python-csv-and-json-processing	python	lessons/python-csv-and-json-processing.md
+python-dict-methods-counting	python	lessons/python-dict-methods-counting.md
 python-dictionaries	python	lessons/python-dictionaries.md
 python-exception-handling	python	lessons/python-exception-handling.md
 python-file-input-output	python	lessons/python-file-input-output.md
 python-for-loop-and-range	python	lessons/python-for-loop-and-range.md
+python-function-arguments	python	lessons/python-function-arguments.md
 python-functions-def-return	python	lessons/python-functions-def-return.md
+python-generators-and-yield	python	lessons/python-generators-and-yield.md
+python-lambda-and-sorted-key	python	lessons/python-lambda-and-sorted-key.md
 python-list-basics	python	lessons/python-list-basics.md
 python-list-comprehension	python	lessons/python-list-comprehension.md
+python-modules-and-import	python	lessons/python-modules-and-import.md
+python-nested-data-structures	python	lessons/python-nested-data-structures.md
 python-print-basics	python	lessons/python-print-basics.md
+python-sets-and-uniqueness	python	lessons/python-sets-and-uniqueness.md
+python-string-methods-split-join	python	lessons/python-string-methods-split-join.md
 python-strings-and-fstring	python	lessons/python-strings-and-fstring.md
+python-text-analysis-capstone	python	lessons/python-text-analysis-capstone.md
+python-tuples-and-unpacking	python	lessons/python-tuples-and-unpacking.md
 python-variables-and-numeric-operators	python	lessons/python-variables-and-numeric-operators.md
 python-while-loop-break-continue	python	lessons/python-while-loop-break-continue.md

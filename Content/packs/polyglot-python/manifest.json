@@ -2,9 +2,24 @@
   "displayName" : "파이썬 첫걸음",
   "files" : [
     {
+      "bytes" : 39,
+      "path" : "expected/python-classes-and-objects.txt",
+      "sha256" : "e611a7287145c0680cec2c53187206bccb6ee03e8ac33d943dffef9b87f5a370"
+    },
+    {
       "bytes" : 76,
       "path" : "expected/python-conditionals-if-elif-else.txt",
       "sha256" : "39a4a4515e7062d528da17b62367dfa735d7d0012931e3c49a38f523c5010764"
+    },
+    {
+      "bytes" : 92,
+      "path" : "expected/python-csv-and-json-processing.txt",
+      "sha256" : "8ba4c381d0d2091ce0e5a1271c4271dd12314b17d278a4c433c5db98120707f3"
+    },
+    {
+      "bytes" : 88,
+      "path" : "expected/python-dict-methods-counting.txt",
+      "sha256" : "140801a7348f704d9073845603274c8371693b02b4a51c4f5336ad5df7007d6f"
     },
     {
       "bytes" : 131,
@@ -27,9 +42,24 @@
       "sha256" : "67c60aa7c31cb7f8dfb0ead3510894fa61aed548b6678b9a69d7875f8938de6e"
     },
     {
+      "bytes" : 56,
+      "path" : "expected/python-function-arguments.txt",
+      "sha256" : "1b44cc3be7ebf1758b07786a809c7f3b8b9cb603bdd08217a70e6471ba51f3d3"
+    },
+    {
       "bytes" : 54,
       "path" : "expected/python-functions-def-return.txt",
       "sha256" : "c29b49274a97ad757178f912d3d15a35eef49c904b596fb20d3065550419b614"
+    },
+    {
+      "bytes" : 63,
+      "path" : "expected/python-generators-and-yield.txt",
+      "sha256" : "2ab37f15f24526881ccf00ab7b264ebb882a5e5ed7ff6549de5d18ca1180f9f5"
+    },
+    {
+      "bytes" : 77,
+      "path" : "expected/python-lambda-and-sorted-key.txt",
+      "sha256" : "379e1786740746c28cd6dac73c5cb29c408f5b3d4d3d176520f64bd6a69cac0e"
     },
     {
       "bytes" : 142,
@@ -42,14 +72,44 @@
       "sha256" : "e054cb358c3ba8a620ef3bf7e901e92fb0c33a40daa0b5c5844899fb248ca29d"
     },
     {
+      "bytes" : 105,
+      "path" : "expected/python-modules-and-import.txt",
+      "sha256" : "8c6ec1991a4036ea9f0b9ff45dc05d4eb6d188e786b40feda7fc6b92a1e72b0a"
+    },
+    {
+      "bytes" : 63,
+      "path" : "expected/python-nested-data-structures.txt",
+      "sha256" : "788b2865f0733d36936ae402b49ca9c6aa049f7959d5d37f8e451889bd73fbbe"
+    },
+    {
       "bytes" : 64,
       "path" : "expected/python-print-basics.txt",
       "sha256" : "f182dd39aaa1a0884a25a8dfda1c9ff600d12569600bc5427b7227b3e5b0c8e6"
     },
     {
+      "bytes" : 132,
+      "path" : "expected/python-sets-and-uniqueness.txt",
+      "sha256" : "708af3483e40654dac77f58daddd0cf6f363df18ea89af5a610c736ea159de7f"
+    },
+    {
+      "bytes" : 78,
+      "path" : "expected/python-string-methods-split-join.txt",
+      "sha256" : "828b5885904f9ec60edeabd687305414c8304809cf3c7cfe6b624eb2d98cb3e4"
+    },
+    {
       "bytes" : 54,
       "path" : "expected/python-strings-and-fstring.txt",
       "sha256" : "8a066909a6faaa4ddffbf489009aaa646054869200f87001d2fab362b824871c"
+    },
+    {
+      "bytes" : 47,
+      "path" : "expected/python-text-analysis-capstone.txt",
+      "sha256" : "f53d1a29f92359674c862f69c84740c29a766bd3b444c623528a556ea858e7a9"
+    },
+    {
+      "bytes" : 36,
+      "path" : "expected/python-tuples-and-unpacking.txt",
+      "sha256" : "d88834bb4ed3693b0d795925496c41a83778fe7aa29bad1e5cd685beed2d5d6f"
     },
     {
       "bytes" : 75,
@@ -62,9 +122,24 @@
       "sha256" : "cdf03ac8c207963332c7c3bbb368bb397971d7f902161d3dcc38c75c3b9d7441"
     },
     {
+      "bytes" : 4410,
+      "path" : "lessons/python-classes-and-objects.md",
+      "sha256" : "070619e91df093e1e06c6e45b096f5aaa16ab8c5e3cc64f530f04b05e53f521d"
+    },
+    {
       "bytes" : 5780,
       "path" : "lessons/python-conditionals-if-elif-else.md",
       "sha256" : "d717b11538643450d91b5b3dfb82c1b0e0c7602c39706540b166a1ed078a3ef4"
+    },
+    {
+      "bytes" : 5007,
+      "path" : "lessons/python-csv-and-json-processing.md",
+      "sha256" : "7ebdd06cc17533214eb616f2c40c796d177cb6241e6a1f528e84d7de81a41813"
+    },
+    {
+      "bytes" : 4561,
+      "path" : "lessons/python-dict-methods-counting.md",
+      "sha256" : "a76b91b0eaf031a27b498af554b5c8fc0fca05a3eacc19b621160aa89bfc9438"
     },
     {
       "bytes" : 5518,
@@ -87,9 +162,24 @@
       "sha256" : "1f231ee5dc705fdfb859c942016b9999c97af5578922f77aec1381bf078ccb83"
     },
     {
+      "bytes" : 3992,
+      "path" : "lessons/python-function-arguments.md",
+      "sha256" : "7192ae65258c2726942090d5b2895d7a6a775244fdbb55792bf6fdccd1ca34d5"
+    },
+    {
       "bytes" : 5485,
       "path" : "lessons/python-functions-def-return.md",
       "sha256" : "05a5d94d383bce15c7d6fca0ac56ca8bb7f394ee6b2a8bbac628f6a45a03bc14"
+    },
+    {
+      "bytes" : 4231,
+      "path" : "lessons/python-generators-and-yield.md",
+      "sha256" : "df541c791ae5bd9eb31be7e70cc3f242676f53098e0da968f9e63ee500282e7a"
+    },
+    {
+      "bytes" : 4468,
+      "path" : "lessons/python-lambda-and-sorted-key.md",
+      "sha256" : "55aefdccac7f6b71c570fbe81c3b881ab8df5ee431c9a4e28cc094a5e023ed73"
     },
     {
       "bytes" : 5469,
@@ -102,14 +192,44 @@
       "sha256" : "0933aba02695d70b5e51d5138ee7cf519495634620ef68ed1f11c8bf7792b6ff"
     },
     {
+      "bytes" : 4554,
+      "path" : "lessons/python-modules-and-import.md",
+      "sha256" : "4f959550e590d279472d878cdf43df9a4c721212994e822dcf6c377a7b1b9083"
+    },
+    {
+      "bytes" : 3872,
+      "path" : "lessons/python-nested-data-structures.md",
+      "sha256" : "53944d129b31e89620b44e185782c73bcb808b6aa2534e54d7be2cfbe671fdf4"
+    },
+    {
       "bytes" : 5544,
       "path" : "lessons/python-print-basics.md",
       "sha256" : "b9bf06fc09fc2a4a12d28b06e6b9c8f9ecb92984aae9e4442ee03faaa770b364"
     },
     {
+      "bytes" : 4019,
+      "path" : "lessons/python-sets-and-uniqueness.md",
+      "sha256" : "f792e403d39936edee28dd82507a02f67c8f1044b00566c419c567730e3cb141"
+    },
+    {
+      "bytes" : 3834,
+      "path" : "lessons/python-string-methods-split-join.md",
+      "sha256" : "0cf6d47c5e8cb95c5d1dea305a5d789ec8df484a5b577ed03be64d184a18c878"
+    },
+    {
       "bytes" : 5880,
       "path" : "lessons/python-strings-and-fstring.md",
       "sha256" : "ad52b99d4d27b4a6806073b9e2453a77bca14fbc799419d7b1f1e148c0a66f8b"
+    },
+    {
+      "bytes" : 5596,
+      "path" : "lessons/python-text-analysis-capstone.md",
+      "sha256" : "f36f9da17e2869809ba23dd31e41b45076a3472c78ba13013a02b6e1351b58a7"
+    },
+    {
+      "bytes" : 3481,
+      "path" : "lessons/python-tuples-and-unpacking.md",
+      "sha256" : "460d75bc7df0d8efe1905b7be8a92edb3c5bf318d9c76597158b568b817aa5f2"
     },
     {
       "bytes" : 5942,
@@ -122,9 +242,24 @@
       "sha256" : "ea1ad0a468ce132596d8912a01f5e002dcdd6f01052c4b385d4bea04a32bf357"
     },
     {
+      "bytes" : 373,
+      "path" : "solutions/python-classes-and-objects.py",
+      "sha256" : "a4fa3507c3227bf90be9ad3b9b4ed4040767ed8978ce17c8fe0653d6c41b9eee"
+    },
+    {
       "bytes" : 179,
       "path" : "solutions/python-conditionals-if-elif-else.py",
       "sha256" : "8b57e1fddfd4e2cc820aa6ba33d7536d410c505b69a36be9e237ca6a15045ee7"
+    },
+    {
+      "bytes" : 388,
+      "path" : "solutions/python-csv-and-json-processing.py",
+      "sha256" : "a17813c2cd7b3b2ca3587f1e6eb974fe91836576897a230a2fe1cfff7821c141"
+    },
+    {
+      "bytes" : 131,
+      "path" : "solutions/python-dict-methods-counting.py",
+      "sha256" : "4119294790f67b3c4ed678d5a03a68664569359516bad11cb77f54ac91df4c6b"
     },
     {
       "bytes" : 123,
@@ -147,9 +282,24 @@
       "sha256" : "0098d1d65ef5eb4c096aa0f11728bfb4c07fd0201f60a425a00922d7e7b2523c"
     },
     {
+      "bytes" : 117,
+      "path" : "solutions/python-function-arguments.py",
+      "sha256" : "2e8e9c5d50dcdeb6c6d44fbf691f057daa27ad0414377b7e1ad1ac4eb07500b2"
+    },
+    {
       "bytes" : 153,
       "path" : "solutions/python-functions-def-return.py",
       "sha256" : "8164183bdbbe807dba498bb139b997ff2f385288fb2d495d27e7c80df97f0ec9"
+    },
+    {
+      "bytes" : 101,
+      "path" : "solutions/python-generators-and-yield.py",
+      "sha256" : "56b34dbb4b53c7f3b2e0517c8d55c76897d36220279bdc0dad2f4c2f55d1146c"
+    },
+    {
+      "bytes" : 97,
+      "path" : "solutions/python-lambda-and-sorted-key.py",
+      "sha256" : "d64849bc30d5ee8d814b1fa2752870c3d5db73abc2799d6784b33a4c03b81599"
     },
     {
       "bytes" : 154,
@@ -162,14 +312,44 @@
       "sha256" : "1f7380840b91b8af484ee887ba953a6311127a4bc916a1ecddeeb06ae68c0a1a"
     },
     {
+      "bytes" : 232,
+      "path" : "solutions/python-modules-and-import.py",
+      "sha256" : "978f60af69fe2199be3d643be6379b2fbce0b778e7075125729c70ade45bf491"
+    },
+    {
+      "bytes" : 155,
+      "path" : "solutions/python-nested-data-structures.py",
+      "sha256" : "8174024b335a0cf16ae5a22e3f6df4d22deeccc61d19642edb9b1fe47cd12a37"
+    },
+    {
       "bytes" : 70,
       "path" : "solutions/python-print-basics.py",
       "sha256" : "9a2fe0ba87086258d47dd1104755db442e70c2655f4025ae544d42f52f1f1358"
     },
     {
+      "bytes" : 188,
+      "path" : "solutions/python-sets-and-uniqueness.py",
+      "sha256" : "c7adc0c694ae282724e0bb0cbec6d82da2001acf86b31fc5def98885deef3058"
+    },
+    {
+      "bytes" : 85,
+      "path" : "solutions/python-string-methods-split-join.py",
+      "sha256" : "a364a20418e9f2395fa728e2ae1fb80ec45f19d4e19dda6168ccc7fa8c16ddd7"
+    },
+    {
       "bytes" : 99,
       "path" : "solutions/python-strings-and-fstring.py",
       "sha256" : "a4cde7e46c0004a35504b82eeecfc4be3fb9d3d8a2b651a0e0dc51d16680e702"
+    },
+    {
+      "bytes" : 235,
+      "path" : "solutions/python-text-analysis-capstone.py",
+      "sha256" : "98d53dcc9324eddb5ea7bf40c8de8be5defdbf346f7f634a69f96f9a6ef9a669"
+    },
+    {
+      "bytes" : 306,
+      "path" : "solutions/python-tuples-and-unpacking.py",
+      "sha256" : "d00628bd81ac9e17720d2943171665baa2bc6d6ffe7b5698b069a65587000657"
     },
     {
       "bytes" : 110,
@@ -182,14 +362,29 @@
       "sha256" : "40b9c581aa8a8900bafa231d6ebf958d09b24ad2c3449f845c7008b00dbdc7b0"
     },
     {
-      "bytes" : 884,
+      "bytes" : 1788,
       "path" : "stableids.lock",
-      "sha256" : "dbed622a099dae6b07dc2c4322a67e81c6a87a3a3b6c0b649767f2b4f781793d"
+      "sha256" : "df0627724c37d98526ccc8ce6b305c686f676529057f0e5a8d9a1701cc0c8ccb"
+    },
+    {
+      "bytes" : 351,
+      "path" : "starters/python-classes-and-objects.py",
+      "sha256" : "786668200c363eaa554592888fbf1f7fe0999bdf49c9a2b03cac1f567f1935d3"
     },
     {
       "bytes" : 381,
       "path" : "starters/python-conditionals-if-elif-else.py",
       "sha256" : "8d9db9f1a4e39947ded37451263a66c042316cdc72cfd95142c9a397181bda48"
+    },
+    {
+      "bytes" : 409,
+      "path" : "starters/python-csv-and-json-processing.py",
+      "sha256" : "688dad7f33f71dc0b063ead0ef6cda0b5b526b7a32d85504697c001f74d2f80c"
+    },
+    {
+      "bytes" : 160,
+      "path" : "starters/python-dict-methods-counting.py",
+      "sha256" : "405bedd2e32c0a94acf7e184efec96e19a93cf08a8e5c54038568712e8715c6e"
     },
     {
       "bytes" : 297,
@@ -212,9 +407,24 @@
       "sha256" : "8d73a81aededa938f24ba2a81e52f98add64e605811ef84e872c8d669c3c2a86"
     },
     {
+      "bytes" : 157,
+      "path" : "starters/python-function-arguments.py",
+      "sha256" : "19813348bdf7acbcb109d677cf7e20c6684f46036366bea2af3bb98506b2eb63"
+    },
+    {
       "bytes" : 274,
       "path" : "starters/python-functions-def-return.py",
       "sha256" : "d935e912121324e06c5bb369e91e39a0750204b904252de89777bd176152c531"
+    },
+    {
+      "bytes" : 111,
+      "path" : "starters/python-generators-and-yield.py",
+      "sha256" : "56341a974bac38dc75cc870e4cda918a9ee56eda44b997bf3281120e7a6cce87"
+    },
+    {
+      "bytes" : 188,
+      "path" : "starters/python-lambda-and-sorted-key.py",
+      "sha256" : "565facaa8fcd7c0b3758ac13a1698fea93a9a543c2715b9f17ae48a889e59ca4"
     },
     {
       "bytes" : 363,
@@ -227,14 +437,44 @@
       "sha256" : "46a583a49d72a9e1b0f4f9fcfbe1abd23d0e7c7390a4ce16305f43a56d36cbc8"
     },
     {
+      "bytes" : 382,
+      "path" : "starters/python-modules-and-import.py",
+      "sha256" : "f75e5c50362b5ee2927323c88c3a9bfdc4090dae6e11f517f7e929aea73acc85"
+    },
+    {
+      "bytes" : 148,
+      "path" : "starters/python-nested-data-structures.py",
+      "sha256" : "adab2d9173793107eb9bd614de5bce15c5f106f51fec57ddbbc75632da20c07b"
+    },
+    {
       "bytes" : 219,
       "path" : "starters/python-print-basics.py",
       "sha256" : "b41bc295a3bc584d3c4a9e69dd4e2caea0221bda3687462fbb09f538545f41f2"
     },
     {
+      "bytes" : 173,
+      "path" : "starters/python-sets-and-uniqueness.py",
+      "sha256" : "aee79d75564fece12b3a094b5381be489f6abb1628799ae2197b2a946e41b742"
+    },
+    {
+      "bytes" : 176,
+      "path" : "starters/python-string-methods-split-join.py",
+      "sha256" : "11d19da343f5ef6bfc9984bcf561352075f0d29334333d19eff26c9906576bf3"
+    },
+    {
       "bytes" : 309,
       "path" : "starters/python-strings-and-fstring.py",
       "sha256" : "ee6ea80534b7df9814fd712b7ccf1c08b7a9df0d76b347478ddbb7dc2416ef47"
+    },
+    {
+      "bytes" : 405,
+      "path" : "starters/python-text-analysis-capstone.py",
+      "sha256" : "4da817782072c93619684ae8b0563c6195236a330868d0b9457b486062e39ec9"
+    },
+    {
+      "bytes" : 169,
+      "path" : "starters/python-tuples-and-unpacking.py",
+      "sha256" : "226669227f6413eb2e488ccef81c5529f2fac901c84287d9fa2e257dc572ab0a"
     },
     {
       "bytes" : 252,
@@ -247,9 +487,24 @@
       "sha256" : "800affc3d926b58f4cc237fb0b0bfd640ce32df67150caafe55861c32fdf93ce"
     },
     {
+      "bytes" : 814,
+      "path" : "tests/python-classes-and-objects.py",
+      "sha256" : "895ee6f89a364edf47e85f9c0db489d27bf1779462285ffde84dd8301805669e"
+    },
+    {
       "bytes" : 1001,
       "path" : "tests/python-conditionals-if-elif-else.py",
       "sha256" : "a778214aa11b19c3817b4a442b625d3632c0fa9e757f1b8090787e9aeeb7e3e5"
+    },
+    {
+      "bytes" : 866,
+      "path" : "tests/python-csv-and-json-processing.py",
+      "sha256" : "8ae93e15fa9fe2e82dd58a4ba34e1f0d6fe769b74e2f175bce17730654181af5"
+    },
+    {
+      "bytes" : 649,
+      "path" : "tests/python-dict-methods-counting.py",
+      "sha256" : "34a1d1ef241e6e1dd11958fa6e1314c70709f777c449e21bb6083823adbbc6f2"
     },
     {
       "bytes" : 886,
@@ -272,9 +527,24 @@
       "sha256" : "02028f342235a4aa9b728562c904a913138b06581b11bbfbbb155bf0d2049202"
     },
     {
+      "bytes" : 809,
+      "path" : "tests/python-function-arguments.py",
+      "sha256" : "79c7cf295fac3f83ee50114c9a47a9a7908633e887c19250f3fc0f5f70a034e9"
+    },
+    {
       "bytes" : 890,
       "path" : "tests/python-functions-def-return.py",
       "sha256" : "11d0d91a155c6230477c7ba9e540952a4f73884334c4107821e2559e93a968f0"
+    },
+    {
+      "bytes" : 403,
+      "path" : "tests/python-generators-and-yield.py",
+      "sha256" : "834850f141ac5970b1551798a84117452b96d7a7e8be60b8a0363b507b2250fa"
+    },
+    {
+      "bytes" : 957,
+      "path" : "tests/python-lambda-and-sorted-key.py",
+      "sha256" : "0dc0eedcfd8ab091a7f07242c14ed13724ba458320fa5b1a7371ed118df16a9e"
     },
     {
       "bytes" : 893,
@@ -287,14 +557,44 @@
       "sha256" : "3f6ac882c883da83574b1febcfbe4a814d2c6361eaa119ffdc60f021eafa8ec9"
     },
     {
+      "bytes" : 812,
+      "path" : "tests/python-modules-and-import.py",
+      "sha256" : "14a805cf047f90cf353d5f894298a8d8fab67cbdbb26637cc99c0317dbe23314"
+    },
+    {
+      "bytes" : 872,
+      "path" : "tests/python-nested-data-structures.py",
+      "sha256" : "998c8260fa98650ad73310de3b8d159161139676b7e199a336bc77f0a5f71c85"
+    },
+    {
       "bytes" : 804,
       "path" : "tests/python-print-basics.py",
       "sha256" : "5761f0092b3c1ddab554e393dbbb0782f01e67aeafb8ac027b65fa5f0b8a770d"
     },
     {
+      "bytes" : 535,
+      "path" : "tests/python-sets-and-uniqueness.py",
+      "sha256" : "7c1c64899d07f926cf97646d9a656ae0adae0cf8bdf1598ac2715fea0c979ae7"
+    },
+    {
+      "bytes" : 624,
+      "path" : "tests/python-string-methods-split-join.py",
+      "sha256" : "3897ba71c54cd767d34b774f5be9b8ae6140a5a455ceba13c973c07d96a60249"
+    },
+    {
       "bytes" : 606,
       "path" : "tests/python-strings-and-fstring.py",
       "sha256" : "6bb92d7ba51d1bbd6d4ace4030a1f083d444ff7774edbd16a4a82c84fb8d69c3"
+    },
+    {
+      "bytes" : 1027,
+      "path" : "tests/python-text-analysis-capstone.py",
+      "sha256" : "6639ade021feb791eebed3657b5a70ee6714a508a38b96d3e0a36506248a286a"
+    },
+    {
+      "bytes" : 406,
+      "path" : "tests/python-tuples-and-unpacking.py",
+      "sha256" : "21ef90ab5876c6050fe7f2d9f0be0b7f806f07ea65f624da467696ccb2789ad0"
     },
     {
       "bytes" : 705,
@@ -495,6 +795,207 @@
       ],
       "stableID" : "python-file-input-output",
       "title" : "결과를 남기기: 파일에 쓰고 읽기"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "튜플을 만들고 인덱스로 요소를 꺼낼 수 있다",
+        "여러 변수를 한 번에 대입하는 언패킹으로 튜플을 풀어낼 수 있다",
+        "enumerate()로 for 반복에서 인덱스와 값을 동시에 언패킹해 쓸 수 있다"
+      ],
+      "order" : 13,
+      "path" : "lessons/python-tuples-and-unpacking.md",
+      "prerequisites" : [
+        "python-list-basics",
+        "python-for-loop-and-range"
+      ],
+      "stableID" : "python-tuples-and-unpacking",
+      "title" : "값을 묶고 풀기: 튜플과 언패킹"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "set()으로 집합을 만들어 중복을 자동으로 제거할 수 있다",
+        "add()로 요소를 추가하고 in 연산자로 포함 여부를 확인할 수 있다",
+        "리스트를 set으로 바꿔 중복이 몇 개였는지 실행으로 확인할 수 있다"
+      ],
+      "order" : 14,
+      "path" : "lessons/python-sets-and-uniqueness.md",
+      "prerequisites" : [
+        "python-list-basics",
+        "python-dictionaries"
+      ],
+      "stableID" : "python-sets-and-uniqueness",
+      "title" : "중복 없이 담기: 집합(set)과 고유한 값"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "split()으로 문장을 공백이나 구분자 기준으로 잘라 리스트를 만들 수 있다",
+        "join()으로 문자열 리스트를 하나의 문자열로 합칠 수 있다",
+        "strip()과 replace()로 문자열의 불필요한 부분을 정리할 수 있다"
+      ],
+      "order" : 15,
+      "path" : "lessons/python-string-methods-split-join.md",
+      "prerequisites" : [
+        "python-strings-and-fstring",
+        "python-list-basics"
+      ],
+      "stableID" : "python-string-methods-split-join",
+      "title" : "문자열 가공: split, join, strip, replace"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "매개변수에 기본값을 정해 호출 시 생략 가능한 함수를 만들 수 있다",
+        "키워드 인자로 인자의 이름을 지정해 함수를 호출할 수 있다",
+        "기본값이 있는 함수를 다양한 방식으로 호출하며 결과를 비교할 수 있다"
+      ],
+      "order" : 16,
+      "path" : "lessons/python-function-arguments.md",
+      "prerequisites" : [
+        "python-functions-def-return",
+        "python-dictionaries"
+      ],
+      "stableID" : "python-function-arguments",
+      "title" : "더 유연한 함수: 기본값과 키워드 인자"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "sorted()와 list.sort()로 리스트를 오름차순·내림차순 정렬할 수 있다",
+        "lambda로 짧은 함수를 그 자리에서 만들어 쓸 수 있다",
+        "sorted()의 key 인자에 lambda를 넣어 원하는 기준으로 정렬할 수 있다"
+      ],
+      "order" : 17,
+      "path" : "lessons/python-lambda-and-sorted-key.md",
+      "prerequisites" : [
+        "python-functions-def-return",
+        "python-function-arguments",
+        "python-list-basics"
+      ],
+      "stableID" : "python-lambda-and-sorted-key",
+      "title" : "기준대로 정렬하기: lambda와 sorted()의 key"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "리스트 안의 리스트에서 이중 인덱스로 요소를 꺼낼 수 있다",
+        "딕셔너리의 리스트를 for 반복과 f-string으로 출력할 수 있다",
+        "딕셔너리 안의 리스트에 append()로 값을 추가할 수 있다"
+      ],
+      "order" : 18,
+      "path" : "lessons/python-nested-data-structures.md",
+      "prerequisites" : [
+        "python-list-basics",
+        "python-dictionaries",
+        "python-for-loop-and-range"
+      ],
+      "stableID" : "python-nested-data-structures",
+      "title" : "겹겹이 쌓인 자료: 중첩 리스트와 중첩 딕셔너리"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "import로 math 모듈을 불러와 math.sqrt() 같은 기능을 쓸 수 있다",
+        "random 모듈로 무작위 숫자를 뽑고 목록에서 무작위로 고를 수 있다",
+        "import한 모듈의 함수를 점(.)으로 접근해 실행 결과를 확인할 수 있다"
+      ],
+      "order" : 19,
+      "path" : "lessons/python-modules-and-import.md",
+      "prerequisites" : [
+        "python-functions-def-return",
+        "python-list-basics"
+      ],
+      "stableID" : "python-modules-and-import",
+      "title" : "남의 코드 가져다 쓰기: import와 모듈"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "get()으로 키가 없어도 오류 없이 기본값을 꺼낼 수 있다",
+        "items()로 키와 값을 동시에 순회할 수 있다",
+        "setdefault()와 get()으로 반복을 돌며 값의 개수를 세는 코드를 작성할 수 있다"
+      ],
+      "order" : 20,
+      "path" : "lessons/python-dict-methods-counting.md",
+      "prerequisites" : [
+        "python-dictionaries",
+        "python-for-loop-and-range",
+        "python-exception-handling"
+      ],
+      "stableID" : "python-dict-methods-counting",
+      "title" : "딕셔너리 한 단계 더: get, items, 개수 세기"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "csv 모듈로 CSV 파일의 각 행을 읽어 리스트로 다룰 수 있다",
+        "csv.writer()로 데이터를 CSV 파일에 쓸 수 있다",
+        "json.load()와 json.dump()로 딕셔너리를 JSON 파일에 저장하고 다시 읽을 수 있다"
+      ],
+      "order" : 21,
+      "path" : "lessons/python-csv-and-json-processing.md",
+      "prerequisites" : [
+        "python-file-input-output",
+        "python-nested-data-structures",
+        "python-modules-and-import"
+      ],
+      "stableID" : "python-csv-and-json-processing",
+      "title" : "실전 데이터 파일: CSV와 JSON 다루기"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "class로 설계도를 정의하고 인스턴스를 만들 수 있다",
+        "__init__에서 self를 사용해 인스턴스마다 속성값을 설정할 수 있다",
+        "인스턴스 메서드를 정의하고 호출해 속성을 읽고 바꿀 수 있다"
+      ],
+      "order" : 22,
+      "path" : "lessons/python-classes-and-objects.md",
+      "prerequisites" : [
+        "python-functions-def-return",
+        "python-dictionaries",
+        "python-function-arguments"
+      ],
+      "stableID" : "python-classes-and-objects",
+      "title" : "나만의 자료형 만들기: class와 객체"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "yield를 쓰는 함수를 정의해 값을 하나씩 순서대로 뽑아낼 수 있다",
+        "for 반복으로 제너레이터가 내놓는 값들을 차례로 사용할 수 있다",
+        "제너레이터 표현식과 리스트 컴프리헨션의 차이를 실행으로 비교할 수 있다"
+      ],
+      "order" : 23,
+      "path" : "lessons/python-generators-and-yield.md",
+      "prerequisites" : [
+        "python-functions-def-return",
+        "python-for-loop-and-range",
+        "python-list-comprehension"
+      ],
+      "stableID" : "python-generators-and-yield",
+      "title" : "값을 하나씩: 제너레이터와 yield"
+    },
+    {
+      "language" : "python",
+      "objectives" : [
+        "텍스트 파일을 읽어 단어별 개수를 세는 딕셔너리를 만들 수 있다",
+        "단어 개수 기준으로 정렬해 상위 항목을 출력할 수 있다",
+        "결과를 파일에 저장하고 함수로 단계별로 나눠 작성할 수 있다"
+      ],
+      "order" : 24,
+      "path" : "lessons/python-text-analysis-capstone.md",
+      "prerequisites" : [
+        "python-string-methods-split-join",
+        "python-dict-methods-counting",
+        "python-lambda-and-sorted-key",
+        "python-file-input-output",
+        "python-functions-def-return"
+      ],
+      "stableID" : "python-text-analysis-capstone",
+      "title" : "종합 실전: 텍스트 파일 단어 분석기 만들기"
     }
   ],
   "minAppVersion" : "0.1.0",

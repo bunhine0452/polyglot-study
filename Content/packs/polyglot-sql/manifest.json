@@ -12,9 +12,29 @@
       "sha256" : "4696bf73e382ab2d7234978abbef7008bb4c445ca2c7be75366b34223eae97fa"
     },
     {
+      "bytes" : 91,
+      "path" : "expected/sql-case-expressions.txt",
+      "sha256" : "e9ecc35c9b101c919ac51e584a02c090f9063ee3ecf42faca8a7f3b7e8e38652"
+    },
+    {
       "bytes" : 66,
       "path" : "expected/sql-create-table-constraints.txt",
       "sha256" : "ceaec5327eabfb6c1b61a5142a1bb97804b07755b5c127afacb2645109403365"
+    },
+    {
+      "bytes" : 14,
+      "path" : "expected/sql-create-view.txt",
+      "sha256" : "80f99710321341455b9a5e7fd2d46994a413adde1ba04a6850f36eeccf228395"
+    },
+    {
+      "bytes" : 156,
+      "path" : "expected/sql-cte-with.txt",
+      "sha256" : "9021b824bd82db7c5e6635fb001f985b466bdcf25d42957a2ec0b46e6aa49ff9"
+    },
+    {
+      "bytes" : 143,
+      "path" : "expected/sql-date-text-functions.txt",
+      "sha256" : "54f7d4eae97967040d9cc5be028a6a14b9fa7f4125e6b0cbb38ce8a44c4e6325"
     },
     {
       "bytes" : 38,
@@ -42,6 +62,11 @@
       "sha256" : "6bc73b38873540be7c154ac2cf3c97d6181f17c8d84dc20c06049c21fbb61ef5"
     },
     {
+      "bytes" : 13,
+      "path" : "expected/sql-multi-table-joins.txt",
+      "sha256" : "8a4ab5388a89dd53dcbe188f2eac73b7f2aa836bb3f98a0567fc47807f9906d9"
+    },
+    {
       "bytes" : 45,
       "path" : "expected/sql-null-handling.txt",
       "sha256" : "147c9661705d45d11dd9cd612613294939f8d48e28de43a59fb74ffaabf79583"
@@ -57,9 +82,34 @@
       "sha256" : "e6cb9f5b443bed16002ec5355c2fb99b7c1f6cf8461b329e14ebb7b7ddb39148"
     },
     {
+      "bytes" : 70,
+      "path" : "expected/sql-self-joins.txt",
+      "sha256" : "b7577d68f1a5ea063253bb28c34b4e6a9edbbbd54b58eedc65ae1a50cfa4778d"
+    },
+    {
+      "bytes" : 74,
+      "path" : "expected/sql-set-operations.txt",
+      "sha256" : "a0f2ae993e7fe26cea687d2d1187a76a126d8c588ba4f2288278a84c3656f305"
+    },
+    {
+      "bytes" : 178,
+      "path" : "expected/sql-string-functions.txt",
+      "sha256" : "e7751a63b0a013e5b1de36c5ab65991eb785e1b5b6616282e5beda93e1bd6e0b"
+    },
+    {
       "bytes" : 27,
       "path" : "expected/sql-subqueries.txt",
       "sha256" : "b177dea5606a6fdc48a2e4e85c1c4f04394574b2b022b87d8d18585a8e4c3abf"
+    },
+    {
+      "bytes" : 32,
+      "path" : "expected/sql-transactions.txt",
+      "sha256" : "ec4cc55e6f1f20dd5eae75d737d6dda01896a7b936e8dedb116d3c3b9f3d7f26"
+    },
+    {
+      "bytes" : 41,
+      "path" : "expected/sql-upsert-on-conflict.txt",
+      "sha256" : "53ba9996b6d7cfa445c532cddc9e344da92ede28e7aa6df4f58e89edf8da0966"
     },
     {
       "bytes" : 127,
@@ -72,9 +122,29 @@
       "sha256" : "2ee6477e93fdc3dbf73d6014ace34284cc37e9fbd9b801b53d39355373ab5d46"
     },
     {
+      "bytes" : 4518,
+      "path" : "lessons/sql-case-expressions.md",
+      "sha256" : "d41540ee1721ca4c2541b95eb9ef280dc8c6a3218fc5955c0141efe99451854b"
+    },
+    {
       "bytes" : 5978,
       "path" : "lessons/sql-create-table-constraints.md",
       "sha256" : "f4ae9e18e45c41c42476ab94d4c0e0e3cb8cf6ec73883e6436d16dab73633169"
+    },
+    {
+      "bytes" : 4874,
+      "path" : "lessons/sql-create-view.md",
+      "sha256" : "06f7859239752ab4eaebe1833794197038b044d646b85df30baded35ce882397"
+    },
+    {
+      "bytes" : 4814,
+      "path" : "lessons/sql-cte-with.md",
+      "sha256" : "ae1d792523f8ee2c0cd0c591d49f3566b79b307bc10dea026716c16796ce2b23"
+    },
+    {
+      "bytes" : 4980,
+      "path" : "lessons/sql-date-text-functions.md",
+      "sha256" : "f46cf5f337824ec5a0be0068b913438ab6a098056c496937d3476a378e18cabd"
     },
     {
       "bytes" : 4102,
@@ -102,6 +172,11 @@
       "sha256" : "5e134fb51055757cec03286a36caccd862b924f48d2705aea48cad1f9e27d8d9"
     },
     {
+      "bytes" : 5364,
+      "path" : "lessons/sql-multi-table-joins.md",
+      "sha256" : "2e783f75f874608c66483b3cb9ecb2e6455bd6025263bf36c09ae430507f76e2"
+    },
+    {
       "bytes" : 4002,
       "path" : "lessons/sql-null-handling.md",
       "sha256" : "aca88ea6e3966d9ceb6be42959d2b3e7e1c27948b7361f74a203d91ac704442d"
@@ -117,9 +192,34 @@
       "sha256" : "8ab2746e0a8c88d5748be756df183e6285e57871ef45e01d68f710ae64d101aa"
     },
     {
+      "bytes" : 4137,
+      "path" : "lessons/sql-self-joins.md",
+      "sha256" : "51745f53964932930f30784f3dc5ad71a53f9c1eaf552bcd5093914fd0cc0ef6"
+    },
+    {
+      "bytes" : 4140,
+      "path" : "lessons/sql-set-operations.md",
+      "sha256" : "a0dda4f21f83f1e2d3a119debb33ef259e849ab0a522fdd4791e2cf2d732fe22"
+    },
+    {
+      "bytes" : 4171,
+      "path" : "lessons/sql-string-functions.md",
+      "sha256" : "eaaebcf0984e7ab6467da7bbf3f3a0438b904f7dfdfbb6c902825516e370582f"
+    },
+    {
       "bytes" : 4311,
       "path" : "lessons/sql-subqueries.md",
       "sha256" : "ba8d774c571bacb103c0e35dbb91bfe03fa41852f6b1f2c98a9ff7a72aea170c"
+    },
+    {
+      "bytes" : 4266,
+      "path" : "lessons/sql-transactions.md",
+      "sha256" : "6d6532c114797763dbf5e091db33f8552d8829dc0a6d983182b612928144b592"
+    },
+    {
+      "bytes" : 3914,
+      "path" : "lessons/sql-upsert-on-conflict.md",
+      "sha256" : "244b691df7561e5f3f220708d74773cc01442d60c168147e94a17137a1bc8c25"
     },
     {
       "bytes" : 5187,
@@ -132,9 +232,29 @@
       "sha256" : "cc2e5d0c71a736b640a46d83d25ee277cd04419705962ecbff4a3cfd4c1ffddc"
     },
     {
+      "bytes" : 224,
+      "path" : "solutions/sql-case-expressions.sql",
+      "sha256" : "3cdce2de8632fdea75d7998d843250456b9c20261b10737e3dbf5cb2150870d7"
+    },
+    {
       "bytes" : 614,
       "path" : "solutions/sql-create-table-constraints.sql",
       "sha256" : "5272a660a86a63a28ac28aff2335f51b2176f08b4aa7b5a649b52a45b84301a8"
+    },
+    {
+      "bytes" : 258,
+      "path" : "solutions/sql-create-view.sql",
+      "sha256" : "db1303b6fb376324a68cff401d5deb5acf8d0965f9dad8157fe65e70c1bed049"
+    },
+    {
+      "bytes" : 465,
+      "path" : "solutions/sql-cte-with.sql",
+      "sha256" : "94c2d734b95a879ff3b61a7c39a4e83ebd0f2cc428df7aef88dba587a4b94a11"
+    },
+    {
+      "bytes" : 277,
+      "path" : "solutions/sql-date-text-functions.sql",
+      "sha256" : "a75de27b87e61c5ea551ff9ad5034b2ade6350566728d5c67475450afc69c8a3"
     },
     {
       "bytes" : 247,
@@ -162,6 +282,11 @@
       "sha256" : "033321a32266e2b438825674cdf90ec01c50505c255634f872f84ca59fa14e21"
     },
     {
+      "bytes" : 275,
+      "path" : "solutions/sql-multi-table-joins.sql",
+      "sha256" : "7fdcaa2360b0e110a47fbd03ff09e573ce84f77d863ea3831958073647ed6e1c"
+    },
+    {
       "bytes" : 110,
       "path" : "solutions/sql-null-handling.sql",
       "sha256" : "b3237fcfb4e38263a6ff895950a2c1bb59fb341b1c29810779b787d8c11269ad"
@@ -177,9 +302,34 @@
       "sha256" : "d72f19e25ae21219e59554a86f943970f013ab9335c8b6c7cb794547e7c03914"
     },
     {
+      "bytes" : 170,
+      "path" : "solutions/sql-self-joins.sql",
+      "sha256" : "225b687d7472c5400dd863c87b355977dd1d831552100cb51293790a352b45e6"
+    },
+    {
+      "bytes" : 117,
+      "path" : "solutions/sql-set-operations.sql",
+      "sha256" : "4e0a14790bbd1db215e9214e86ae84cca2cbbde7993a3cc0d59aa3d3a1b37ec8"
+    },
+    {
+      "bytes" : 170,
+      "path" : "solutions/sql-string-functions.sql",
+      "sha256" : "971a6511533e40cc736a534d5aa15661559a8a3d881feba9054cc8dbdd5ab288"
+    },
+    {
       "bytes" : 97,
       "path" : "solutions/sql-subqueries.sql",
       "sha256" : "77a3f9b70f5039951b67c1a6b79999f14032c791908f9fabf6503d81040d259c"
+    },
+    {
+      "bytes" : 383,
+      "path" : "solutions/sql-transactions.sql",
+      "sha256" : "6eca0a8538ef90cca7efb22cef38dd723cff29e1971976a1ec1234818c7d292d"
+    },
+    {
+      "bytes" : 270,
+      "path" : "solutions/sql-upsert-on-conflict.sql",
+      "sha256" : "a2038a8732c084093c57435c389d18353f1547f05bf37d19a55b1c7a245693f2"
     },
     {
       "bytes" : 267,
@@ -187,9 +337,9 @@
       "sha256" : "e2c14a8ef1becb9bc1d424028537ea87101d8fc2a68c92c58434104801d16a01"
     },
     {
-      "bytes" : 748,
+      "bytes" : 1280,
       "path" : "stableids.lock",
-      "sha256" : "773c33c2344da566a5ea6172a963fed8539d72874341b52a66b8b1c3ad660da1"
+      "sha256" : "1591478d08e856b882aee3460604136a562020248c3dd4b900e13e35bb69e98c"
     },
     {
       "bytes" : 47,
@@ -197,9 +347,29 @@
       "sha256" : "775e9223f9fef1dd91d998d8973b90b6c068127811a9188f564fb7b7f1e5d814"
     },
     {
+      "bytes" : 168,
+      "path" : "starters/sql-case-expressions.sql",
+      "sha256" : "0900552dff43d9c520c3cd48aec207d88f8c0fa65c0209a2ac2d7ecbedc62638"
+    },
+    {
       "bytes" : 611,
       "path" : "starters/sql-create-table-constraints.sql",
       "sha256" : "9665ebefe479575c11f1a307b9b09fc1f7f1cee1e2f72d383ccd2f84fa3bdbad"
+    },
+    {
+      "bytes" : 348,
+      "path" : "starters/sql-create-view.sql",
+      "sha256" : "d8d98c34acfc6a7876dae39141b5c8b5bd6bcb7b8bee10a0bcdd0efc2d3eb9f3"
+    },
+    {
+      "bytes" : 162,
+      "path" : "starters/sql-cte-with.sql",
+      "sha256" : "a778895baa597d673336505e6b92067e75861e49e8c6d5c8b9d0c64d454f4a24"
+    },
+    {
+      "bytes" : 523,
+      "path" : "starters/sql-date-text-functions.sql",
+      "sha256" : "de0c51bcbafc3f9d279b4573db306026996d159ad640510620d3933de8eb9607"
     },
     {
       "bytes" : 123,
@@ -227,6 +397,11 @@
       "sha256" : "b994c803e9cc45b7b8ab144e5c159916e335752e68c9d928189bb7644838eb21"
     },
     {
+      "bytes" : 127,
+      "path" : "starters/sql-multi-table-joins.sql",
+      "sha256" : "12a1bed0a9cd30f353d03597863896b7948518a0f84d51a657592dc2887422a3"
+    },
+    {
       "bytes" : 164,
       "path" : "starters/sql-null-handling.sql",
       "sha256" : "6c4e6d4f1565d8be9f5eb725c6da2b2711dcde522ae11fc6479ebb6b78ca6b34"
@@ -242,9 +417,34 @@
       "sha256" : "95e3425921591ff69c7388194d7651221fd094515d96eb4a4e0e78b849252642"
     },
     {
+      "bytes" : 149,
+      "path" : "starters/sql-self-joins.sql",
+      "sha256" : "348fbbcf9649ed2e8740c008fb0e85b8f94da48bbc7e8ae6f51c182c40565291"
+    },
+    {
+      "bytes" : 232,
+      "path" : "starters/sql-set-operations.sql",
+      "sha256" : "2a11ec64833c286c3ad05c2fadbbe5d284c4569e31086e9ee8907f7cbc2b032d"
+    },
+    {
+      "bytes" : 119,
+      "path" : "starters/sql-string-functions.sql",
+      "sha256" : "cb37c4b83121841d0af873921267138b0c589bb757acc7396e935d5825ce3f45"
+    },
+    {
       "bytes" : 41,
       "path" : "starters/sql-subqueries.sql",
       "sha256" : "51b9b475609b47c536021e40bc4812c7f6e04a9240c56e6cacccf1e87bcda278"
+    },
+    {
+      "bytes" : 503,
+      "path" : "starters/sql-transactions.sql",
+      "sha256" : "0b1bed330c573427e86186e85f4f76e37cbe3951f1aff41cb5e04e28d195bb57"
+    },
+    {
+      "bytes" : 161,
+      "path" : "starters/sql-upsert-on-conflict.sql",
+      "sha256" : "0a80aa5dd36fe8f423489b5c322ec047189c9fff2057f27e7db147645259eeb6"
     },
     {
       "bytes" : 161,
@@ -257,9 +457,29 @@
       "sha256" : "cc2e5d0c71a736b640a46d83d25ee277cd04419705962ecbff4a3cfd4c1ffddc"
     },
     {
+      "bytes" : 237,
+      "path" : "tests/sql-case-expressions.sql",
+      "sha256" : "36c9edcc0e893bbe016799e0534cfbb7ace228cfb5d4c2633a1c3d15042938d6"
+    },
+    {
       "bytes" : 186,
       "path" : "tests/sql-create-table-constraints.sql",
       "sha256" : "8d21d496daeaba95bfe0be64c37cfc9e0224c02d343a9a62b8c479a3bc3998e8"
+    },
+    {
+      "bytes" : 170,
+      "path" : "tests/sql-create-view.sql",
+      "sha256" : "5550a0d38e03fad5b553ee1e6b46d5ebec18dc0f7e4ce6142e61da7ea38cbca8"
+    },
+    {
+      "bytes" : 499,
+      "path" : "tests/sql-cte-with.sql",
+      "sha256" : "b62d20afb28180400be3294bb32888349c6c7b203bc4d9952dd059a33f80b02d"
+    },
+    {
+      "bytes" : 277,
+      "path" : "tests/sql-date-text-functions.sql",
+      "sha256" : "a75de27b87e61c5ea551ff9ad5034b2ade6350566728d5c67475450afc69c8a3"
     },
     {
       "bytes" : 101,
@@ -287,6 +507,11 @@
       "sha256" : "033321a32266e2b438825674cdf90ec01c50505c255634f872f84ca59fa14e21"
     },
     {
+      "bytes" : 274,
+      "path" : "tests/sql-multi-table-joins.sql",
+      "sha256" : "0b281dd5264190664bf4560818c3df0f20399aacdacdf8a0046e210de8508169"
+    },
+    {
       "bytes" : 79,
       "path" : "tests/sql-null-handling.sql",
       "sha256" : "e33ee25f21a79e4f9a17fab2e637ca1cd71623e3603c9debeadacb3183c591ad"
@@ -302,9 +527,34 @@
       "sha256" : "a5a4506022c1c1eee200d6063bed6e6d363cf4688078e63df9e1a29f33ee2cc8"
     },
     {
+      "bytes" : 207,
+      "path" : "tests/sql-self-joins.sql",
+      "sha256" : "0f4f1565cde20912ae64bd4267ca3f7161c89213317529b82f18d33feb3eb27c"
+    },
+    {
+      "bytes" : 113,
+      "path" : "tests/sql-set-operations.sql",
+      "sha256" : "2a778ec1396adc7f33c20443159594a9b992e31ccc07b5d9fcb67dfcbc2902f4"
+    },
+    {
+      "bytes" : 170,
+      "path" : "tests/sql-string-functions.sql",
+      "sha256" : "971a6511533e40cc736a534d5aa15661559a8a3d881feba9054cc8dbdd5ab288"
+    },
+    {
       "bytes" : 110,
       "path" : "tests/sql-subqueries.sql",
       "sha256" : "b3237fcfb4e38263a6ff895950a2c1bb59fb341b1c29810779b787d8c11269ad"
+    },
+    {
+      "bytes" : 66,
+      "path" : "tests/sql-transactions.sql",
+      "sha256" : "3e93bac2b154cc59e994e3188e977b8d29345211872120f6fc6fdc28dbeb3ce6"
+    },
+    {
+      "bytes" : 110,
+      "path" : "tests/sql-upsert-on-conflict.sql",
+      "sha256" : "9b4c14e3b47366be6117f28c3f317bf1ad37f48699a16a48bd9f9a656faff666"
     },
     {
       "bytes" : 405,
@@ -506,6 +756,180 @@
       ],
       "stableID" : "sql-window-functions",
       "title" : "그룹을 유지한 채 계산하는 창 함수"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "AS 별칭으로 같은 표를 두 번 붙여 하나의 쿼리에서 조회할 수 있다",
+        "같은 category_id 를 공유하는 서로 다른 상품 쌍을 뽑아낼 수 있다",
+        "id 비교와 p1.name < p2.name 조건으로 중복 쌍과 자기 자신 쌍을 제거할 수 있다",
+        "같은 city 에 사는 고객 쌍을 self join 으로 구할 수 있다"
+      ],
+      "order" : 13,
+      "path" : "lessons/sql-self-joins.md",
+      "prerequisites" : [
+        "sql-inner-joins",
+        "sql-left-outer-joins"
+      ],
+      "stableID" : "sql-self-joins",
+      "title" : "같은 표를 자기 자신과 조인하기"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "가격 구간에 따라 '저가'·'중가'·'고가' 라벨을 붙여 상품을 분류할 수 있다",
+        "shipped_at 의 NULL 여부로 '배송완료'·'미배송' 문구를 만들 수 있다",
+        "CASE 식을 SUM 이나 COUNT 안에 넣어 조건부 집계를 계산할 수 있다"
+      ],
+      "order" : 14,
+      "path" : "lessons/sql-case-expressions.md",
+      "prerequisites" : [
+        "sql-select-from-where",
+        "sql-group-by-having",
+        "sql-null-handling"
+      ],
+      "stableID" : "sql-case-expressions",
+      "title" : "CASE 식으로 행마다 다른 값 만들기"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "네 개의 표를 연달아 INNER JOIN 으로 연결할 수 있다",
+        "주문 하나에 담긴 상품 이름과 수량을 한 행씩 펼쳐 조회할 수 있다",
+        "고객별 총 구매 금액(quantity * price 합계)을 계산해 내림차순으로 정렬할 수 있다",
+        "중간 표(order_item)가 왜 필요한지 조인 결과로 설명할 수 있다"
+      ],
+      "order" : 15,
+      "path" : "lessons/sql-multi-table-joins.md",
+      "prerequisites" : [
+        "sql-inner-joins",
+        "sql-group-by-having"
+      ],
+      "stableID" : "sql-multi-table-joins",
+      "title" : "세 개 이상의 표를 한 줄로 연결하기"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "UPPER 와 LOWER 로 이름·도시를 대소문자 기준으로 통일해 출력할 수 있다",
+        "SUBSTR 로 joined_on 에서 연과 월만 잘라낼 수 있다",
+        "|| 로 고객 이름과 도시를 한 열로 합쳐 출력할 수 있다",
+        "REPLACE 와 LENGTH 로 문자열을 치환하고 길이를 재볼 수 있다"
+      ],
+      "order" : 16,
+      "path" : "lessons/sql-string-functions.md",
+      "prerequisites" : [
+        "sql-select-from-where",
+        "sql-order-by-limit-distinct"
+      ],
+      "stableID" : "sql-string-functions",
+      "title" : "문자열 함수로 텍스트 가공하기"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "strftime('%Y', ordered_at) 으로 연도별 주문 수를 집계할 수 있다",
+        "julianday(shipped_at) - julianday(ordered_at) 로 배송 소요일을 계산할 수 있다",
+        "date(ordered_at, '+7 days') 로 배송 예정일을 계산해 실제 shipped_at 과 비교할 수 있다",
+        "TEXT 비교로 특정 날짜 이후의 주문만 걸러낼 수 있다"
+      ],
+      "order" : 17,
+      "path" : "lessons/sql-date-text-functions.md",
+      "prerequisites" : [
+        "sql-select-from-where",
+        "sql-group-by-having",
+        "sql-null-handling"
+      ],
+      "stableID" : "sql-date-text-functions",
+      "title" : "TEXT 날짜 다루기 — date와 strftime"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "UNION 과 UNION ALL 의 중복 처리 차이를 실행 결과로 비교할 수 있다",
+        "상품 이름 목록과 범주 이름 목록을 UNION 으로 하나의 열로 합칠 수 있다",
+        "EXCEPT 로 주문한 적 없는 고객을 찾아 NOT EXISTS 결과와 비교할 수 있다",
+        "INTERSECT 로 두 조건 모두에 해당하는 행을 구할 수 있다"
+      ],
+      "order" : 18,
+      "path" : "lessons/sql-set-operations.md",
+      "prerequisites" : [
+        "sql-select-from-where",
+        "sql-subqueries",
+        "sql-exists-correlated-subqueries"
+      ],
+      "stableID" : "sql-set-operations",
+      "title" : "UNION과 EXCEPT로 결과 집합 합치고 빼기"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "WITH 절로 서브쿼리에 이름을 붙여 마치 표처럼 조회할 수 있다",
+        "고객별 총 구매액 CTE를 만들고 그 위에서 평균 대비 비교를 계산할 수 있다",
+        "쉼표로 이어 여러 개의 CTE를 단계적으로 연결할 수 있다",
+        "같은 결과를 내는 서브쿼리 버전과 CTE 버전을 나란히 실행해 비교할 수 있다"
+      ],
+      "order" : 19,
+      "path" : "lessons/sql-cte-with.md",
+      "prerequisites" : [
+        "sql-multi-table-joins",
+        "sql-subqueries",
+        "sql-group-by-having"
+      ],
+      "stableID" : "sql-cte-with",
+      "title" : "WITH 절로 쿼리를 단계로 나누기"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "고객별 주문 통계 쿼리를 CREATE VIEW 로 저장할 수 있다",
+        "저장한 뷰를 SELECT ... FROM 뷰이름 으로 다시 조회할 수 있다",
+        "뷰 위에서 WHERE 와 GROUP BY 를 덧붙여 재활용할 수 있다",
+        "DROP VIEW 로 뷰를 지우고 다시 만들 수 있다"
+      ],
+      "order" : 20,
+      "path" : "lessons/sql-create-view.md",
+      "prerequisites" : [
+        "sql-cte-with",
+        "sql-create-table-constraints",
+        "sql-multi-table-joins"
+      ],
+      "stableID" : "sql-create-view",
+      "title" : "CREATE VIEW로 자주 쓰는 쿼리 저장하기"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "UNIQUE 제약 충돌로 INSERT 가 실패하는 상황을 재현할 수 있다",
+        "ON CONFLICT DO UPDATE 로 있으면 갱신하고 없으면 삽입하는 UPSERT 를 작성할 수 있다",
+        "excluded 접두어로 충돌 시 새로 넣으려던 값을 참조할 수 있다",
+        "INSERT OR IGNORE 로 충돌 행을 오류 없이 건너뛸 수 있다"
+      ],
+      "order" : 21,
+      "path" : "lessons/sql-upsert-on-conflict.md",
+      "prerequisites" : [
+        "sql-insert-update-delete",
+        "sql-create-table-constraints"
+      ],
+      "stableID" : "sql-upsert-on-conflict",
+      "title" : "INSERT와 UPDATE를 한 번에 — UPSERT"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "BEGIN 에서 COMMIT 까지 사이의 여러 DML 이 한 묶음으로 적용되는 것을 확인할 수 있다",
+        "ROLLBACK 으로 UPDATE 와 DELETE 를 포함한 변경을 모두 되돌릴 수 있다",
+        "롤백 전후의 SELECT 결과를 비교해 원래 상태로 돌아왔음을 증명할 수 있다",
+        "여러 표에 걸친 연쇄 변경을 트랜잭션 하나로 처리할 수 있다"
+      ],
+      "order" : 22,
+      "path" : "lessons/sql-transactions.md",
+      "prerequisites" : [
+        "sql-insert-update-delete",
+        "sql-upsert-on-conflict"
+      ],
+      "stableID" : "sql-transactions",
+      "title" : "BEGIN과 ROLLBACK으로 변경을 안전하게"
     }
   ],
   "minAppVersion" : "0.1.0",

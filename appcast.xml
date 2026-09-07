@@ -3,6 +3,20 @@
     <channel>
         <title>Polyglot</title>
         <item>
+            <title>0.1.0-alpha.3</title>
+            <pubDate>Mon, 07 Sep 2026 14:16:37 +0000</pubDate>
+            <link>https://github.com/bunhine0452/polyglot-study</link>
+            <sparkle:version>116</sparkle:version>
+            <sparkle:shortVersionString>0.1.0-alpha.3</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
+            <enclosure url="https://bunhine0452.github.io/polyglot-study/Polyglot-0.1.0-alpha.3.zip" length="19687029" type="application/octet-stream" sparkle:edSignature="T2xLV4fNIjag5qxzf5zg6HA9+62SYqiCAcDkBCR7uXqtsshGuG9gfQ/leULl0Jjz5XmNFjTIWdDxHVYqdLpeAA=="/>
+            <sparkle:deltas>
+                <enclosure url="https://bunhine0452.github.io/polyglot-study/Polyglot116-114.delta" sparkle:deltaFrom="114" length="56102" type="application/octet-stream" sparkle:deltaFromSparkleExecutableSize="977616" sparkle:deltaFromSparkleLocales="de,he,ar,el,ja,fa,uk" sparkle:edSignature="1IJ6gxxrRMMfY3dZ/XRl0dNbD380lBuhhPaZ6NXUre78A6nlgSSjULPSrHNUNb8VBZw/DDqV9rEX+0Pf3OF6Bg=="/>
+                <enclosure url="https://bunhine0452.github.io/polyglot-study/Polyglot116-110.delta" sparkle:deltaFrom="110" length="475510" type="application/octet-stream" sparkle:deltaFromSparkleExecutableSize="977616" sparkle:deltaFromSparkleLocales="de,he,ar,el,ja,fa,uk" sparkle:edSignature="UPMWahSt7UCO/fkDBBROlDc9gTOv+Jq+gu/E+xD5Dti5lCkeAsZKzIjJL7UvPfb1BazCzhFLs3Zsk6+8EUFYAQ=="/>
+            </sparkle:deltas>
+        </item>
+        <item>
             <title>0.1.0-alpha.2</title>
             <pubDate>Mon, 07 Sep 2026 12:20:03 +0000</pubDate>
             <link>https://github.com/bunhine0452/polyglot-study</link>

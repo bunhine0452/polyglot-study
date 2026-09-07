@@ -40,8 +40,9 @@ swift run --package-path Tools packtool verify dist/p.tar.staging
 
 ## 상태
 
-> **브랜치는 정리돼 있다.** 릴리스 배선 6건은 PR #2 로 CI 5게이트를 통과해 `main` 에
-> 머지됐고(`06b9f7b`), 브랜치는 원격·로컬 모두 지웠다. 워크트리 1개, `.git` 16MB.
+> **브랜치는 정리돼 있다.** 릴리스 배선 6건(PR #2, `06b9f7b`)과 콘텐츠 확장 34편
+> (PR #3, `13c6c90`)이 각각 CI 5게이트를 통과해 `main` 에 머지됐고 브랜치는 원격·로컬
+> 모두 지웠다. 워크트리 1개, `.git` 17MB.
 
 - **저장소 공개**: https://github.com/bunhine0452/polyglot-study
   Pages 살아 있음 — `https://bunhine0452.github.io/polyglot-study/appcast.xml` (HTTP 200).
@@ -278,6 +279,14 @@ python3 이 셋 있고 로그인 셸은 `/usr/bin` 의 3.9.6 을 준다(감지�
 - 이 모델은 사고 필수, effort 는 `low/high/max` — **medium 없음**.
 - Batch 변종이 프로모션가보다 **비싸다**. 동시성 제한 병렬 요청을 쓴다.
 - Swift 에서 `"\r\n"` 은 Character 하나라 `split(separator:"\n")` 이 CRLF 를 뭉친다.
+- **구조화 출력에서 소문자 리터럴 `json` 이 사라진다**(실측 2026-09-07, NextBit).
+  같은 호출 로그 안에서 모델의 `reasoning` 에는 `import json` 5건 · `csv_to_json` 5건이
+  있는데 `responseText` 에는 0건이고, 대신 `import`(뒤가 빈 채)와 `csv_to_` 가 온다.
+  블록 id 도 `csv-json-roundtrip` → `csv--roundtrip` 으로 가운데가 빠진다. **산문의 대문자
+  `JSON` 은 살아남는다** — 대소문자를 가리는 문자열 제거이지 모델의 실수가 아니다.
+  `repair` 를 몇 번 돌려도 수렴하지 않고, `--provider` 를 풀어도 같은 업스트림이 잡혀
+  회피하지 못한다. **소문자 `json` 이 반드시 들어가야 하는 레슨은 손으로 써라** —
+  3회 실패하면 `lessongen` 이 그 레슨을 팩에서 격리한다.
 
 **튜터(`polyglot-tutor`) 전제**
 

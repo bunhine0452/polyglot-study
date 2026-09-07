@@ -9,7 +9,7 @@ Swift 6.3 / SwiftUI, **macOS 14 하한 확정**, MIT 오픈소스, Developer ID 
 
 ## 지금 실행할 수 있는 것 / 아직 없는 것
 
-**앱이 뜨고, MVP 세 트랙 70편이 전부 보이고, 코드를 써서 채점까지 간다.**
+**앱이 뜨고, 다섯 트랙 122편이 전부 보이고, 코드를 써서 채점까지 간다.**
 도달 가능한 화면은 여섯이다 — 온보딩·대시보드·트랙·레슨·에디터·복습.
 
 ```bash
@@ -64,9 +64,12 @@ swift run --package-path Tools packtool verify dist/p.tar.staging
   swift test 셋(RunnerKit 직렬 / LearnKit 나머지 / Tools), build-app.sh, packtool validate.
   **다섯 잡이 병렬이라 벽시계는 약 9분이다**(PR #2 실측: RunnerKit 8m25s · LearnKit 7m18s ·
   build-app 6m26s · packtool validate 4m42s · Tools 4m23s). "20~30분" 은 잡을 가르기 전 값이다.
-- 콘텐츠: **MVP 3트랙 70편**(python 24 · sql 22 · swift 24) 전부 4단계 게이트 통과.
-  `TrackCatalog` 의 계획값과 팩의 실제 편수가 이제 같다. 누적 생성 비용 약 $0.30.
-  팩 버전은 **0.2.0** 이다(0.1.0 은 12편짜리 옛 팩).
+- 콘텐츠: **5트랙 122편**(python 24 · sql 22 · swift 24 · rust 26 · cpp 26) 전부 4단계
+  게이트 통과. `TrackCatalog` 의 계획값과 팩의 실제 편수가 전부 같다.
+  python·sql·swift 팩 버전은 **0.2.0**(0.1.0 은 12편짜리 옛 팩), rust·cpp 는 신규라 0.1.0.
+- **Rust·C++ 레슨 52편은 API 를 쓰지 않고 만들었다.** `lessongen import` 가 그 경로다 —
+  드래프트 JSON 을 읽어 기존 직렬화기·팩 작성기에 그대로 태운다. 병렬 Sonnet 세션 6개가
+  드래프트를 쓰고 각자 `rustc`/`clang++` 로 자기 검증했다. 비용 $0.
 
 ## 첫 할 일
 

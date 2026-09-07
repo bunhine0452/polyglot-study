@@ -1,0 +1,5 @@
+Hello, World!
+길이: 13
+부분: World
+World 위치: 7
+문자 수: 10

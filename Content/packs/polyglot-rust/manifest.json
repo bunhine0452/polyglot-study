@@ -1,0 +1,1070 @@
+{
+  "displayName" : "Rust 입문",
+  "files" : [
+    {
+      "bytes" : 58,
+      "path" : "expected/rust-borrowing-references.txt",
+      "sha256" : "1776d907989d29c52a2888afcdefd6bb6d24050f19fc66544f759daea7d7818d"
+    },
+    {
+      "bytes" : 85,
+      "path" : "expected/rust-capstone-word-count.txt",
+      "sha256" : "d5051e4b2f5c75231b2c56b9609e19bf1e846b45a06e34f000763d2299410f2e"
+    },
+    {
+      "bytes" : 88,
+      "path" : "expected/rust-closures.txt",
+      "sha256" : "5c29baa1f986e2b3e8466214eab2c47a125253f97243c964dff2f15c518dac9c"
+    },
+    {
+      "bytes" : 66,
+      "path" : "expected/rust-control-flow-if-loop.txt",
+      "sha256" : "8f2918ec25de89884aa876741ab747294d14e6caf7e471c4f6cea4514942dd03"
+    },
+    {
+      "bytes" : 34,
+      "path" : "expected/rust-derive-and-display.txt",
+      "sha256" : "c86348bc191ac29c11ed8f573b0ec96500bdfdded3c8aeecf9bd31c792c5b2cc"
+    },
+    {
+      "bytes" : 116,
+      "path" : "expected/rust-enums-and-match.txt",
+      "sha256" : "935f5b855d0e734ca44bfcf58fa6585dc052d80e0f9cf167d95d43658973763c"
+    },
+    {
+      "bytes" : 141,
+      "path" : "expected/rust-for-and-ranges.txt",
+      "sha256" : "fff644a2a6cb3b78843133d2e6a240cf40a1d31eafa924df85fc64385bd5e104"
+    },
+    {
+      "bytes" : 34,
+      "path" : "expected/rust-functions-and-return.txt",
+      "sha256" : "c2cd46afebfff1ebe2ed7964d0d8bca1d6cf3f60c467ce8380f5f9a0a1c1c36a"
+    },
+    {
+      "bytes" : 62,
+      "path" : "expected/rust-generics.txt",
+      "sha256" : "782c6d444ffc0bee30ec1408c120afe951d4e0ad7c83338da157cbbafdf0b4b0"
+    },
+    {
+      "bytes" : 53,
+      "path" : "expected/rust-hashmap.txt",
+      "sha256" : "5b68f41a0f54336194c8d1e967c127f051bc148209b98959f92f49c9e9267f31"
+    },
+    {
+      "bytes" : 74,
+      "path" : "expected/rust-hello-and-println.txt",
+      "sha256" : "dd8dd8f5a94b1b7aee1a410906227213478becd90c32aaa35608d9a6ba04417b"
+    },
+    {
+      "bytes" : 87,
+      "path" : "expected/rust-iterator-consumers.txt",
+      "sha256" : "9703237af8e23083f8fdd6e85b30be2d06bf3bf46d5a8f7ff425c6295707f6a5"
+    },
+    {
+      "bytes" : 42,
+      "path" : "expected/rust-iterators-map-filter.txt",
+      "sha256" : "d8fc49ec1c1f22f37dc05007fa6f7b762ba95f539c50978923f32be7402ae330"
+    },
+    {
+      "bytes" : 48,
+      "path" : "expected/rust-let-and-mut.txt",
+      "sha256" : "958fa39e0c5fd85152d2203ac72d25e5ee7f9c51f6d091070271ca5e7eeb00bc"
+    },
+    {
+      "bytes" : 87,
+      "path" : "expected/rust-lifetimes-basics.txt",
+      "sha256" : "48adeef70a64b503ec3ed3efdef8473d8bbadf580d484bd2a2f09b2e9e1474c6"
+    },
+    {
+      "bytes" : 24,
+      "path" : "expected/rust-modules.txt",
+      "sha256" : "6a401b72f049a4e7b3279fd74f0680b8cf5fba9817a172019c8bb0664e0832f0"
+    },
+    {
+      "bytes" : 58,
+      "path" : "expected/rust-option.txt",
+      "sha256" : "13d278a080101d8c8166a93e89b9965e502ce3efa406c5a467c64e606900a537"
+    },
+    {
+      "bytes" : 47,
+      "path" : "expected/rust-ownership-move.txt",
+      "sha256" : "878e580d62b7c7bfa9b7c17f440eaf2c4a617a6fba123b0e5a8aaef8c53938b0"
+    },
+    {
+      "bytes" : 98,
+      "path" : "expected/rust-result-and-error.txt",
+      "sha256" : "39f83efbf3f9cfdc5273c4cbfac8e3e2126dc6febe615a3aaf72693144f179e1"
+    },
+    {
+      "bytes" : 114,
+      "path" : "expected/rust-scalar-types-and-inference.txt",
+      "sha256" : "848f8aaab4fc788f5812633ed3ca81463f9dd6e0020dd20851e5cb91de285fe6"
+    },
+    {
+      "bytes" : 70,
+      "path" : "expected/rust-slices-and-borrowed-params.txt",
+      "sha256" : "5e39b96f5dd3b7a0dc5ad7f4c20b4811051ef761a5367941c776a80d11f16f63"
+    },
+    {
+      "bytes" : 66,
+      "path" : "expected/rust-strings-and-slices.txt",
+      "sha256" : "3faa7bed8914b7f305254e36b4f6ae0da41d60a31ecf8e293b3b9edf011edec8"
+    },
+    {
+      "bytes" : 21,
+      "path" : "expected/rust-structs.txt",
+      "sha256" : "9c84fa19b371e0ea8a5a4e6037f0b7a1c2cb60b02c43e0209a8474031902dd59"
+    },
+    {
+      "bytes" : 46,
+      "path" : "expected/rust-testing-with-assert.txt",
+      "sha256" : "890a534c4ee64771994cc5b89b479ee7c07294186162c5b346b3622183fa9977"
+    },
+    {
+      "bytes" : 74,
+      "path" : "expected/rust-traits.txt",
+      "sha256" : "49f14eb113b78f0d7a3bedab8b9544721bf818a654f9a02077226e588fbab06a"
+    },
+    {
+      "bytes" : 40,
+      "path" : "expected/rust-vectors.txt",
+      "sha256" : "0a9a73621fe43e1d7aaae69af2da51dd516d16f567cf3e4ee3e07603d74f8129"
+    },
+    {
+      "bytes" : 5033,
+      "path" : "lessons/rust-borrowing-references.md",
+      "sha256" : "da1ae4971f2cf64693241b599a2a8db560140c32eaac3202710152a4e105661a"
+    },
+    {
+      "bytes" : 6253,
+      "path" : "lessons/rust-capstone-word-count.md",
+      "sha256" : "8e114fa95198426f8116477c395fcd654978cb370ffdf71cb74b256bd634d8a2"
+    },
+    {
+      "bytes" : 5337,
+      "path" : "lessons/rust-closures.md",
+      "sha256" : "2016af077cd64ce0f7c967e366322d89b2f215b6b693934e4c8acf1c16dc2ed8"
+    },
+    {
+      "bytes" : 4702,
+      "path" : "lessons/rust-control-flow-if-loop.md",
+      "sha256" : "088ad03e9302140774bcf89a1325c745181493d03a8ab51dcaa88b1780895c6c"
+    },
+    {
+      "bytes" : 5262,
+      "path" : "lessons/rust-derive-and-display.md",
+      "sha256" : "f0de34a78408ae17296122bcc3ba05e0a88e6c21b6deecc8774fcea28db61093"
+    },
+    {
+      "bytes" : 5819,
+      "path" : "lessons/rust-enums-and-match.md",
+      "sha256" : "733eed4c4f4e2206c0ae0fea261b168f57080232eacf53545707ef0f1deae453"
+    },
+    {
+      "bytes" : 3988,
+      "path" : "lessons/rust-for-and-ranges.md",
+      "sha256" : "a0a3377275063fcd4c404ebda23d7a1453c25cc09e98987332f773fc1011245e"
+    },
+    {
+      "bytes" : 4331,
+      "path" : "lessons/rust-functions-and-return.md",
+      "sha256" : "ae268d367ad7b773c3d737a436f3f1f1572327c416e30443e8aee72118320618"
+    },
+    {
+      "bytes" : 5719,
+      "path" : "lessons/rust-generics.md",
+      "sha256" : "4fdb7410a970e221c2e75e49e6f3ab4362afd2975370e07c3ed5d277291027d7"
+    },
+    {
+      "bytes" : 5783,
+      "path" : "lessons/rust-hashmap.md",
+      "sha256" : "1d04e700e4ab0e5a4590dacd29178fc079412d38df9aedecd79d79d6e1189e97"
+    },
+    {
+      "bytes" : 4011,
+      "path" : "lessons/rust-hello-and-println.md",
+      "sha256" : "bcebf2e7638e02e6417374f9e78dc0c73774d246b2549669ba05c19f1f5e93f7"
+    },
+    {
+      "bytes" : 5497,
+      "path" : "lessons/rust-iterator-consumers.md",
+      "sha256" : "341b51dc818a5d19fa1f4733ba535649fafa4aa45389e75e60bb063ebeed6e28"
+    },
+    {
+      "bytes" : 5654,
+      "path" : "lessons/rust-iterators-map-filter.md",
+      "sha256" : "e1f3173b90453fcbf517d6b300b22542c8e1ce2ab0dd85881bf5fe66c07c9692"
+    },
+    {
+      "bytes" : 4340,
+      "path" : "lessons/rust-let-and-mut.md",
+      "sha256" : "e43031a7c8fde2e18210e7cdc3a696ee88ddcc6d21945bc1b7c22818e2af203b"
+    },
+    {
+      "bytes" : 5682,
+      "path" : "lessons/rust-lifetimes-basics.md",
+      "sha256" : "3e5f5402c7e85157d1a56b446bc18221388e662499485f40bf7504c4ed06e7c9"
+    },
+    {
+      "bytes" : 5199,
+      "path" : "lessons/rust-modules.md",
+      "sha256" : "6cf7651ba8902bc3c46b4d08d7fb968c2e99c58f1421b4cddd630adf49b10209"
+    },
+    {
+      "bytes" : 5537,
+      "path" : "lessons/rust-option.md",
+      "sha256" : "c51560c26183bbedae2a386aedfe569bab20120cef2852bc624f96900183f7a0"
+    },
+    {
+      "bytes" : 5130,
+      "path" : "lessons/rust-ownership-move.md",
+      "sha256" : "057dcb51d0c8a0c9478d4ae8adac342f3ae9f30f6b1ee8aa18dc6c758c2dfbc4"
+    },
+    {
+      "bytes" : 5914,
+      "path" : "lessons/rust-result-and-error.md",
+      "sha256" : "8bf6ba9ce4bd9c0c300395014cdf962c8d0fcce2f2833b3d16e9f03357d16231"
+    },
+    {
+      "bytes" : 4463,
+      "path" : "lessons/rust-scalar-types-and-inference.md",
+      "sha256" : "b9131f1acee2feef053ed5a7d86c328c363efb083f8d468868994b0bae11257f"
+    },
+    {
+      "bytes" : 5168,
+      "path" : "lessons/rust-slices-and-borrowed-params.md",
+      "sha256" : "c13397f814616cd94580ac6fb51623ce52c2c9abf062bf05c3664d0a2a048390"
+    },
+    {
+      "bytes" : 4587,
+      "path" : "lessons/rust-strings-and-slices.md",
+      "sha256" : "f34830a36f1e970ad8446ca2bda6e39317c9fcc7a94948e83ee0fad987b0b2a0"
+    },
+    {
+      "bytes" : 5133,
+      "path" : "lessons/rust-structs.md",
+      "sha256" : "fec924afe305338d7cd47556b64912f01ed03026ec665ffbb7b51ed57befa55b"
+    },
+    {
+      "bytes" : 6140,
+      "path" : "lessons/rust-testing-with-assert.md",
+      "sha256" : "c560192d7c9617c4f933d02072a9e0a15c1c9775603024dc4a4a4c72b814389f"
+    },
+    {
+      "bytes" : 5531,
+      "path" : "lessons/rust-traits.md",
+      "sha256" : "e342912a6a6b6b490cb2d8ad16c8afa4f754dfd9f3e7a5212433c48f81663ca8"
+    },
+    {
+      "bytes" : 4849,
+      "path" : "lessons/rust-vectors.md",
+      "sha256" : "6a901afb891de11f0d789f3bd0718a1f1113efd9e8c1893f6f2f0ca4c5e289ed"
+    },
+    {
+      "bytes" : 145,
+      "path" : "solutions/rust-borrowing-references.rs",
+      "sha256" : "e13ef48c1bd7f4143020c93e8913f9f43e6ec91155e133a0b9a91a814d7f7c16"
+    },
+    {
+      "bytes" : 654,
+      "path" : "solutions/rust-capstone-word-count.rs",
+      "sha256" : "8b6d6aa5dd5ec362ef2ff1a2c1499eb407345a7a520efa08a5e56d540cff063e"
+    },
+    {
+      "bytes" : 192,
+      "path" : "solutions/rust-closures.rs",
+      "sha256" : "dd118d232d56f367caa61247f34d36baec5983bcfa8d3c41ba9a67c5ed45bb39"
+    },
+    {
+      "bytes" : 196,
+      "path" : "solutions/rust-control-flow-if-loop.rs",
+      "sha256" : "5cb0bf43fb9e435ab8cf4bd50b08c1dfec103db4295712b3e9a7a557e8d167fa"
+    },
+    {
+      "bytes" : 221,
+      "path" : "solutions/rust-derive-and-display.rs",
+      "sha256" : "5b281f7799bf655db485916b5afcd997414847d80fd94a3f2ee0aa4ade65c2b5"
+    },
+    {
+      "bytes" : 248,
+      "path" : "solutions/rust-enums-and-match.rs",
+      "sha256" : "e5ac52c7d5c4c1e4ac322c0a4d5c4c42591c998a7ecb02dd46e9d4be6418a5fa"
+    },
+    {
+      "bytes" : 130,
+      "path" : "solutions/rust-for-and-ranges.rs",
+      "sha256" : "89d3f11bf7b8355d420b6ec6d0060d952d392f5020000724c32b4ac28e3897a9"
+    },
+    {
+      "bytes" : 73,
+      "path" : "solutions/rust-functions-and-return.rs",
+      "sha256" : "a50908b62bd624adff452f9396ff110ad5de897810a64499c0a34aaf174fc016"
+    },
+    {
+      "bytes" : 258,
+      "path" : "solutions/rust-generics.rs",
+      "sha256" : "487b93a34e615d1daf8f07cb1b2e77d34a6ab3aaf1c9e9c5a6fec08407f2e52d"
+    },
+    {
+      "bytes" : 432,
+      "path" : "solutions/rust-hashmap.rs",
+      "sha256" : "80a91f18b9ebb1b57e8e2e5ba2a59b11f713242b05b3c0e30dc63dff4eac800b"
+    },
+    {
+      "bytes" : 179,
+      "path" : "solutions/rust-hello-and-println.rs",
+      "sha256" : "16745ee480587927510f58f47a5379b00747fe2767c36bc996e9bd7ecb0eb325"
+    },
+    {
+      "bytes" : 198,
+      "path" : "solutions/rust-iterator-consumers.rs",
+      "sha256" : "df5f008ef025826cd674b97bf703b8b9ec5e4751670f9593be26ca7d64dc54bc"
+    },
+    {
+      "bytes" : 159,
+      "path" : "solutions/rust-iterators-map-filter.rs",
+      "sha256" : "17130face9b28177e0539218d5ad775fcc680086f3f6aceddbf08ee268d51513"
+    },
+    {
+      "bytes" : 116,
+      "path" : "solutions/rust-let-and-mut.rs",
+      "sha256" : "0fe1684a3aea1613808fa267dd0c4d128e1ceafcbabcc4755d0d093412d3f893"
+    },
+    {
+      "bytes" : 124,
+      "path" : "solutions/rust-lifetimes-basics.rs",
+      "sha256" : "c7ebe65054b5768bf3615caa66d40c2ee0b7f545bd2bf3ffc101bfc4cfbd5d4b"
+    },
+    {
+      "bytes" : 249,
+      "path" : "solutions/rust-modules.rs",
+      "sha256" : "b7a4cbce7a300a53729701ec6062041e30f71fae6dbe9807c9525b562168828d"
+    },
+    {
+      "bytes" : 200,
+      "path" : "solutions/rust-option.rs",
+      "sha256" : "33b984163a90ea92a8a1a957dbb5d36eb5dee0d3a4bb7a590a2c327372f035fe"
+    },
+    {
+      "bytes" : 175,
+      "path" : "solutions/rust-ownership-move.rs",
+      "sha256" : "d7bac43ecca05978bb640ce428b684aa49cf65f6431538edeb03cd3d67bf3d5d"
+    },
+    {
+      "bytes" : 388,
+      "path" : "solutions/rust-result-and-error.rs",
+      "sha256" : "d7092afac1e4db077fff08b08d0cd670433cbc8f3fcb0221c0d23fc393c096f4"
+    },
+    {
+      "bytes" : 74,
+      "path" : "solutions/rust-scalar-types-and-inference.rs",
+      "sha256" : "08dd20617f263ddc7a467ebfbc11c1a25587d24b2f006dfb4d7d0abdc06b6e53"
+    },
+    {
+      "bytes" : 164,
+      "path" : "solutions/rust-slices-and-borrowed-params.rs",
+      "sha256" : "a667a3ce8075d197ec1e0d98b4c26a847b8481397ae12fe85c64ace99cf6025d"
+    },
+    {
+      "bytes" : 154,
+      "path" : "solutions/rust-strings-and-slices.rs",
+      "sha256" : "b9c360ff93ea30891e820059305a9b2f96112834ce5073bf8c12e3ac10f56272"
+    },
+    {
+      "bytes" : 334,
+      "path" : "solutions/rust-structs.rs",
+      "sha256" : "f82b32678e778fd539e8ae8d1d846de081896661198af8cf6fb383bd4346b7ea"
+    },
+    {
+      "bytes" : 228,
+      "path" : "solutions/rust-testing-with-assert.rs",
+      "sha256" : "3cd8df2b163bd92548887dec7f9fd7a0bfcf9aa34fe4fbc08187637433e16a92"
+    },
+    {
+      "bytes" : 443,
+      "path" : "solutions/rust-traits.rs",
+      "sha256" : "8e42211e6b57384ea20b65ce7b193b7d2ce713417cbc0c57daab5f6b212df81e"
+    },
+    {
+      "bytes" : 191,
+      "path" : "solutions/rust-vectors.rs",
+      "sha256" : "321ca02262699ad12594f5a59e73092cedfe389073aa3587f1b128c4a9f495c4"
+    },
+    {
+      "bytes" : 1518,
+      "path" : "stableids.lock",
+      "sha256" : "93d0c29a1a29d99d15b857f117d05f516489ef982d14b299c000853c24e5f93b"
+    },
+    {
+      "bytes" : 182,
+      "path" : "starters/rust-borrowing-references.rs",
+      "sha256" : "75505e0872f086e4ff633ef499a3a2c5e80f6460cb738b43e41086a4b236bdb4"
+    },
+    {
+      "bytes" : 561,
+      "path" : "starters/rust-capstone-word-count.rs",
+      "sha256" : "243e46b2b3b39beef982509748044c71500447a0dd6be4f590494e49a5b97964"
+    },
+    {
+      "bytes" : 338,
+      "path" : "starters/rust-closures.rs",
+      "sha256" : "7ae91897f48fdf78496721110d73569621d3bc68356a453c096e868037f3af48"
+    },
+    {
+      "bytes" : 185,
+      "path" : "starters/rust-control-flow-if-loop.rs",
+      "sha256" : "9d35dd8eccd3a72a8ec5fc87c264de3bcb65c3376ac807b0e16b799f4529760a"
+    },
+    {
+      "bytes" : 407,
+      "path" : "starters/rust-derive-and-display.rs",
+      "sha256" : "4db79a34f576c8485f6b19b0070e325ff426060175fb1fd69c33e2288d5255a5"
+    },
+    {
+      "bytes" : 252,
+      "path" : "starters/rust-enums-and-match.rs",
+      "sha256" : "c1a818b831ef703945ef87f6a58cd0393825a6b338b1050bdc972bb4e9eba20c"
+    },
+    {
+      "bytes" : 160,
+      "path" : "starters/rust-for-and-ranges.rs",
+      "sha256" : "afd0ab0a13d60be5da224cee4b780ce9bcf7bb303f6a68794770bb22205b8f89"
+    },
+    {
+      "bytes" : 149,
+      "path" : "starters/rust-functions-and-return.rs",
+      "sha256" : "427bd78bd8dda37b2d7d4acba580f19976a6b299a68b0aa19cbb30d3e723ab3e"
+    },
+    {
+      "bytes" : 273,
+      "path" : "starters/rust-generics.rs",
+      "sha256" : "ba9f3e15b84fae202ba3bc1d42e69221ef350e050f7f9d7d1695443e4b210725"
+    },
+    {
+      "bytes" : 305,
+      "path" : "starters/rust-hashmap.rs",
+      "sha256" : "06b3bacc8a4a64d89a4d497e95a3024dab477e013f069656b3d4698eca075705"
+    },
+    {
+      "bytes" : 240,
+      "path" : "starters/rust-hello-and-println.rs",
+      "sha256" : "a138ffce8fce94020562aa5dbd8665fde686e4bb7093d30d059ce976596c280a"
+    },
+    {
+      "bytes" : 233,
+      "path" : "starters/rust-iterator-consumers.rs",
+      "sha256" : "7edce3622de87fb004760440fe57822084c2958719c74a985cf8f77589651abf"
+    },
+    {
+      "bytes" : 179,
+      "path" : "starters/rust-iterators-map-filter.rs",
+      "sha256" : "6b144b2d039f0a703256ac1ddfa543758042bb8333e5ea6f51509a995dd17f93"
+    },
+    {
+      "bytes" : 151,
+      "path" : "starters/rust-let-and-mut.rs",
+      "sha256" : "d9ae9365c709254ac5c3412ca43f7e41402545d5379d45c9e2dc8e25ceca233d"
+    },
+    {
+      "bytes" : 230,
+      "path" : "starters/rust-lifetimes-basics.rs",
+      "sha256" : "6034733d8bc3bd6288f91bbbaa953bd1d10ecb4b8bd8f1065cbc6959e17a39b2"
+    },
+    {
+      "bytes" : 331,
+      "path" : "starters/rust-modules.rs",
+      "sha256" : "01ea60c94fedfb509e90b1dd835a2dd6f97d2d8e6c68488c756b9de8cca064fe"
+    },
+    {
+      "bytes" : 214,
+      "path" : "starters/rust-option.rs",
+      "sha256" : "e29373c9e64d8bca7aa84a354bf0e8802d412af22971d1f96cc17d4a0fa1d055"
+    },
+    {
+      "bytes" : 271,
+      "path" : "starters/rust-ownership-move.rs",
+      "sha256" : "cdf24428b5133dd60ee9e9918d37418dec6dee1faaedf626769770e885e10143"
+    },
+    {
+      "bytes" : 394,
+      "path" : "starters/rust-result-and-error.rs",
+      "sha256" : "b7f9fe34874f563cd8351c16895b89b3e0d8b4ffed314a5ebb025bec2371c11d"
+    },
+    {
+      "bytes" : 157,
+      "path" : "starters/rust-scalar-types-and-inference.rs",
+      "sha256" : "4125f804bcf257ef242e7cb9eb8a523213e0a0ac8338c9e6df4961d44fe3ab83"
+    },
+    {
+      "bytes" : 233,
+      "path" : "starters/rust-slices-and-borrowed-params.rs",
+      "sha256" : "bd31173e9a1fad8e7b1279b44ce8d2f80d812cccd45f238a3fad4b7878cb4ee1"
+    },
+    {
+      "bytes" : 267,
+      "path" : "starters/rust-strings-and-slices.rs",
+      "sha256" : "9e0b8bd1188810e7bd515793900ce3f79714f91debcc0ca9b016d49e82c7dd7b"
+    },
+    {
+      "bytes" : 473,
+      "path" : "starters/rust-structs.rs",
+      "sha256" : "3a0d92d19a6dc1a778f7ba6487c10d597319bd2227201edf6b5078cf40ed2323"
+    },
+    {
+      "bytes" : 233,
+      "path" : "starters/rust-testing-with-assert.rs",
+      "sha256" : "29b314e4cef823d1ead58fab3a36ba2c2b1b393aef216c15fb755c015b34f67e"
+    },
+    {
+      "bytes" : 603,
+      "path" : "starters/rust-traits.rs",
+      "sha256" : "bc9154bf6ba13cd9cb91fb4edf5f000b1b1eb59b73d0a52653c2a518b5108032"
+    },
+    {
+      "bytes" : 184,
+      "path" : "starters/rust-vectors.rs",
+      "sha256" : "180ac9dfa66670ab119d695d56ef548f27dbc15e82e0ef0261e3ede78b3b05ec"
+    },
+    {
+      "bytes" : 711,
+      "path" : "tests/rust-borrowing-references.rs",
+      "sha256" : "dae36d11229631c05919d63a7578194ce6c75d7b0c9bbf52c92238b155c4013f"
+    },
+    {
+      "bytes" : 1157,
+      "path" : "tests/rust-capstone-word-count.rs",
+      "sha256" : "35d3a5c6538f22253c5bbd9650cded3d0aee6d590c62e45d4fb30fafaed49b79"
+    },
+    {
+      "bytes" : 878,
+      "path" : "tests/rust-closures.rs",
+      "sha256" : "c8ba0fb3abb75aea69a2af7db0dac36de8b5d76b7b5acd1ac4c2d1bfa4ced498"
+    },
+    {
+      "bytes" : 446,
+      "path" : "tests/rust-control-flow-if-loop.rs",
+      "sha256" : "4f8191457f2456088538eb6deb8a9f7f365587c61a37665177f12f2d67655036"
+    },
+    {
+      "bytes" : 642,
+      "path" : "tests/rust-derive-and-display.rs",
+      "sha256" : "fe7bdba10baa02c78409871724c8efb9d4b1b38f77dd8455d9b6a3d34b7184ac"
+    },
+    {
+      "bytes" : 543,
+      "path" : "tests/rust-enums-and-match.rs",
+      "sha256" : "c441920184d63e13b358fc2cb4896d5d9f62f3ca0a57866128a67a45cb03e7fb"
+    },
+    {
+      "bytes" : 453,
+      "path" : "tests/rust-for-and-ranges.rs",
+      "sha256" : "b4f66121f13c4f854ce746c23fab4dd34890835b60540d9efb99222ef766ff4a"
+    },
+    {
+      "bytes" : 464,
+      "path" : "tests/rust-functions-and-return.rs",
+      "sha256" : "642c68d31f021a1d30bd3943090d39e0e0d60d9ff653868c044956a4701b0637"
+    },
+    {
+      "bytes" : 557,
+      "path" : "tests/rust-generics.rs",
+      "sha256" : "aa26d4bebd3b269827f6ae0f406af684e525a0a3d20b8963e01ddf0212d455bf"
+    },
+    {
+      "bytes" : 1058,
+      "path" : "tests/rust-hashmap.rs",
+      "sha256" : "c9ce7738e3b21af8fcc85c833fc290ef1f409097f5f85ba2c8165c0294d2e37a"
+    },
+    {
+      "bytes" : 446,
+      "path" : "tests/rust-hello-and-println.rs",
+      "sha256" : "eabe06baffc62d02f7a9530117f7862998a2477db8f8296791ead9cf70a979b4"
+    },
+    {
+      "bytes" : 529,
+      "path" : "tests/rust-iterator-consumers.rs",
+      "sha256" : "94fe959ca9c320d572d26b47f15cdaa25d9f1d83127aca42425e2aefe2f47eca"
+    },
+    {
+      "bytes" : 553,
+      "path" : "tests/rust-iterators-map-filter.rs",
+      "sha256" : "699818890dcc7bd21863644dec50f4f8d149422de8eb6b15ed3ddd8acba6944c"
+    },
+    {
+      "bytes" : 347,
+      "path" : "tests/rust-let-and-mut.rs",
+      "sha256" : "778789bd1f4bcbdd8fc42d6fe7e3cd58f55c8ef547b6423897afb873fef7e01d"
+    },
+    {
+      "bytes" : 564,
+      "path" : "tests/rust-lifetimes-basics.rs",
+      "sha256" : "15ff04a65f120a06ef89de1bfba94ede4bb12a2a513887375e2f9b5a509b3c28"
+    },
+    {
+      "bytes" : 538,
+      "path" : "tests/rust-modules.rs",
+      "sha256" : "ea3e8c4fec4d2f6e5f897c458a5c4a48a1ac2b141457f04226495753cf63fa99"
+    },
+    {
+      "bytes" : 514,
+      "path" : "tests/rust-option.rs",
+      "sha256" : "f1b19a40dfb303a775f1fbde756849d466cab5aff7b720a738cb0e60458a0f40"
+    },
+    {
+      "bytes" : 510,
+      "path" : "tests/rust-ownership-move.rs",
+      "sha256" : "ed885d8d8ebb2218fa32457006c4f11b3721b8759dbf8e748b712d657dd31ffc"
+    },
+    {
+      "bytes" : 623,
+      "path" : "tests/rust-result-and-error.rs",
+      "sha256" : "ee351cffe324544e7c91a01529ba1374510034ec7849147671627f9dcf69ceb7"
+    },
+    {
+      "bytes" : 439,
+      "path" : "tests/rust-scalar-types-and-inference.rs",
+      "sha256" : "7e14f530b20d0c8363c0926a893244a1bb7674c23e0e5ccf9fa8373aa1d4af51"
+    },
+    {
+      "bytes" : 581,
+      "path" : "tests/rust-slices-and-borrowed-params.rs",
+      "sha256" : "4509c7773fff849e4d6653beac8cf1e060b5854b904398d6be09d41a2d53adfc"
+    },
+    {
+      "bytes" : 503,
+      "path" : "tests/rust-strings-and-slices.rs",
+      "sha256" : "565bf55c5e361d26039ae268fe76e992d58033859333310b0e66e74d42beb505"
+    },
+    {
+      "bytes" : 640,
+      "path" : "tests/rust-structs.rs",
+      "sha256" : "591a539e65d82b9702ec7c9b26bcea2e91d0f65738adb662dcd713ab35b7ddfe"
+    },
+    {
+      "bytes" : 542,
+      "path" : "tests/rust-testing-with-assert.rs",
+      "sha256" : "37656d01d3fce810be21df9c32747135c9e89452ff77967915548dd64438e5a6"
+    },
+    {
+      "bytes" : 680,
+      "path" : "tests/rust-traits.rs",
+      "sha256" : "3d7532b4c71861199e1ed23a7b45f921e00638a41d28dcc65567d8123c8226fb"
+    },
+    {
+      "bytes" : 499,
+      "path" : "tests/rust-vectors.rs",
+      "sha256" : "2cfb9d92ac86dc985ae0d45b8b70479318a49efbced09610f5c344a1ee41ab78"
+    }
+  ],
+  "generatedAt" : "2026-09-07T14:32:57Z",
+  "languages" : [
+    "rust"
+  ],
+  "lessons" : [
+    {
+      "language" : "rust",
+      "objectives" : [
+        "fn main 을 정의하고 println! 으로 문자열을 출력할 수 있다",
+        "println! 의 {} 자리에 값을 끼워 출력할 수 있다",
+        "// 로 주석을 달아 실행에 영향이 없음을 확인할 수 있다"
+      ],
+      "order" : 1,
+      "path" : "lessons/rust-hello-and-println.md",
+      "prerequisites" : [
+
+      ],
+      "stableID" : "rust-hello-and-println",
+      "title" : "첫 실행: println! 과 주석"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "let 으로 값을 묶고 println! 으로 확인할 수 있다",
+        "mut 없이 재대입하면 컴파일 오류가 난다는 것을 확인하고 그 오류를 읽을 수 있다",
+        "mut 를 붙여 값을 바꿀 수 있다"
+      ],
+      "order" : 2,
+      "path" : "lessons/rust-let-and-mut.md",
+      "prerequisites" : [
+        "rust-hello-and-println"
+      ],
+      "stableID" : "rust-let-and-mut",
+      "title" : "값을 담는 법: let 과 mut"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "i32·f64·bool 값을 선언하고 연산할 수 있다",
+        "타입 표기를 생략했을 때 추론되는 타입을 설명할 수 있다",
+        "정수 나눗셈과 실수 나눗셈의 결과 차이를 예측할 수 있다"
+      ],
+      "order" : 3,
+      "path" : "lessons/rust-scalar-types-and-inference.md",
+      "prerequisites" : [
+        "rust-let-and-mut"
+      ],
+      "stableID" : "rust-scalar-types-and-inference",
+      "title" : "숫자와 불리언: 타입과 추론"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "String::from 과 문자열 리터럴의 차이를 설명할 수 있다",
+        "push_str 과 + 로 문자열을 잇을 수 있다",
+        "len 과 슬라이스로 문자열의 일부를 얻을 수 있다"
+      ],
+      "order" : 4,
+      "path" : "lessons/rust-strings-and-slices.md",
+      "prerequisites" : [
+        "rust-scalar-types-and-inference"
+      ],
+      "stableID" : "rust-strings-and-slices",
+      "title" : "문자열: String 과 &str"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "인자와 반환 타입을 갖춘 fn 을 정의할 수 있다",
+        "세미콜론 없는 마지막 식이 반환값이 된다는 것을 설명할 수 있다",
+        "return 을 써서 일찍 반환할 수 있다"
+      ],
+      "order" : 5,
+      "path" : "lessons/rust-functions-and-return.md",
+      "prerequisites" : [
+        "rust-scalar-types-and-inference"
+      ],
+      "stableID" : "rust-functions-and-return",
+      "title" : "함수: fn 과 반환값"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "if·else if·else 로 분기할 수 있다",
+        "if 를 식으로 써서 let 에 대입할 수 있다",
+        "while 과 loop 로 반복하고 break 로 빠져나올 수 있다"
+      ],
+      "order" : 6,
+      "path" : "lessons/rust-control-flow-if-loop.md",
+      "prerequisites" : [
+        "rust-functions-and-return"
+      ],
+      "stableID" : "rust-control-flow-if-loop",
+      "title" : "흐름 제어: if 와 loop·while"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "for 와 범위(a..b)로 정해진 횟수만큼 반복할 수 있다",
+        "배열을 for 로 순회할 수 있다",
+        "enumerate 로 인덱스와 값을 함께 얻을 수 있다"
+      ],
+      "order" : 7,
+      "path" : "lessons/rust-for-and-ranges.md",
+      "prerequisites" : [
+        "rust-control-flow-if-loop"
+      ],
+      "stableID" : "rust-for-and-ranges",
+      "title" : "반복: for 와 범위"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "String 을 다른 변수에 대입한 뒤 원래 변수를 쓰면 컴파일 오류가 난다는 것을 확인할 수 있다",
+        "이동과 복사(Copy)가 갈리는 기준을 타입으로 설명할 수 있다",
+        "clone 으로 깊은 복사를 만들 수 있다"
+      ],
+      "order" : 8,
+      "path" : "lessons/rust-ownership-move.md",
+      "prerequisites" : [
+        "rust-strings-and-slices"
+      ],
+      "stableID" : "rust-ownership-move",
+      "title" : "소유권: 이동(move)"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "& 로 값을 빌려 함수에 넘길 수 있다",
+        "&mut 로 빌린 값을 함수 안에서 바꿀 수 있다",
+        "가변 참조가 둘이면 컴파일 오류가 난다는 것을 확인할 수 있다"
+      ],
+      "order" : 9,
+      "path" : "lessons/rust-borrowing-references.md",
+      "prerequisites" : [
+        "rust-ownership-move"
+      ],
+      "stableID" : "rust-borrowing-references",
+      "title" : "빌리기: & 와 &mut"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "Vec::new 와 vec! 로 벡터를 만들 수 있다",
+        "push 로 원소를 더하고 인덱스로 꺼낼 수 있다",
+        "for 로 벡터를 순회하며 합을 구할 수 있다"
+      ],
+      "order" : 10,
+      "path" : "lessons/rust-vectors.md",
+      "prerequisites" : [
+        "rust-for-and-ranges",
+        "rust-borrowing-references"
+      ],
+      "stableID" : "rust-vectors",
+      "title" : "벡터: Vec<T>"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "필드를 가진 struct 를 정의하고 인스턴스를 만들 수 있다",
+        "impl 블록에 메서드를 정의하고 호출할 수 있다",
+        "연관 함수(new)로 생성자를 만들 수 있다"
+      ],
+      "order" : 11,
+      "path" : "lessons/rust-structs.md",
+      "prerequisites" : [
+        "rust-functions-and-return",
+        "rust-borrowing-references"
+      ],
+      "stableID" : "rust-structs",
+      "title" : "구조체: struct 와 impl"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "연관 값을 가진 enum 을 정의할 수 있다",
+        "match 로 모든 변형을 처리할 수 있다",
+        "경우를 빠뜨리면 컴파일 오류가 난다는 것을 확인할 수 있다"
+      ],
+      "order" : 12,
+      "path" : "lessons/rust-enums-and-match.md",
+      "prerequisites" : [
+        "rust-structs"
+      ],
+      "stableID" : "rust-enums-and-match",
+      "title" : "열거형과 match"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "Option<T> 를 반환하는 함수를 쓸 수 있다",
+        "match 와 if let 으로 Some·None 을 가를 수 있다",
+        "unwrap_or 로 기본값을 줄 수 있다"
+      ],
+      "order" : 13,
+      "path" : "lessons/rust-option.md",
+      "prerequisites" : [
+        "rust-enums-and-match"
+      ],
+      "stableID" : "rust-option",
+      "title" : "없을 수도 있는 값: Option<T>"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "Result 를 반환하는 함수를 정의할 수 있다",
+        "match 로 Ok·Err 를 가를 수 있다",
+        "? 로 오류를 호출자에게 전파할 수 있다"
+      ],
+      "order" : 14,
+      "path" : "lessons/rust-result-and-error.md",
+      "prerequisites" : [
+        "rust-option"
+      ],
+      "stableID" : "rust-result-and-error",
+      "title" : "실패할 수 있는 일: Result<T, E>"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "HashMap 에 값을 넣고 get 으로 꺼낼 수 있다",
+        "entry API 로 개수를 셀 수 있다",
+        "순회 순서가 보장되지 않아 정렬해야 한다는 것을 설명할 수 있다"
+      ],
+      "order" : 15,
+      "path" : "lessons/rust-hashmap.md",
+      "prerequisites" : [
+        "rust-vectors",
+        "rust-option"
+      ],
+      "stableID" : "rust-hashmap",
+      "title" : "키로 찾는 자료: HashMap"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "iter 와 map 으로 각 원소를 변환할 수 있다",
+        "filter 로 조건에 맞는 것만 남길 수 있다",
+        "collect 로 결과를 Vec 으로 거둘 수 있다"
+      ],
+      "order" : 16,
+      "path" : "lessons/rust-iterators-map-filter.md",
+      "prerequisites" : [
+        "rust-vectors"
+      ],
+      "stableID" : "rust-iterators-map-filter",
+      "title" : "반복자: map 과 filter"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "sum 과 count 로 반복자를 값으로 접을 수 있다",
+        "fold 로 임의의 누적을 만들 수 있다",
+        "find 와 any 로 조건 검사를 할 수 있다"
+      ],
+      "order" : 17,
+      "path" : "lessons/rust-iterator-consumers.md",
+      "prerequisites" : [
+        "rust-iterators-map-filter"
+      ],
+      "stableID" : "rust-iterator-consumers",
+      "title" : "반복자 소비: sum·fold·find"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "&[T] 를 받는 함수를 정의하고 Vec 과 배열 둘 다 넘길 수 있다",
+        "&str 을 받는 함수가 String 도 받는 이유를 설명할 수 있다",
+        "슬라이스로 부분 구간을 넘길 수 있다"
+      ],
+      "order" : 18,
+      "path" : "lessons/rust-slices-and-borrowed-params.md",
+      "prerequisites" : [
+        "rust-vectors",
+        "rust-strings-and-slices"
+      ],
+      "stableID" : "rust-slices-and-borrowed-params",
+      "title" : "슬라이스를 받는 함수"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "제네릭 함수를 정의하고 여러 타입으로 호출할 수 있다",
+        "제네릭 struct 를 정의할 수 있다",
+        "트레이트 경계가 왜 필요한지 컴파일 오류로 설명할 수 있다"
+      ],
+      "order" : 19,
+      "path" : "lessons/rust-generics.md",
+      "prerequisites" : [
+        "rust-structs",
+        "rust-iterator-consumers"
+      ],
+      "stableID" : "rust-generics",
+      "title" : "제네릭: 타입을 매개변수로"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "트레이트를 정의하고 타입에 구현할 수 있다",
+        "기본 구현을 제공할 수 있다",
+        "impl Trait 으로 트레이트를 받는 함수를 쓸 수 있다"
+      ],
+      "order" : 20,
+      "path" : "lessons/rust-traits.md",
+      "prerequisites" : [
+        "rust-generics"
+      ],
+      "stableID" : "rust-traits",
+      "title" : "트레이트: 공통 능력의 약속"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "derive 로 Debug·Clone·PartialEq 를 얻을 수 있다",
+        "{:?} 와 {} 의 차이를 설명할 수 있다",
+        "Display 를 구현해 사람이 읽을 출력을 만들 수 있다"
+      ],
+      "order" : 21,
+      "path" : "lessons/rust-derive-and-display.md",
+      "prerequisites" : [
+        "rust-traits"
+      ],
+      "stableID" : "rust-derive-and-display",
+      "title" : "파생과 출력: derive 와 Display"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "클로저를 정의해 변수에 담고 호출할 수 있다",
+        "클로저가 바깥 변수를 캡처하는 것을 확인할 수 있다",
+        "클로저를 sort_by_key 같은 곳에 넘길 수 있다"
+      ],
+      "order" : 22,
+      "path" : "lessons/rust-closures.md",
+      "prerequisites" : [
+        "rust-iterators-map-filter"
+      ],
+      "stableID" : "rust-closures",
+      "title" : "클로저: 환경을 담는 함수"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "참조를 반환하는 함수에 수명 표기가 필요한 이유를 설명할 수 있다",
+        "'a 를 붙여 두 참조 중 하나를 반환하는 함수를 쓸 수 있다",
+        "댕글링 참조가 컴파일 단계에서 막히는 것을 확인할 수 있다"
+      ],
+      "order" : 23,
+      "path" : "lessons/rust-lifetimes-basics.md",
+      "prerequisites" : [
+        "rust-borrowing-references",
+        "rust-slices-and-borrowed-params"
+      ],
+      "stableID" : "rust-lifetimes-basics",
+      "title" : "수명의 기초: 왜 'a 가 필요한가"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "mod 로 코드를 묶을 수 있다",
+        "pub 으로 바깥에 공개할 항목을 고를 수 있다",
+        "use 로 경로를 줄여 쓸 수 있다"
+      ],
+      "order" : 24,
+      "path" : "lessons/rust-modules.md",
+      "prerequisites" : [
+        "rust-structs"
+      ],
+      "stableID" : "rust-modules",
+      "title" : "코드 나누기: mod 와 pub"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "#[test] 함수를 쓰고 assert_eq! 로 검사할 수 있다",
+        "실패한 테스트의 출력에서 기대와 실제를 읽을 수 있다",
+        "경계값 테스트를 스스로 하나 더 쓸 수 있다"
+      ],
+      "order" : 25,
+      "path" : "lessons/rust-testing-with-assert.md",
+      "prerequisites" : [
+        "rust-functions-and-return",
+        "rust-result-and-error"
+      ],
+      "stableID" : "rust-testing-with-assert",
+      "title" : "테스트: #[test] 와 assert"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "문자열을 단어로 나누고 HashMap 으로 빈도를 셀 수 있다",
+        "빈도 내림차순·단어 오름차순으로 정렬할 수 있다",
+        "빈 입력과 잘못된 인자를 Result 로 다룰 수 있다"
+      ],
+      "order" : 26,
+      "path" : "lessons/rust-capstone-word-count.md",
+      "prerequisites" : [
+        "rust-hashmap",
+        "rust-closures",
+        "rust-result-and-error",
+        "rust-testing-with-assert"
+      ],
+      "stableID" : "rust-capstone-word-count",
+      "title" : "종합 과제: 단어 빈도 세기"
+    }
+  ],
+  "minAppVersion" : "0.1.0",
+  "packID" : "polyglot-rust",
+  "schemaVersion" : 1,
+  "version" : "0.1.0"
+}

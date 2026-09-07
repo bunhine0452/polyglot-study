@@ -1,0 +1,7 @@
+홀수: 1
+홀수: 3
+홀수: 5
+while: 0
+while: 1
+while: 2
+do-while: 10

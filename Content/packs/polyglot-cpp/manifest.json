@@ -1,0 +1,1069 @@
+{
+  "displayName" : "C++ 입문",
+  "files" : [
+    {
+      "bytes" : 84,
+      "path" : "expected/cpp-algorithms-sort-find.txt",
+      "sha256" : "3cd94766a62e12a6f9811e036ddcede8b9b4d55c221c18b1648dd28d3e2bf574"
+    },
+    {
+      "bytes" : 47,
+      "path" : "expected/cpp-capstone-text-stats.txt",
+      "sha256" : "b730bf533025d8b80285f8b5dbea10eab7de321cdc6db55ed106d5f7bd15e928"
+    },
+    {
+      "bytes" : 111,
+      "path" : "expected/cpp-classes-and-encapsulation.txt",
+      "sha256" : "4b6f6163214f745d5906d2cf67233a145e8bf85abe4fde3dce8f9bf17090ff78"
+    },
+    {
+      "bytes" : 55,
+      "path" : "expected/cpp-const-and-references.txt",
+      "sha256" : "8d8ef03ab40823f4e4761f9deae9f3d5fab443132428badee748164669ad6748"
+    },
+    {
+      "bytes" : 17,
+      "path" : "expected/cpp-control-flow.txt",
+      "sha256" : "5bcaf131f2c80e5564a603bd5db69efb621a2acf0e33b18e83d436f2c2deef72"
+    },
+    {
+      "bytes" : 97,
+      "path" : "expected/cpp-dynamic-memory-and-raii.txt",
+      "sha256" : "36b5dcdc5627bff1bcbc17b02c6e0e1c2eecebed31124f983458b59cf45615e6"
+    },
+    {
+      "bytes" : 77,
+      "path" : "expected/cpp-file-io.txt",
+      "sha256" : "07896f0c04a115cdd2497cd49ea65aa107756e289c16ae2e1dcd2f592692e5c0"
+    },
+    {
+      "bytes" : 71,
+      "path" : "expected/cpp-functions.txt",
+      "sha256" : "6893b1eaac59eac63a57081b6a46591c21b0e14c9fbfc66645a7181a6dab814f"
+    },
+    {
+      "bytes" : 62,
+      "path" : "expected/cpp-hello-and-cout.txt",
+      "sha256" : "716f2df72c4a5e14483bae6e60147a4e59a7f0e302fcbb849b50505470334c28"
+    },
+    {
+      "bytes" : 116,
+      "path" : "expected/cpp-inheritance-and-virtual.txt",
+      "sha256" : "3a045efed93ba8948a055196e778adce38adf908715c774752f60fb15dbfa28a"
+    },
+    {
+      "bytes" : 51,
+      "path" : "expected/cpp-io-and-formatting.txt",
+      "sha256" : "f318303a552f1a142c6d152b07dfd3f26bc22d5314ae6d2c9bdfe1492a25f6b6"
+    },
+    {
+      "bytes" : 73,
+      "path" : "expected/cpp-lambdas.txt",
+      "sha256" : "f1bc16de6d63d9095a77302b5c701c85a5f1793624f44ead16182d3af55f65ea"
+    },
+    {
+      "bytes" : 70,
+      "path" : "expected/cpp-loops.txt",
+      "sha256" : "2580cada33683cbf8c574793b346019f63a00f630a3a9f741edb8b8a89d876b7"
+    },
+    {
+      "bytes" : 121,
+      "path" : "expected/cpp-maps.txt",
+      "sha256" : "665b07a4b96496407a9d22c1b1c7af5e2e85f508dd86f8c1a4c5ffb8dfdf35e0"
+    },
+    {
+      "bytes" : 45,
+      "path" : "expected/cpp-operator-overloading.txt",
+      "sha256" : "b82b965af835be426581620405da6220a1652267d4e99857dcaf7ba166cb2903"
+    },
+    {
+      "bytes" : 87,
+      "path" : "expected/cpp-optional-and-error.txt",
+      "sha256" : "914e055fb794a55d3e75caa17a0324344019d61556981964219664fb681276b7"
+    },
+    {
+      "bytes" : 56,
+      "path" : "expected/cpp-pass-by-reference.txt",
+      "sha256" : "7869ecd88bba3fef74f96899996e2dbcb8311b2f8faa8e2fda873f6bfa2a73a4"
+    },
+    {
+      "bytes" : 96,
+      "path" : "expected/cpp-pointers-and-nullptr.txt",
+      "sha256" : "0f9d8f0f8f9b644630d425adc4116e701f40e5e5ba6f6cfbd968938f80ad73db"
+    },
+    {
+      "bytes" : 41,
+      "path" : "expected/cpp-range-based-algorithms.txt",
+      "sha256" : "60b1155890b82038e066c36cf61ee2311793e65dad9299a58578b6db1671b3d3"
+    },
+    {
+      "bytes" : 201,
+      "path" : "expected/cpp-smart-pointers.txt",
+      "sha256" : "b855c2700dec561af31f8f545827f0c9fc1e0dd98a4485a858a1a840df1bb321"
+    },
+    {
+      "bytes" : 70,
+      "path" : "expected/cpp-strings.txt",
+      "sha256" : "07141408e6c520120f259285740a16e9a1beebce775ef405a71ad59d584e2c4e"
+    },
+    {
+      "bytes" : 68,
+      "path" : "expected/cpp-structs.txt",
+      "sha256" : "f02a73ffd84303c7f2a6989f039dfcbc2dd72c2bf17a636d29e866abda3f7f36"
+    },
+    {
+      "bytes" : 64,
+      "path" : "expected/cpp-templates.txt",
+      "sha256" : "f2148f70c2ce015db84d169c9bab953d6c31539586be79b3ff97295e38eec18b"
+    },
+    {
+      "bytes" : 153,
+      "path" : "expected/cpp-testing-with-assert.txt",
+      "sha256" : "4e7fed2b3b30608a385874dc5e70b7ba3bcf939561953b6fb384c26e489e0953"
+    },
+    {
+      "bytes" : 66,
+      "path" : "expected/cpp-variables-and-types.txt",
+      "sha256" : "cf9213898083f1c813a1139f4695784ab72b897fc781cd4b155b9b723fd3aa07"
+    },
+    {
+      "bytes" : 58,
+      "path" : "expected/cpp-vector-basics.txt",
+      "sha256" : "44c69f6a793d1d7633578c7e3ce33a0f13a82027e46459693cfeea3dc2356efc"
+    },
+    {
+      "bytes" : 5802,
+      "path" : "lessons/cpp-algorithms-sort-find.md",
+      "sha256" : "14c0967c7a9e01e0ad23039decd826eeb8037734f80f238d807161540346da34"
+    },
+    {
+      "bytes" : 6958,
+      "path" : "lessons/cpp-capstone-text-stats.md",
+      "sha256" : "cff6e11072ce728c17ca079b4cc5d6b56bcb2139cb95efa43b3260b123b72da0"
+    },
+    {
+      "bytes" : 6652,
+      "path" : "lessons/cpp-classes-and-encapsulation.md",
+      "sha256" : "1e7993a9b21c528364a07d3d91d07dfb6f7355249d53b81f485cf4654861da7a"
+    },
+    {
+      "bytes" : 4996,
+      "path" : "lessons/cpp-const-and-references.md",
+      "sha256" : "56786d3803d3960c8a655b3dd662814d04c7f8219e736cec20fefcb650dc2fd8"
+    },
+    {
+      "bytes" : 5449,
+      "path" : "lessons/cpp-control-flow.md",
+      "sha256" : "f38ae9dfc439f33eb6972cd66e048bfff23eba1f8467dbb6fc77ac34905e38a2"
+    },
+    {
+      "bytes" : 5206,
+      "path" : "lessons/cpp-dynamic-memory-and-raii.md",
+      "sha256" : "ce4be1301b7a2a904094d5a518faa773f7d5c4996c1d0033e209ae29dbeb75cb"
+    },
+    {
+      "bytes" : 5586,
+      "path" : "lessons/cpp-file-io.md",
+      "sha256" : "6f4cf533b1cef2ce372bb9e812389ffaa54f34c6b3f5fa6e8c3a02416740dd85"
+    },
+    {
+      "bytes" : 5338,
+      "path" : "lessons/cpp-functions.md",
+      "sha256" : "f091eeeeb916e47b9f21010a6fc9fc97d5964d74b42a6a48ddb39dcc453f9903"
+    },
+    {
+      "bytes" : 4342,
+      "path" : "lessons/cpp-hello-and-cout.md",
+      "sha256" : "610418e3bf1de890202842723fc4557e2c8de7f82e4799eb04a611fa614ee437"
+    },
+    {
+      "bytes" : 5919,
+      "path" : "lessons/cpp-inheritance-and-virtual.md",
+      "sha256" : "59cd0fbcc59b245d661b409551ff974deebfaacf2dbeefd49959dc511b5eef10"
+    },
+    {
+      "bytes" : 5883,
+      "path" : "lessons/cpp-io-and-formatting.md",
+      "sha256" : "11745b9d9bce97c65f4d3abdf7b64aa04dd990435f501ceb0af89416bbbe9457"
+    },
+    {
+      "bytes" : 5637,
+      "path" : "lessons/cpp-lambdas.md",
+      "sha256" : "b80ec5c1decec26e0742f98f1e232649db354bc7bfba2059c31d49523d6354eb"
+    },
+    {
+      "bytes" : 4917,
+      "path" : "lessons/cpp-loops.md",
+      "sha256" : "d64bb8bead75798c6146f6706f33d3a3b6fdb2b910fe745a6634d94914340fbb"
+    },
+    {
+      "bytes" : 5429,
+      "path" : "lessons/cpp-maps.md",
+      "sha256" : "d45a433b9fe1bf7655c7eb6986b146a0e57b34c8c02c10b00e233ae1b59e9e08"
+    },
+    {
+      "bytes" : 6809,
+      "path" : "lessons/cpp-operator-overloading.md",
+      "sha256" : "7b0373caea05dea434ee0f36a78d6b6ae8a66f5d401084867c9c9f00fb7fb697"
+    },
+    {
+      "bytes" : 6545,
+      "path" : "lessons/cpp-optional-and-error.md",
+      "sha256" : "5c49af82ed48f16d04e408632da783d07376893371c486568eeb1a37d64dad4c"
+    },
+    {
+      "bytes" : 5615,
+      "path" : "lessons/cpp-pass-by-reference.md",
+      "sha256" : "cd2f457fcf3e3cec3caa80762d5c0b3673b2d6d5625d0fba13439806bd199355"
+    },
+    {
+      "bytes" : 5220,
+      "path" : "lessons/cpp-pointers-and-nullptr.md",
+      "sha256" : "27df4159dc28e334bf773bb753b306b2da9db96895b45bff58a39fe6be1d5394"
+    },
+    {
+      "bytes" : 5827,
+      "path" : "lessons/cpp-range-based-algorithms.md",
+      "sha256" : "1d3f030046bdd44dd71b5540282fa440a53dfab4ac1bce5f805dfe9cf3a20b5e"
+    },
+    {
+      "bytes" : 5655,
+      "path" : "lessons/cpp-smart-pointers.md",
+      "sha256" : "3bede735689be4ed753e82a295b1848a05cd0803976734adcc450870a83875b2"
+    },
+    {
+      "bytes" : 5244,
+      "path" : "lessons/cpp-strings.md",
+      "sha256" : "9a15c69551b2e6c9b827a58a8027c94b9423dd35aa428182a66a50c92095079f"
+    },
+    {
+      "bytes" : 5131,
+      "path" : "lessons/cpp-structs.md",
+      "sha256" : "a897bac1568f37e1785c3e2769246744c655e67df38a5cd18753104be8147199"
+    },
+    {
+      "bytes" : 5843,
+      "path" : "lessons/cpp-templates.md",
+      "sha256" : "a78e8dc9ce62680fda448df7203152246e1a9bd8090d80103a43a60fbf9a371e"
+    },
+    {
+      "bytes" : 5775,
+      "path" : "lessons/cpp-testing-with-assert.md",
+      "sha256" : "d2105e3beb31adabac3656406594d04442afce742b0b3814e78b24fac8f06c8f"
+    },
+    {
+      "bytes" : 5417,
+      "path" : "lessons/cpp-variables-and-types.md",
+      "sha256" : "dc8c8414a63830da9d410d3c2885065efb6ed8b6525aa2238960e6d6b03f0f34"
+    },
+    {
+      "bytes" : 4994,
+      "path" : "lessons/cpp-vector-basics.md",
+      "sha256" : "90bea63e863590d6be2201f1a76a6b26c25332bbd340d39ae03b00e7ac99b5d9"
+    },
+    {
+      "bytes" : 513,
+      "path" : "solutions/cpp-algorithms-sort-find.cpp",
+      "sha256" : "a509e58099f754a31ef94ef50bf25ca8bd0e2e7f1c7ef67f88c5582796155600"
+    },
+    {
+      "bytes" : 1321,
+      "path" : "solutions/cpp-capstone-text-stats.cpp",
+      "sha256" : "acaaad11c67e3d3be6eb49e91da3c103329a41e9df0beae5015ff175d2f7c8a1"
+    },
+    {
+      "bytes" : 468,
+      "path" : "solutions/cpp-classes-and-encapsulation.cpp",
+      "sha256" : "9e56f8895d07163e481ab8544c192a9c7279816c1d97cdbe414c802b1abe93ac"
+    },
+    {
+      "bytes" : 46,
+      "path" : "solutions/cpp-const-and-references.cpp",
+      "sha256" : "783c52225b30faabf1fc54ac3d7d9566ff51efd073ea2461a551a1ece32cc030"
+    },
+    {
+      "bytes" : 237,
+      "path" : "solutions/cpp-control-flow.cpp",
+      "sha256" : "6457d9f5daedb8e2c400769683168e9d20b079045efdb080ee33b507b824df37"
+    },
+    {
+      "bytes" : 723,
+      "path" : "solutions/cpp-dynamic-memory-and-raii.cpp",
+      "sha256" : "e6437dec560482286ab2b48128398294628b71ca38493ab336963e8f62552be3"
+    },
+    {
+      "bytes" : 553,
+      "path" : "solutions/cpp-file-io.cpp",
+      "sha256" : "f38379eab20c7fe7068d886fac441697574af34c8e7ef72c9d838778db21d011"
+    },
+    {
+      "bytes" : 92,
+      "path" : "solutions/cpp-functions.cpp",
+      "sha256" : "90c9afc2ec279dfe17432c823e631242ddb9ac186e4e5ea6e4c12cf0b635536a"
+    },
+    {
+      "bytes" : 194,
+      "path" : "solutions/cpp-hello-and-cout.cpp",
+      "sha256" : "4f73c378cd70269be4cde16c99966efddd049d34db8dc4ec2b72b9ff889b6468"
+    },
+    {
+      "bytes" : 736,
+      "path" : "solutions/cpp-inheritance-and-virtual.cpp",
+      "sha256" : "33eada82221c98a0a12b1a73029b4cb3109c27fb74f1efa02fd5960238c805b0"
+    },
+    {
+      "bytes" : 205,
+      "path" : "solutions/cpp-io-and-formatting.cpp",
+      "sha256" : "51056726d1cf60ae8f780103f15ab6cbccfe53384187da21ae95809787357f73"
+    },
+    {
+      "bytes" : 372,
+      "path" : "solutions/cpp-lambdas.cpp",
+      "sha256" : "ecc3986e115ae95818cfadc554fd4a50473480443c80f14c34d44c865d7815d1"
+    },
+    {
+      "bytes" : 243,
+      "path" : "solutions/cpp-loops.cpp",
+      "sha256" : "c8e434240a1e292a000514d8a3a2da2863af7e58a435a18f3a035e67025ad321"
+    },
+    {
+      "bytes" : 265,
+      "path" : "solutions/cpp-maps.cpp",
+      "sha256" : "58871175be14078e8c53a0a18ce3eb301ff0b5816b6e7398a5bb4b89fe2b95ff"
+    },
+    {
+      "bytes" : 818,
+      "path" : "solutions/cpp-operator-overloading.cpp",
+      "sha256" : "0e16a39a711ffa8fa0da10d85d607756ad6165c5f687b6abcf88c9e6c90e04c8"
+    },
+    {
+      "bytes" : 540,
+      "path" : "solutions/cpp-optional-and-error.cpp",
+      "sha256" : "ccaba42bc4770ad22bf992956b452c219ae8ba4bbf4fb9f4ccc1bc2777cd43fa"
+    },
+    {
+      "bytes" : 439,
+      "path" : "solutions/cpp-pass-by-reference.cpp",
+      "sha256" : "8c2aacc40a95862edddfd8b64c96c6ccb4b50f9c5033fdc656f6a9d387ceda6d"
+    },
+    {
+      "bytes" : 226,
+      "path" : "solutions/cpp-pointers-and-nullptr.cpp",
+      "sha256" : "fb6d421c8cfce960d151ffb1977f3fef5f8410a1d2d0f12628719a2c1c21901d"
+    },
+    {
+      "bytes" : 513,
+      "path" : "solutions/cpp-range-based-algorithms.cpp",
+      "sha256" : "ce3cb08556581af00c59d49b0effaebc201f3584c6973f9625a72462baceb1fd"
+    },
+    {
+      "bytes" : 118,
+      "path" : "solutions/cpp-smart-pointers.cpp",
+      "sha256" : "ef0a0ae795bf67ea74c95eb87b288cbac2e30e50a692c20e233efc1ee0fc082d"
+    },
+    {
+      "bytes" : 209,
+      "path" : "solutions/cpp-strings.cpp",
+      "sha256" : "84f9d712434e974089f4da752d368d06866d003760cee435d57638c8ebc3bd32"
+    },
+    {
+      "bytes" : 348,
+      "path" : "solutions/cpp-structs.cpp",
+      "sha256" : "e7d1dfa5eb0d6229209ca95fd6e1600920eb42d9a53d26b3d0c69959b32083cf"
+    },
+    {
+      "bytes" : 636,
+      "path" : "solutions/cpp-templates.cpp",
+      "sha256" : "6f07a3c20aba2d8493e2cd784dd9dae568e49bbbcf4b1c2c57c6d467f11ba0bc"
+    },
+    {
+      "bytes" : 230,
+      "path" : "solutions/cpp-testing-with-assert.cpp",
+      "sha256" : "14f01262c1a8a868350c1ac355581d2f894c33bd25815478e8e28a42429d9cd3"
+    },
+    {
+      "bytes" : 59,
+      "path" : "solutions/cpp-variables-and-types.cpp",
+      "sha256" : "9ef23696df8a447a322387e519b1a320784ba4f9017817cc2fa9e14a4a3e7e56"
+    },
+    {
+      "bytes" : 194,
+      "path" : "solutions/cpp-vector-basics.cpp",
+      "sha256" : "940fa155202fb3ae5b6c6dd92ac3c68025babf0a99618e09843e95dc80d584b6"
+    },
+    {
+      "bytes" : 1454,
+      "path" : "stableids.lock",
+      "sha256" : "ed1c32599667467f7957b134d0a47dd22720d27efb695d2a9ab61a972f3cecc5"
+    },
+    {
+      "bytes" : 414,
+      "path" : "starters/cpp-algorithms-sort-find.cpp",
+      "sha256" : "06ea0630eca5e739e9826172b61bd003345bddb4437698d8d9569110543f9169"
+    },
+    {
+      "bytes" : 884,
+      "path" : "starters/cpp-capstone-text-stats.cpp",
+      "sha256" : "903a178169a18ab4df0ca85ff78afa0d10b0a57034976706b97ab4359edc20f9"
+    },
+    {
+      "bytes" : 648,
+      "path" : "starters/cpp-classes-and-encapsulation.cpp",
+      "sha256" : "fd3d80dbff26822b1332565587cfe487b753503231b1fa9ef63cf757bd0db1d1"
+    },
+    {
+      "bytes" : 195,
+      "path" : "starters/cpp-const-and-references.cpp",
+      "sha256" : "5c329e925d9cfc65d11f39f3326650710af4a60ef70e91b1bbcca00a7d035ffe"
+    },
+    {
+      "bytes" : 196,
+      "path" : "starters/cpp-control-flow.cpp",
+      "sha256" : "155c7c6af32a25d80cfe8b03917581a51121ac2accf15e1d04811b76f1f810e8"
+    },
+    {
+      "bytes" : 827,
+      "path" : "starters/cpp-dynamic-memory-and-raii.cpp",
+      "sha256" : "d9aa8881f9bbbbb54b4dbcf2ebecff7d662808f535c06d743e568763fb7895b3"
+    },
+    {
+      "bytes" : 547,
+      "path" : "starters/cpp-file-io.cpp",
+      "sha256" : "1abacbe0790ece2c72439abd34c9ea62de21d0485abfcdbb134d9ccc7fee5bb0"
+    },
+    {
+      "bytes" : 203,
+      "path" : "starters/cpp-functions.cpp",
+      "sha256" : "0d155248a5af407d7bc8f7ed5fd5f523a4b2cd404f38d439d53e152b92444332"
+    },
+    {
+      "bytes" : 288,
+      "path" : "starters/cpp-hello-and-cout.cpp",
+      "sha256" : "c417220989cd4d3d6b4b3639f1decd27e598d90ead679c38267fe068adb4f194"
+    },
+    {
+      "bytes" : 978,
+      "path" : "starters/cpp-inheritance-and-virtual.cpp",
+      "sha256" : "9194cc0a21e41d8630306332926012c809f48d0c37077b409225d47890c9d6f5"
+    },
+    {
+      "bytes" : 260,
+      "path" : "starters/cpp-io-and-formatting.cpp",
+      "sha256" : "479772d04e804b2700eb002069eebd40b7219afcf529367c53de57570cc4d179"
+    },
+    {
+      "bytes" : 374,
+      "path" : "starters/cpp-lambdas.cpp",
+      "sha256" : "08664074c73c1c722efbcb62d3224de384765c840c606815f3d8ee698f4290e8"
+    },
+    {
+      "bytes" : 214,
+      "path" : "starters/cpp-loops.cpp",
+      "sha256" : "d9b7c5a002f20cb06f2415efe69d92072de2e06971dfecb927bf949d8b1a6374"
+    },
+    {
+      "bytes" : 279,
+      "path" : "starters/cpp-maps.cpp",
+      "sha256" : "c349842eeaed0db922376b26cae06bc748c65e3e3a2c3d79b0cacabe20764568"
+    },
+    {
+      "bytes" : 973,
+      "path" : "starters/cpp-operator-overloading.cpp",
+      "sha256" : "173f18293fe3ba684e719062a3ebe493acdd67117b2927dff51f5a0183592d32"
+    },
+    {
+      "bytes" : 604,
+      "path" : "starters/cpp-optional-and-error.cpp",
+      "sha256" : "727a9adf83e871cf62bdbe9f714453ffb54464d6b53062eb1e8d4194566d501b"
+    },
+    {
+      "bytes" : 326,
+      "path" : "starters/cpp-pass-by-reference.cpp",
+      "sha256" : "9da867ae5baf270674d0e93921ca49fb7766f1819b6cf0c15dbd85af9a0aac22"
+    },
+    {
+      "bytes" : 286,
+      "path" : "starters/cpp-pointers-and-nullptr.cpp",
+      "sha256" : "0b3271f581e9f3e41a356b730f0287424b057e2fe342ab9abfe7f8a5626b23ed"
+    },
+    {
+      "bytes" : 476,
+      "path" : "starters/cpp-range-based-algorithms.cpp",
+      "sha256" : "85312e072a04d418ff6256c4d07dc924569dd9b326689b91ab59b4e2a7cb9687"
+    },
+    {
+      "bytes" : 330,
+      "path" : "starters/cpp-smart-pointers.cpp",
+      "sha256" : "57750a22b3414d44f109f60d8bdd2802a2941f38360a37ad0c5d6366f62c27b9"
+    },
+    {
+      "bytes" : 241,
+      "path" : "starters/cpp-strings.cpp",
+      "sha256" : "bc4afc8d6242fd7b79f135c2037092f50396bcbff7abfed09aa8cbf8524805af"
+    },
+    {
+      "bytes" : 524,
+      "path" : "starters/cpp-structs.cpp",
+      "sha256" : "a5e209ba4174ca480f15ef0a32e4b78d1406490b74b7dfc623b359dcf7c566d3"
+    },
+    {
+      "bytes" : 729,
+      "path" : "starters/cpp-templates.cpp",
+      "sha256" : "2869af8ea35e6c46193f067afe962c8b03dd8ab6652395c69c298ebae5b28218"
+    },
+    {
+      "bytes" : 291,
+      "path" : "starters/cpp-testing-with-assert.cpp",
+      "sha256" : "279b6412426f7fa97ff683995a1a6dff616cae749304fea319ab1dd6e7d3554c"
+    },
+    {
+      "bytes" : 229,
+      "path" : "starters/cpp-variables-and-types.cpp",
+      "sha256" : "3081ccac532c687b5bb6a9b66f46c4ecba6b0c57655c54c40af0aa3983f6ed24"
+    },
+    {
+      "bytes" : 203,
+      "path" : "starters/cpp-vector-basics.cpp",
+      "sha256" : "ba2c3e00eae3d225cb54be679e13999e02a09eb9bd0acdf0e0f0cc0a98616c34"
+    },
+    {
+      "bytes" : 1039,
+      "path" : "tests/cpp-algorithms-sort-find.cpp",
+      "sha256" : "04a098a8fa86e2143b56af11cb433ef2bae6481b45eb7929dfa01381084a23c5"
+    },
+    {
+      "bytes" : 2104,
+      "path" : "tests/cpp-capstone-text-stats.cpp",
+      "sha256" : "862adc491c19acf9f8bd99e39e8230824633eff8c0d8a6e3d9c3b7d6e3050672"
+    },
+    {
+      "bytes" : 1110,
+      "path" : "tests/cpp-classes-and-encapsulation.cpp",
+      "sha256" : "563a36354b1237afd73170d38f274a66e6de0a5340223ad937233d1caa4c7c84"
+    },
+    {
+      "bytes" : 430,
+      "path" : "tests/cpp-const-and-references.cpp",
+      "sha256" : "0d509960b1ac2e6bacabff35efc46bf1941dde7e5f854d9f71bc2918a78c8385"
+    },
+    {
+      "bytes" : 528,
+      "path" : "tests/cpp-control-flow.cpp",
+      "sha256" : "2f70b5d3ec2553873a90da0e7aee5608c828a268f139e19aba0e92de9be72441"
+    },
+    {
+      "bytes" : 810,
+      "path" : "tests/cpp-dynamic-memory-and-raii.cpp",
+      "sha256" : "fe363351dc5f7b1f86fe588be3a0d72759eece90cacc23965457ab83c7927108"
+    },
+    {
+      "bytes" : 1521,
+      "path" : "tests/cpp-file-io.cpp",
+      "sha256" : "8cb0462be23c29849004666e9c28f78bcdfc935551fdba4a8922d8f0223a5b8a"
+    },
+    {
+      "bytes" : 653,
+      "path" : "tests/cpp-functions.cpp",
+      "sha256" : "cf20212e2d1114f9717840dfc9bdb08646bd77c3b1152bfac9c10fd0b7728bbd"
+    },
+    {
+      "bytes" : 461,
+      "path" : "tests/cpp-hello-and-cout.cpp",
+      "sha256" : "29159cde14958d1a3c975abc78a82d950d4d3d6bfb2053d3839fe6f2b13409d5"
+    },
+    {
+      "bytes" : 844,
+      "path" : "tests/cpp-inheritance-and-virtual.cpp",
+      "sha256" : "eaf9ae9925b342c35c5a9db9378b0b4c3aef9c4b89aad84406f1a88a88a4e44c"
+    },
+    {
+      "bytes" : 509,
+      "path" : "tests/cpp-io-and-formatting.cpp",
+      "sha256" : "62d3073e3eee12f377e8bff937b395f479dbcb1849a7a042bc67dcc201cc0db3"
+    },
+    {
+      "bytes" : 1167,
+      "path" : "tests/cpp-lambdas.cpp",
+      "sha256" : "f4d760b8aded9cc8e73f49b38d901b932a9e84f887fc51b65571da0ccbcbe3fa"
+    },
+    {
+      "bytes" : 648,
+      "path" : "tests/cpp-loops.cpp",
+      "sha256" : "650782552cb730c253a2100fb0e8b38bd973d52b9b3244a2d048fec7f7b4ad37"
+    },
+    {
+      "bytes" : 1137,
+      "path" : "tests/cpp-maps.cpp",
+      "sha256" : "40ad444e1716f221490d6756197e1f0170919beed0119767fc6dd53f061a3abb"
+    },
+    {
+      "bytes" : 1187,
+      "path" : "tests/cpp-operator-overloading.cpp",
+      "sha256" : "60b2169fdd525175e68909508ecf6de74c4584325493961bb29227a3d9c6e3a2"
+    },
+    {
+      "bytes" : 1209,
+      "path" : "tests/cpp-optional-and-error.cpp",
+      "sha256" : "e4088d68101278eb1a2a9c37be0d59dcc70d2b8818bd76223d87984b8323b91a"
+    },
+    {
+      "bytes" : 1017,
+      "path" : "tests/cpp-pass-by-reference.cpp",
+      "sha256" : "f37dfe5120c7fdbb4f9758cc34af156d9907bdcd0a4039fdcd7077a4af3542c3"
+    },
+    {
+      "bytes" : 919,
+      "path" : "tests/cpp-pointers-and-nullptr.cpp",
+      "sha256" : "f5932c2fca1190604b7fb0c3682836dc185c176aa6e9d01ec22f364f9270b2e7"
+    },
+    {
+      "bytes" : 1118,
+      "path" : "tests/cpp-range-based-algorithms.cpp",
+      "sha256" : "72763ebeb8e7b4e6d97b5368f640669dc6fedb8e36229eb8d79c51ee8fc170b3"
+    },
+    {
+      "bytes" : 1052,
+      "path" : "tests/cpp-smart-pointers.cpp",
+      "sha256" : "29efa305aa52719e30c787ba9ddec248c75dd45a6bea8db5692304a8e9b7d6ab"
+    },
+    {
+      "bytes" : 617,
+      "path" : "tests/cpp-strings.cpp",
+      "sha256" : "b19a8675cd6d1643e60851946d400db9ce0fe5639ef0e0a61d64e3498e143c10"
+    },
+    {
+      "bytes" : 803,
+      "path" : "tests/cpp-structs.cpp",
+      "sha256" : "aa962063d6ada85ab9da580139cb100889ba26c4986bdf34abc97ee205cb3d4a"
+    },
+    {
+      "bytes" : 1151,
+      "path" : "tests/cpp-templates.cpp",
+      "sha256" : "7a5cbe6f3ca781dabfc0f8bff810e1dc1679b75986931dccde434f0a75b02085"
+    },
+    {
+      "bytes" : 629,
+      "path" : "tests/cpp-testing-with-assert.cpp",
+      "sha256" : "c227234e7052cfc7f7c17f3036ad7eeb61b9c825cfcb3a3f14d4c4a1723981e0"
+    },
+    {
+      "bytes" : 440,
+      "path" : "tests/cpp-variables-and-types.cpp",
+      "sha256" : "5a5c4703f832a2a12cd0a0ea9ac74a219d2e64e17c78d0ed22f5a97d7a3621a4"
+    },
+    {
+      "bytes" : 444,
+      "path" : "tests/cpp-vector-basics.cpp",
+      "sha256" : "959519d3f05e98447cd712a471adb675edd376411f3a2717843511c4a44b0efc"
+    }
+  ],
+  "generatedAt" : "2026-09-07T14:35:29Z",
+  "languages" : [
+    "cpp"
+  ],
+  "lessons" : [
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "main 을 정의하고 std::cout 으로 문자열을 출력할 수 있다",
+        "<< 로 여러 값을 이어 출력할 수 있다",
+        "// 로 주석을 달아 실행에 영향이 없음을 확인할 수 있다"
+      ],
+      "order" : 1,
+      "path" : "lessons/cpp-hello-and-cout.md",
+      "prerequisites" : [
+
+      ],
+      "stableID" : "cpp-hello-and-cout",
+      "title" : "첫 실행: cout 과 주석"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "int·double·bool 변수를 선언하고 출력할 수 있다",
+        "정수 나눗셈과 실수 나눗셈의 결과 차이를 예측할 수 있다",
+        "auto 로 타입을 추론시킬 수 있다"
+      ],
+      "order" : 2,
+      "path" : "lessons/cpp-variables-and-types.md",
+      "prerequisites" : [
+        "cpp-hello-and-cout"
+      ],
+      "stableID" : "cpp-variables-and-types",
+      "title" : "변수와 기본 타입"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "const 로 상수를 선언하고 재대입이 막히는 것을 확인할 수 있다",
+        "참조(&)로 변수에 다른 이름을 붙일 수 있다",
+        "const 참조로 읽기 전용 별명을 만들 수 있다"
+      ],
+      "order" : 3,
+      "path" : "lessons/cpp-const-and-references.md",
+      "prerequisites" : [
+        "cpp-variables-and-types"
+      ],
+      "stableID" : "cpp-const-and-references",
+      "title" : "const 와 참조"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "std::cin 으로 값을 읽을 수 있다",
+        "setprecision 으로 소수 자릿수를 고정할 수 있다",
+        "출력 형식이 대조에 왜 중요한지 설명할 수 있다"
+      ],
+      "order" : 4,
+      "path" : "lessons/cpp-io-and-formatting.md",
+      "prerequisites" : [
+        "cpp-variables-and-types"
+      ],
+      "stableID" : "cpp-io-and-formatting",
+      "title" : "입출력과 서식"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "if·else if·else 로 분기할 수 있다",
+        "switch 로 값에 따라 갈라질 수 있다",
+        "break 를 빠뜨리면 다음 case 로 흘러가는 것을 확인할 수 있다"
+      ],
+      "order" : 5,
+      "path" : "lessons/cpp-control-flow.md",
+      "prerequisites" : [
+        "cpp-variables-and-types"
+      ],
+      "stableID" : "cpp-control-flow",
+      "title" : "흐름 제어: if 와 switch"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "for 로 정해진 횟수만큼 반복할 수 있다",
+        "while 과 do-while 의 차이를 설명할 수 있다",
+        "continue 와 break 로 반복을 조절할 수 있다"
+      ],
+      "order" : 6,
+      "path" : "lessons/cpp-loops.md",
+      "prerequisites" : [
+        "cpp-control-flow"
+      ],
+      "stableID" : "cpp-loops",
+      "title" : "반복: for 와 while"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "인자와 반환 타입을 갖춘 함수를 정의할 수 있다",
+        "값 전달과 참조 전달의 차이를 확인할 수 있다",
+        "기본 인자를 줄 수 있다"
+      ],
+      "order" : 7,
+      "path" : "lessons/cpp-functions.md",
+      "prerequisites" : [
+        "cpp-loops"
+      ],
+      "stableID" : "cpp-functions",
+      "title" : "함수: 선언과 정의"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "vector 를 만들고 push_back 으로 원소를 더할 수 있다",
+        "인덱스와 size 로 원소를 다룰 수 있다",
+        "범위 기반 for 로 순회할 수 있다"
+      ],
+      "order" : 8,
+      "path" : "lessons/cpp-vector-basics.md",
+      "prerequisites" : [
+        "cpp-functions"
+      ],
+      "stableID" : "cpp-vector-basics",
+      "title" : "벡터: std::vector"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "string 을 만들고 + 로 이을 수 있다",
+        "length·substr·find 로 부분을 다룰 수 있다",
+        "문자 하나씩 순회할 수 있다"
+      ],
+      "order" : 9,
+      "path" : "lessons/cpp-strings.md",
+      "prerequisites" : [
+        "cpp-vector-basics"
+      ],
+      "stableID" : "cpp-strings",
+      "title" : "문자열: std::string"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "const std::vector<int>& 를 받는 함수를 쓸 수 있다",
+        "참조로 받은 값을 함수 안에서 바꿀 수 있다",
+        "언제 const 참조를 쓰는지 설명할 수 있다"
+      ],
+      "order" : 10,
+      "path" : "lessons/cpp-pass-by-reference.md",
+      "prerequisites" : [
+        "cpp-vector-basics",
+        "cpp-const-and-references"
+      ],
+      "stableID" : "cpp-pass-by-reference",
+      "title" : "참조로 넘기기와 const 참조"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "필드를 가진 struct 를 정의하고 초기화할 수 있다",
+        "struct 를 함수에 넘기고 돌려받을 수 있다",
+        "멤버 함수를 정의할 수 있다"
+      ],
+      "order" : 11,
+      "path" : "lessons/cpp-structs.md",
+      "prerequisites" : [
+        "cpp-functions"
+      ],
+      "stableID" : "cpp-structs",
+      "title" : "구조체: struct"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "class 를 정의하고 private 멤버를 만들 수 있다",
+        "생성자로 초기화할 수 있다",
+        "getter 로 내부 값을 읽게 할 수 있다"
+      ],
+      "order" : 12,
+      "path" : "lessons/cpp-classes-and-encapsulation.md",
+      "prerequisites" : [
+        "cpp-structs"
+      ],
+      "stableID" : "cpp-classes-and-encapsulation",
+      "title" : "클래스와 캡슐화"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "map 에 값을 넣고 꺼낼 수 있다",
+        "count·find 로 존재를 검사할 수 있다",
+        "map 순회가 키 순서로 나온다는 것을 확인할 수 있다"
+      ],
+      "order" : 13,
+      "path" : "lessons/cpp-maps.md",
+      "prerequisites" : [
+        "cpp-strings",
+        "cpp-vector-basics"
+      ],
+      "stableID" : "cpp-maps",
+      "title" : "키로 찾는 자료: std::map"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "sort 로 벡터를 정렬할 수 있다",
+        "비교 함수를 넘겨 정렬 기준을 바꿀 수 있다",
+        "find 와 count 로 원소를 찾을 수 있다"
+      ],
+      "order" : 14,
+      "path" : "lessons/cpp-algorithms-sort-find.md",
+      "prerequisites" : [
+        "cpp-vector-basics",
+        "cpp-pass-by-reference"
+      ],
+      "stableID" : "cpp-algorithms-sort-find",
+      "title" : "알고리즘: sort 와 find"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "람다를 정의해 변수에 담고 호출할 수 있다",
+        "캡처 목록으로 바깥 변수를 가져올 수 있다",
+        "sort 의 비교자로 람다를 넘길 수 있다"
+      ],
+      "order" : 15,
+      "path" : "lessons/cpp-lambdas.md",
+      "prerequisites" : [
+        "cpp-algorithms-sort-find"
+      ],
+      "stableID" : "cpp-lambdas",
+      "title" : "람다: 이름 없는 함수"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "std::optional 을 반환하는 함수를 쓸 수 있다",
+        "has_value 와 value_or 로 값을 다룰 수 있다",
+        "throw 와 try-catch 로 예외를 다룰 수 있다"
+      ],
+      "order" : 16,
+      "path" : "lessons/cpp-optional-and-error.md",
+      "prerequisites" : [
+        "cpp-classes-and-encapsulation"
+      ],
+      "stableID" : "cpp-optional-and-error",
+      "title" : "없을 수도 있는 값과 오류"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "함수 템플릿을 정의하고 여러 타입으로 호출할 수 있다",
+        "클래스 템플릿을 정의할 수 있다",
+        "템플릿 오류 메시지를 읽고 원인을 짚을 수 있다"
+      ],
+      "order" : 17,
+      "path" : "lessons/cpp-templates.md",
+      "prerequisites" : [
+        "cpp-classes-and-encapsulation"
+      ],
+      "stableID" : "cpp-templates",
+      "title" : "템플릿: 타입을 매개변수로"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "operator== 를 정의해 두 객체를 비교할 수 있다",
+        "operator+ 를 정의할 수 있다",
+        "operator<< 로 출력 형식을 정할 수 있다"
+      ],
+      "order" : 18,
+      "path" : "lessons/cpp-operator-overloading.md",
+      "prerequisites" : [
+        "cpp-classes-and-encapsulation"
+      ],
+      "stableID" : "cpp-operator-overloading",
+      "title" : "연산자 오버로딩"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "포인터를 선언하고 * 와 & 로 값을 오갈 수 있다",
+        "nullptr 를 검사해 역참조를 피할 수 있다",
+        "포인터와 참조의 차이를 설명할 수 있다"
+      ],
+      "order" : 19,
+      "path" : "lessons/cpp-pointers-and-nullptr.md",
+      "prerequisites" : [
+        "cpp-pass-by-reference"
+      ],
+      "stableID" : "cpp-pointers-and-nullptr",
+      "title" : "포인터와 nullptr"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "new 와 delete 로 메모리를 다룰 수 있다",
+        "해제를 빠뜨리면 새는 것을 설명할 수 있다",
+        "RAII 가 무엇을 보장하는지 설명할 수 있다"
+      ],
+      "order" : 20,
+      "path" : "lessons/cpp-dynamic-memory-and-raii.md",
+      "prerequisites" : [
+        "cpp-pointers-and-nullptr",
+        "cpp-classes-and-encapsulation"
+      ],
+      "stableID" : "cpp-dynamic-memory-and-raii",
+      "title" : "동적 메모리와 RAII"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "unique_ptr 로 소유권을 하나로 묶을 수 있다",
+        "make_unique 로 안전하게 만들 수 있다",
+        "shared_ptr 이 언제 필요한지 설명할 수 있다"
+      ],
+      "order" : 21,
+      "path" : "lessons/cpp-smart-pointers.md",
+      "prerequisites" : [
+        "cpp-dynamic-memory-and-raii"
+      ],
+      "stableID" : "cpp-smart-pointers",
+      "title" : "스마트 포인터: unique_ptr 과 shared_ptr"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "기반 클래스를 상속하는 파생 클래스를 만들 수 있다",
+        "virtual 함수를 재정의할 수 있다",
+        "가상 소멸자가 왜 필요한지 설명할 수 있다"
+      ],
+      "order" : 22,
+      "path" : "lessons/cpp-inheritance-and-virtual.md",
+      "prerequisites" : [
+        "cpp-classes-and-encapsulation"
+      ],
+      "stableID" : "cpp-inheritance-and-virtual",
+      "title" : "상속과 가상 함수"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "accumulate 로 합을 구할 수 있다",
+        "transform 으로 각 원소를 변환할 수 있다",
+        "반복자 구간(begin·end)의 뜻을 설명할 수 있다"
+      ],
+      "order" : 23,
+      "path" : "lessons/cpp-range-based-algorithms.md",
+      "prerequisites" : [
+        "cpp-lambdas"
+      ],
+      "stableID" : "cpp-range-based-algorithms",
+      "title" : "순회와 누적: accumulate 와 transform"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "ofstream 으로 파일에 쓸 수 있다",
+        "ifstream 과 getline 으로 줄 단위로 읽을 수 있다",
+        "파일 열기 실패를 검사할 수 있다"
+      ],
+      "order" : 24,
+      "path" : "lessons/cpp-file-io.md",
+      "prerequisites" : [
+        "cpp-strings",
+        "cpp-optional-and-error"
+      ],
+      "stableID" : "cpp-file-io",
+      "title" : "파일 입출력"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "기대값과 실제값을 비교하는 검사를 쓸 수 있다",
+        "경계값을 스스로 하나 더 검사할 수 있다",
+        "실패한 검사의 출력에서 원인을 읽을 수 있다"
+      ],
+      "order" : 25,
+      "path" : "lessons/cpp-testing-with-assert.md",
+      "prerequisites" : [
+        "cpp-functions",
+        "cpp-optional-and-error"
+      ],
+      "stableID" : "cpp-testing-with-assert",
+      "title" : "테스트로 확인하기"
+    },
+    {
+      "language" : "cpp",
+      "objectives" : [
+        "텍스트를 단어로 나누고 map 으로 빈도를 셀 수 있다",
+        "빈도 내림차순·단어 오름차순으로 정렬할 수 있다",
+        "빈 입력을 안전하게 다룰 수 있다"
+      ],
+      "order" : 26,
+      "path" : "lessons/cpp-capstone-text-stats.md",
+      "prerequisites" : [
+        "cpp-maps",
+        "cpp-lambdas",
+        "cpp-range-based-algorithms",
+        "cpp-testing-with-assert"
+      ],
+      "stableID" : "cpp-capstone-text-stats",
+      "title" : "종합 과제: 텍스트 통계"
+    }
+  ],
+  "minAppVersion" : "0.1.0",
+  "packID" : "polyglot-cpp",
+  "schemaVersion" : 1,
+  "version" : "0.1.0"
+}

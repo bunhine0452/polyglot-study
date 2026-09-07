@@ -263,7 +263,7 @@ struct PackLibraryTests {
 
     // MARK: - 리포의 실제 팩
 
-    @Test("리포의 MVP 세 트랙이 한 라이브러리로 열린다 — 언어 3종 · 레슨 70편")
+    @Test("리포의 트랙 다섯이 한 라이브러리로 열린다 — 언어 5종 · 레슨 122편")
     func repositoryMVPTracksOpen() throws {
         // `Content/packs` 는 **앱이 번들하는 것만** 담는다. 포맷 스펙 픽스처
         // (`polyglot-mvp`)는 `Content/fixtures` 에 따로 산다 — 그래서 여기에 예외가 없다.
@@ -271,13 +271,20 @@ struct PackLibraryTests {
         let library = PackLibrary.open(directories: PackLibrary.packDirectories(in: root))
 
         #expect(library.problems.isEmpty)
-        #expect(library.packIDs.map(\.rawValue) == ["polyglot-python", "polyglot-sql", "polyglot-swift"])
-        // 총수는 `TrackCatalog` 의 계획값과 같다(python 24 · sql 22 · swift 24) — 앱은
-        // 콘텐츠가 있는 트랙의 총수를 카탈로그가 아니라 **팩에서** 읽으므로
-        // (`Composition.catalog`) 두 값이 어긋나면 진도 칸이 거짓말을 한다.
+        // 사전순이다 — `PackLibrary.packDirectories` 가 그렇게 정렬한다.
+        #expect(
+            library.packIDs.map(\.rawValue) == [
+                "polyglot-cpp", "polyglot-python", "polyglot-rust", "polyglot-sql",
+                "polyglot-swift",
+            ])
+        // 총수는 `TrackCatalog` 의 계획값과 같다 — 앱은 콘텐츠가 있는 트랙의 총수를
+        // 카탈로그가 아니라 **팩에서** 읽으므로(`Composition.catalog`) 두 값이 어긋나면
+        // 진도 칸이 거짓말을 한다.
         #expect(library.lessonCount(for: .python) == 24)
         #expect(library.lessonCount(for: .sql) == 22)
         #expect(library.lessonCount(for: .swift) == 24)
+        #expect(library.lessonCount(for: .rust) == 26)
+        #expect(library.lessonCount(for: .cpp) == 26)
 
         // 대시보드가 "다음 레슨" 으로 가리킬 첫 레슨이 실제로 열려야 한다.
         let first = try #require(library.lessons(for: .python).first)

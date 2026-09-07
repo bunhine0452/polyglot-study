@@ -26,6 +26,9 @@ public struct SubprocessRunnerConfiguration: Sendable {
     /// 잔존 프로세스 0" 을 재려면 어떤 그룹을 봐야 하는지 알아야 한다 —
     /// 누수 회귀 테스트를 위한 통로다(`SQLRunnerConfiguration.cloneObserver` 와 같은 자리).
     public var processGroupObserver: (@Sendable (Int32) -> Void)?
+    /// 프로세스를 몇 개까지 동시에 띄울 것인가. 기본은 전역 상한
+    /// (``ExecutionLimits/spawns``)이고, 테스트가 더 좁은 문을 주입한다.
+    public var spawnGate: ConcurrencyGate
 
     public init(
         launcherPath: String? = nil,
@@ -34,7 +37,8 @@ public struct SubprocessRunnerConfiguration: Sendable {
         memoryPollInterval: Duration = .milliseconds(50),
         teardownGrace: Duration = .milliseconds(150),
         reapTimeout: Duration = .seconds(2),
-        processGroupObserver: (@Sendable (Int32) -> Void)? = nil
+        processGroupObserver: (@Sendable (Int32) -> Void)? = nil,
+        spawnGate: ConcurrencyGate = ExecutionLimits.spawns
     ) {
         self.launcherPath = launcherPath
         self.workspaceContainer = workspaceContainer
@@ -43,6 +47,7 @@ public struct SubprocessRunnerConfiguration: Sendable {
         self.teardownGrace = teardownGrace
         self.reapTimeout = reapTimeout
         self.processGroupObserver = processGroupObserver
+        self.spawnGate = spawnGate
     }
 
     /// 최소 환경. `HOME` 과 `TMPDIR` 은 실행마다 워크스페이스로 덮어쓴다.
@@ -93,6 +98,20 @@ public struct SubprocessRunner: CodeRunner {
     }
 
     private func execute(
+        _ request: RunRequest,
+        into continuation: AsyncThrowingStream<RunEvent, any Error>.Continuation
+    ) async {
+        // 문 안에서 준비(컴파일)와 실행을 함께 지난다. 둘 다 프로세스를 띄우고,
+        // 둘을 따로 세면 컴파일 N개 + 실행 N개가 동시에 도는 순간이 생긴다.
+        //
+        // 자리 반납을 취소 가능한 Task 에 매달지 않는다 — 이 함수는 모든 탈출 경로가
+        // 아래 `do`/`catch` 를 지나고, `withSlot` 의 `defer` 가 그 바깥에 있다.
+        await configuration.spawnGate.withSlot {
+            await run(request, into: continuation)
+        }
+    }
+
+    private func run(
         _ request: RunRequest,
         into continuation: AsyncThrowingStream<RunEvent, any Error>.Continuation
     ) async {

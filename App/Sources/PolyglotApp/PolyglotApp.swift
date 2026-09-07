@@ -1,6 +1,8 @@
 internal import Foundation
 internal import DashboardFeature
+internal import ContentKit
 internal import DesignSystem
+internal import EditorFeature
 internal import LearnCore
 internal import LessonFeature
 internal import OnboardingFeature
@@ -45,7 +47,9 @@ private struct RootView: View {
     /// 조립은 한 번만. 툴체인 감지는 서브프로세스를 10번 띄우고 DB·팩도 여기서 한 번 연다.
     @State private var composition = Composition()
     /// 레슨은 사이드바 목적지가 아니라 대시보드에서 밀려 들어온다.
-    @State private var openLesson: LessonModel?
+    @State private var openLesson: OpenLesson?
+    /// 에디터는 레슨의 과제 블록에서 밀려 들어온다. 닫으면 그 레슨으로 돌아간다.
+    @State private var openEditor: EditorModel?
     @State private var screenError: String?
 
     var body: some View {
@@ -60,21 +64,28 @@ private struct RootView: View {
         // 업데이트 프로브({#sparkle-updates} 검증). 환경 변수가 없으면 즉시 반환한다.
         // App.init() 이 아니라 여기인 이유: SPUUpdater 는 실행 루프를 요구한다.
         .task { SparkleProbe.startIfRequested() }
+        .task { openStartLessonIfRequested() }
     }
 
     /// 아직 데이터 계층이 셸에 붙지 않았다. 배지가 붙을 자리만 비워 둔다 —
     /// 화면이 생기면 여기서 실제 카운트를 넘긴다.
     @ViewBuilder
     private func content(for destination: ShellDestination) -> some View {
-        if let lesson = openLesson {
-            LessonView(model: lesson) { openLesson = nil }
+        if let editor = openEditor {
+            // 에디터는 레슨 위에 얹힌다 — 뒤로 가면 열려 있던 레슨이 그대로 남아 있다.
+            EditorView(model: editor) { openEditor = nil }
+        } else if let lesson = openLesson {
+            LessonView(model: lesson.model) { openLesson = nil }
         } else {
             switch destination {
             case .today:
-                DashboardView(model: composition.dashboard, onResume: resume)
+                DashboardView(
+                    model: composition.dashboard,
+                    onResume: { open($0.ref) },
+                    onOpenTrack: openTrack
+                )
             case .tracks:
-                // 트랙 전용 화면은 아직 디자인이 없다. 대시보드의 트랙 표가 그 역할을 한다.
-                PlaceholderPanel(destination: destination)
+                TracksView(model: composition.tracks, onOpen: open)
             case .review:
                 reviewScreen
             case .toolchain:
@@ -106,15 +117,61 @@ private struct RootView: View {
         }
     }
 
-    private func resume(_ point: ResumePoint) {
+    /// 레슨 하나를 연다. 대시보드의 "이어서" 와 트랙 화면의 목록이 같은 문으로 들어온다.
+    private func open(_ ref: LessonRef) {
         do {
-            // ResumePoint 는 팩 id 를 들고 있지 않다 — 대시보드가 단일 팩을 전제로 만들어졌다.
-            // 조립 루트가 아는 팩을 그대로 쓴다.
-            openLesson = try composition.makeLesson(lessonID: point.lessonID)
+            let model = try composition.makeLesson(ref) { task in
+                // 레슨 모델이 자기를 연 셸을 모르게 하려고 클로저로 되쏜다.
+                // 열기에 실패하면 조용히 아무 일도 일어나지 않으면 안 된다 —
+                // "에디터에서 열기" 를 눌렀는데 화면이 그대로면 앱이 고장 난 것처럼 보인다.
+                openEditorScreen(ref: ref, task: task)
+            }
+            openLesson = OpenLesson(ref: ref, model: model)
+            openEditor = nil
             screenError = nil
         } catch {
             screenError = "\(error)"
         }
+    }
+
+    /// 대시보드의 트랙 행을 눌렀다 — 트랙 화면으로 옮겨 그 트랙을 편다.
+    private func openTrack(_ languageID: LanguageID) {
+        composition.tracks.select(languageID)
+        openLesson = nil
+        openEditor = nil
+        selection = .tracks
+    }
+
+    private func openEditorScreen(ref: LessonRef, task: TaskBlock) {
+        guard let lesson = openLesson else { return }
+        do {
+            openEditor = try composition.makeEditor(ref, lesson: lesson.model, task: task)
+            screenError = nil
+        } catch {
+            screenError = "\(error)"
+        }
+    }
+
+    /// 디버그용 시작 레슨. `POLYGLOT_START_LESSON=<packID>/<lessonID>` 로 레슨을 열고,
+    /// `POLYGLOT_START_EDITOR=1` 이면 그 레슨의 과제 블록까지 가서 에디터를 연다.
+    ///
+    /// `POLYGLOT_START_DESTINATION` 과 같은 자리의 장치다 — 스냅샷으로 특정 화면을 굽거나
+    /// 개발 중 매번 클릭하지 않기 위해서다. 값이 이상하면 조용히 아무 일도 하지 않는다.
+    private func openStartLessonIfRequested() {
+        let environment = ProcessInfo.processInfo.environment
+        guard let raw = environment["POLYGLOT_START_LESSON"], !raw.isEmpty else { return }
+        let parts = raw.split(separator: "/", maxSplits: 1)
+        guard parts.count == 2 else {
+            screenError = "POLYGLOT_START_LESSON 은 <packID>/<lessonID> 형식이어야 합니다: \(raw)"
+            return
+        }
+        open(LessonRef(packID: PackID(String(parts[0])), lessonID: LessonID(String(parts[1]))))
+        guard environment["POLYGLOT_START_EDITOR"] == "1", let lesson = openLesson else { return }
+        // 과제 블록까지 걸어간다 — `advance()` 는 한 칸씩만 움직인다(스텝바가 진도를 뜻한다).
+        if let index = lesson.model.blocks.firstIndex(where: { $0.kind == .task }) {
+            while lesson.model.activeIndex < index { lesson.model.advance() }
+        }
+        lesson.model.openEditor()
     }
 
     private func badge(for destination: ShellDestination) -> String? {
@@ -132,39 +189,8 @@ private struct RootView: View {
     }()
 }
 
-/// 화면 7종이 아직 없다는 사실을 숨기지 않는 자리. 동시에 프리미티브 6종이 실제로
-/// 렌더되는지 눈으로 확인하는 지점이기도 하다 — 화면 세션이 들어오면 통째로 사라진다.
-private struct PlaceholderPanel: View {
-    let destination: ShellDestination
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: Spacing.m) {
-            LabelText("화면 준비 중 · \(destination.rawValue)")
-
-            SegmentedProgress(completed: 3, total: 6)
-                .frame(width: 360)
-
-            HStack(spacing: Spacing.m) {
-                dot(.pass, "설치됨")
-                dot(.empty, "미설치")
-                dot(.fail, "스텁 감지")
-            }
-
-            HStack(spacing: Spacing.m) {
-                FlatButton("이어서 하기", shortcutHint: "↩") {}
-                FlatButton("복습 시작", emphasis: .secondary) {}
-            }
-
-            Rule(.soft)
-
-            MonoText("DesignSystem · Primitives 6 · Shell 1", size: .label, color: Palette.secondary)
-        }
-    }
-
-    private func dot(_ style: StatusDot.Style, _ caption: String) -> some View {
-        HStack(spacing: Spacing.s) {
-            StatusDot(style)
-            MonoText(caption, size: .label)
-        }
-    }
+/// 열려 있는 레슨과 그것이 온 팩. 에디터를 조립하려면 팩까지 알아야 한다.
+private struct OpenLesson {
+    let ref: LessonRef
+    let model: LessonModel
 }

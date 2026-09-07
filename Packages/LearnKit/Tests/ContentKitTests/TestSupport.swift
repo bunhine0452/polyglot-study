@@ -16,9 +16,10 @@ enum RepoPaths {
         return url
     }
 
-    /// 리포에 커밋된 샘플 팩.
+    /// 리포에 커밋된 샘플 팩. **배포되지 않는 픽스처**라 `Content/packs/` 밖에 산다 —
+    /// 그 디렉터리는 앱이 번들하는 것만 담는다(`{#bundle-packs}`).
     static var samplePack: URL {
-        root.appendingPathComponent("Content/packs/polyglot-mvp", isDirectory: true)
+        root.appendingPathComponent("Content/fixtures/polyglot-mvp", isDirectory: true)
     }
 
     static var packFormatSpec: URL {

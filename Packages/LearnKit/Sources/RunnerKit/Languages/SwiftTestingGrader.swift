@@ -77,6 +77,13 @@ public actor SwiftTestingGrader {
     /// 채점이 대신 하지만, 그러면 그 한 번이 십수 초 걸린다.
     @discardableResult
     public func warmUp() async throws -> Duration {
+        // 게이트는 ``grade(solution:tests:)`` 의 주석에 적힌 이유로 **여기 펼쳐** 둔다.
+        let template = ExecutionLimits.swiftTemplateGate(for: configuration.templateDirectory)
+        await template.acquire()
+        defer { template.release() }
+        await ExecutionLimits.spawns.acquire()
+        defer { ExecutionLimits.spawns.release() }
+
         let clock = ContinuousClock()
         let started = clock.now
         try materializeTemplate()
@@ -98,7 +105,27 @@ public actor SwiftTestingGrader {
 
     // MARK: - 채점
 
+    /// 템플릿 하나를 **한 번에 하나씩** 쓰게 하고, 전역 스폰 상한도 함께 지난다.
+    ///
+    /// 문지기를 호출자가 아니라 여기 두는 이유는 인스턴스가 상호 배제의 단위가 아니기
+    /// 때문이다 — `EditorModel.defaultGrade` 는 채점할 때마다 `SwiftTestingGrader()` 를
+    /// 새로 만들지만 ``defaultTemplateDirectory`` 는 **고정 경로**다. 액터 경계로는 아무것도
+    /// 막지 못하고, 겹치면 한쪽이 다른 쪽의 `Solution.swift` 를 덮어쓴다.
+    /// 획득 순서는 언제나 **템플릿 → 스폰**이다(반대로 잡는 곳이 없으므로 교착이 없다).
+    ///
+    /// ⚠︎ **이 함수를 쪼개지 마라.** 게이트를 제네릭 래퍼로 감싸거나 본문을
+    /// `performGrade(...)` 로 떼어 내고 여기서 `return try await performGrade(…)` 로
+    /// 넘기면, 돌아오는 ``SwiftGrading`` 이 **깨진다** — `GradeResult.hasErrors` 가
+    /// `EXC_BAD_ACCESS`(0x10, 배열 버퍼가 쓰레기)로 죽는다. 실측 2026-09-07, Swift 6.3.3:
+    /// 래퍼 방식 6/6 재현, 단순 전달(`grade` → `performGrade`) 2/2 재현, 한 함수로 되돌리면
+    /// 0/5. 액터 격리 함수 하나를 더 거쳐 이 구조체를 돌려보내는 것 자체가 방아쇠다.
     public func grade(solution: [SourceFile], tests: [SourceFile]) async throws -> SwiftGrading {
+        let template = ExecutionLimits.swiftTemplateGate(for: configuration.templateDirectory)
+        await template.acquire()
+        defer { template.release() }
+        await ExecutionLimits.spawns.acquire()
+        defer { ExecutionLimits.spawns.release() }
+
         try materializeTemplate()
         let swift = try await resolveSwift()
         try replaceSources(solution: solution, tests: tests)

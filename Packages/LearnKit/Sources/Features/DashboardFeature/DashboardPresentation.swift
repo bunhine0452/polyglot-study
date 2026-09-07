@@ -65,6 +65,9 @@ public enum ResumeKind: Hashable, Sendable {
 public struct ResumePoint: Hashable, Sendable, Identifiable {
     public let languageID: LanguageID
     public let trackName: String
+    /// 이 레슨이 사는 팩. 조립 루트가 레슨을 열려면 팩까지 알아야 한다 — 트랙마다
+    /// 팩이 다르므로 `lessonID` 만으로는 어느 팩을 읽을지가 정해지지 않는다.
+    public let packID: PackID
     public let lessonID: LessonID
     /// 팩 안에서의 1-기반 순번. 팩 메타데이터가 없으면 `nil` — 없는 번호를 지어내지 않는다.
     public let lessonOrdinal: Int?
@@ -74,11 +77,15 @@ public struct ResumePoint: Hashable, Sendable, Identifiable {
     public let kind: ResumeKind
     public let lastActivityAt: EpochMillis?
 
-    public var id: String { "\(languageID.rawValue)/\(lessonID.rawValue)" }
+    public var id: String { "\(languageID.rawValue)/\(packID.rawValue)/\(lessonID.rawValue)" }
+
+    /// 이 레슨을 여는 데 필요한 전부.
+    public var ref: LessonRef { LessonRef(packID: packID, lessonID: lessonID) }
 
     public init(
         languageID: LanguageID,
         trackName: String,
+        packID: PackID,
         lessonID: LessonID,
         lessonOrdinal: Int?,
         lessonTitle: String,
@@ -88,6 +95,7 @@ public struct ResumePoint: Hashable, Sendable, Identifiable {
     ) {
         self.languageID = languageID
         self.trackName = trackName
+        self.packID = packID
         self.lessonID = lessonID
         self.lessonOrdinal = lessonOrdinal
         self.lessonTitle = lessonTitle

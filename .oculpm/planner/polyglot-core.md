@@ -2,9 +2,9 @@
 oculpm_plan: v1
 id: polyglot-core
 title: "Polyglot Study 코어 — 영속화·스케줄링·실행기"
-status: done
+status: archived
 created: 2026-09-06
-updated: 2026-09-06
+updated: 2026-09-07
 owner: claude-code
 ---
 

@@ -4,7 +4,7 @@ Polyglot Study 의 레슨은 앱 바이너리가 아니라 **콘텐츠 팩**으�
 디렉터리 레이아웃, `manifest.json` 스키마, 레슨 디렉티브 문법, 설치 규약을 확정한다.
 
 구현은 `Packages/LearnKit/Sources/ContentKit`, 스펙대로 만든 샘플 팩은
-`Content/packs/polyglot-mvp` 에 있다. **문서·구현·샘플 팩 셋이 어긋나면 테스트가 깨진다**
+`Content/fixtures/polyglot-mvp` 에 있다. **문서·구현·샘플 팩 셋이 어긋나면 테스트가 깨진다**
 (`Tests/ContentKitTests/SamplePackTests.swift`).
 
 ---

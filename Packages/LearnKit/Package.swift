@@ -169,7 +169,10 @@ let package = Package(
         .target(
             name: "EditorFeature",
             dependencies: [
-                "LearnCore", "LanguageKit", "RunnerKit", "DesignSystem", "EditorUI",
+                // `ContentKit` 은 `@Task` 블록을 화면 값으로 옮기는 데 쓴다
+                // (`EditorTask.load(pack:…)`). 그 변환 규칙은 `packtool` 의 실행
+                // 게이트와 글자 하나까지 같아야 해서 앱 계층이 아니라 여기 산다.
+                "LearnCore", "LanguageKit", "ContentKit", "RunnerKit", "DesignSystem", "EditorUI",
                 // Swift 트랙의 완성·실시간 진단. 다른 언어 트랙은 이 경로를 타지 않는다.
                 "LSPKit",
                 .product(name: "CodeEditSourceEditor", package: "CodeEditSourceEditor"),

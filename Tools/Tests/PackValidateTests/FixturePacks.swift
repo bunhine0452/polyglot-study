@@ -29,7 +29,7 @@ enum FixturePacks {
 
     /// 리포에 실재하는 MVP 샘플 팩 (python + sql + swift).
     static let samplePack = repositoryRoot.appendingPathComponent(
-        "Content/packs/polyglot-mvp", isDirectory: true)
+        "Content/fixtures/polyglot-mvp", isDirectory: true)
 
     /// 팩을 임시 디렉터리로 복사한다. 호출자가 지운다.
     static func copyToTemporary(_ source: URL, label: String) throws -> URL {

@@ -31,3 +31,19 @@ extension LanguageID {
     public static let sql = LanguageID("sql")
     public static let swift = LanguageID("swift")
 }
+
+/// 레슨 하나를 **팩까지 포함해** 가리키는 참조.
+///
+/// `LessonID` 만으로는 레슨을 열 수 없다. 진도의 PK 가 `(pack_id, lesson_id)` 인 것과
+/// 같은 이유다 — 트랙마다 팩이 다르면(`polyglot-python`·`polyglot-sql`·`polyglot-swift`)
+/// 어느 팩에서 읽을지가 정해지지 않는다. 대시보드가 "다음 레슨" 을 가리킬 때, 조립
+/// 루트가 그 레슨을 열 때 이 쌍이 함께 건너간다.
+public struct LessonRef: Hashable, Sendable, Codable {
+    public let packID: PackID
+    public let lessonID: LessonID
+
+    public init(packID: PackID, lessonID: LessonID) {
+        self.packID = packID
+        self.lessonID = lessonID
+    }
+}

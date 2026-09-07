@@ -54,7 +54,8 @@ public final class DashboardModel {
 
     // MARK: - 주입
 
-    private let packID: PackID
+    /// 이 대시보드가 진도를 읽어 올 팩들. 트랙마다 팩이 하나씩인 MVP 에서는 세 개다.
+    private let packIDs: [PackID]
     private let catalog: [TrackDescriptor]
     private let progressStore: any LessonProgressStore
     private let cardStateStore: any CardStateStore
@@ -71,7 +72,10 @@ public final class DashboardModel {
     /// 으로 프로세스가 죽는다(온보딩 세션이 100% 재현). `nil` 기본값 + 내부 폴백으로 피한다.
     private let lessonMetadata: (@Sendable (PackID, LessonID) -> LessonMetadata?)?
     /// 트랙 순서대로의 레슨 목록. `nil` 이면 진도가 있는 레슨만 아는 상태다.
-    private let lessonDirectory: (@Sendable (LanguageID) -> [LessonID])?
+    ///
+    /// 팩 id 를 함께 돌려주는 이유는 "다음 레슨" 을 **열 수 있어야** 하기 때문이다.
+    /// 레슨 id 만으로는 어느 팩에서 읽을지가 정해지지 않는다.
+    private let lessonDirectory: (@Sendable (LanguageID) -> [LessonRef])?
     /// `nil` 이면 모든 트랙이 `.unknown` — 감지 결과를 지어내지 않는다.
     private let toolchainStatus: (@Sendable (LanguageID) -> TrackToolchainStatus)?
 
@@ -79,7 +83,7 @@ public final class DashboardModel {
     ///   - stores: 비워 두면 `LearnCore` 의 인메모리 페이크가 들어간다. 앱은 GRDB 구현을 넣는다.
     ///   - catalog: 트랙 커리큘럼. 기본값은 10트랙 전부.
     public init(
-        packID: PackID = DashboardModel.defaultPackID,
+        packIDs: [PackID] = [DashboardModel.defaultPackID],
         catalog: [TrackDescriptor] = TrackCatalog.all,
         progressStore: (any LessonProgressStore)? = nil,
         cardStateStore: (any CardStateStore)? = nil,
@@ -88,13 +92,13 @@ public final class DashboardModel {
         dayBoundary: DayBoundary = DayBoundary(),
         queuePolicy: DueQueuePolicy = .default,
         lessonMetadata: (@Sendable (PackID, LessonID) -> LessonMetadata?)? = nil,
-        lessonDirectory: (@Sendable (LanguageID) -> [LessonID])? = nil,
+        lessonDirectory: (@Sendable (LanguageID) -> [LessonRef])? = nil,
         toolchainStatus: (@Sendable (LanguageID) -> TrackToolchainStatus)? = nil
     ) {
         // 셋 중 하나만 주어져도 나머지는 같은 컨테이너에서 나와야 한다 — 서로 다른 페이크를
         // 섞으면 큐 계산이 참조하는 로그가 달라진다.
         let fakes = InMemoryStores()
-        self.packID = packID
+        self.packIDs = packIDs
         self.catalog = catalog
         self.progressStore = progressStore ?? fakes.lessonProgress
         self.cardStateStore = cardStateStore ?? fakes.cardState
@@ -108,7 +112,10 @@ public final class DashboardModel {
         self.rows = catalog.map { Self.emptyRow(for: $0) }
     }
 
-    /// MVP 콘텐츠 팩. `Content/packs/polyglot-mvp/manifest.json` 의 `packID` 와 같다.
+    /// 샘플 팩. `Content/fixtures/polyglot-mvp/manifest.json` 의 `packID` 와 같다.
+    ///
+    /// 앱은 이 값을 쓰지 않는다 — 조립 루트가 설치된 팩 전부를 `packIDs` 로 넣는다.
+    /// 여기 남아 있는 것은 팩 없이도 화면이 서는 기본값이자 테스트의 고정점이다.
     public static let defaultPackID = PackID("polyglot-mvp")
 
     // MARK: - 적재
@@ -246,7 +253,7 @@ public final class DashboardModel {
         if let open {
             return makeResume(
                 descriptor: descriptor,
-                lessonID: open.lessonID,
+                ref: LessonRef(packID: open.packID, lessonID: open.lessonID),
                 kind: .open(
                     blockIndex: min(open.currentBlockIndex, LessonBlockSequence.count - 1),
                     completedBlocks: open.completedBlocks.count
@@ -260,10 +267,12 @@ public final class DashboardModel {
         let settled = Set(
             progress.filter { $0.status == .completed || $0.status == .skipped }.map(\.lessonID)
         )
-        guard let next = directory.first(where: { !settled.contains($0) }) else { return nil }
+        guard let next = directory.first(where: { !settled.contains($0.lessonID) }) else {
+            return nil
+        }
         return makeResume(
             descriptor: descriptor,
-            lessonID: next,
+            ref: next,
             kind: .next,
             lastActivityAt: progress.compactMap(\.lastActivityAt).max()
         )
@@ -271,17 +280,18 @@ public final class DashboardModel {
 
     private func makeResume(
         descriptor: TrackDescriptor,
-        lessonID: LessonID,
+        ref: LessonRef,
         kind: ResumeKind,
         lastActivityAt: EpochMillis?
     ) -> ResumePoint {
-        let metadata = lessonMetadata?(packID, lessonID)
+        let metadata = lessonMetadata?(ref.packID, ref.lessonID)
         return ResumePoint(
             languageID: descriptor.languageID,
             trackName: descriptor.name,
-            lessonID: lessonID,
+            packID: ref.packID,
+            lessonID: ref.lessonID,
             lessonOrdinal: metadata?.ordinal,
-            lessonTitle: metadata?.title ?? lessonID.rawValue,
+            lessonTitle: metadata?.title ?? ref.lessonID.rawValue,
             lessonTotal: descriptor.lessonTotal,
             kind: kind,
             lastActivityAt: lastActivityAt
@@ -291,9 +301,18 @@ public final class DashboardModel {
     // MARK: - 스토어 조회
 
     /// `nil` 이면 읽기 자체가 실패한 것이다. 빈 사전과 구분된다.
+    ///
+    /// 팩 하나라도 못 읽으면 전체가 실패다. 읽힌 것만 그리면 그 트랙은 "아직 시작 안 함"
+    /// 으로 보이고, 그건 저장소를 못 읽은 것과 전혀 다른 말이다.
     private func progressByTrack() async -> [LanguageID: [LessonProgress]]? {
-        guard let list = try? await progressStore.progressList(packID: packID) else { return nil }
-        return Dictionary(grouping: list, by: \.languageID)
+        var merged: [LessonProgress] = []
+        for packID in packIDs {
+            guard let list = try? await progressStore.progressList(packID: packID) else {
+                return nil
+            }
+            merged += list
+        }
+        return Dictionary(grouping: merged, by: \.languageID)
     }
 
     private func dueCount(

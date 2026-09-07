@@ -13,6 +13,7 @@
 #     Helpers/learn-launcher  <- LearnKit 의 C 런처. 앱과 별도로 서명한다({#helper-signing}).
 #     Frameworks/Sparkle.framework <- SPM 이 받아 둔 XCFramework 의 macOS 슬라이스({#sparkle-updates})
 #     Resources/              <- App/Resources/* (Info.plist 제외). Fonts/ 가 여기 들어간다.
+#     Resources/Content/packs <- Content/packs/* 콘텐츠 팩 씨앗({#bundle-packs})
 #
 # Sparkle 은 SPM 바이너리 타깃이라 `swift build` 는 링크만 하고 번들에 넣어주지 않는다
 # (SPM 에 "앱 번들" 개념이 없다). 여기서 직접 복사하고, Package.swift 가 실행 파일에
@@ -130,6 +131,26 @@ for entry in "$APP_DIR"/Resources/*; do
 	[ "$(basename "$entry")" = "Info.plist" ] && continue
 	cp -R "$entry" "$CONTENTS/Resources/"
 done
+
+# ── 콘텐츠 팩 — {#bundle-packs} ──────────────────────────────────────────
+#
+# 앱은 번들의 팩을 **씨앗**으로 본다. 실행 시 `PackStore` 에 설치하고 `current` 를 읽는다
+# (`Composition.loadLibrary`). 여기서 복사하지 않으면 배포본의 레슨은 0편이고, 그 사실은
+# 앱을 띄워 보기 전에는 드러나지 않는다 — 그래서 조용히 넘어가지 않고 죽는다.
+PACK_SOURCE="$REPO_ROOT/Content/packs"
+if [ ! -d "$PACK_SOURCE" ]; then
+	echo "$PACK_SOURCE 가 없다 — 콘텐츠 0편짜리 번들을 만들 수는 없다." >&2
+	exit 1
+fi
+mkdir -p "$CONTENTS/Resources/Content"
+# ditto 로 옮긴다. 팩은 서명 봉인 대상이므로 반드시 codesign 앞에 놓여야 한다.
+ditto "$PACK_SOURCE" "$CONTENTS/Resources/Content/packs"
+PACK_COUNT="$(find "$CONTENTS/Resources/Content/packs" -maxdepth 2 -name manifest.json | wc -l | tr -d " ")"
+if [ "$PACK_COUNT" -eq 0 ]; then
+	echo "$PACK_SOURCE 아래에 manifest.json 을 가진 팩이 없다." >&2
+	exit 1
+fi
+echo "==> 콘텐츠 팩 ${PACK_COUNT}개 번들"
 
 # ── Sparkle.framework 임베드 — {#sparkle-updates} ────────────────────────
 #

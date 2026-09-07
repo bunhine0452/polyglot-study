@@ -19,7 +19,7 @@ nonisolated enum RepoPaths {
     /// 리포에 커밋된 샘플 팩. **목 데이터를 만들지 않는다** — 화면 테스트가 보는 레슨은
     /// `packtool` 과 앱이 보는 것과 같은 파일이다.
     static var samplePack: URL {
-        root.appendingPathComponent("Content/packs/polyglot-mvp", isDirectory: true)
+        root.appendingPathComponent("Content/fixtures/polyglot-mvp", isDirectory: true)
     }
 }
 

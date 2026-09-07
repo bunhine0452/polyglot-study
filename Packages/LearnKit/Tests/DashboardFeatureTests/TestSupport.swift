@@ -31,8 +31,11 @@ struct DashboardFixture {
         lessonDirectory: (@Sendable (LanguageID) -> [LessonID])? = nil,
         toolchainStatus: (@Sendable (LanguageID) -> TrackToolchainStatus)? = nil
     ) -> DashboardModel {
-        DashboardModel(
-            packID: Self.packID,
+        // 팩 id 는 클로저 밖에서 값으로 꺼낸다. `Self.packID` 를 `@Sendable` 클로저 안에서
+        // 읽으면 MainActor 격리(uiSettings)를 넘게 된다.
+        let packID = Self.packID
+        return DashboardModel(
+            packIDs: [packID],
             catalog: catalog,
             progressStore: progressStore ?? stores.lessonProgress,
             cardStateStore: stores.cardState,
@@ -41,8 +44,34 @@ struct DashboardFixture {
             dayBoundary: Self.dayBoundary,
             queuePolicy: .default,
             lessonMetadata: lessonMetadata,
-            lessonDirectory: lessonDirectory,
+            // 픽스처는 팩 하나짜리다 — 테스트가 주는 레슨 목록에 그 팩을 붙여 준다.
+            lessonDirectory: lessonDirectory.map { directory in
+                { @Sendable language in
+                    directory(language).map { LessonRef(packID: packID, lessonID: $0) }
+                }
+            },
             toolchainStatus: toolchainStatus
+        )
+    }
+
+    /// 트랙 화면 모델. 대시보드와 같은 스토어·팩을 본다.
+    func tracksModel(
+        progressStore: (any LessonProgressStore)? = nil,
+        catalog: [TrackDescriptor] = TrackCatalog.all,
+        lessonMetadata: (@Sendable (PackID, LessonID) -> DashboardModel.LessonMetadata?)? = nil,
+        lessonDirectory: (@Sendable (LanguageID) -> [LessonID])? = nil
+    ) -> TracksModel {
+        let packID = Self.packID
+        return TracksModel(
+            packIDs: [packID],
+            catalog: catalog,
+            progressStore: progressStore ?? stores.lessonProgress,
+            lessonMetadata: lessonMetadata,
+            lessonDirectory: lessonDirectory.map { directory in
+                { @Sendable language in
+                    directory(language).map { LessonRef(packID: packID, lessonID: $0) }
+                }
+            }
         )
     }
 

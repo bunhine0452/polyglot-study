@@ -262,7 +262,7 @@ Tools 5분 19초 · build-app 4분 5초 · packtool validate 4분 39초. 병렬�
   `PR_BASE_SHA` 로 실제 두 커밋 사이 변경 팩 탐지, `PR_BASE_SHA` 가 diff 없음,
   `PR_BASE_SHA` 해석 불가 폴백, 구조 단계 실패(exit 1), 존재하지 않는 경로/
   알 수 없는 플래그(exit 2). 모두 기대한 종료 코드와 요약 출력을 냈다.
-- `packtool validate Content/packs/polyglot-mvp` 4단계 전부 통과, JUnit 리포트가
+- `packtool validate Content/fixtures/polyglot-mvp` 4단계 전부 통과, JUnit 리포트가
   유효한 XML(`xml.dom.minidom` 파싱 확인).
 - `ExecutionGateTests`(fail-by-default, allow-missing-toolchain 스킵) 12개 전부
   통과 — toolchain-skip-policy 의 실제 실행 증거.

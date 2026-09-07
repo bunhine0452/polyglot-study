@@ -31,8 +31,11 @@ struct DashboardFixture {
         lessonDirectory: (@Sendable (LanguageID) -> [LessonID])? = nil,
         toolchainStatus: (@Sendable (LanguageID) -> TrackToolchainStatus)? = nil
     ) -> DashboardModel {
-        DashboardModel(
-            packID: Self.packID,
+        // 팩 id 는 클로저 밖에서 값으로 꺼낸다. `Self.packID` 를 `@Sendable` 클로저 안에서
+        // 읽으면 MainActor 격리(uiSettings)를 넘게 된다.
+        let packID = Self.packID
+        return DashboardModel(
+            packIDs: [packID],
             catalog: catalog,
             progressStore: progressStore ?? stores.lessonProgress,
             cardStateStore: stores.cardState,
@@ -41,7 +44,12 @@ struct DashboardFixture {
             dayBoundary: Self.dayBoundary,
             queuePolicy: .default,
             lessonMetadata: lessonMetadata,
-            lessonDirectory: lessonDirectory,
+            // 픽스처는 팩 하나짜리다 — 테스트가 주는 레슨 목록에 그 팩을 붙여 준다.
+            lessonDirectory: lessonDirectory.map { directory in
+                { @Sendable language in
+                    directory(language).map { LessonRef(packID: packID, lessonID: $0) }
+                }
+            },
             toolchainStatus: toolchainStatus
         )
     }

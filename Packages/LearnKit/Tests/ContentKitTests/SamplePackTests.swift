@@ -4,11 +4,11 @@ import Testing
 
 @testable import ContentKit
 
-/// 리포에 커밋된 `Content/packs/polyglot-mvp` 가 스펙대로인지 본다.
+/// 리포에 커밋된 `Content/fixtures/polyglot-mvp` 가 스펙대로인지 본다.
 ///
 /// 스펙 문서와 샘플 팩과 파서가 셋 다 같은 것을 말해야 의미가 있다. 문서만 고치고
 /// 팩을 안 고치거나, 팩만 고치고 해시를 안 갱신하는 실수가 여기서 잡힌다.
-@Suite("샘플 팩 — Content/packs/polyglot-mvp")
+@Suite("샘플 팩 — Content/fixtures/polyglot-mvp")
 struct SamplePackTests {
     @Test("팩 디렉터리가 리포에 있다")
     func packExists() {

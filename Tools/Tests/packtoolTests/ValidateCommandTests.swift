@@ -10,8 +10,8 @@ import Testing
 struct ValidateCommandTests {
     @Test("기본값 — 텍스트 리포트, 실행 게이트 켬, 툴체인 없으면 실패")
     func defaults() throws {
-        let command = try ValidateCommand.parse(["Content/packs/polyglot-mvp"])
-        #expect(command.packPath == "Content/packs/polyglot-mvp")
+        let command = try ValidateCommand.parse(["Content/fixtures/polyglot-mvp"])
+        #expect(command.packPath == "Content/fixtures/polyglot-mvp")
         #expect(command.report == .text)
         #expect(command.output == nil)
         #expect(command.allowMissingToolchain == false)

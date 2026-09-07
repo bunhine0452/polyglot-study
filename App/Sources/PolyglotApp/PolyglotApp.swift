@@ -108,9 +108,7 @@ private struct RootView: View {
 
     private func resume(_ point: ResumePoint) {
         do {
-            // ResumePoint 는 팩 id 를 들고 있지 않다 — 대시보드가 단일 팩을 전제로 만들어졌다.
-            // 조립 루트가 아는 팩을 그대로 쓴다.
-            openLesson = try composition.makeLesson(lessonID: point.lessonID)
+            openLesson = try composition.makeLesson(point.ref)
             screenError = nil
         } catch {
             screenError = "\(error)"

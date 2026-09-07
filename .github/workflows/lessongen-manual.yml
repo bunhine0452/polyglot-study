@@ -4,8 +4,8 @@ name: lessongen (manual)
 # 참고). PR·push 어디에도 걸지 않고 workflow_dispatch 로만 사람이 명시적으로 켠다.
 #
 # args 입력은 `swift run --package-path Tools lessongen` 뒤에 그대로 붙는다 —
-# 예: "outline --help", "lesson --pack Content/packs/polyglot-mvp --limit 1",
-#     "repair --pack Content/packs/polyglot-mvp --report .build/report.json".
+# 예: "outline --help", "lesson --pack Content/packs/polyglot-python --limit 1",
+#     "repair --pack Content/packs/polyglot-python --report .build/report.json".
 # 정확한 서브커맨드 표면은 `swift run --package-path Tools lessongen --help` 로 확인한다
 # (이 워크플로가 그 표면을 다시 정의하지 않는 이유 — lessongen 은 Tools 소유 세션의
 # 관할이라 여기서 CLI 옵션을 박제해 두면 CLI 가 바뀔 때마다 이 파일도 고쳐야 한다).
@@ -21,7 +21,7 @@ name: lessongen (manual)
   workflow_dispatch:
     inputs:
       args:
-        description: "lessongen 뒤에 그대로 붙일 인자 (예: lesson --pack Content/packs/polyglot-mvp --limit 1 --max-usd 2.00)"
+        description: "lessongen 뒤에 그대로 붙일 인자 (예: lesson --pack Content/packs/polyglot-python --limit 1 --max-usd 2.00)"
         required: true
         type: string
 

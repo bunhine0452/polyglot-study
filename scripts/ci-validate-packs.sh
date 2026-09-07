@@ -2,7 +2,7 @@
 #
 # PR 게이트 3/3 — 콘텐츠 팩 검증 (`packtool validate`).
 #
-# packs 를 건드리지 않는 PR 에서도 이 잡은 항상 돈다(브랜치 보호가 요구하는 필수
+# 팩을 건드리지 않는 PR 에서도 이 잡은 항상 돈다(브랜치 보호가 요구하는 필수
 # 체크를 workflow paths 필터로 걸면, 그 필터에 안 걸리는 PR 은 체크가 영영
 # "대기 중"으로 남아 머지가 막힌다 — GitHub Actions 의 알려진 함정이다). 대신 이
 # 스크립트가 직접 diff 를 봐서 packs 변경이 없으면 빠르게 통과한다. 즉 "필수 체크"인
@@ -15,7 +15,7 @@
 # 단계만 돈 것을 "통과"로 착각하게 만들기 때문이다. docs/ci.md 참고.
 #
 # 사용법:
-#   scripts/ci-validate-packs.sh                       # PR_BASE_SHA 로 변경 팩 탐지, 없으면 전체
+#   scripts/ci-validate-packs.sh                       # PR_BASE_SHA 로 변경 팩 탐지, 없으면 전체 (packs + fixtures)
 #   scripts/ci-validate-packs.sh Content/packs/foo bar  # 명시한 팩만 검증 (로컬 점검용)
 #   ALLOW_MISSING_TOOLCHAIN=1 scripts/ci-validate-packs.sh ...   # 실행 게이트를 건너뛴다(필수 체크 금지)
 #
@@ -31,7 +31,10 @@ set -uo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 TOOLS_DIR="$REPO_ROOT/Tools"
-PACKS_ROOT="$REPO_ROOT/Content/packs"
+# 검증 대상 루트 둘. `Content/packs` 는 앱이 번들하는 콘텐츠이고,
+# `Content/fixtures` 는 팩 포맷 스펙을 고정하는 픽스처다(배포되지 않는다).
+# 둘 다 게이트를 통과해야 한다 — 픽스처가 깨지면 스펙 문서가 거짓이 된다.
+PACK_ROOTS=("$REPO_ROOT/Content/packs" "$REPO_ROOT/Content/fixtures")
 JUNIT_OUT_DIR="${JUNIT_OUT_DIR:-$REPO_ROOT/.build/ci-reports/packtool}"
 
 allow_missing_toolchain=0
@@ -54,14 +57,16 @@ if [ "$allow_missing_toolchain" -eq 1 ]; then
 fi
 
 discover_all_packs() {
-	local dir
-	for dir in "$PACKS_ROOT"/*/; do
-		[ -f "${dir}manifest.json" ] || continue
-		printf '%s\n' "${dir%/}"
+	local root dir
+	for root in "${PACK_ROOTS[@]}"; do
+		for dir in "$root"/*/; do
+			[ -f "${dir}manifest.json" ] || continue
+			printf '%s\n' "${dir%/}"
+		done
 	done
 }
 
-# PR 베이스 이후 Content/packs/ 아래에서 바뀐 파일들을 팩 루트 단위로 접는다.
+# PR 베이스 이후 Content/packs/ · Content/fixtures/ 아래에서 바뀐 파일들을 팩 루트 단위로 접는다.
 # 매칭되는 게 하나도 없으면 센티널 "__NONE__" 한 줄만 찍는다(빈 출력과 "탐지
 # 자체를 못 함"을 구별하기 위해서다).
 discover_changed_packs() {
@@ -71,7 +76,7 @@ discover_changed_packs() {
 		discover_all_packs
 		return
 	fi
-	changed="$(git -C "$REPO_ROOT" diff --name-only "${base}...HEAD" -- Content/packs 2>/dev/null)"
+	changed="$(git -C "$REPO_ROOT" diff --name-only "${base}...HEAD" -- Content/packs Content/fixtures 2>/dev/null)"
 	if [ -z "$changed" ]; then
 		echo "__NONE__"
 		return
@@ -98,7 +103,7 @@ elif [ -n "${PR_BASE_SHA:-}" ]; then
 		[ -n "$line" ] && pack_dirs+=("$line")
 	done < <(discover_changed_packs "$PR_BASE_SHA")
 	if [ "${#pack_dirs[@]}" -eq 0 ]; then
-		echo "==> PR_BASE_SHA=$PR_BASE_SHA 이후 Content/packs/ 변경 없음 — 검증 생략"
+		echo "==> PR_BASE_SHA=$PR_BASE_SHA 이후 콘텐츠 팩 변경 없음 — 검증 생략"
 		exit 0
 	fi
 else
@@ -108,7 +113,7 @@ else
 fi
 
 if [ "${#pack_dirs[@]}" -eq 0 ]; then
-	echo "==> 검증할 팩이 없다 (Content/packs/*/manifest.json 없음)"
+	echo "==> 검증할 팩이 없다 (Content/{packs,fixtures}/*/manifest.json 없음)"
 	exit 0
 fi
 

@@ -1,5 +1,4 @@
-internal import ContentKit
-internal import Foundation
+public import Foundation
 internal import SQLite3
 
 /// SQL 트랙이 대상으로 삼을 데이터베이스를 팩의 시드 스크립트로 굽는다.
@@ -17,9 +16,17 @@ internal import SQLite3
 /// `sqlite3` CLI 를 쓰지 않고 프로세스 안에서 굽는 이유는 실행기와 같다 — SQL 트랙은
 /// 인프로세스 러너를 타므로 **툴체인 의존이 하나도 없어야** 한다. 여기서 CLI 를 부르면
 /// SQL 검증이 sqlite3 설치 여부에 매달리게 된다.
-enum PackSQLSeed {
+///
+/// - Note: `ContentKit` 에 있는 이유는 **앱과 `packtool` 이 같은 데이터베이스를 봐야**
+///   하기 때문이다. 검증기가 통과시킨 SQL 과제가 앱에서 다른 표를 대상으로 채점되면
+///   게이트는 아무것도 보장하지 못한다 — `ContentPack` 이 양쪽의 유일한 팩 창구인 것과
+///   같은 이유다.
+public enum PackSQLSeed {
+    /// 구운 데이터베이스의 파일 이름. 호출자가 정리할 때 이름을 다시 적지 않도록 공개한다.
+    public static let fileName = "pack-seed.db"
+
     /// - Returns: 구운 데이터베이스 경로. 시드 스크립트가 없으면 nil (인메모리로 돈다).
-    static func materialize(pack: ContentPack, into directory: URL) throws -> URL? {
+    public static func materialize(pack: ContentPack, into directory: URL) throws -> URL? {
         let scripts =
             pack.manifest.files
             .map(\.path)
@@ -28,7 +35,7 @@ enum PackSQLSeed {
         guard !scripts.isEmpty else { return nil }
 
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        let destination = directory.appendingPathComponent("pack-seed.db")
+        let destination = directory.appendingPathComponent(fileName)
         try? FileManager.default.removeItem(at: destination)
 
         var handle: OpaquePointer?
@@ -59,12 +66,12 @@ enum PackSQLSeed {
         return destination
     }
 
-    enum SeedError: Error, CustomStringConvertible {
+    public enum SeedError: Error, Sendable, CustomStringConvertible {
         case cannotOpen(path: String, message: String)
         case scriptMissing(path: String)
         case scriptFailed(path: String, message: String)
 
-        var description: String {
+        public var description: String {
             switch self {
             case .cannotOpen(let path, let message):
                 "시드 데이터베이스를 만들 수 없다 (\(path)): \(message)"

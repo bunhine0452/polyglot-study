@@ -54,6 +54,27 @@ struct DashboardFixture {
         )
     }
 
+    /// 트랙 화면 모델. 대시보드와 같은 스토어·팩을 본다.
+    func tracksModel(
+        progressStore: (any LessonProgressStore)? = nil,
+        catalog: [TrackDescriptor] = TrackCatalog.all,
+        lessonMetadata: (@Sendable (PackID, LessonID) -> DashboardModel.LessonMetadata?)? = nil,
+        lessonDirectory: (@Sendable (LanguageID) -> [LessonID])? = nil
+    ) -> TracksModel {
+        let packID = Self.packID
+        return TracksModel(
+            packIDs: [packID],
+            catalog: catalog,
+            progressStore: progressStore ?? stores.lessonProgress,
+            lessonMetadata: lessonMetadata,
+            lessonDirectory: lessonDirectory.map { directory in
+                { @Sendable language in
+                    directory(language).map { LessonRef(packID: packID, lessonID: $0) }
+                }
+            }
+        )
+    }
+
     // MARK: - 진도
 
     /// 완료된 레슨 `count` 개를 심는다. 레슨 id 는 `<lang>-0001` … 로 순번을 담는다.

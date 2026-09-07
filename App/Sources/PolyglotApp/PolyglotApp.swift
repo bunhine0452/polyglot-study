@@ -79,10 +79,13 @@ private struct RootView: View {
         } else {
             switch destination {
             case .today:
-                DashboardView(model: composition.dashboard, onResume: resume)
+                DashboardView(
+                    model: composition.dashboard,
+                    onResume: { open($0.ref) },
+                    onOpenTrack: openTrack
+                )
             case .tracks:
-                // 트랙 전용 화면은 아직 디자인이 없다. 대시보드의 트랙 표가 그 역할을 한다.
-                PlaceholderPanel(destination: destination)
+                TracksView(model: composition.tracks, onOpen: open)
             case .review:
                 reviewScreen
             case .toolchain:
@@ -114,9 +117,9 @@ private struct RootView: View {
         }
     }
 
-    private func resume(_ point: ResumePoint) {
+    /// 레슨 하나를 연다. 대시보드의 "이어서" 와 트랙 화면의 목록이 같은 문으로 들어온다.
+    private func open(_ ref: LessonRef) {
         do {
-            let ref = point.ref
             let model = try composition.makeLesson(ref) { task in
                 // 레슨 모델이 자기를 연 셸을 모르게 하려고 클로저로 되쏜다.
                 // 열기에 실패하면 조용히 아무 일도 일어나지 않으면 안 된다 —
@@ -129,6 +132,14 @@ private struct RootView: View {
         } catch {
             screenError = "\(error)"
         }
+    }
+
+    /// 대시보드의 트랙 행을 눌렀다 — 트랙 화면으로 옮겨 그 트랙을 편다.
+    private func openTrack(_ languageID: LanguageID) {
+        composition.tracks.select(languageID)
+        openLesson = nil
+        openEditor = nil
+        selection = .tracks
     }
 
     private func openEditorScreen(ref: LessonRef, task: TaskBlock) {
@@ -154,19 +165,7 @@ private struct RootView: View {
             screenError = "POLYGLOT_START_LESSON 은 <packID>/<lessonID> 형식이어야 합니다: \(raw)"
             return
         }
-        resume(
-            ResumePoint(
-                languageID: LanguageID(""),
-                trackName: "",
-                packID: PackID(String(parts[0])),
-                lessonID: LessonID(String(parts[1])),
-                lessonOrdinal: nil,
-                lessonTitle: "",
-                lessonTotal: 0,
-                kind: .next,
-                lastActivityAt: nil
-            )
-        )
+        open(LessonRef(packID: PackID(String(parts[0])), lessonID: LessonID(String(parts[1]))))
         guard environment["POLYGLOT_START_EDITOR"] == "1", let lesson = openLesson else { return }
         // 과제 블록까지 걸어간다 — `advance()` 는 한 칸씩만 움직인다(스텝바가 진도를 뜻한다).
         if let index = lesson.model.blocks.firstIndex(where: { $0.kind == .task }) {
@@ -194,41 +193,4 @@ private struct RootView: View {
 private struct OpenLesson {
     let ref: LessonRef
     let model: LessonModel
-}
-
-/// 화면 7종이 아직 없다는 사실을 숨기지 않는 자리. 동시에 프리미티브 6종이 실제로
-/// 렌더되는지 눈으로 확인하는 지점이기도 하다 — 화면 세션이 들어오면 통째로 사라진다.
-private struct PlaceholderPanel: View {
-    let destination: ShellDestination
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: Spacing.m) {
-            LabelText("화면 준비 중 · \(destination.rawValue)")
-
-            SegmentedProgress(completed: 3, total: 6)
-                .frame(width: 360)
-
-            HStack(spacing: Spacing.m) {
-                dot(.pass, "설치됨")
-                dot(.empty, "미설치")
-                dot(.fail, "스텁 감지")
-            }
-
-            HStack(spacing: Spacing.m) {
-                FlatButton("이어서 하기", shortcutHint: "↩") {}
-                FlatButton("복습 시작", emphasis: .secondary) {}
-            }
-
-            Rule(.soft)
-
-            MonoText("DesignSystem · Primitives 6 · Shell 1", size: .label, color: Palette.secondary)
-        }
-    }
-
-    private func dot(_ style: StatusDot.Style, _ caption: String) -> some View {
-        HStack(spacing: Spacing.s) {
-            StatusDot(style)
-            MonoText(caption, size: .label)
-        }
-    }
 }

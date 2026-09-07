@@ -126,6 +126,28 @@ final class Composition {
         )
     }
 
+    /// 트랙 화면. 대시보드와 같은 팩·스토어·카탈로그를 본다 — 두 화면이 같은 트랙을
+    /// 다르게 세면 안 된다.
+    private(set) lazy var tracks: TracksModel = makeTracks()
+
+    private func makeTracks() -> TracksModel {
+        guard case .success(let db) = database else {
+            return TracksModel(
+                packIDs: library.packIDs,
+                catalog: catalog,
+                lessonMetadata: packLessonMetadata(),
+                lessonDirectory: packLessonDirectory()
+            )
+        }
+        return TracksModel(
+            packIDs: library.packIDs,
+            catalog: catalog,
+            progressStore: db.lessonProgressStore,
+            lessonMetadata: packLessonMetadata(),
+            lessonDirectory: packLessonDirectory()
+        )
+    }
+
     func makeReview() throws -> ReviewModel {
         guard case .success(let db) = database else {
             throw CompositionError.databaseUnavailable

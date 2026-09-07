@@ -1,5 +1,6 @@
 internal import ContentKit
 internal import DashboardFeature
+internal import EditorFeature
 internal import Foundation
 internal import LearnCore
 internal import LearnPersistence
@@ -132,12 +133,60 @@ final class Composition {
         return try ReviewModel.live(database: db)
     }
 
-    func makeLesson(_ ref: LessonRef) throws -> LessonModel {
+    /// - Parameter onOpenEditor: 과제 블록의 "에디터에서 열기". 셸이 화면을 갈아 끼운다.
+    func makeLesson(
+        _ ref: LessonRef, onOpenEditor: @escaping (TaskBlock) -> Void
+    ) throws -> LessonModel {
         guard let pack = library.pack(ref.packID) else {
             throw CompositionError.packUnavailable(ref.packID)
         }
-        return try LessonModel(pack: pack, lessonID: ref.lessonID)
+        return try LessonModel(pack: pack, lessonID: ref.lessonID, onOpenEditor: onOpenEditor)
     }
+
+    /// 레슨의 `@Task` 블록 하나를 에디터 화면으로. 헤더 문구는 이미 열려 있는 레슨에서
+    /// 그대로 물려받는다 — 같은 레슨을 두 화면이 다르게 부르면 안 된다.
+    func makeEditor(_ ref: LessonRef, lesson: LessonModel, task: TaskBlock) throws -> EditorModel {
+        guard let pack = library.pack(ref.packID) else {
+            throw CompositionError.packUnavailable(ref.packID)
+        }
+        let index = lesson.blocks.firstIndex { $0.kind == .task } ?? 0
+        let database = task.language == .sql ? try seedDatabase(for: pack) : nil
+        return EditorModel(
+            task: try EditorTask.load(
+                pack: pack,
+                task: task,
+                trackCaption: lesson.trackCaption,
+                lessonTitle: lesson.content.title,
+                blockIndex: index,
+                blockCount: lesson.blocks.count,
+                database: database
+            )
+        )
+    }
+
+    // MARK: - SQL 시드 데이터베이스
+
+    /// 팩당 한 번만 굽고 실행 동안 재사용한다. 실행기가 매 실행마다 **복제본**을 쓰므로
+    /// (`SQLDatabaseClone`) 여러 과제가 같은 파일을 봐도 서로를 오염시키지 않는다.
+    ///
+    /// 실패를 nil 로 삼키지 않는다 — 시드가 없으면 참조 질의가 `no such table` 로 죽고,
+    /// 학습자에게는 자기 코드가 틀린 것처럼 보인다.
+    private func seedDatabase(for pack: ContentPack) throws -> URL {
+        let packID = pack.manifest.packID
+        if let cached = seedDatabases[packID] { return cached }
+        let directory = seedRoot.appendingPathComponent(packID.rawValue, isDirectory: true)
+        guard let url = try PackSQLSeed.materialize(pack: pack, into: directory) else {
+            throw CompositionError.sqlSeedMissing(packID)
+        }
+        seedDatabases[packID] = url
+        return url
+    }
+
+    private var seedDatabases: [PackID: URL] = [:]
+
+    /// 실행 하나짜리 임시 디렉터리. 앱이 죽으면 OS 가 치운다.
+    private let seedRoot = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
+        .appendingPathComponent("polyglot-seed-\(ProcessInfo.processInfo.processIdentifier)", isDirectory: true)
 
     var databaseFailureNotice: String? {
         guard case .failure(let error) = database else { return nil }
@@ -209,11 +258,14 @@ final class Composition {
 enum CompositionError: Error, CustomStringConvertible {
     case databaseUnavailable
     case packUnavailable(PackID)
+    case sqlSeedMissing(PackID)
 
     var description: String {
         switch self {
         case .databaseUnavailable: "저장소를 열지 못해 이 화면을 열 수 없습니다."
         case .packUnavailable(let id): "콘텐츠 팩 \(id.rawValue) 이 없어 이 화면을 열 수 없습니다."
+        case .sqlSeedMissing(let id):
+            "\(id.rawValue) 에 SQL 시드 스크립트(assets/*.sql)가 없어 과제를 채점할 수 없습니다."
         }
     }
 }

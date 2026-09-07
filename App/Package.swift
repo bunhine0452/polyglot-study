@@ -42,6 +42,10 @@ let package = Package(
                 .product(name: "DashboardFeature", package: "LearnKit"),
                 .product(name: "LessonFeature", package: "LearnKit"),
                 .product(name: "ReviewFeature", package: "LearnKit"),
+                // 에디터 화면({#route-editor-screen}). `EditorUI`(CodeEditSourceEditor
+                // 위의 무채색 테마)와 `LSPKit`(sourcekit-lsp)은 이 타깃의 의존이라
+                // 전이로 함께 링크된다 — 앱이 직접 이름 부를 일이 없다.
+                .product(name: "EditorFeature", package: "LearnKit"),
                 .product(name: "ContentKit", package: "LearnKit"),
                 .product(name: "LearnPersistence", package: "LearnKit"),
                 .product(name: "Sparkle", package: "Sparkle"),

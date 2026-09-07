@@ -1,0 +1,5 @@
+kim: 90
+park: 0
+lee: 75
+park: 0
+kim: 90

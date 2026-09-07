@@ -1,0 +1,10 @@
+n=1
+n=2
+n=3
+n=4
+n=5
+sum=12
+while i=3
+while i=2
+while i=1
+반복 끝

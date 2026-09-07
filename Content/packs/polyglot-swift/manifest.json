@@ -1,0 +1,521 @@
+{
+  "displayName" : "Swift 첫걸음",
+  "files" : [
+    {
+      "bytes" : 111,
+      "path" : "expected/swift-arrays-and-element-access.txt",
+      "sha256" : "70479bd5051e9323cabcf3f3e39ef694d4bc6f2a1359b8565df9e5f9a97a7ee7"
+    },
+    {
+      "bytes" : 49,
+      "path" : "expected/swift-basic-types-and-type-inference.txt",
+      "sha256" : "1b0b4685ef7c9152ce0ac75832c253d5b956b6b802818f81d2a986def7ba3c2d"
+    },
+    {
+      "bytes" : 83,
+      "path" : "expected/swift-closures-map-filter.txt",
+      "sha256" : "8b04d3251bf053832134fd28e5d4493b7e5508c6c6df9a948020931bdc71e4a7"
+    },
+    {
+      "bytes" : 20,
+      "path" : "expected/swift-conditionals-if-switch.txt",
+      "sha256" : "3ad61b09fbaa9e5a8ad6c37ae2dc5b1556f0085f1c6eeb34e9da113baa079b13"
+    },
+    {
+      "bytes" : 107,
+      "path" : "expected/swift-dictionaries-key-value.txt",
+      "sha256" : "072aaf2e09dc27d39bea6433a0ca369bedb073c2a3c91872e5223b0cd57b1198"
+    },
+    {
+      "bytes" : 91,
+      "path" : "expected/swift-functions-and-return-values.txt",
+      "sha256" : "79e8e95384aa0e69ddf683af0944e65af3db2eddf2ff2cd9326ada0c15256d8d"
+    },
+    {
+      "bytes" : 68,
+      "path" : "expected/swift-loops-for-while.txt",
+      "sha256" : "f2a9eb9bd762101597700b15929680c88c1aea1b0de27f0f0dd79751db8f5942"
+    },
+    {
+      "bytes" : 40,
+      "path" : "expected/swift-optional-binding-patterns.txt",
+      "sha256" : "24f55cef2ae92ef5f61e657ebefc9205bf241231c81d2f9e5b43f1de3e545840"
+    },
+    {
+      "bytes" : 60,
+      "path" : "expected/swift-optionals-and-nil.txt",
+      "sha256" : "8c9d432b544ad18047323b49b90f7507d54a264cb59b2ef5f3100239641222b2"
+    },
+    {
+      "bytes" : 121,
+      "path" : "expected/swift-string-interpolation.txt",
+      "sha256" : "c470498aa4becf26c9794646cdd5cf47587a1251287b345b66cff3031277ecc0"
+    },
+    {
+      "bytes" : 97,
+      "path" : "expected/swift-structs-properties-methods.txt",
+      "sha256" : "3795ff854cf4a0c8f000b077c28cd515f341ad6d72cf2ecadf26527e7ac0ff0e"
+    },
+    {
+      "bytes" : 65,
+      "path" : "expected/swift-variables-and-constants.txt",
+      "sha256" : "88eb44f8471eba9ccf03cc60d894a31079f2bd54a4b74996d726711fbcd6fd8a"
+    },
+    {
+      "bytes" : 4073,
+      "path" : "lessons/swift-arrays-and-element-access.md",
+      "sha256" : "15cc84acda2b84a7615074e8a48cb10206905461a779bd02320cc8c2651b7819"
+    },
+    {
+      "bytes" : 4173,
+      "path" : "lessons/swift-basic-types-and-type-inference.md",
+      "sha256" : "f0d4abb4320be819ec2a2a6fb596390b17f1c9c30e1c8ea62e514cc81b658d29"
+    },
+    {
+      "bytes" : 4130,
+      "path" : "lessons/swift-closures-map-filter.md",
+      "sha256" : "53f4562afae67d7669c91798a3341796e8bb3193c7841834f2b721542b67bbb2"
+    },
+    {
+      "bytes" : 4043,
+      "path" : "lessons/swift-conditionals-if-switch.md",
+      "sha256" : "f92c7e9ae82b2221443dc63bfc99e1223fda089c5d4c6d7969ae13c6cd3e8f96"
+    },
+    {
+      "bytes" : 4425,
+      "path" : "lessons/swift-dictionaries-key-value.md",
+      "sha256" : "40f30436a455179dae3a5fc43b7140b7b4d56ef4c43728fd145d8ae57bcd1bc0"
+    },
+    {
+      "bytes" : 4015,
+      "path" : "lessons/swift-functions-and-return-values.md",
+      "sha256" : "f1330e03b691437099a509cf41fec0a264e32b668a99d4dfb8731d457e92f460"
+    },
+    {
+      "bytes" : 4627,
+      "path" : "lessons/swift-loops-for-while.md",
+      "sha256" : "69555227ce6cd536d0f4fdffad7821e5147900de622f1e523fb1c3bd6958ccbc"
+    },
+    {
+      "bytes" : 4949,
+      "path" : "lessons/swift-optional-binding-patterns.md",
+      "sha256" : "50daf927b3d0aade849004aa91ed4a306945910ea9a9667cc0c80da10daf939f"
+    },
+    {
+      "bytes" : 4092,
+      "path" : "lessons/swift-optionals-and-nil.md",
+      "sha256" : "b5a062da9428f6f1032f3064ef26c70351e86d58f6151ef76772c1d61d846f92"
+    },
+    {
+      "bytes" : 3992,
+      "path" : "lessons/swift-string-interpolation.md",
+      "sha256" : "ab983921aa8818f84d6f910e1d09652a89422a2d78090f33b3528d4d6fedd6e5"
+    },
+    {
+      "bytes" : 4529,
+      "path" : "lessons/swift-structs-properties-methods.md",
+      "sha256" : "944a8f13ac8fa7174edae3c438f32c5a5862bea8a8982461a6b2f98fc9f7d3fc"
+    },
+    {
+      "bytes" : 3571,
+      "path" : "lessons/swift-variables-and-constants.md",
+      "sha256" : "b1deb5847f3f4b9a817b7077db9a5877bce7aa51091cf874e8f3cfd570284aac"
+    },
+    {
+      "bytes" : 233,
+      "path" : "solutions/swift-arrays-and-element-access.swift",
+      "sha256" : "bbebac0fd40d068cfc97cedce8fa1446e4209f2c6237176c55cf36496eb452c0"
+    },
+    {
+      "bytes" : 83,
+      "path" : "solutions/swift-basic-types-and-type-inference.swift",
+      "sha256" : "03a6fc99cddb2248412a9dcfc022be8579f9f603382d4c60b14ec9e19927e66f"
+    },
+    {
+      "bytes" : 100,
+      "path" : "solutions/swift-closures-map-filter.swift",
+      "sha256" : "55627df07c9dc9a900ecc7de4f4e8358c4261172ae6a43b5d6f3a1fd863408a9"
+    },
+    {
+      "bytes" : 341,
+      "path" : "solutions/swift-conditionals-if-switch.swift",
+      "sha256" : "c5c872910d77af37cad17faccd2e9d2620370281fded84f2f7a291f26f5bf881"
+    },
+    {
+      "bytes" : 245,
+      "path" : "solutions/swift-dictionaries-key-value.swift",
+      "sha256" : "9923d8032d2bdec92e9f4de4df7c23c1c033bdbf25069a2cdb96d9587ed26322"
+    },
+    {
+      "bytes" : 372,
+      "path" : "solutions/swift-functions-and-return-values.swift",
+      "sha256" : "ed299878eb05583aeacf7aebccfd9a0df1cadf53a2b5838ca799e554fe725ef3"
+    },
+    {
+      "bytes" : 659,
+      "path" : "solutions/swift-loops-for-while.swift",
+      "sha256" : "883705fd989a76df3e9828fc47153253f8f25d3959f4a4a7849d4d25ff765dd5"
+    },
+    {
+      "bytes" : 204,
+      "path" : "solutions/swift-optional-binding-patterns.swift",
+      "sha256" : "760f54a2283487bd70256907a6033de4d5619728f8176d4c9a222443823ca662"
+    },
+    {
+      "bytes" : 200,
+      "path" : "solutions/swift-optionals-and-nil.swift",
+      "sha256" : "e04d7d2a454b258cd1074776f43830160b56e0ba3be6b471170083e48ce53f45"
+    },
+    {
+      "bytes" : 236,
+      "path" : "solutions/swift-string-interpolation.swift",
+      "sha256" : "5cd1c4fb76f1a02a3b9e4abe16e407b2d7917a3b412c32f95d0e8065e616ed27"
+    },
+    {
+      "bytes" : 235,
+      "path" : "solutions/swift-structs-properties-methods.swift",
+      "sha256" : "4237b9d176b461bcbd5f1d2e0b056d2dc75bc28ed7f35ab31e0a79dd9727abc8"
+    },
+    {
+      "bytes" : 119,
+      "path" : "solutions/swift-variables-and-constants.swift",
+      "sha256" : "b9f656060b4adf787c30587a43b8f846e6b79eddf54a44a8ab948f7e5e78c9ad"
+    },
+    {
+      "bytes" : 938,
+      "path" : "stableids.lock",
+      "sha256" : "fa8868c6d1a7fd9562733f53c0b4ea29377e293e1de107a0f58804a4dfd8958d"
+    },
+    {
+      "bytes" : 223,
+      "path" : "starters/swift-arrays-and-element-access.swift",
+      "sha256" : "e51b247648fab2458c1d88541bfa7577a0c074bf70cdc4a2a9fdba501f3583ac"
+    },
+    {
+      "bytes" : 168,
+      "path" : "starters/swift-basic-types-and-type-inference.swift",
+      "sha256" : "5250323a3b47a7950335e61e0bafd9ef4c9b8740c011c756f287c1ba09463d51"
+    },
+    {
+      "bytes" : 176,
+      "path" : "starters/swift-closures-map-filter.swift",
+      "sha256" : "c1c2a2493b6cd82f9908b83ecf327ad9d206500ff434f098f0c506055682668a"
+    },
+    {
+      "bytes" : 161,
+      "path" : "starters/swift-conditionals-if-switch.swift",
+      "sha256" : "15b40235a2dca945ce711602672a922d4a410dbfd60b6a70e752eb3096951075"
+    },
+    {
+      "bytes" : 256,
+      "path" : "starters/swift-dictionaries-key-value.swift",
+      "sha256" : "05d941c78c4813563ea94526b198163bba8b3b8bb83f34628f0dbf1a1dd07373"
+    },
+    {
+      "bytes" : 233,
+      "path" : "starters/swift-functions-and-return-values.swift",
+      "sha256" : "93d7a0cbc73a93f3f108220390047c9a1d6cb3242259f7d361fd31982d0d6b0c"
+    },
+    {
+      "bytes" : 318,
+      "path" : "starters/swift-loops-for-while.swift",
+      "sha256" : "72337c5ec0c37b0eb1f01be285a2716e85a7e3712df38446834be884809fb99e"
+    },
+    {
+      "bytes" : 169,
+      "path" : "starters/swift-optional-binding-patterns.swift",
+      "sha256" : "1d80dea28241d98e159ea2003a5a858f3362f19dd4839490aa2636728f0b8014"
+    },
+    {
+      "bytes" : 306,
+      "path" : "starters/swift-optionals-and-nil.swift",
+      "sha256" : "2c4511a9475752db9f18fe93d54a0f78ffeb0136b5b5c3e24df16bcf59388cc4"
+    },
+    {
+      "bytes" : 173,
+      "path" : "starters/swift-string-interpolation.swift",
+      "sha256" : "0315d7ff8d8c7ba59f20dff8592428f0332b7d3bcf86a6cb58f6805985f97229"
+    },
+    {
+      "bytes" : 236,
+      "path" : "starters/swift-structs-properties-methods.swift",
+      "sha256" : "1c7fdff33386dc78a2822aed341cd4aeb801ca32e4d1232f6e53c394fecd94e8"
+    },
+    {
+      "bytes" : 165,
+      "path" : "starters/swift-variables-and-constants.swift",
+      "sha256" : "c2ae3b4399554114beef16e7a515a1b02a7eb60dce3aee673d50a63c02d95e7d"
+    },
+    {
+      "bytes" : 303,
+      "path" : "tests/swift-arrays-and-element-access.swift",
+      "sha256" : "219d28aaf935a97b7d7db26aa5178e73d456936e633be1c6ba098f339248fbbf"
+    },
+    {
+      "bytes" : 431,
+      "path" : "tests/swift-basic-types-and-type-inference.swift",
+      "sha256" : "65d598dc094b1a1060c51216da538915fb81546a91422e1a32006dafb4f69a3a"
+    },
+    {
+      "bytes" : 355,
+      "path" : "tests/swift-closures-map-filter.swift",
+      "sha256" : "96dc4534950c5c656ea39d689e6d98b8e3c3dda319e798401d1a06e549f86197"
+    },
+    {
+      "bytes" : 348,
+      "path" : "tests/swift-conditionals-if-switch.swift",
+      "sha256" : "70faa5b667dc8b99838fa1cb795f6d6cd48948db4158a9584e3a30e9154def0a"
+    },
+    {
+      "bytes" : 538,
+      "path" : "tests/swift-dictionaries-key-value.swift",
+      "sha256" : "35e0a6b0532a9106fb5a6a19a580f9cbc83c451499d0477d1664602ebe5a1618"
+    },
+    {
+      "bytes" : 547,
+      "path" : "tests/swift-functions-and-return-values.swift",
+      "sha256" : "c434927fd76458cd4784e6aeb08761a9b5a5262416aae2d98d8763de09b1d7f9"
+    },
+    {
+      "bytes" : 1048,
+      "path" : "tests/swift-loops-for-while.swift",
+      "sha256" : "d294c090e4539e11a073d0fe809fba3926c95dcb18408e05539126f623b8aeb5"
+    },
+    {
+      "bytes" : 460,
+      "path" : "tests/swift-optional-binding-patterns.swift",
+      "sha256" : "04a23618159f3ffe2f6951eb431d310603153a754ddf66f66f0c167419494274"
+    },
+    {
+      "bytes" : 445,
+      "path" : "tests/swift-optionals-and-nil.swift",
+      "sha256" : "b86e3204d8b9e33345886b7fd12e70d9e16eb9eb67a84edb7cc107995e03d785"
+    },
+    {
+      "bytes" : 485,
+      "path" : "tests/swift-string-interpolation.swift",
+      "sha256" : "801ad8a41015bef77b2a740482ce44bff010bb8c530cab9b7cd3d3a6dad45cc9"
+    },
+    {
+      "bytes" : 797,
+      "path" : "tests/swift-structs-properties-methods.swift",
+      "sha256" : "9888ef9a2e92aaf4475fe97c76e65de5947b785e8c37656d844279a9df8c222c"
+    },
+    {
+      "bytes" : 396,
+      "path" : "tests/swift-variables-and-constants.swift",
+      "sha256" : "caac8c762e4b0d9038623cb20610eb815e7154b254a42d4662021bf83af3e6d6"
+    }
+  ],
+  "generatedAt" : "2026-09-07T00:00:00Z",
+  "languages" : [
+    "swift"
+  ],
+  "lessons" : [
+    {
+      "language" : "swift",
+      "objectives" : [
+        "var 로 선언한 변수에 새 값을 대입하고 print 로 출력할 수 있다",
+        "let 로 선언한 상수에 값을 대입할 수 있다",
+        "상수에 다시 대입하려 하면 컴파일 오류가 발생한다는 것을 직접 확인하고 그 오류를 설명할 수 있다",
+        "값이 바뀌어야 하는 데이터와 바뀌면 안 되는 데이터를 구분해 let 과 var 를 선택할 수 있다"
+      ],
+      "order" : 1,
+      "path" : "lessons/swift-variables-and-constants.md",
+      "prerequisites" : [
+
+      ],
+      "stableID" : "swift-variables-and-constants",
+      "title" : "변수와 상수: var 와 let"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "Int, Double, String, Bool 타입의 값을 각각 선언하고 출력할 수 있다",
+        "type(of:) 를 사용해 값의 타입을 직접 확인할 수 있다",
+        "타입 표기를 생략한 선언에서 Swift 가 타입을 추론한 결과를 type(of:) 로 관찰할 수 있다",
+        "Double 값에 Int 를 그대로 더하면 오류가 난다는 것을 확인하고 Double(x) 로 변환해 더할 수 있다"
+      ],
+      "order" : 2,
+      "path" : "lessons/swift-basic-types-and-type-inference.md",
+      "prerequisites" : [
+        "swift-variables-and-constants"
+      ],
+      "stableID" : "swift-basic-types-and-type-inference",
+      "title" : "기본 타입과 타입 추론"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "문자열 보간 \\(...) 를 사용해 변수와 표현식 결과를 문자열에 끼워 넣을 수 있다",
+        "count 로 문자열 글자 수를 세고 uppercased() 로 대문자로 변환한 결과를 출력할 수 있다",
+        "여러 값을 보간해 한 문장 형태의 문자열을 만들고 print 로 확인할 수 있다",
+        "보간식 안에서 연산이 평가된 결과가 문자열에 들어가는 것을 실행으로 관찰할 수 있다"
+      ],
+      "order" : 3,
+      "path" : "lessons/swift-string-interpolation.md",
+      "prerequisites" : [
+        "swift-variables-and-constants",
+        "swift-basic-types-and-type-inference"
+      ],
+      "stableID" : "swift-string-interpolation",
+      "title" : "문자열 보간과 String 조작"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "비교 연산의 결과가 true 일 때만 if 본문이 실행되는 것을 print 로 확인할 수 있다",
+        "else if 와 else 를 사용해 여러 분기 중 정확히 하나만 실행됨을 관찰할 수 있다",
+        "switch 문에서 case 별로 다른 문장이 실행되는 것을 값별로 바꿔 가며 확인할 수 있다",
+        "동일한 분기를 if 와 switch 두 방식으로 각각 작성해 같은 출력이 나오는지 검증할 수 있다"
+      ],
+      "order" : 4,
+      "path" : "lessons/swift-conditionals-if-switch.md",
+      "prerequisites" : [
+        "swift-variables-and-constants",
+        "swift-basic-types-and-type-inference"
+      ],
+      "stableID" : "swift-conditionals-if-switch",
+      "title" : "조건문: if 와 switch"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "for-in 문과 range 연산자(1...5)로 구간을 순회하며 각 값을 출력할 수 있다",
+        "while 문의 조건이 false 가 되는 순간 반복이 끝나는 것을 카운터와 print 로 관찰할 수 있다",
+        "continue 를 만나면 이번 반복만 건너뛴다는 것을 출력 순서로 확인할 수 있다",
+        "같은 횟수를 반복하는 for-in 문과 while 문을 각각 작성해 동일한 출력을 내보일 수 있다"
+      ],
+      "order" : 5,
+      "path" : "lessons/swift-loops-for-while.md",
+      "prerequisites" : [
+        "swift-conditionals-if-switch"
+      ],
+      "stableID" : "swift-loops-for-while",
+      "title" : "반복문: for-in 과 while"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "func 로 매개변수와 반환 타입(->)이 있는 함수를 정의하고 호출할 수 있다",
+        "같은 인자를 넣었을 때 함수가 항상 같은 값을 반환하는 것을 여러 번 호출해 확인할 수 있다",
+        "반환값이 없는 함수(Void)와 반환값이 있는 함수의 호출 결과 차이를 print 로 관찰할 수 있다",
+        "반복문 안에서 함수를 여러 번 호출해 인자별 결과를 모아 출력할 수 있다"
+      ],
+      "order" : 6,
+      "path" : "lessons/swift-functions-and-return-values.md",
+      "prerequisites" : [
+        "swift-variables-and-constants",
+        "swift-conditionals-if-switch",
+        "swift-loops-for-while"
+      ],
+      "stableID" : "swift-functions-and-return-values",
+      "title" : "함수 정의와 반환값"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "Array 리터럴로 배열을 만들고 인덱스로 요소를 읽어 출력할 수 있다",
+        "append 로 요소를 추가한 뒤 count 변화를 print 로 확인할 수 있다",
+        "for-in 문으로 배열의 모든 요소를 순회하며 처리할 수 있다",
+        "빈 배열을 만들어 append 와 반복문으로 값을 채우고 합계를 계산해 반환하는 함수를 작성할 수 있다"
+      ],
+      "order" : 7,
+      "path" : "lessons/swift-arrays-and-element-access.md",
+      "prerequisites" : [
+        "swift-loops-for-while",
+        "swift-functions-and-return-values"
+      ],
+      "stableID" : "swift-arrays-and-element-access",
+      "title" : "배열: Array 와 순회"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "Dictionary 리터럴로 키-값 쌍을 만들고 키로 값을 읽어 출력할 수 있다",
+        "존재하는 키와 존재하지 않는 키로 접근했을 때 반환값이 어떻게 다른지 print 로 비교할 수 있다",
+        "subscript 로 기존 키의 값을 갱신하고 새 키를 추가한 뒤 전체 딕셔너리를 출력할 수 있다",
+        "for-in 문으로 딕셔너리의 키-값 쌍을 순회해 조건에 맞는 항목만 모아 출력할 수 있다"
+      ],
+      "order" : 8,
+      "path" : "lessons/swift-dictionaries-key-value.md",
+      "prerequisites" : [
+        "swift-arrays-and-element-access"
+      ],
+      "stableID" : "swift-dictionaries-key-value",
+      "title" : "딕셔너리: 키-값 데이터"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "옵셔널 타입 변수에 nil 을 대입하고 print 로 출력해 어떻게 표시되는지 확인할 수 있다",
+        "옵셔널 값을 그대로 일반 값처럼 쓰려 하면 오류가 발생함을 확인하고 그 이유를 설명할 수 있다",
+        "if let 바인딩으로 값이 있을 때와 nil 일 때 각각 다른 분기가 실행되는 것을 검증할 수 있다",
+        "Dictionary 의 키 조회 결과가 옵셔널임을 확인하고 if let 으로 안전하게 꺼내 쓸 수 있다"
+      ],
+      "order" : 9,
+      "path" : "lessons/swift-optionals-and-nil.md",
+      "prerequisites" : [
+        "swift-basic-types-and-type-inference",
+        "swift-dictionaries-key-value"
+      ],
+      "stableID" : "swift-optionals-and-nil",
+      "title" : "옵셔널 입문: nil 과 if let"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "guard let 으로 nil 이면 함수를 일찍 종료하고, nil 이 아닐 때 이후 코드에서 언래핑된 값을 쓸 수 있다",
+        "nil 병합 연산자(??)로 nil 일 때 대체값이 사용되는 것을 print 로 확인할 수 있다",
+        "강제 언래핑(!)이 nil 을 만나면 실행이 중단됨을 직접 확인하고 위험을 설명할 수 있다",
+        "같은 옵셔널 처리를 if let, guard let, ?? 세 방식으로 각각 작성해 동일한 결과를 내보일 수 있다"
+      ],
+      "order" : 10,
+      "path" : "lessons/swift-optional-binding-patterns.md",
+      "prerequisites" : [
+        "swift-optionals-and-nil",
+        "swift-functions-and-return-values"
+      ],
+      "stableID" : "swift-optional-binding-patterns",
+      "title" : "옵셔널 바인딩 패턴: guard let 과 ??"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "struct 로 프로퍼티와 메서드를 갖춘 타입을 정의하고 인스턴스를 생성할 수 있다",
+        "memberwise initializer 로 생성한 인스턴스의 프로퍼티 값을 읽어 출력할 수 있다",
+        "메서드 안에서 프로퍼티를 사용해 계산한 결과를 반환하고 여러 인스턴스로 호출해 검증할 수 있다",
+        "한 인스턴스의 프로퍼티를 바꿔도 다른 인스턴스의 프로퍼티가 바뀌지 않음을 print 로 확인할 수 있다"
+      ],
+      "order" : 11,
+      "path" : "lessons/swift-structs-properties-methods.md",
+      "prerequisites" : [
+        "swift-functions-and-return-values",
+        "swift-optional-binding-patterns"
+      ],
+      "stableID" : "swift-structs-properties-methods",
+      "title" : "구조체: struct 로 타입 만들기"
+    },
+    {
+      "language" : "swift",
+      "objectives" : [
+        "중괄호 형태의 클로저를 변수에 담아 호출하고 반환값을 print 로 확인할 수 있다",
+        "map 에 클로저를 넘겨 배열의 모든 요소를 변환한 새 배열을 만들 수 있다",
+        "filter 에 클로저를 넘겨 조건을 통과한 요소만 남은 새 배열을 만들 수 있다",
+        "축약 인자($0)를 사용한 클로저와 이름 있는 매개변수를 쓴 클로저가 같은 결과를 내는지 검증할 수 있다"
+      ],
+      "order" : 12,
+      "path" : "lessons/swift-closures-map-filter.md",
+      "prerequisites" : [
+        "swift-functions-and-return-values",
+        "swift-arrays-and-element-access"
+      ],
+      "stableID" : "swift-closures-map-filter",
+      "title" : "클로저와 map, filter"
+    }
+  ],
+  "minAppVersion" : "0.1.0",
+  "packID" : "polyglot-swift",
+  "schemaVersion" : 1,
+  "version" : "0.1.0"
+}

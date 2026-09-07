@@ -1,0 +1,6 @@
+a: (3, 4)
+a.distanceFromOrigin: 25
+b: (4, 5)
+a after move: (3, 4)
+c: (10, 0)
+a unchanged: (3, 4)

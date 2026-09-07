@@ -276,9 +276,274 @@
       "stableID" : "swift.closures-map-filter",
       "summary" : "함수를 값처럼 넘기는 클로저를 배우고, map 과 filter 로 배열을 변환·추려 그 결과를 실행으로 확인한다.",
       "title" : "클로저와 map, filter"
+    },
+    {
+      "concepts" : [
+        "reduce",
+        "compactMap",
+        "sorted(by:)"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "reduce 를 사용해 배열을 단일 값으로 합칠 수 있다",
+        "compactMap 으로 nil 을 제거하면서 변환할 수 있다",
+        "sorted(by:) 에 클로저를 넘겨 원하는 기준으로 정렬할 수 있다"
+      ],
+      "ordinal" : 13,
+      "prerequisites" : [
+        "swift.closures-map-filter",
+        "swift.optionals-and-nil",
+        "swift.arrays-and-element-access"
+      ],
+      "stableID" : "swift.reduce-and-compactmap",
+      "summary" : "reduce 로 값을 하나로 접고, compactMap 으로 nil 을 걷어내며, sorted(by:) 로 정렬 기준을 직접 정한다.",
+      "title" : "reduce, compactMap, 정렬 기준"
+    },
+    {
+      "concepts" : [
+        "enum",
+        "associated value",
+        "case",
+        "switch 패턴 매칭"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "enum 으로 나열형 타입을 선언할 수 있다",
+        "연관 값을 가진 case 를 정의하고 생성할 수 있다",
+        "switch 의 값 바인딩으로 연관 값을 꺼내 사용할 수 있다"
+      ],
+      "ordinal" : 14,
+      "prerequisites" : [
+        "swift.conditionals-if-switch",
+        "swift.loops-for-while"
+      ],
+      "stableID" : "swift.enums-associated-values",
+      "summary" : "enum 으로 한정된 경우의 수를 타입으로 만들고, 연관 값과 switch 패턴 매칭으로 다룬다.",
+      "title" : "열거형: enum 과 연관 값"
+    },
+    {
+      "concepts" : [
+        "protocol",
+        "conformance",
+        "프로토콜 타입"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "protocol 로 메서드와 프로퍼티 요구를 선언할 수 있다",
+        "구조체가 프로토콜을 채택해 요구를 구현할 수 있다",
+        "프로토콜 타입으로 서로 다른 타입을 하나의 배열에 담을 수 있다"
+      ],
+      "ordinal" : 15,
+      "prerequisites" : [
+        "swift.structs-properties-methods",
+        "swift.arrays-and-element-access"
+      ],
+      "stableID" : "swift.protocols-and-conformance",
+      "summary" : "protocol 로 타입이 가져야 할 능력을 약속하고, 구조체가 그 약속을 채우게 만든다.",
+      "title" : "프로토콜: 능력의 약속"
+    },
+    {
+      "concepts" : [
+        "extension",
+        "computed property",
+        "get"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "extension 으로 기존 타입에 메서드를 추가할 수 있다",
+        "computed property 를 정의해 계산된 값을 반환할 수 있다",
+        "extension 에서 프로토콜 채택을 추가할 수 있다"
+      ],
+      "ordinal" : 16,
+      "prerequisites" : [
+        "swift.protocols-and-conformance",
+        "swift.structs-properties-methods"
+      ],
+      "stableID" : "swift.extensions-computed-properties",
+      "summary" : "extension 으로 기존 타입에 기능을 더하고, computed property 로 계산된 값을 제공한다.",
+      "title" : "extension 과 계산 프로퍼티"
+    },
+    {
+      "concepts" : [
+        "class",
+        "reference semantics",
+        "==="
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "class 로 타입을 선언하고 인스턴스를 만들 수 있다",
+        "구조체 복사와 클래스 참조 공유의 차이를 실행 결과로 설명할 수 있다",
+        "=== 로 두 참조가 같은 인스턴스인지 비교할 수 있다"
+      ],
+      "ordinal" : 17,
+      "prerequisites" : [
+        "swift.structs-properties-methods",
+        "swift.functions-and-return-values"
+      ],
+      "stableID" : "swift.classes-reference-semantics",
+      "summary" : "class 를 만들고, 구조체와 달리 참조가 공유됨을 실행으로 확인한다.",
+      "title" : "클래스와 참조 의미"
+    },
+    {
+      "concepts" : [
+        "generics",
+        "<T>",
+        "Equatable 제약"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "<T> 로 제네릭 함수를 작성할 수 있다",
+        "제네릭 타입을 선언하고 다양한 타입으로 인스턴스를 만들 수 있다",
+        "Equatable 제약으로 사용할 수 있는 연산을 제한할 수 있다"
+      ],
+      "ordinal" : 18,
+      "prerequisites" : [
+        "swift.functions-and-return-values",
+        "swift.structs-properties-methods",
+        "swift.protocols-and-conformance"
+      ],
+      "stableID" : "swift.generics-basics",
+      "summary" : "타입을 매개변수로 받는 제네릭 함수와 타입을 만들어 중복 코드를 줄인다.",
+      "title" : "제네릭 입문: 타입을 매개변수로"
+    },
+    {
+      "concepts" : [
+        "Error",
+        "throws",
+        "throw",
+        "do-catch",
+        "try"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "Error 프로토콜을 채택한 열거형으로 오류를 정의할 수 있다",
+        "throws 함수를 작성하고 throw 로 오류를 던질 수 있다",
+        "do-catch 로 오류를 잡아 분기 처리할 수 있다"
+      ],
+      "ordinal" : 19,
+      "prerequisites" : [
+        "swift.enums-associated-values",
+        "swift.functions-and-return-values",
+        "swift.conditionals-if-switch"
+      ],
+      "stableID" : "swift.error-handling-throws",
+      "summary" : "throws, try, do-catch 로 실패 가능한 동작을 타입 시스템에 드러내며 다룬다.",
+      "title" : "오류 처리: throws 와 do-catch"
+    },
+    {
+      "concepts" : [
+        "Set",
+        "union",
+        "intersection",
+        "contains"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "Set 을 만들고 insert 와 remove 로 원소를 관리할 수 있다",
+        "union 과 intersection 으로 집합을 계산할 수 있다",
+        "contains 로 원소 포함 여부를 확인할 수 있다"
+      ],
+      "ordinal" : 20,
+      "prerequisites" : [
+        "swift.arrays-and-element-access",
+        "swift.loops-for-while",
+        "swift.closures-map-filter"
+      ],
+      "stableID" : "swift.sets-and-operations",
+      "summary" : "Set 으로 중복 없는 집합을 만들고 합집합·교집합 같은 집합 연산을 다룬다.",
+      "title" : "집합: Set 과 집합 연산"
+    },
+    {
+      "concepts" : [
+        "optional chaining",
+        "Optional.map",
+        "flatMap"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "옵셔널 체이닝으로 중첩 프로퍼티와 메서드에 안전하게 접근할 수 있다",
+        "옵셔널에 map 을 적용해 내부 값을 변환할 수 있다",
+        "체이닝 결과를 ?? 로 기본값과 바꿔치기할 수 있다"
+      ],
+      "ordinal" : 21,
+      "prerequisites" : [
+        "swift.optionals-and-nil",
+        "swift.optional-binding-patterns",
+        "swift.closures-map-filter"
+      ],
+      "stableID" : "swift.optional-chaining-and-optional-map",
+      "summary" : "옵셔널 체이닝으로 중첩된 옵셔널을 안전하게 타고 들어가고, map 으로 옵셔널 자체를 변환한다.",
+      "title" : "옵셔널 체이닝과 옵셔널의 map"
+    },
+    {
+      "concepts" : [
+        "recursion",
+        "base case"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "기저 사례와 재귀 사례를 구분해 재귀 함수를 작성할 수 있다",
+        "재귀로 팩토리얼과 거듭제곱을 계산할 수 있다",
+        "기저 사례가 없어 호출이 멈추지 않는 코드를 식별할 수 있다"
+      ],
+      "ordinal" : 22,
+      "prerequisites" : [
+        "swift.functions-and-return-values",
+        "swift.loops-for-while"
+      ],
+      "stableID" : "swift.recursion-basics",
+      "summary" : "재귀 호출로 문제를 자기 자신보다 작은 문제로 쪼개 푸는 방식을 익힌다.",
+      "title" : "재귀의 기초"
+    },
+    {
+      "concepts" : [
+        "Equatable",
+        "Hashable",
+        "hash(into:)"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "Equatable 을 채택해 == 를 직접 구현할 수 있다",
+        "Hashable 을 채택해 hash(into:) 를 구현할 수 있다",
+        "커스텀 타입을 Set 의 원소로 담고 비교할 수 있다"
+      ],
+      "ordinal" : 23,
+      "prerequisites" : [
+        "swift.protocols-and-conformance",
+        "swift.sets-and-operations"
+      ],
+      "stableID" : "swift.equatable-hashable",
+      "summary" : "== 와 해시값의 의미를 바꾸는 Equatable·Hashable 채택을 직접 구현한다.",
+      "title" : "Equatable 과 Hashable 채택"
+    },
+    {
+      "concepts" : [
+        "컬렉션 종합",
+        "정렬 집계",
+        "프로토콜 설계"
+      ],
+      "estimatedMinutes" : 40,
+      "objectives" : [
+        "문자열을 단어 배열로 분해할 수 있다",
+        "딕셔너리와 클로저로 단어 빈도를 집계할 수 있다",
+        "정렬과 프로토콜을 조합해 상위 N 개 단어를 반환할 수 있다",
+        "빈 입력에 대해 오류를 던지는 방식으로 계약을 지킬 수 있다"
+      ],
+      "ordinal" : 24,
+      "prerequisites" : [
+        "swift.string-interpolation",
+        "swift.dictionaries-key-value",
+        "swift.closures-map-filter",
+        "swift.reduce-and-compactmap",
+        "swift.equatable-hashable",
+        "swift.error-handling-throws"
+      ],
+      "stableID" : "swift.capstone-word-frequency",
+      "summary" : "지금까지 배운 문자열·컬렉션·클로저·프로토콜·오류 처리를 한 프로젝트에 합쳐 단어 빈도 분석기를 완성한다.",
+      "title" : "종합 프로젝트: 단어 빈도 분석기"
     }
   ],
   "schemaVersion" : 1,
-  "trackSummary" : "Swift 문법을 처음 접하는 학습자를 위해 변수와 상수부터 클로저까지, 코드를 직접 실행해 결과를 눈으로 확인하며 나아가는 12 레슨 트랙이다. 각 레슨은 이전 레슨의 내용만 전제하므로 순서대로 따라오면 누락 없이 완주할 수 있다.",
-  "trackTitle" : "Swift 첫걸음: 실행으로 배우는 기초 문법"
+  "trackSummary" : "변수 하나 못 쓰던 입문자가 컬렉션·옵셔널·구조체·클로저를 지나, 열거형·프로토콜·제네릭·오류 처리까지 실행하며 검증하고, 마지막에 단어 빈도 분석기 프로젝트로 완주하는 Swift 트랙이다.",
+  "trackTitle" : "Swift 입문: 첫 코드부터 프로토콜 지향까지"
 }

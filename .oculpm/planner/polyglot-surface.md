@@ -100,7 +100,7 @@ owner: claude-code
   - [x] 생성한 공개키를 SUPublicEDKey 에 넣고 개인키는 로그인 키체인에만 보관 — 저장소 전체 grep 에 개인키 0건 {#sparkle-eddsa-keys}
   - [x] 피드 URL 을 GitHub Pages 의 appcast.xml 로 두고 appcast 생성기를 릴리스 스크립트에 편입 — 릴리스 1회로 서명과 길이가 갱신 {#sparkle-appcast}
 - [x] GitHub 공개 준비 — README 와 CONTRIBUTING 작성. LICENSE 는 이미 MIT 로 커밋됨. README 라이선스 절에 Unicorn Engine 도입 시 MIT 선택이 무효화된다는 경고 한 줄 {#github-public-repo}
-- [~] 릴리스 CI — swift test 와 xcodebuild build 와 packtool validate 3게이트를 PR 에 걸고, 공증과 appcast 잡은 태그 푸시에만 Actions secrets 로 실행 {#release-ci}
+- [!] 릴리스 CI — swift test 와 xcodebuild build 와 packtool validate 3게이트를 PR 에 걸고, 공증과 appcast 잡은 태그 푸시에만 Actions secrets 로 실행 {#release-ci}
 
 ## 릴리스 전 앱 배선 {#release-wiring}
 
@@ -193,4 +193,5 @@ owner: claude-code
 | 2026-09-07T16:48:33+09:00 | #route-editor-screen | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/1648_feature_route-editor-screen.md | EditorTask.load 로 팩 과제를 조립, 셸에 라우팅. 조립된 .app 에서 Swift·SQL 두 화면 실측 |
 | 2026-09-07T16:55:31+09:00 | #screen-tracks | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/1655_feature_screen-tracks.md | 별도 화면으로 결정 — 대시보드 표는 트랙당 한 줄이라 임의 레슨으로 갈 길이 없었다 |
 | 2026-09-07T17:17:45+09:00 | #concurrent-spawn-limit | claude-code | ☐→x | .oculpm/journal/20260907/Refactors/1717_refactor_concurrent-spawn-limit.md | ConcurrencyGate 한 벌 + 전역 스폰 상한 + 템플릿별 상호 배제. 테스트 7건이 상한을 고정 |
+| 2026-09-07T18:22:41+09:00 | #release-ci | claude-code | ~→! | .oculpm/journal/20260907/Chores/1822_chore_merge-release-wiring-branch.md | PR 게이트 절반은 PR #2 에서 5/5 초록으로 증명. 남은 태그 잡은 Developer ID 인증서 대기 |
 <!-- oculpm:plan-log end -->

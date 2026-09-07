@@ -260,9 +260,245 @@
       "stableID" : "sql.window-functions",
       "summary" : "OVER, PARTITION BY, ROW_NUMBER 로 그룹을 접지 않고 행마다 분석 값을 계산한다.",
       "title" : "그룹을 유지한 채 계산하는 창 함수"
+    },
+    {
+      "concepts" : [
+        "self join",
+        "table alias",
+        "쌍(pair) 만들기"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "AS 별칭으로 같은 표를 두 번 붙여 하나의 쿼리에서 조회할 수 있다",
+        "같은 category_id 를 공유하는 서로 다른 상품 쌍을 뽑아낼 수 있다",
+        "id 비교와 p1.name < p2.name 조건으로 중복 쌍과 자기 자신 쌍을 제거할 수 있다",
+        "같은 city 에 사는 고객 쌍을 self join 으로 구할 수 있다"
+      ],
+      "ordinal" : 13,
+      "prerequisites" : [
+        "sql.inner-joins",
+        "sql.left-outer-joins"
+      ],
+      "stableID" : "sql.self-joins",
+      "summary" : "테이블 별칭을 둘 붙여 같은 표를 두 번 조인하는 self join 을 배우고, 같은 범주 안의 상품 쌍과 같은 도시의 고객 쌍을 뽑아낸다.",
+      "title" : "같은 표를 자기 자신과 조인하기"
+    },
+    {
+      "concepts" : [
+        "CASE",
+        "WHEN",
+        "THEN",
+        "ELSE",
+        "조건부 집계"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "가격 구간에 따라 '저가'·'중가'·'고가' 라벨을 붙여 상품을 분류할 수 있다",
+        "shipped_at 의 NULL 여부로 '배송완료'·'미배송' 문구를 만들 수 있다",
+        "CASE 식을 SUM 이나 COUNT 안에 넣어 조건부 집계를 계산할 수 있다"
+      ],
+      "ordinal" : 14,
+      "prerequisites" : [
+        "sql.select-from-where",
+        "sql.group-by-having",
+        "sql.null-handling"
+      ],
+      "stableID" : "sql.case-expressions",
+      "summary" : "CASE WHEN ... THEN ... ELSE ... END 로 조회 결과 안에서 조건에 따라 다른 라벨과 값 붙이는 법을 익힌다.",
+      "title" : "CASE 식으로 행마다 다른 값 만들기"
+    },
+    {
+      "concepts" : [
+        "다중 조인",
+        "조인 체인",
+        "연결 표(bridge table)"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "네 개의 표를 연달아 INNER JOIN 으로 연결할 수 있다",
+        "주문 하나에 담긴 상품 이름과 수량을 한 행씩 펼쳐 조회할 수 있다",
+        "고객별 총 구매 금액(quantity * price 합계)을 계산해 내림차순으로 정렬할 수 있다",
+        "중간 표(order_item)가 왜 필요한지 조인 결과로 설명할 수 있다"
+      ],
+      "ordinal" : 15,
+      "prerequisites" : [
+        "sql.inner-joins",
+        "sql.group-by-having"
+      ],
+      "stableID" : "sql.multi-table-joins",
+      "summary" : "order → order_item → product → category 로 이어지는 조인 체인을 만들어 주문별 구매 내역과 고객별 총 구매액을 계산한다.",
+      "title" : "세 개 이상의 표를 한 줄로 연결하기"
+    },
+    {
+      "concepts" : [
+        "UPPER",
+        "LOWER",
+        "LENGTH",
+        "SUBSTR",
+        "REPLACE",
+        "문자열 연결 ||"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "UPPER 와 LOWER 로 이름·도시를 대소문자 기준으로 통일해 출력할 수 있다",
+        "SUBSTR 로 joined_on 에서 연과 월만 잘라낼 수 있다",
+        "|| 로 고객 이름과 도시를 한 열로 합쳐 출력할 수 있다",
+        "REPLACE 와 LENGTH 로 문자열을 치환하고 길이를 재볼 수 있다"
+      ],
+      "ordinal" : 16,
+      "prerequisites" : [
+        "sql.select-from-where",
+        "sql.order-by-limit-distinct"
+      ],
+      "stableID" : "sql.string-functions",
+      "summary" : "UPPER, LOWER, LENGTH, SUBSTR, REPLACE 와 || 연결 연산자로 조회 결과의 텍스트를 자르고 붙이고 고친다.",
+      "title" : "문자열 함수로 텍스트 가공하기"
+    },
+    {
+      "concepts" : [
+        "date()",
+        "strftime()",
+        "julianday()",
+        "TEXT 날짜 비교"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "strftime('%Y', ordered_at) 으로 연도별 주문 수를 집계할 수 있다",
+        "julianday(shipped_at) - julianday(ordered_at) 로 배송 소요일을 계산할 수 있다",
+        "date(ordered_at, '+7 days') 로 배송 예정일을 계산해 실제 shipped_at 과 비교할 수 있다",
+        "TEXT 비교로 특정 날짜 이후의 주문만 걸러낼 수 있다"
+      ],
+      "ordinal" : 17,
+      "prerequisites" : [
+        "sql.select-from-where",
+        "sql.group-by-having",
+        "sql.null-handling"
+      ],
+      "stableID" : "sql.date-text-functions",
+      "summary" : "'YYYY-MM-DD' 형태의 TEXT 날짜에 date(), strftime(), julianday() 를 적용해 연·월별로 묶고 날짜 차이를 계산한다.",
+      "title" : "TEXT 날짜 다루기 — date와 strftime"
+    },
+    {
+      "concepts" : [
+        "UNION",
+        "UNION ALL",
+        "INTERSECT",
+        "EXCEPT"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "UNION 과 UNION ALL 의 중복 처리 차이를 실행 결과로 비교할 수 있다",
+        "상품 이름 목록과 범주 이름 목록을 UNION 으로 하나의 열로 합칠 수 있다",
+        "EXCEPT 로 주문한 적 없는 고객을 찾아 NOT EXISTS 결과와 비교할 수 있다",
+        "INTERSECT 로 두 조건 모두에 해당하는 행을 구할 수 있다"
+      ],
+      "ordinal" : 18,
+      "prerequisites" : [
+        "sql.select-from-where",
+        "sql.subqueries",
+        "sql.exists-correlated-subqueries"
+      ],
+      "stableID" : "sql.set-operations",
+      "summary" : "UNION, UNION ALL, INTERSECT, EXCEPT 로 두 쿼리의 결과 집합을 합치거나 교집합·차집합을 구한다.",
+      "title" : "UNION과 EXCEPT로 결과 집합 합치고 빼기"
+    },
+    {
+      "concepts" : [
+        "WITH",
+        "CTE",
+        "쿼리 단계 분해",
+        "여러 CTE 연결"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "WITH 절로 서브쿼리에 이름을 붙여 마치 표처럼 조회할 수 있다",
+        "고객별 총 구매액 CTE를 만들고 그 위에서 평균 대비 비교를 계산할 수 있다",
+        "쉼표로 이어 여러 개의 CTE를 단계적으로 연결할 수 있다",
+        "같은 결과를 내는 서브쿼리 버전과 CTE 버전을 나란히 실행해 비교할 수 있다"
+      ],
+      "ordinal" : 19,
+      "prerequisites" : [
+        "sql.multi-table-joins",
+        "sql.subqueries",
+        "sql.group-by-having"
+      ],
+      "stableID" : "sql.cte-with",
+      "summary" : "WITH 공통 테이블 식(CTE)으로 복잡한 쿼리에 이름을 붙여 단계별로 쪼개고, 여러 CTE를 연결해 읽기 쉬운 쿼리를 만든다.",
+      "title" : "WITH 절로 쿼리를 단계로 나누기"
+    },
+    {
+      "concepts" : [
+        "CREATE VIEW",
+        "DROP VIEW",
+        "뷰 재사용"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "고객별 주문 통계 쿼리를 CREATE VIEW 로 저장할 수 있다",
+        "저장한 뷰를 SELECT ... FROM 뷰이름 으로 다시 조회할 수 있다",
+        "뷰 위에서 WHERE 와 GROUP BY 를 덧붙여 재활용할 수 있다",
+        "DROP VIEW 로 뷰를 지우고 다시 만들 수 있다"
+      ],
+      "ordinal" : 20,
+      "prerequisites" : [
+        "sql.cte-with",
+        "sql.create-table-constraints",
+        "sql.multi-table-joins"
+      ],
+      "stableID" : "sql.create-view",
+      "summary" : "복잡한 조인 쿼리를 뷰로 저장해 이름만으로 재사용하고, 필요할 때 DROP VIEW 로 지우는 법을 익힌다.",
+      "title" : "CREATE VIEW로 자주 쓰는 쿼리 저장하기"
+    },
+    {
+      "concepts" : [
+        "ON CONFLICT",
+        "DO UPDATE",
+        "excluded",
+        "INSERT OR IGNORE",
+        "UPSERT"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "UNIQUE 제약 충돌로 INSERT 가 실패하는 상황을 재현할 수 있다",
+        "ON CONFLICT DO UPDATE 로 있으면 갱신하고 없으면 삽입하는 UPSERT 를 작성할 수 있다",
+        "excluded 접두어로 충돌 시 새로 넣으려던 값을 참조할 수 있다",
+        "INSERT OR IGNORE 로 충돌 행을 오류 없이 건너뛸 수 있다"
+      ],
+      "ordinal" : 21,
+      "prerequisites" : [
+        "sql.insert-update-delete",
+        "sql.create-table-constraints"
+      ],
+      "stableID" : "sql.upsert-on-conflict",
+      "summary" : "ON CONFLICT 절로 충돌 시 UPDATE 로 이어지는 UPSERT 를 배우고, INSERT OR IGNORE 로 조용히 건너뛰는 방법도 익힌다.",
+      "title" : "INSERT와 UPDATE를 한 번에 — UPSERT"
+    },
+    {
+      "concepts" : [
+        "BEGIN",
+        "COMMIT",
+        "ROLLBACK",
+        "트랜잭션",
+        "원자성"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "BEGIN 에서 COMMIT 까지 사이의 여러 DML 이 한 묶음으로 적용되는 것을 확인할 수 있다",
+        "ROLLBACK 으로 UPDATE 와 DELETE 를 포함한 변경을 모두 되돌릴 수 있다",
+        "롤백 전후의 SELECT 결과를 비교해 원래 상태로 돌아왔음을 증명할 수 있다",
+        "여러 표에 걸친 연쇄 변경을 트랜잭션 하나로 처리할 수 있다"
+      ],
+      "ordinal" : 22,
+      "prerequisites" : [
+        "sql.insert-update-delete",
+        "sql.upsert-on-conflict"
+      ],
+      "stableID" : "sql.transactions",
+      "summary" : "트랜잭션으로 여러 변경 문을 하나의 묶음으로 다루고, ROLLBACK 으로 되돌리기가 실제로 작동하는지 실행으로 확인한다.",
+      "title" : "BEGIN과 ROLLBACK으로 변경을 안전하게"
     }
   ],
   "schemaVersion" : 1,
-  "trackSummary" : "SELECT 한 줄에서 시작해 조인, NULL 처리, 서브쿼리, 데이터 변경, 테이블 설계, 창 함수까지 단계적으로 올라가는 SQL 입문 트랙. 모든 레슨에서 직접 쿼리를 실행해 결과로 배운 것을 확인한다.",
-  "trackTitle" : "SQL 기초: 실행하며 배우는 데이터 조회"
+  "trackSummary" : "고객·상품·주문 다섯 개 표로 이루어진 하나의 쇼핑몰 데이터베이스를 대상으로, SELECT 한 줄부터 조인·창 함수·뷰·트랜잭션까지 순서대로 학습한다. 모든 레슨은 실제 데이터를 실행해 결과를 눈으로 확인하는 방식으로 진행된다.",
+  "trackTitle" : "SQL 기초부터 실전까지 — 하나의 쇼핑몰 데이터로 끝내는 트랙"
 }

@@ -1,0 +1,8 @@
+value=1
+value=2
+value=3
+generator
+list
+sum=14
+first=1
+second=2

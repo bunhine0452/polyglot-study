@@ -30,3 +30,8 @@ INSERT·UPDATE·DELETE·CREATE TABLE·DROP TABLE 을 마음껏 가르쳐도 된�
 다만 파일 크기 상한이 64MB 다 — 정상 레슨에는 넉넉하지만 행을 기하급수로 늘리는
 예제(INSERT INTO t SELECT * FROM t 를 반복하는 것)는 쓰지 마라.
 ATTACH 는 여전히 금지다.
+
+실행 예제에 문을 여러 개 쓸 때(실측 2026-09-07):
+- stdout 에 찍히는 것은 **마지막 결과셋 하나뿐**이다. CREATE VIEW → SELECT → SELECT 처럼
+  여러 문을 이어 써도 앞 SELECT 들의 결과는 나오지 않는다. expected 에 여러 결과셋을
+  이어 붙이면 반드시 대조에 실패한다 — 보여주고 싶은 결과셋이 마지막 문이 되게 짜라.

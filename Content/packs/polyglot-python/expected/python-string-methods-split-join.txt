@@ -1,0 +1,5 @@
+hello, world
+['a', 'b', 'c']
+a-b-c
+[  heLLo, worLd  ]
+['one', 'two', 'three']

@@ -1,13 +1,25 @@
 # polyglot stableids v1
 swift-arrays-and-element-access	swift	lessons/swift-arrays-and-element-access.md
 swift-basic-types-and-type-inference	swift	lessons/swift-basic-types-and-type-inference.md
+swift-capstone-word-frequency	swift	lessons/swift-capstone-word-frequency.md
+swift-classes-reference-semantics	swift	lessons/swift-classes-reference-semantics.md
 swift-closures-map-filter	swift	lessons/swift-closures-map-filter.md
 swift-conditionals-if-switch	swift	lessons/swift-conditionals-if-switch.md
 swift-dictionaries-key-value	swift	lessons/swift-dictionaries-key-value.md
+swift-enums-associated-values	swift	lessons/swift-enums-associated-values.md
+swift-equatable-hashable	swift	lessons/swift-equatable-hashable.md
+swift-error-handling-throws	swift	lessons/swift-error-handling-throws.md
+swift-extensions-computed-properties	swift	lessons/swift-extensions-computed-properties.md
 swift-functions-and-return-values	swift	lessons/swift-functions-and-return-values.md
+swift-generics-basics	swift	lessons/swift-generics-basics.md
 swift-loops-for-while	swift	lessons/swift-loops-for-while.md
 swift-optional-binding-patterns	swift	lessons/swift-optional-binding-patterns.md
+swift-optional-chaining-and-optional-map	swift	lessons/swift-optional-chaining-and-optional-map.md
 swift-optionals-and-nil	swift	lessons/swift-optionals-and-nil.md
+swift-protocols-and-conformance	swift	lessons/swift-protocols-and-conformance.md
+swift-recursion-basics	swift	lessons/swift-recursion-basics.md
+swift-reduce-and-compactmap	swift	lessons/swift-reduce-and-compactmap.md
+swift-sets-and-operations	swift	lessons/swift-sets-and-operations.md
 swift-string-interpolation	swift	lessons/swift-string-interpolation.md
 swift-structs-properties-methods	swift	lessons/swift-structs-properties-methods.md
 swift-variables-and-constants	swift	lessons/swift-variables-and-constants.md

@@ -1,0 +1,7 @@
+-- 1) customer_order_stats 뷰를 만드세요.
+--    열: name(고객 이름), order_count(주문 건수)
+--    주문이 없는 고객도 0건으로 포함할 것.
+--
+-- 2) 스크립트 끝에 만든 뷰에서 order_count 가 0 인 고객의
+--    name 과 order_count 를 이름 오름차순으로 조회하는
+--    SELECT 를 작성하세요.

@@ -16,16 +16,33 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # 게이트 1/3 — LearnKit + Tools 전체 스위트.
-  swift-test:
-    name: swift test (LearnKit + Tools)
+  # 게이트 1/3 — 전체 스위트. LearnKit 과 Tools 를 **별도 잡으로 갈라** 병렬로 돌린다.
+  #
+  # 한 잡에 몰아넣었더니 30분 타임아웃에 걸려 취소됐다(실측 2026-09-07, 30분 44초에
+  # swiftpm-testing 이 아직 돌고 있었다). 로컬은 21초인데 러너는 콜드 빌드라 다르다 —
+  # 특히 Swift 채점 테스트가 SwiftPM 패키지를 매번 새로 굽는다.
+  #
+  # 타임아웃만 올리지 않고 가른 이유는 신호다. 한 잡이면 어느 쪽이 느린지·어느 쪽이
+  # 깨졌는지 로그를 뒤져야 알지만, 갈라 두면 체크 이름이 바로 말해 준다.
+  swift-test-learnkit:
+    name: swift test (LearnKit)
     runs-on: macos-26
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - name: 툴체인 확인
         run: scripts/ci-assert-toolchain.sh
-      - run: scripts/ci-run-swift-tests.sh
+      - run: swift test --package-path Packages/LearnKit
+
+  swift-test-tools:
+    name: swift test (Tools)
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: 툴체인 확인
+        run: scripts/ci-assert-toolchain.sh
+      - run: swift test --package-path Tools
 
   # 게이트 2/3 — 앱 번들 조립 + 서명(ad-hoc). App/Scripts/build-app.sh 는 App/** 소유
   # 세션의 산출물이라 여기서는 그대로 호출만 한다.

@@ -152,8 +152,9 @@ private struct LessonListRow: View {
                 .foregroundStyle(Palette.ink)
                 .lineLimit(1)
             Spacer(minLength: Spacing.m)
+            // 막대는 열보다 좁다 — 상태 열에 붙지 않게 오른쪽 여백을 남긴다.
             SegmentedProgress(lesson.blockCells)
-                .frame(width: TracksLayout.blocksWidth - Spacing.m, alignment: .leading)
+                .frame(width: TracksLayout.blocksWidth - Spacing.m)
                 .frame(width: TracksLayout.blocksWidth, alignment: .leading)
             LabelText(lesson.statusLabel, color: statusColor)
                 .frame(width: TracksLayout.statusWidth, alignment: .leading)

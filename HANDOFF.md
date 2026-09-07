@@ -9,12 +9,19 @@ Swift 6.3 / SwiftUI, **macOS 14 하한 확정**, MIT 오픈소스, Developer ID 
 
 ## 지금 실행할 수 있는 것 / 아직 없는 것
 
-**앱이 뜬다. 다만 앱이 보여주는 것은 레슨 3편뿐이다** — 만든 36편이 아직 앱에 연결되지
-않았다(`{#app-loads-all-packs}`). 화면도 넷만 도달 가능하다(온보딩·대시보드·레슨·복습).
+**앱이 뜨고, MVP 세 트랙 36편이 전부 보이고, 코드를 써서 채점까지 간다.**
+도달 가능한 화면은 여섯이다 — 온보딩·대시보드·트랙·레슨·에디터·복습.
 
 ```bash
 # 앱
 ./App/Scripts/build-app.sh && open App/.build/bundle/Polyglot.app
+
+# 특정 화면을 바로 열기(디버그 훅)
+POLYGLOT_START_DESTINATION=tracks ./App/.build/bundle/Polyglot.app/Contents/MacOS/Polyglot
+POLYGLOT_START_LESSON=polyglot-swift/swift-variables-and-constants POLYGLOT_START_EDITOR=1 \
+  ./App/.build/bundle/Polyglot.app/Contents/MacOS/Polyglot
+# 창을 PNG 로 굽고 종료 (화면 녹화 권한이 없는 헤드리스에서도 된다)
+POLYGLOT_SNAPSHOT_PATH=/tmp/shot.png POLYGLOT_SNAPSHOT_DELAY=6 ...
 
 # 테스트 (RunnerKit 은 프로세스를 띄워서 병렬이면 물린다 — 아래 실측 참고)
 swift test --package-path Packages/LearnKit --skip RunnerKitTests
@@ -36,8 +43,9 @@ swift run --package-path Tools packtool verify dist/p.tar.staging
 - **저장소 공개**: https://github.com/bunhine0452/polyglot-study
   Pages 살아 있음 — `https://bunhine0452.github.io/polyglot-study/appcast.xml` (HTTP 200).
   앱이 실주소로 업데이트 확인까지 왕복 검증됨.
-- 워킹트리 깨끗. **LearnKit 1058 + Tools 309 = 1367 테스트**, 빌드 경고 0.
-- 플랜: `polyglot-core` **55/55**, `polyglot-surface` **49/58**, `polyglot-tutor` 0/25.
+- 워킹트리 깨끗. **LearnKit 1087 + Tools 307 = 1394 테스트**, 컴파일러 경고 0.
+  (Tools 가 둘 줄어든 것은 `SwiftGradingGate` 를 `RunnerKit` 으로 올리며 중복을 지웠기 때문이다.)
+- 플랜: `polyglot-core` **55/55**, `polyglot-surface` **54/58**, `polyglot-tutor` 0/25.
 - CI 4게이트가 실제 러너에서 통과 — swift test(RunnerKit 직렬 / LearnKit 나머지 / Tools),
   build-app.sh, packtool validate.
 - 콘텐츠: **MVP 3트랙 36편**(python·sql·swift 각 12편) 전부 4단계 게이트 통과.
@@ -45,21 +53,18 @@ swift run --package-path Tools packtool verify dist/p.tar.staging
 
 ## 릴리스까지 남은 것
 
-**코드로 풀리는 것 — `{#release-wiring}` 페이즈에 정리돼 있다.**
-만들어 놓고 앱에 붙이지 않은 것들이다. 2026-09-07 에 의존 그래프를 그리다 드러났다.
-
-1. `{#app-loads-all-packs}` — `Composition.loadPack()` 이 `polyglot-mvp` 하나를 경로에
-   박아 읽는다. 36편이 앱에서 안 보인다. 하위로 `{#wire-pack-installer}`(설치기가
-   만들어졌는데 앱이 안 씀), `{#bundle-packs}`(번들에 콘텐츠 0편).
-2. `{#route-editor-screen}` — `EditorFeature`·`EditorUI`·`LSPKit` 이 앱에 링크조차 안 돼
-   있다. **코드를 못 쓰는 코딩 학습 앱은 릴리스할 수 없다.**
-3. `{#screen-tracks}` — `case .tracks` 가 아직 `PlaceholderPanel`.
+**코드로 풀리는 것은 없다.** `{#release-wiring}` 페이즈의 배선 항목이 2026-09-07 에 전부
+닫혔다 — 팩 적재(`{#app-loads-all-packs}` + `{#wire-pack-installer}`·`{#bundle-packs}`),
+에디터 라우팅(`{#route-editor-screen}`), 트랙 화면(`{#screen-tracks}`), 동시 실행 상한
+(`{#concurrent-spawn-limit}`). 남은 미완 항목 여섯 중 둘은 이월(`{#grammars-*}`, Assembly
+트랙 착수 시점), 넷은 아래의 인증서에 막혀 있다.
 
 **돈과 계정이 필요한 것 — 코드로 안 풀린다.**
 
-4. **Developer ID Application 인증서** (Apple Developer Program, 연 $99). 없으면 ad-hoc
-   서명이라 다른 맥에서 Gatekeeper 가 막는다. 이게 `{#notarize-staple-dmg}` 계열 3개와
-   `{#release-ci}` 의 태그 잡을 전부 막고 있다.
+**Developer ID Application 인증서** (Apple Developer Program, 연 $99). 없으면 ad-hoc
+서명이라 다른 맥에서 Gatekeeper 가 막는다. 이게 `{#notarize-staple-dmg}` 계열 3개와
+`{#release-ci}` 의 태그 잡을 전부 막고 있다. **인증서를 사기 전에는 손대지 마라** —
+공증 스크립트를 붙들고 시간을 쓰게 된다.
 
 Sparkle 자동 업데이트는 ad-hoc 서명으로도 왕복이 검증돼 있다 — 인증서는 Gatekeeper 용이지
 업데이트 경로용이 아니다.
@@ -70,7 +75,7 @@ Sparkle 자동 업데이트는 ad-hoc 서명으로도 왕복이 검증돼 있다
 2. `.oculpm/planner/polyglot-surface.md` · `polyglot-tutor.md` — 항목마다 완료 기준이 붙어 있다.
 3. `.oculpm/discussion/mac-polyglot-learning-app/discussion.md` — **하단 토의 로그의 정정 항목을
    특히.** 본문에 낡은 기록이 남아 있을 수 있고 로그가 최신이다.
-4. `.oculpm/journal/20260906/` · `20260907/` — 일지 32건. 같은 함정을 다시 밟지 마라.
+4. `.oculpm/journal/20260906/` · `20260907/` — 일지 36건. 같은 함정을 다시 밟지 마라.
 
 ## 작업 방식
 
@@ -133,9 +138,11 @@ python3 이 셋 있고 로그인 셸은 `/usr/bin` 의 3.9.6 을 준다(감지�
   `TarWriter` 로 ustar 를 직접 쓴다. name 필드가 100바이트라 그보다 긴 경로는 거부한다.
 - **`SDKROOT` 이 비어 있으면 swiftc 가 표준 라이브러리를 못 찾는다** — 멀쩡한 Swift 레슨이
   전부 컴파일 실패로 뒤집힌다. 실행 게이트 앞에서 `xcrun` 으로 채운다.
-- `SwiftTestingGrader` 는 예열된 SwiftPM 템플릿 **하나**를 공유한다. 동시 채점은
-  `SwiftGradingGate` 로 상호 배제해야 한다 — 액터만으로는 부족하다(메서드 안에서 `await`
-  하면 재진입이 허용된다). 같은 종류의 버그를 세 번 밟았다.
+- `SwiftTestingGrader` 는 예열된 SwiftPM 템플릿 **하나**를 공유한다 —
+  `defaultTemplateDirectory` 가 **고정 경로**라 인스턴스를 새로 만들어도 같은 자리를 쓴다.
+  상호 배제는 이제 **그 안에** 있다(`ExecutionLimits.swiftTemplateGate`, 2026-09-07) —
+  호출자에 두면 새 호출자가 생길 때마다 같은 실수를 반복한다. 액터만으로는 부족하다
+  (메서드 안에서 `await` 하면 재진입이 허용된다). 같은 종류의 버그를 세 번 밟았다.
 
 **sourcekit-lsp**
 
@@ -169,6 +176,25 @@ python3 이 셋 있고 로그인 셸은 `/usr/bin` 의 3.9.6 을 준다(감지�
   프로그램에서 취소가 SPAWNED 파싱을 앞지르면 그룹을 영영 모르고 손자가 남는다.
   드레인 스레드가 파싱 즉시 기록하도록 옮겼다(`LauncherStatusChannel.onSpawn`).
 - 같은 종류의 버그가 넷째다. 앞의 셋은 "예열·재사용을 위해 공유한 자원에 동시 접근" 이었다.
+- **문지기는 `ConcurrencyGate` 하나뿐이다**(`RunnerKit/Concurrency`). 같은 모양의 세마포어를
+  세 곳에 각자 적어 두고 있었다. 액터가 **아니라** 잠금인 이유: 액터로 만들면 `withSlot` 의
+  본문이 액터 위에서 돌아 본문·반환값에 `Sendable` 요구가 붙는다. 여기서는 상태만 잠금으로
+  지키고 본문은 호출자의 격리에서 돈다(`isolation: isolated (any Actor)? = #isolation`).
+  반납이 동기 함수인 것도 그래서다 — `defer` 안에서 `Task { await … }` 로 미루면 안전 보장이
+  취소 가능한 Task 에 매달린다.
+- 상한 획득 순서는 **템플릿 → 스폰**이다. 반대로 잡는 곳을 만들지 마라.
+- **액터 격리 함수에서 배열을 담은 구조체를 한 단계 더 거쳐 돌려보내면 그 값이 깨진다.**
+  (실측 2026-09-07, Swift 6.3.3 / Xcode 26.6) `SwiftTestingGrader.grade` 의 본문을
+  `performGrade` 로 떼어 내고 `return try await performGrade(…)` 로 넘기기만 해도 돌아온
+  `SwiftGrading` 의 `GradeResult.diagnostics` 가 쓰레기 포인터가 되어 `hasErrors` 에서
+  `EXC_BAD_ACCESS`(0x10) 로 죽는다. 문지기를 제네릭 래퍼로 감싼 형태 6/6 재현, 게이트 없이
+  단순 분할만 해도 2/2 재현, **한 함수로 되돌리면 0/5**. 게이트는 방아쇠가 아니었다 —
+  한 단계 더 거치는 것 자체가 방아쇠다. 그래서 `ConcurrencyGate.withSlot` 은 `-> Void` 로
+  못박혀 있고, 값을 돌려받는 자리는 `acquire()`/`release()` 를 호출부에 펼쳐 쓴다.
+  이 계열의 다섯째 사고다(앞의 넷은 위 "예열·재사용 자원의 동시 접근" 과
+  `@Sendable` 클로저 기본 인자의 `freed pointer was not the last allocation`).
+- `NSLock.lock()`/`unlock()` 은 **async 컨텍스트에서 직접 부를 수 없다**. 읽기는 동기
+  프로퍼티로 빼야 한다.
 
 **툴체인·라이브러리**
 
@@ -187,6 +213,25 @@ python3 이 셋 있고 로그인 셸은 `/usr/bin` 의 3.9.6 을 준다(감지�
   `src/parser.c` 가 없어 `0.7.3-with-generated-files` 태그를 물어야 한다.
 - Textual 은 macOS 15 라 **탈락**. `ProseRenderer` 자체 구현 — 인라인은
   `AttributedString(markdown:)` 의 `.inlineOnlyPreservingWhitespace` 에 위임, 블록만 250~400줄.
+
+**앱 배선 — 콘텐츠 팩과 에디터**
+
+- `Content/packs/` 는 **앱이 번들하는 것만** 담는다. 포맷 스펙 픽스처 `polyglot-mvp` 는
+  `Content/fixtures/` 에 따로 산다 — 배포에 섞이면 팩 정렬이 사전순이라 학습자의 첫 파이썬
+  레슨이 3편짜리 샘플이 된다. CI 게이트는 두 루트를 모두 검증한다.
+- **Python 과제의 진입점은 `solution.py` 여야 한다.** 팩의 숨은 테스트가
+  `from solution import …` 로 부르고 `EditorModel.defaultGrade` 가 `entryFileName` 을 그대로
+  채점기에 넘긴다. `main.py` 를 주면 파이썬 12편이 전부 ImportError 로 뒤집힌다. Swift 는
+  반대로 채점기가 이름을 무시하고 `Solution.swift` 로 다시 담는다(`@testable import Solution`).
+- **SQL 의 참조 질의는 `solutions/` 가 아니라 `tests/` 에서 읽는다.** 배포 팩은
+  `PackLayout.strippedInDistribution` 에 따라 `solutions/` 를 벗겨 낸다 — 정답 파일에 기대면
+  SQL 채점이 **배포본에서만** 깨지고 개발 트리에서는 영원히 재현되지 않는다.
+- 앱이 `EditorFeature` 를 링크하면서 **링커 경고 105건**이 보인다. 벤더링된
+  `CodeEditLanguages` 의 프리빌드 오브젝트가 벤더 머신 경로(`/Users/Khan/Developer/…`)를
+  디버그 맵에 들고 있어서다. `swift build --package-path Packages/LearnKit --build-tests`
+  에서도 같은 105건이 난다 — 이 저장소의 코드와 무관하고, 컴파일러 경고는 여전히 0이다.
+- 디버그 훅: `POLYGLOT_START_DESTINATION`(화면) · `POLYGLOT_START_LESSON=<packID>/<lessonID>`
+  · `POLYGLOT_START_EDITOR=1` · `POLYGLOT_SNAPSHOT_PATH`/`_DELAY`(창을 PNG 로 굽고 종료).
 
 **swift-markdown / 콘텐츠 팩**
 
@@ -227,5 +272,9 @@ oculpm 이 `.env*` 경로를 일지 파일 목록에서 차단한다. 실왕복�
 - `SubmissionRecord` 의 `passed`/`failureKind` 를 `.passed`/`.failed(kind)` 한 열거형으로 합칠지.
   지금은 도메인 타입이 DB CHECK 가 거부하는 조합을 표현할 수 있다(아무도 안 밟고 있음).
 - 튜터 착수 시점. 콘텐츠 파이프라인을 끝내고 가는 게 순서상 맞다.
-- 디자인은 `design/` 에 스위스 그리드 아트보드 7종이 있고 캔버스로 발행돼 있다. UI 착수 시
-  `{#designsystem-tokens}` 의 색 12종·타입 스케일이 거기서 나온다.
+- 디자인은 `design/` 에 스위스 그리드 아트보드 7종이 있고 캔버스로 발행돼 있다. **트랙 화면은
+  아트보드가 없다** — 기존 프리미티브와 8px 그리드만으로 그렸으니, 아트보드를 그리게 되면
+  `TracksView` 가 그 기준으로 다시 맞춰져야 한다.
+- `TrackCatalog` 의 계획 총수(Python 24 · SQL 22 · Swift 24)와 실제 팩(각 12편)이 다르다.
+  앱은 콘텐츠가 있는 트랙의 총수를 **팩에서** 읽으므로 화면은 정직하지만, 카탈로그의 숫자는
+  준비 중 7트랙에만 쓰인다. 트랙을 더 채울지 정하면 이 값도 함께 정리해야 한다.

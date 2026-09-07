@@ -10,14 +10,15 @@ macOS 14+ · Swift 6.3 / SwiftUI · MIT.
 
 ## 지금 어디까지 왔는가
 
-**정직하게 말하면: MVP 세 트랙과 파이프라인은 닫혔지만, 앱 화면이 아직 커리큘럼을 못 따라간다.**
+**정직하게 말하면: 앱이 MVP 세 트랙 36편을 읽고 코드를 쓰고 채점까지 간다. 남은 것은 배포다 —
+공증과 DMG 는 Developer ID 인증서가 있어야 시작된다.**
 
 | 영역 | 상태 |
 |---|---|
 | 코어 (스케줄러 · 실행 · 영속화) | **완료.** FSRS-6 복습 스케줄러, 6종 언어 백엔드를 아우르는 `CodeRunner` 프로토콜, GRDB 기반 저장소, sandbox-exec 격리 서브프로세스 러너·C 런처. SQL 은 인프로세스 SQLite 를 실행마다 클론해 돌리고 쓰기는 열되 파일 크기를 64MB 로 묶는다. `Packages/LearnKit` 테스트 1058개가 이를 검증한다. |
-| 화면 | **앱에서 뜨는 것은 4개** — 온보딩(툴체인 진단) · 대시보드 · 레슨 · 복습. 에디터+콘솔과 SQL 결과 diff 는 타깃과 테스트가 다 있지만 **셸이 아직 라우팅하지 않아 실행 중인 앱에서는 도달할 수 없다**(아래 아키텍처 도식 참고). ARM64 레지스터 패널은 Assembly 트랙 착수까지 후순위다(`docs/milestones/`). |
-| 에디터 | **sourcekit-lsp 연동됨 — 단 앱에는 아직 안 붙었다.** Swift 트랙에 완성과 진단이 동작한다(완성은 워밍 후 중앙값 28ms, 진단은 swiftc 와 같은 인라인 컴포넌트로 렌더하고 출처만 라벨로 구분). 실제 서버를 띄우는 테스트 11개가 이를 검증하지만, 앱 셸에 목적지를 붙이는 일이 남았다. |
-| 레슨 콘텐츠 | **MVP 세 트랙 완성 — 파이썬 12편 · SQL 12편 · Swift 12편** (+ 샘플 팩 3편). 36편 전부가 `packtool validate` 의 네 단계를 통과한다 — 예제는 실제로 실행돼 expected 와 바이트 대조되고, 과제는 solution 통과와 starter 실패를 둘 다 확인받는다. 나머지 7개 트랙은 화면상 "준비 중" 으로 뜬다. |
+| 화면 | **앱에서 뜨는 것은 6개** — 온보딩(툴체인 진단) · 대시보드 · 트랙 · 레슨 · 에디터+콘솔(SQL 은 결과 diff) · 복습. 대시보드에서 트랙으로, 트랙의 레슨 목록에서 레슨으로, 레슨의 과제 블록에서 에디터로 이어진다. ARM64 레지스터 패널은 Assembly 트랙 착수까지 후순위다(`docs/milestones/`). |
+| 에디터 | **앱에 붙었고 sourcekit-lsp 가 함께 뜬다.** 레슨의 과제 블록에서 열리고, 팩의 시작 코드를 싣고, 실행·제출이 진짜 백엔드(`swiftc`·`python3`·인프로세스 SQLite)를 탄다. Swift 트랙은 완성과 진단까지 동작한다(완성은 워밍 후 중앙값 28ms, 진단은 swiftc 와 같은 인라인 컴포넌트로 렌더하고 출처만 라벨로 구분). |
+| 레슨 콘텐츠 | **MVP 세 트랙 완성 — 파이썬 12편 · SQL 12편 · Swift 12편.** 36편 전부가 `packtool validate` 의 네 단계를 통과한다 — 예제는 실제로 실행돼 expected 와 바이트 대조되고, 과제는 solution 통과와 starter 실패를 둘 다 확인받는다. 세 팩은 앱 번들에 실려 첫 실행에 `PackStore` 로 설치된다. 나머지 7개 트랙은 화면상 "준비 중" 으로 뜬다. |
 | 콘텐츠 파이프라인 (`packtool`) | **완료.** `validate` 가 구조·문법·의미·실행 네 단계를 돌리고 예제는 expected 와 바이트 대조, 과제는 solution 통과와 **starter 실패**를 둘 다 확인한다. `build` 는 solutions 를 벗겨 결정적 tar 로 굽고(두 번 구우면 바이트 동일), `sign`/`verify` 가 Ed25519 분리 서명과 해시를 함께 본다. |
 | 레슨 생성기 (`lessongen`) | **완료.** `outline` · `lesson` · `repair` 가 모두 돈다. 세 트랙 36편이 이 루프로 만들어졌고, 실행 게이트가 16건의 결함을 잡아 `repair` 가 고쳤다 — 재검증 실패 0건. 레슨당 약 $0.005. |
 | CI | **PR 필수 체크 3게이트.** `swift test`(양쪽 패키지) · 앱 번들 조립 · `packtool validate` 가 PR 마다 돈다. `lessongen` 은 크레딧이 나가므로 `workflow_dispatch` 전용이다. |
@@ -117,20 +118,21 @@ graph TD
   Lesson["LessonFeature"] --> ContentKit
   Lesson --> RunnerKit
   Review["ReviewFeature"] --> LearnScheduling
-  Editor["EditorFeature<br/><i>앱에 아직 링크되지 않음</i>"] --> LSPKit
+  Editor["EditorFeature"] --> LSPKit
   Editor --> EditorUI
+  Tracks["TracksView<br/><i>DashboardFeature 안</i>"] --> LearnPersistence
 
   Onboarding --> DesignSystem
   Dashboard --> DesignSystem
   Lesson --> DesignSystem
   Review --> DesignSystem
+  Editor --> DesignSystem
 
-  style Editor stroke-dasharray: 5 5
   style launcher stroke-dasharray: 5 5
 ```
 
-> `EditorFeature`(에디터+콘솔·SQL 결과 diff)와 `LSPKit`(완성·진단)은 타깃과 테스트가 다
-> 있지만 **앱 셸이 아직 라우팅하지 않는다.** 실행 중인 앱에서는 도달할 수 없다.
+> `EditorFeature`(에디터+콘솔·SQL 결과 diff)는 `EditorUI`·`LSPKit` 과 함께 앱에 링크돼
+> 있고, 레슨의 과제 블록에서 열린다.
 
 ### 학습자 코드는 어떻게 실행되는가
 
@@ -183,7 +185,9 @@ App/                SwiftUI 앱 타깃. 화면은 전부 LearnKit 안에 있고 
 Packages/LearnKit/  코어 라이브러리 12개 타깃(LearnCore·RunnerKit·ContentKit·DesignSystem…).
 Tools/               packtool·lessongen CLI. ArgumentParser 를 링크하는 산출물은 이쪽뿐 —
                      앱 바이너리는 링크하지 않는다.
-Content/packs/       콘텐츠 팩. 포맷 스펙은 docs/pack-format.md.
+Content/packs/       앱이 번들하는 콘텐츠 팩. 여기 있는 것만 배포본에 실린다.
+Content/fixtures/    팩 포맷 스펙을 고정하는 픽스처(polyglot-mvp). 배포되지 않는다.
+                     포맷 스펙은 docs/pack-format.md.
 Vendor/              벤더링한 서드파티 소스(라이선스는 아래 참고).
 design/              스위스 그리드 아트보드 — 화면 디자인의 근거.
 docs/                포맷 스펙, 스크린샷.

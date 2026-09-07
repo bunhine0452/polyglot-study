@@ -108,12 +108,12 @@ owner: claude-code
 타깃과 테스트는 다 있는데 실행 중인 앱에서 도달할 수 없다. 코드로 풀리는 릴리스
 차단 요인은 이 셋이 전부이고, 나머지는 Developer ID 인증서 대기다.
 
-- [ ] 콘텐츠 팩을 앱이 실제로 읽게 한다 — 지금 `Composition.loadPack()` 이 `polyglot-mvp` 하나를 경로에 박아 읽어서 생성한 36편(python·sql·swift)이 앱에서 안 보인다 — 완료: 세 팩의 레슨이 대시보드 트랙 표에 뜨고 열린다 {#app-loads-all-packs}
-  - [ ] `PackInstaller`·`PackStore` 를 앱에 연결 — 만들어 뒀지만 앱이 쓰지 않는다. 배포본에 팩을 넣을 길이 이것뿐이다 {#wire-pack-installer}
-  - [ ] 빌드 스크립트가 팩을 번들 Resources 에 넣는다 — 지금 `build-app.sh` 는 `Content/` 를 복사하지 않아 배포본에 콘텐츠가 0편이다 {#bundle-packs}
-- [ ] 에디터 화면을 셸에 라우팅한다 — `EditorFeature`·`EditorUI`·`LSPKit` 이 앱에 링크조차 안 돼 있고 셸의 목적지는 today·tracks·review·toolchain 넷뿐이다. **코드를 못 쓰는 코딩 학습 앱은 릴리스할 수 없다** — 완료: 레슨의 과제 블록에서 에디터로 들어가 채점까지 간다 {#route-editor-screen}
-- [ ] 트랙 화면 — 지금 `case .tracks` 가 `PlaceholderPanel` 이다. 디자인이 없으니 대시보드의 트랙 표를 확장할지, 별도 화면을 그릴지부터 정한다 {#screen-tracks}
-- [ ] 프로세스를 많이 띄우는 동시 실행이 물리는 문제 — CI 에서 RunnerKit 스위트가 병렬로는 25분 상한을 넘겼고 직렬로는 8분 47초에 통과했다. 테스트는 직렬화로 막았지만 앱도 트랙 여러 개를 동시에 감지하면 같은 길로 갈 수 있다 — 완료: 동시 실행 상한이 코드에 있고 그 상한이 테스트로 고정됨 {#concurrent-spawn-limit}
+- [x] 콘텐츠 팩을 앱이 실제로 읽게 한다 — 지금 `Composition.loadPack()` 이 `polyglot-mvp` 하나를 경로에 박아 읽어서 생성한 36편(python·sql·swift)이 앱에서 안 보인다 — 완료: 세 팩의 레슨이 대시보드 트랙 표에 뜨고 열린다 {#app-loads-all-packs}
+  - [x] `PackInstaller`·`PackStore` 를 앱에 연결 — 만들어 뒀지만 앱이 쓰지 않는다. 배포본에 팩을 넣을 길이 이것뿐이다 {#wire-pack-installer}
+  - [x] 빌드 스크립트가 팩을 번들 Resources 에 넣는다 — 지금 `build-app.sh` 는 `Content/` 를 복사하지 않아 배포본에 콘텐츠가 0편이다 {#bundle-packs}
+- [x] 에디터 화면을 셸에 라우팅한다 — `EditorFeature`·`EditorUI`·`LSPKit` 이 앱에 링크조차 안 돼 있고 셸의 목적지는 today·tracks·review·toolchain 넷뿐이다. **코드를 못 쓰는 코딩 학습 앱은 릴리스할 수 없다** — 완료: 레슨의 과제 블록에서 에디터로 들어가 채점까지 간다 {#route-editor-screen}
+- [x] 트랙 화면 — 지금 `case .tracks` 가 `PlaceholderPanel` 이다. 디자인이 없으니 대시보드의 트랙 표를 확장할지, 별도 화면을 그릴지부터 정한다 {#screen-tracks}
+- [x] 프로세스를 많이 띄우는 동시 실행이 물리는 문제 — CI 에서 RunnerKit 스위트가 병렬로는 25분 상한을 넘겼고 직렬로는 8분 47초에 통과했다. 테스트는 직렬화로 막았지만 앱도 트랙 여러 개를 동시에 감지하면 같은 길로 갈 수 있다 — 완료: 동시 실행 상한이 코드에 있고 그 상한이 테스트로 고정됨 {#concurrent-spawn-limit}
 
 <!-- oculpm:plan-log begin v1 -->
 | 시각 | 항목 | 에이전트 | 변화 | 일지 | 메모 |
@@ -188,4 +188,9 @@ owner: claude-code
 | 2026-09-07T08:03:07+09:00 | #lsp-diagnostics | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/0802_feature_sourcekit-lsp-integration.md | 새 뷰 0개 — 기존 EditorDiagnosticPresentation.rows 가 그대로 InlineDiagnosticRowView 를 먹인다. 다른 것은 라벨뿐(· sourcekit-lsp ·, 한 줄에 둘 다 오면 · sourcekit-lsp/swiftc ·). 진단에 code 가 없어 ruleID 는 nil 이고 출처는 라벨이 진다 |
 | 2026-09-07T08:05:25+09:00 | #grammars-deferred-link | claude-code | ☐→> |  | 재판단 — 의존성 선언만 미리 두는 안을 접었다. SwiftPM 은 어떤 타깃도 링크하지 않는 패키지까지 전부 fetch·resolve 하므로 바이너리는 안 커져도 모든 빌드·CI 가 대가를 낸다. MVP 3언어 문법은 이미 CodeEditLanguages 0.1.20 에 있다. 활성화 절차를 docs/milestones/assembly-registers.md 에 적었다 — 태그가 0.7.3-with-generated-files 여야 하는 이유(main 에 src/parser.c 없음, 두 태그 실재 확인)와 켜야 하는 신호 포함. Assembly 트랙 착수 시 5분이면 켠다 |
 | 2026-09-07T08:25:48+09:00 | #sparkle-appcast | claude-code | ~→x | .oculpm/journal/20260907/Features_to_add/0733_feature_sparkle-auto-update.md | 실주소로 닫혔다 — bunhine0452/polyglot-study 를 만들고 Pages(gh-pages 루트)를 켜 appcast.xml 이 HTTP 200. 앱을 다시 빌드해 헤드리스 프로브를 돌리니 실제 피드를 읽고 no-update 로 정상 종료(항목 0개 appcast 는 404 와 다르다). 생성기는 release.sh 에 편입돼 서명·길이 단언까지 확인됨 |
+| 2026-09-07T16:40:06+09:00 | #wire-pack-installer | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/1639_feature_app-loads-all-packs.md | PackLibrary.provision 이 번들 씨앗을 PackStore 에 설치하고 current 를 연다 |
+| 2026-09-07T16:40:12+09:00 | #bundle-packs | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/1639_feature_app-loads-all-packs.md | build-app.sh 가 Content/packs 를 Resources 에 넣고 0편이면 죽는다; 픽스처는 Content/fixtures 로 분리 |
+| 2026-09-07T16:48:33+09:00 | #route-editor-screen | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/1648_feature_route-editor-screen.md | EditorTask.load 로 팩 과제를 조립, 셸에 라우팅. 조립된 .app 에서 Swift·SQL 두 화면 실측 |
+| 2026-09-07T16:55:31+09:00 | #screen-tracks | claude-code | ☐→x | .oculpm/journal/20260907/Features_to_add/1655_feature_screen-tracks.md | 별도 화면으로 결정 — 대시보드 표는 트랙당 한 줄이라 임의 레슨으로 갈 길이 없었다 |
+| 2026-09-07T17:17:45+09:00 | #concurrent-spawn-limit | claude-code | ☐→x | .oculpm/journal/20260907/Refactors/1717_refactor_concurrent-spawn-limit.md | ConcurrencyGate 한 벌 + 전역 스폰 상한 + 템플릿별 상호 배제. 테스트 7건이 상한을 고정 |
 <!-- oculpm:plan-log end -->

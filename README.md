@@ -14,10 +14,10 @@ macOS 14+ · Swift 6.3 / SwiftUI · MIT.
 
 | 영역 | 상태 |
 |---|---|
-| 코어 (스케줄러 · 실행 · 영속화) | **완료.** FSRS-6 복습 스케줄러, 6종 언어 백엔드를 아우르는 `CodeRunner` 프로토콜, GRDB 기반 저장소, sandbox-exec 격리 서브프로세스 러너·C 런처. `Packages/LearnKit` 테스트 1051개가 이를 검증한다. |
+| 코어 (스케줄러 · 실행 · 영속화) | **완료.** FSRS-6 복습 스케줄러, 6종 언어 백엔드를 아우르는 `CodeRunner` 프로토콜, GRDB 기반 저장소, sandbox-exec 격리 서브프로세스 러너·C 런처. SQL 은 인프로세스 SQLite 를 실행마다 클론해 돌리고 쓰기는 열되 파일 크기를 64MB 로 묶는다. `Packages/LearnKit` 테스트 1058개가 이를 검증한다. |
 | 화면 | **7개 중 6개.** 온보딩(툴체인 진단) · 대시보드 · 레슨 · 복습 · 에디터+콘솔 · SQL 결과 diff 가 실제로 뜬다. ARM64 레지스터 패널만 Assembly 트랙 착수까지 후순위다(`docs/milestones/`). |
 | 에디터 | **sourcekit-lsp 연동됨.** Swift 트랙에 완성과 진단이 붙는다 — 완성은 워밍 후 중앙값 28ms, 진단은 swiftc 와 **같은 인라인 컴포넌트**로 렌더하고 출처만 라벨로 구분한다. |
-| 레슨 콘텐츠 | **파이썬 트랙 12편 + 샘플 팩 3편.** `Content/packs/polyglot-python` 이 첫 완성 트랙이고 `polyglot-mvp` 는 3언어 파이프라인 픽스처다. 나머지 트랙은 화면상 "준비 중" 으로 뜬다. |
+| 레슨 콘텐츠 | **파이썬 12편 · SQL 12편 + 샘플 팩 3편.** `Content/packs/polyglot-python` 과 `polyglot-sql` 이 완성 트랙이고 `polyglot-mvp` 는 3언어 파이프라인 픽스처다. MVP 세 트랙 중 Swift 가 남았고, 나머지 7개 트랙은 화면상 "준비 중" 으로 뜬다. |
 | 콘텐츠 파이프라인 (`packtool`) | **완료.** `validate` 가 구조·문법·의미·실행 네 단계를 돌리고 예제는 expected 와 바이트 대조, 과제는 solution 통과와 **starter 실패**를 둘 다 확인한다. `build` 는 solutions 를 벗겨 결정적 tar 로 굽고(두 번 구우면 바이트 동일), `sign`/`verify` 가 Ed25519 분리 서명과 해시를 함께 본다. |
 | 레슨 생성기 (`lessongen`) | **완료.** `outline` · `lesson` · `repair` 가 모두 돈다. 파이썬 12편이 이 루프로 만들어졌고, 실행 게이트가 2편에서 결함을 잡아 `repair` 가 고쳤다 — 재검증 실패 0건. |
 | CI | **PR 필수 체크 3게이트.** `swift test`(양쪽 패키지) · 앱 번들 조립 · `packtool validate` 가 PR 마다 돈다. `lessongen` 은 크레딧이 나가므로 `workflow_dispatch` 전용이다. |

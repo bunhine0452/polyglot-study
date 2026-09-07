@@ -187,6 +187,23 @@ SwiftPM 이 곧바로 죽는다. 첫 실 PR 에서 `macos-14` 로 두 게이트�
 그리고 `scripts/ci-assert-toolchain.sh` 가 체크아웃 직후 Swift ≥ 6.2 를 단언한다.
 이미지가 뒤로 가면 잡 로그 한복판의 SwiftPM 오류가 아니라 한 줄로 멈춘다.
 
+## learn-launcher 는 따로 구워야 한다 (실측 2026-09-07)
+
+`swift build --package-path Tools` 는 **런처를 만들지 않는다.** `learn-launcher` 는
+LearnKit 의 실행 타깃이고 Tools 의 의존성 그래프 밖이라, packtool 만 빌드하면
+서브프로세스를 타는 언어(Swift·Python)의 실행 게이트가 통째로 죽는다 —
+`실행 게이트를 태울 수 없다 (swift)`.
+
+**로컬에서는 이 구멍이 안 보인다.** 개발자는 LearnKit 을 이미 빌드해 뒀기 때문이다.
+실제 러너에서 Swift 팩 36건 실패로 처음 드러났고, 같은 실행에서 SQL 팩은 통과했다 —
+SQL 은 인프로세스 러너라 런처가 필요 없다. 그 대비가 원인을 바로 가리켰다.
+
+`scripts/ci-validate-packs.sh` 가 검증 전에 `--product learn-launcher` 를 굽는다.
+`--allow-missing-toolchain` 일 때는 굽지 않는다 — 그 모드는 실행 게이트를 돌리지 않는다.
+
+이건 CI 를 실제로 돌려 보기 전에는 알 수 없던 종류의 결함이다. 스크립트를 로컬에서
+아무리 돌려도 개발 머신에는 런처가 이미 있다.
+
 ## 실행으로 확인한 것 / 안 한 것 — 요약
 
 **확인함 (로컬 실행):**

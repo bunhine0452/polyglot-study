@@ -3,6 +3,19 @@
     <channel>
         <title>Polyglot</title>
         <item>
+            <title>0.1.0-alpha.2</title>
+            <pubDate>Mon, 07 Sep 2026 12:20:03 +0000</pubDate>
+            <link>https://github.com/bunhine0452/polyglot-study</link>
+            <sparkle:version>114</sparkle:version>
+            <sparkle:shortVersionString>0.1.0-alpha.2</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
+            <enclosure url="https://bunhine0452.github.io/polyglot-study/Polyglot-0.1.0-alpha.2.zip" length="19632911" type="application/octet-stream" sparkle:edSignature="4xsvxg38iEAudIBlaomTQl3C598tmfIgrFfS6nGszZ316g9TnROoBmhjhrWb3h7KjkJX2k9nCQbF5W0NgnwPBw=="/>
+            <sparkle:deltas>
+                <enclosure url="https://bunhine0452.github.io/polyglot-study/Polyglot114-110.delta" sparkle:deltaFrom="110" length="460146" type="application/octet-stream" sparkle:deltaFromSparkleExecutableSize="977616" sparkle:deltaFromSparkleLocales="de,he,ar,el,ja,fa,uk" sparkle:edSignature="Tr2sqfoq4gQirPMqY4iSbM2YlyIpKLCdwQ7G4n5G4n76i4R++PwW4cF3Ioo2L835r7zXme58wg41s87SeBNUCQ=="/>
+            </sparkle:deltas>
+        </item>
+        <item>
             <title>0.1.0-alpha.1</title>
             <pubDate>Mon, 07 Sep 2026 20:18:50 +0900</pubDate>
             <link>https://github.com/bunhine0452/polyglot-study</link>

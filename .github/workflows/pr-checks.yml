@@ -52,7 +52,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: 툴체인 확인
         run: scripts/ci-assert-toolchain.sh
-      - run: swift test --package-path Packages/LearnKit --filter RunnerKitTests
+      # **직렬로** 돌린다. 병렬이면 프로세스를 기다리는 테스트가 물릴 때 동시성 풀이
+      # 고갈돼 순수 테스트까지 뒤에 밀리고, 로그만 봐서는 누가 범인인지 알 수 없다.
+      # 직렬이면 "시작했는데 끝나지 않은 테스트" 가 정확히 하나로 나온다.
+      # Swift Testing 의 .timeLimit 은 여기서 못 쓴다 — 그건 Task 취소에 기대는데
+      # 블로킹 syscall(waitpid·read)에 갇힌 스레드는 취소로 깨지 않는다.
+      - run: swift test --package-path Packages/LearnKit --filter RunnerKitTests --no-parallel
 
   probe-rest:
     name: 진단 — 나머지 (LSPKit·RunnerKit 제외)

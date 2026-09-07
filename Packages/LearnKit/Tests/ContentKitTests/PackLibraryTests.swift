@@ -185,6 +185,42 @@ struct PackLibraryTests {
         }
     }
 
+    /// `{#wire-pack-installer}` — "같은 버전은 다시 설치하지 않는다" 의 **짝**이다.
+    ///
+    /// 이 테스트가 없어서 실제 릴리스가 한 번 잘못 구워졌다(2026-09-07). 팩 내용을
+    /// 12편에서 24편으로 늘리면서 매니페스트의 `version` 을 그대로 뒀더니, 이미
+    /// `0.1.0` 을 설치해 둔 스토어가 "같은 버전" 으로 보고 건너뛰어 앱이 옛 12편을
+    /// 계속 읽었다. 팩 게이트도 `PackLibraryTests` 의 리포 팩 테스트도 **소스 트리**를
+    /// 보기 때문에 둘 다 초록이었다 — 설치 경로를 지나야만 드러난다.
+    @Test("씨앗의 버전이 오르면 새 버전을 설치하고 current 를 옮긴다")
+    func provisionInstallsNewerSeedVersion() throws {
+        try withTemporaryDirectory("pack-library") { temporary in
+            let seedRoot = temporary.child("seeds")
+            let seed = seedRoot.appendingPathComponent("py")
+            try makeLibraryPack(
+                at: seed, packID: "py", language: .python, lessonCount: 2, version: "1.0.0")
+            let store = PackStore(root: temporary.child("ContentPacks"))
+            let seeds = PackLibrary.packDirectories(in: seedRoot)
+
+            let first = PackLibrary.provision(seeds: seeds, into: store)
+            #expect(first.lessonCount(for: .python) == 2)
+
+            // 같은 자리에 **내용이 늘어난 새 버전** 씨앗을 놓는다 — 앱 업데이트가 오는 모양이다.
+            try FileManager.default.removeItem(at: seed)
+            try makeLibraryPack(
+                at: seed, packID: "py", language: .python, lessonCount: 5, version: "1.1.0")
+
+            let second = PackLibrary.provision(
+                seeds: PackLibrary.packDirectories(in: seedRoot), into: store)
+
+            #expect(second.problems.isEmpty)
+            #expect(store.installedVersions(PackID("py")).sorted() == ["1.0.0", "1.1.0"])
+            #expect(store.currentVersion(PackID("py")) == "1.1.0")
+            // 열린 팩이 새 내용이어야 한다. 여기가 실제로 깨졌던 자리다.
+            #expect(second.lessonCount(for: .python) == 5)
+        }
+    }
+
     @Test("current 포인터만 없으면 다시 세운다")
     func provisionRestoresMissingPointer() throws {
         try withTemporaryDirectory("pack-library") { temporary in

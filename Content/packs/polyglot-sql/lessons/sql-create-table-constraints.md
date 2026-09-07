@@ -1,112 +1,114 @@
-@Concept(id: create-table-constraints) {
-지금까지는 준비된 표를 조회만 했지만, CREATE TABLE 문으로 표를 직접 만들 수 있다. 각 열에는 INTEGER, TEXT 같은 타입을 지정하고, 이어서 제약(constraint)을 붙여 잘못된 데이터의 입력을 막는다.
-PRIMARY KEY 는 각 행을 유일하게 식별하는 열이고, UNIQUE 는 중복 값을, NOT NULL 은 값이 없는 경우를 거부한다.
-FOREIGN KEY 는 열 정의 뒤에 REFERENCES 다른표(열) 형태로 선언해 표 사이의 관계를 강제하고, CHECK 는 괄호 안의 조건을 만족하는 값만 허용한다.
-제약을 위반하는 INSERT 는 기본적으로 오류와 함께 거부되는데, INSERT OR IGNORE 를 쓰면 위반된 행만 조용히 건너뛰고 나머지는 저장한다.
+@Concept(id: concept-create-table-constraints) {
+지금까지는 남이 만든 표를 읽기만 했다면, 이제 `CREATE TABLE` 로 표를 직접 만든다. 각 열마다 이름과 타입을 쓰고, 그 뒤에 규칙(제약)을 붙일 수 있다. `id INTEGER PRIMARY KEY` 처럼 표의 한 행을 유일하게 가리킬 기준 열을 정하고, `NOT NULL` 로 비어 있으면 안 되는 열을 지정한다.
+
+제약은 잘못된 데이터가 들어오는 순간 거부하는 문지기다. `UNIQUE` 는 열 전체에서 같은 값이 두 번 나오는 것을 막고, `CHECK (조건)` 은 값이 조건을 만족할 때만 통과시킨다. 두 표를 연결할 때는 `REFERENCES 다른표(열)` 로 외래 키를 선언해서, 존재하지 않는 상대를 가리키는 행을 막을 수 있다(SQLite 에서는 `PRAGMA foreign_keys = ON;` 을 먼저 실행해야 외래 키 검사가 켜진다).
+
+제약을 직접 관찰하는 편한 방법이 `INSERT OR IGNORE` 다. 보통 `INSERT` 는 제약 위반 시 오류를 내고 멈추지만, `INSERT OR IGNORE` 는 `UNIQUE`, `NOT NULL`, `CHECK` 위반 행을 조용히 건너뛴다. 그래서 나쁜 행 여러 개를 몰아 넣고 마지막에 `SELECT` 로 무엇이 살아남았는지 보면, 어떤 제약이 무엇을 막았는지 눈으로 확인할 수 있다. 한 가지 주의할 점: 표 이름으로 `order` 처럼 예약어를 쓰고 싶다면 항상 큰따옴표로 감싸야 한다.
 }
 
-@Example(id: example-member-constraints, language: sql, expected: expected/sql-create-table-constraints.txt) {
-새 표 team 과 member 를 만들고, 정상 행과 제약에 걸리는 행을 넣어 본다. INSERT OR IGNORE 는 제약 위반 행을 오류 대신 건너뛰므로, 조회 결과로 어떤 행이 살아남았는지 확인할 수 있다.
+@Example(id: example-hall-seat, language: sql, expected: expected/sql-create-table-constraints.txt) {
+공연장 좌석 표를 제약과 함께 만들고, 규칙을 어기는 INSERT 를 `INSERT OR IGNORE` 로 시도한 뒤 어떤 행이 살아남는지 확인한다.
 
 ```sql
-PRAGMA foreign_keys = ON;
-CREATE TABLE team (
+CREATE TABLE hall_seat (
   id INTEGER PRIMARY KEY,
-  name TEXT NOT NULL UNIQUE
+  seat_no TEXT NOT NULL UNIQUE,
+  zone TEXT NOT NULL CHECK (zone IN ('A', 'B')),
+  price INTEGER NOT NULL CHECK (price > 0)
 );
-CREATE TABLE member (
-  id INTEGER PRIMARY KEY,
-  name TEXT NOT NULL,
-  age INTEGER NOT NULL CHECK (age >= 0),
-  team_id INTEGER REFERENCES team(id)
-);
-INSERT INTO team VALUES (1, '종이'), (2, '나무');
-INSERT INTO member VALUES (1, '정바람', 32, 1);
-INSERT INTO member VALUES (2, '한별빛', 27, 2);
-INSERT OR IGNORE INTO member VALUES (2, '중복아이디', 20, 1);
-INSERT OR IGNORE INTO member VALUES (3, '어린회원', -1, 1);
-INSERT OR IGNORE INTO member VALUES (4, '유령팀', 40, 99);
-SELECT id, name, age, team_id FROM member ORDER BY id;
+INSERT INTO hall_seat VALUES (1, 'A1', 'A', 50000);
+INSERT INTO hall_seat VALUES (2, 'B1', 'B', 40000);
+INSERT OR IGNORE INTO hall_seat VALUES (3, 'A1', 'A', 45000);
+INSERT OR IGNORE INTO hall_seat VALUES (4, 'A2', 'C', 30000);
+INSERT OR IGNORE INTO hall_seat VALUES (5, 'A2', 'A', 0);
+INSERT OR IGNORE INTO hall_seat VALUES (6, NULL, 'A', 10000);
+SELECT id, seat_no, zone, price FROM hall_seat ORDER BY id;
 ```
 }
 
-@Blank(id: blank-tag-table, language: sql) {
-태그 표 tag 를 만드는 문장이다. 점수 범위를 검사하는 제약 키워드와, 기존 category 표를 가리키는 외래 키가 참조할 표 이름을 채워 넣어 보자.
+@Blank(id: blank-badge-table, language: sql) {
+뱃지 표를 만드는 문장에서 제약 키워드가 빠져 있다. 빈칸을 채워 표를 완성하고, 행이 정상적으로 들어가는지 확인해 보자.
 
 ```sql
-CREATE TABLE tag (
-  id INTEGER PRIMARY KEY,
-  label TEXT NOT NULL UNIQUE,
-  score INTEGER NOT NULL ___1___ (score BETWEEN 0 AND 100),
-  category_id INTEGER REFERENCES ___2___(id)
+CREATE TABLE badge (
+  id INTEGER ___1___,
+  code TEXT NOT NULL ___2___,
+  tier TEXT NOT NULL CHECK (tier ___3___ ('bronze', 'silver', 'gold')),
+  points INTEGER NOT NULL CHECK (___4___ > 0)
 );
-INSERT INTO tag VALUES (1, '굿노트', 95, 1);
-SELECT id, label, score FROM tag ORDER BY id;
+INSERT INTO badge VALUES (1, 'B001', 'bronze', 100);
+SELECT * FROM badge ORDER BY id;
 ```
 
 @Answer(slot: 1) {
-`CHECK`
+`PRIMARY KEY`
 }
 
 @Answer(slot: 2) {
-`category`
+`UNIQUE`
+}
+
+@Answer(slot: 3) {
+`IN`
+}
+
+@Answer(slot: 4) {
+`points`
 }
 }
 
-@Task(id: task-delivery-table, language: sql, starter: starters/sql-create-table-constraints.sql, tests: tests/sql-create-table-constraints.sql, solution: solutions/sql-create-table-constraints.sql) {
-배송 정보를 담을 새 표 delivery 를 직접 만든다. 열 구성은 id INTEGER PRIMARY KEY, city TEXT NOT NULL, fee INTEGER NOT NULL 이고, fee 가 0 미만이면 거부되도록 CHECK 제약을 붙인다.
-그다음 아래 다섯 행을 순서대로 INSERT OR IGNORE 로 넣는다. (1, '서울', 3000), (2, '부산', 2500), (1, '중복', 1000), (3, '제주', -500), (3, '제주', 4900).
-제약이 올바르면 중복 아이디와 음수 요금 행은 거부되고 세 행만 남는다. 마지막에 SELECT id, city, fee FROM delivery ORDER BY id; 로 결과를 조회한다.
-
-@Hint {
-CHECK 제약은 열 정의 뒤에 CHECK (조건) 형태로 붙인다. 예를 들어 CHECK (fee >= 0) 처럼 쓴다.
-}
-
-@Hint {
-id 가 1 로 중복된 행과 fee 가 -500 인 행은 각각 PRIMARY KEY 와 CHECK 제약에 걸려 저장되지 않아야 한다.
-}
+@Task(id: task-cafe-menu, language: sql, starter: starters/sql-create-table-constraints.sql, tests: tests/sql-create-table-constraints.sql, solution: solutions/sql-create-table-constraints.sql) {
+카페 메뉴 표 `cafe_menu` 를 제약과 함께 정의해 보자. `name` 열에는 `NOT NULL` 과 `UNIQUE` 를 붙여 같은 이름의 메뉴가 두 번 등록되지 않게 하고, `kind` 열에는 `CHECK` 로 'coffee', 'tea', 'ade', 'snack' 넷 중 하나만 허용하며, `price` 열에는 `CHECK` 로 0보다 큰 값만 허용하라. `CREATE TABLE` 의 열 정의만 고치고 아래의 `INSERT` 문들은 그대로 둘 것. 규칙을 어기는 행은 `INSERT OR IGNORE` 덕분에 조용히 거부되고, 마지막 `SELECT` 는 통과한 행만 보여 준다.
 
 @Hint {
-마지막 조회에서 ORDER BY id 를 빠뜨리면 행 순서가 달라져 채점에 실패한다.
+제약은 열 정의 뒤에 이어 붙인다. 예: price INTEGER NOT NULL CHECK (price > 0)
+}
+
+@Hint {
+한 열에 여러 제약을 붙일 수 있다: name TEXT NOT NULL UNIQUE
+}
+
+@Hint {
+나열한 값 중 하나인지 검사할 때는 IN 을 쓴다: CHECK (kind IN ('coffee', 'tea', 'ade', 'snack'))
 }
 }
 
-@Quiz(id: quiz-unique-reject, answer: statement-rejected) {
+@Quiz(id: quiz-on-conflict-fk, answer: foreign-key-violation) {
 @Question {
-UNIQUE 제약이 걸린 name 열에 이미 저장된 값과 똑같은 값을 넣는 INSERT 를 실행하면 어떻게 될까?
+`INSERT OR IGNORE` 는 제약 위반 행을 조용히 건너뛰지만, 어떤 제약 위반에는 이 ON CONFLICT 절이 적용되지 않아 그대로 오류가 난다. 무엇인가?
 }
 
-@Choice(id: statement-rejected) {
-INSERT 문이 오류와 함께 거부되고, 표에는 아무 변화도 없다.
+@Choice(id: not-null-violation) {
+NOT NULL 위반 — NULL 값은 IGNORE 로도 막을 수 없어서 항상 오류가 난다.
 }
 
-@Choice(id: overwrite-old-row) {
-같은 값을 가진 기존 행이 새 값으로 덮어써진다.
+@Choice(id: check-violation) {
+CHECK 위반 — CHECK 는 표 정의에만 쓸 수 있어서 INSERT 단계에서는 무시된다.
 }
 
-@Choice(id: row-added-anyway) {
-제약을 무시하고 새 행이 추가되어 같은 값을 가진 두 행이 공존한다.
+@Choice(id: foreign-key-violation) {
+FOREIGN KEY 위반 — ON CONFLICT 절은 외래 키 제약에는 적용되지 않는다.
 }
 
-@Choice(id: null-stored) {
-충돌을 피하려고 값 대신 NULL 이 저장된다.
+@Choice(id: unique-violation) {
+UNIQUE 위반 — UNIQUE 는 인덱스가 아니라서 IGNORE 로 건너뛸 수 없다.
 }
 
 @Explanation {
-PRIMARY KEY 와 UNIQUE 위반은 기본적으로 오류와 함께 거부되며 표는 그대로 유지된다. INSERT OR IGNORE 를 쓰면 오류 대신 위반된 행만 조용히 건너뛴다는 점이 예제에서 확인된 동작이다.
+SQLite 에서 ON CONFLICT 절(INSERT OR IGNORE 포함)은 UNIQUE, PRIMARY KEY, NOT NULL, CHECK 위반에는 적용되지만 FOREIGN KEY 위반은 대상이 아니다. 그래서 존재하지 않는 부모를 가리키는 행을 INSERT OR IGNORE 로 넣으려고 하면 조용히 건너뛰어지지 않고 문이 실패한다. 외래 키 위반은 PRAGMA foreign_keys = ON 상태에서 별도로 검사된다.
 }
 }
 
 @Reflection(id: reflection-constraints) {
-@Prompt(id: compare-constraints) {
-NOT NULL, UNIQUE, CHECK 는 각각 어떤 종류의 잘못된 데이터를 막을까? 서로 겹치는 부분이 있는지도 이야기해 보자.
+@Prompt(id: pk-vs-unique) {
+PRIMARY KEY 와 UNIQUE 는 모두 중복된 값을 막는다. 두 제약의 공통점과 차이를, 예를 들어 만들어 볼 표 하나를 정해서 자기 말로 정리해 보세요.
 }
 
-@Prompt(id: missing-foreign-key) {
-product.category_id 처럼 다른 표를 가리키는 열에 FOREIGN KEY 가 선언되어 있지 않다면, 시간이 지나면서 어떤 데이터가 어떻게 어긋날 수 있을까?
+@Prompt(id: null-vs-missing) {
+NOT NULL 을 선언하지 않은 열에는 NULL 이 들어올 수 있습니다. customer.city 처럼 '아직 모르는' 정보와 '실수로 빠진' 정보를 데이터로 어떻게 구분할 수 있을까요?
 }
 
-@Prompt(id: ignore-vs-error) {
-INSERT OR IGNORE 는 제약 위반 행을 조용히 건너뛴다. 위반을 오류로 그대로 드러내는 쪽이 더 나은 상황은 언제일까?
+@Prompt(id: db-vs-app-validation) {
+CHECK 와 FOREIGN KEY 가 데이터베이스에서 검사해 준다면, 애플리케이션 코드에서의 값 검사는 불필요해질까요? 각 검사가 맡는 시점과 책임을 생각해 보세요.
 }
 }

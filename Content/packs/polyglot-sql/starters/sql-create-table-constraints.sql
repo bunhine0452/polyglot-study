@@ -1,18 +1,13 @@
--- 1) delivery 표를 만드세요.
---     id:   INTEGER PRIMARY KEY
---     city: TEXT NOT NULL
---     fee:  INTEGER NOT NULL, 0 미만인 fee 를 CHECK 로 거부
-CREATE TABLE delivery (
+-- 아래 CREATE TABLE 의 각 열에 제약을 붙여 완성하세요.
+CREATE TABLE cafe_menu (
   id INTEGER PRIMARY KEY,
-  city TEXT NOT NULL,
-  fee INTEGER NOT NULL
+  name TEXT NOT NULL,
+  kind TEXT NOT NULL,
+  price INTEGER NOT NULL
 );
-
--- 2) 다섯 행을 순서대로 INSERT OR IGNORE 로 넣으세요.
-INSERT OR IGNORE INTO delivery VALUES (1, '서울', 3000);
-INSERT OR IGNORE INTO delivery VALUES (2, '부산', 2500);
--- (1, '중복', 1000)  <- 이 행을 넣는 INSERT OR IGNORE 문을 작성하세요
--- (3, '제주', -500)  <- 이 행을 넣는 INSERT OR IGNORE 문을 작성하세요
--- (3, '제주', 4900)  <- 이 행을 넣는 INSERT OR IGNORE 문을 작성하세요
-
--- 3) 모든 행을 id 오름차순으로 조회하세요.
+INSERT INTO cafe_menu VALUES (1, '아메리카노', 'coffee', 4000);
+INSERT INTO cafe_menu VALUES (2, '녹차라떼', 'tea', 4500);
+INSERT OR IGNORE INTO cafe_menu VALUES (3, '아메리카노', 'coffee', 4000);
+INSERT OR IGNORE INTO cafe_menu VALUES (4, '레몬에이드', 'ade', 0);
+INSERT OR IGNORE INTO cafe_menu VALUES (5, '초코쿠키', 'snack', 2000);
+SELECT id, name, kind, price FROM cafe_menu ORDER BY id;

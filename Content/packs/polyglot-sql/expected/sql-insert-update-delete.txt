@@ -1,3 +1,2 @@
-id | name
-10 | toy
-20 | food
+id | name | price
+11 | 노트북 파우치 | 19000

@@ -12,9 +12,9 @@
       "sha256" : "4696bf73e382ab2d7234978abbef7008bb4c445ca2c7be75366b34223eae97fa"
     },
     {
-      "bytes" : 72,
+      "bytes" : 66,
       "path" : "expected/sql-create-table-constraints.txt",
-      "sha256" : "fbee0974125a479c9eb972db97a2053a7fcdb29028187c618bf1e5fce2cecdc9"
+      "sha256" : "ceaec5327eabfb6c1b61a5142a1bb97804b07755b5c127afacb2645109403365"
     },
     {
       "bytes" : 38,
@@ -32,9 +32,9 @@
       "sha256" : "98068df77014c3d521fe304803096c60b2873f5b8c0d2b7fa834b8c2cc755fa1"
     },
     {
-      "bytes" : 29,
+      "bytes" : 51,
       "path" : "expected/sql-insert-update-delete.txt",
-      "sha256" : "17adf366555faaa59d869eaa5f3906f207cf1c66d0ed5fab84b141dd6eb825d6"
+      "sha256" : "4e20c11f6d867d8f87cad92e1a40013b6ff9fc291bc2560aa23dda973d61711a"
     },
     {
       "bytes" : 54,
@@ -72,9 +72,9 @@
       "sha256" : "2ee6477e93fdc3dbf73d6014ace34284cc37e9fbd9b801b53d39355373ab5d46"
     },
     {
-      "bytes" : 5117,
+      "bytes" : 5978,
       "path" : "lessons/sql-create-table-constraints.md",
-      "sha256" : "f3ee0e93234d360d018d63486ada9ba1752821fc8cd22a8a2865b239192f1ddb"
+      "sha256" : "f4ae9e18e45c41c42476ab94d4c0e0e3cb8cf6ec73883e6436d16dab73633169"
     },
     {
       "bytes" : 4102,
@@ -92,9 +92,9 @@
       "sha256" : "62071a035ba72404e4f571fb5f53f39cdb984028598356c491656d29e0ab76d6"
     },
     {
-      "bytes" : 4906,
+      "bytes" : 3939,
       "path" : "lessons/sql-insert-update-delete.md",
-      "sha256" : "0024d2c3d9a1a0c6df44b057ddc4b4394eb82786c6bf2bd000a163474e0df027"
+      "sha256" : "2cb018ae161a06573639d4ec6a2a61f5c7de2a21546e042a04cc111fe97c82b5"
     },
     {
       "bytes" : 4732,
@@ -132,9 +132,9 @@
       "sha256" : "cc2e5d0c71a736b640a46d83d25ee277cd04419705962ecbff4a3cfd4c1ffddc"
     },
     {
-      "bytes" : 458,
+      "bytes" : 614,
       "path" : "solutions/sql-create-table-constraints.sql",
-      "sha256" : "bd558a923138aa43f46cd65162f0f1b52016e732176b4ee31d02e2f51a5bc8f8"
+      "sha256" : "5272a660a86a63a28ac28aff2335f51b2176f08b4aa7b5a649b52a45b84301a8"
     },
     {
       "bytes" : 247,
@@ -152,9 +152,9 @@
       "sha256" : "21c1818ec38bada9d055c69eee8715eba71c07c40e30662b4b9c66c866db5eef"
     },
     {
-      "bytes" : 168,
+      "bytes" : 117,
       "path" : "solutions/sql-insert-update-delete.sql",
-      "sha256" : "419d0b733aaaeac94b2e09909c5d1fe076bbc4a2b0281932ee8084b0e49c2388"
+      "sha256" : "cbd7eff4bb65dc1cc419f71a4624d5e376e332e79f3ac15499379a4d8ad0c143"
     },
     {
       "bytes" : 167,
@@ -197,9 +197,9 @@
       "sha256" : "775e9223f9fef1dd91d998d8973b90b6c068127811a9188f564fb7b7f1e5d814"
     },
     {
-      "bytes" : 764,
+      "bytes" : 611,
       "path" : "starters/sql-create-table-constraints.sql",
-      "sha256" : "c9685b736cdbce21044a6fa1962a762e1ce4271784556494b51391f8564c1ff8"
+      "sha256" : "9665ebefe479575c11f1a307b9b09fc1f7f1cee1e2f72d383ccd2f84fa3bdbad"
     },
     {
       "bytes" : 123,
@@ -217,9 +217,9 @@
       "sha256" : "96d70aeb115c5ebc12d261a57a8c4c7cf228fb5eab15f355b7d5c1820512ea49"
     },
     {
-      "bytes" : 105,
+      "bytes" : 129,
       "path" : "starters/sql-insert-update-delete.sql",
-      "sha256" : "0a5032b7699e939ad2eac2005867b9f0c8986b0f7fff9ae7e709fa608d7f65e3"
+      "sha256" : "270f6a8c6af21f1491a01e4ae6a19c644c4803f76b0ec1d744fb17bc8dad1620"
     },
     {
       "bytes" : 235,
@@ -257,9 +257,9 @@
       "sha256" : "cc2e5d0c71a736b640a46d83d25ee277cd04419705962ecbff4a3cfd4c1ffddc"
     },
     {
-      "bytes" : 129,
+      "bytes" : 186,
       "path" : "tests/sql-create-table-constraints.sql",
-      "sha256" : "da32d42bd82f1ee9aa322f0ea53fdbe05c11a5db220f9beaee86f6674815c015"
+      "sha256" : "8d21d496daeaba95bfe0be64c37cfc9e0224c02d343a9a62b8c479a3bc3998e8"
     },
     {
       "bytes" : 101,
@@ -277,9 +277,9 @@
       "sha256" : "21c1818ec38bada9d055c69eee8715eba71c07c40e30662b4b9c66c866db5eef"
     },
     {
-      "bytes" : 100,
+      "bytes" : 36,
       "path" : "tests/sql-insert-update-delete.sql",
-      "sha256" : "069efc222be0e31d94464fc09a269b23536e77f4de6550c21780f577c3865a91"
+      "sha256" : "1a309385f1d55df2d9cb77ef7a000690ec1db05316b370a08bcec0a878c17cc2"
     },
     {
       "bytes" : 167,

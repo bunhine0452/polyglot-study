@@ -1,11 +1,12 @@
-CREATE TABLE delivery (
+CREATE TABLE cafe_menu (
   id INTEGER PRIMARY KEY,
-  city TEXT NOT NULL,
-  fee INTEGER NOT NULL CHECK (fee >= 0)
+  name TEXT NOT NULL UNIQUE,
+  kind TEXT NOT NULL CHECK (kind IN ('coffee', 'tea', 'ade', 'snack')),
+  price INTEGER NOT NULL CHECK (price > 0)
 );
-INSERT OR IGNORE INTO delivery VALUES (1, '서울', 3000);
-INSERT OR IGNORE INTO delivery VALUES (2, '부산', 2500);
-INSERT OR IGNORE INTO delivery VALUES (1, '중복', 1000);
-INSERT OR IGNORE INTO delivery VALUES (3, '제주', -500);
-INSERT OR IGNORE INTO delivery VALUES (3, '제주', 4900);
-SELECT id, city, fee FROM delivery ORDER BY id;
+INSERT INTO cafe_menu VALUES (1, '아메리카노', 'coffee', 4000);
+INSERT INTO cafe_menu VALUES (2, '녹차라떼', 'tea', 4500);
+INSERT OR IGNORE INTO cafe_menu VALUES (3, '아메리카노', 'coffee', 4000);
+INSERT OR IGNORE INTO cafe_menu VALUES (4, '레몬에이드', 'ade', 0);
+INSERT OR IGNORE INTO cafe_menu VALUES (5, '초코쿠키', 'snack', 2000);
+SELECT id, name, kind, price FROM cafe_menu ORDER BY id;

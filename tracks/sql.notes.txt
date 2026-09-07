@@ -1,0 +1,32 @@
+이 팩의 모든 SQL 은 아래 스키마 하나를 대상으로 한다. 표와 열 이름을 절대 바꾸지 말고,
+없는 표를 지어내지 마라. 예제·빈칸·과제 전부 이 데이터로 실제로 실행된다.
+
+CREATE TABLE category (id INTEGER PRIMARY KEY, name TEXT NOT NULL UNIQUE);
+CREATE TABLE customer (id INTEGER PRIMARY KEY, name TEXT NOT NULL, city TEXT, joined_on TEXT NOT NULL);
+CREATE TABLE product  (id INTEGER PRIMARY KEY, name TEXT NOT NULL, category_id INTEGER, price INTEGER NOT NULL, stock INTEGER NOT NULL);
+CREATE TABLE "order"  (id INTEGER PRIMARY KEY, customer_id INTEGER NOT NULL, ordered_at TEXT NOT NULL, shipped_at TEXT);
+CREATE TABLE order_item (order_id INTEGER NOT NULL, product_id INTEGER NOT NULL, quantity INTEGER NOT NULL, PRIMARY KEY (order_id, product_id));
+
+중요한 사실:
+- 표 이름 order 는 SQL 예약어다. 반드시 큰따옴표로 "order" 라고 써라.
+- NULL 이 실제로 들어 있다: customer.city(2건), product.category_id(1건), "order".shipped_at(2건).
+- 주문이 하나도 없는 고객이 둘 있다(정바람, 한별빛) — LEFT JOIN 과 EXISTS 가 의미를 갖는다.
+- 데이터 규모: category 3, customer 6, product 10, "order" 7, order_item 13. 작다.
+- 날짜는 TEXT 이고 'YYYY-MM-DD' 형식이다.
+
+실행 결과 형식(expected 사이드카에 그대로 적어야 한다):
+- 첫 줄은 열 이름 헤더, 값 구분자는 " | "(공백-파이프-공백)다.
+- 예: `category | n | avg_price` 다음 줄에 `paper | 2 | 6650.0`
+- 정수는 정수로, 실수는 부동소수점 그대로 나온다(예: 6650.0, 14433.333333333334).
+- ORDER BY 를 명시하지 않으면 행 순서가 보장되지 않는다. expected 를 적을 수 있으려면
+  결과가 여러 행인 예제는 반드시 ORDER BY 로 순서를 고정해라.
+
+데이터베이스는 실행마다 사본이 만들어진다. INSERT/UPDATE/DELETE 를 가르치는 레슨은
+마음껏 변경해도 다른 레슨에 영향이 없다. 다만 CREATE TABLE 을 가르칠 때는 위 다섯 개와
+이름이 겹치지 않는 새 표를 만들어라.
+
+데이터베이스는 이제 **쓰기가 가능하다**(실행마다 사본이 만들어지고 버려진다).
+INSERT·UPDATE·DELETE·CREATE TABLE·DROP TABLE 을 마음껏 가르쳐도 된다.
+다만 파일 크기 상한이 64MB 다 — 정상 레슨에는 넉넉하지만 행을 기하급수로 늘리는
+예제(INSERT INTO t SELECT * FROM t 를 반복하는 것)는 쓰지 마라.
+ATTACH 는 여전히 금지다.

@@ -15,7 +15,22 @@ public struct SQLRunnerConfiguration: Sendable {
     /// nil 이면 `ResourceLimits.memoryMegabytes` 에서 유도한다.
     public var heapLimitBytes: Int64?
     /// authorizer 가 통과시키는 PRAGMA. 스키마 탐색용 읽기 전용 프라그마만 들어 있다.
+    ///
+    /// `max_page_count` 는 **여기 없다.** 있으면 학습자가 디스크 상한을 스스로 올린다.
     public var allowedPragmas: Set<String>
+    /// 클론에 쓰기를 허용할지. 기본이 켜짐인 이유는 커리큘럼이다 —
+    /// `INSERT`·`CREATE TABLE` 을 못 돌리면 SQL 트랙의 3분의 1을 가르칠 수 없다.
+    /// 격리는 클론이, 폭주는 ``maxDatabasePages`` 가 맡는다 (``SQLiteCage/WritePolicy``).
+    ///
+    /// 기본값을 바꾸는 대신 호출부마다 켜지 않은 것은 이 저장소의 원칙 때문이다 —
+    /// **검증기가 보는 것과 앱이 보는 것이 다르면 게이트는 아무것도 보장하지 못한다.**
+    /// 러너를 만드는 다섯 곳이 전부 기본값을 쓴다.
+    public var allowsWrites: Bool
+    /// 클론 파일의 페이지 상한. 기본 16,384 페이지 = 64MB(page_size 4096 기준).
+    ///
+    /// 시드가 8페이지(32KB)뿐이라 정상 레슨에는 2,000배 여유가 있고, 폭주하는
+    /// `INSERT INTO t SELECT * FROM t` 는 즉시 `SQLITE_FULL` 로 멈춘다.
+    public var maxDatabasePages: Int
     /// 워크스페이스 상위 디렉터리. 테스트가 잔여물을 세려고 주입한다.
     public var workspaceContainer: URL?
     /// 클론이 만들어질 때마다 호출된다. 실행마다 별도 클론인지 검증하는 데 쓴다.
@@ -27,6 +42,8 @@ public struct SQLRunnerConfiguration: Sendable {
         maxSQLBytes: Int = 1 << 20,
         heapLimitBytes: Int64? = nil,
         allowedPragmas: Set<String> = SQLRunnerConfiguration.defaultAllowedPragmas,
+        allowsWrites: Bool = true,
+        maxDatabasePages: Int = SQLRunnerConfiguration.defaultMaxDatabasePages,
         workspaceContainer: URL? = nil,
         cloneObserver: (@Sendable (URL) -> Void)? = nil
     ) {
@@ -35,12 +52,17 @@ public struct SQLRunnerConfiguration: Sendable {
         self.maxSQLBytes = maxSQLBytes
         self.heapLimitBytes = heapLimitBytes
         self.allowedPragmas = allowedPragmas
+        self.allowsWrites = allowsWrites
+        self.maxDatabasePages = max(16, maxDatabasePages)
         self.workspaceContainer = workspaceContainer
         self.cloneObserver = cloneObserver
     }
 
     /// 스키마를 들여다보는 데만 쓰이는 프라그마. `query_only`·`journal_mode`·`writable_schema`
     /// 처럼 상태를 바꾸는 것은 **전부** 빠져 있다 — 이 목록이 탈출 경로의 유일한 문이다.
+    /// 4096B 페이지 기준 64MB. 시드는 8페이지다.
+    public static let defaultMaxDatabasePages = 16_384
+
     public static let defaultAllowedPragmas: Set<String> = [
         "table_info", "table_xinfo", "table_list",
         "index_list", "index_info", "index_xinfo",
@@ -154,7 +176,10 @@ public struct InProcessRunner: CodeRunner {
                     ?? Int64(request.limits.memoryMegabytes) * (1 << 20),
                 maxRows: configuration.maxRows,
                 maxSQLBytes: configuration.maxSQLBytes,
-                allowedPragmas: configuration.allowedPragmas
+                allowedPragmas: configuration.allowedPragmas,
+                writePolicy: configuration.allowsWrites
+                    ? .clonedWritable(maxPages: configuration.maxDatabasePages)
+                    : .readOnly
             )
             return try await Self.executeOnDedicatedThread(
                 databasePath: databasePath,

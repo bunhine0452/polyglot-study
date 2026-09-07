@@ -10,8 +10,10 @@ macOS 14+ · Swift 6.3 / SwiftUI · MIT.
 
 ## 지금 어디까지 왔는가
 
-**정직하게 말하면: 앱이 MVP 세 트랙 70편을 읽고 코드를 쓰고 채점까지 간다. 남은 것은 배포다 —
-공증과 DMG 는 Developer ID 인증서가 있어야 시작된다.**
+**알파가 나갔다 — [v0.1.0-alpha.1](https://github.com/bunhine0452/polyglot-study/releases/tag/v0.1.0-alpha.1)**
+([받기](https://bunhine0452.github.io/polyglot-study/) · macOS 14+ · Apple Silicon). 앱이 MVP 세 트랙 70편을 읽고
+코드를 쓰고 채점까지 간다. ad-hoc 서명이라 첫 실행에 우클릭 → 열기가 필요하다 — 공증과 DMG 는
+Developer ID 인증서가 있어야 시작된다.
 
 | 영역 | 상태 |
 |---|---|

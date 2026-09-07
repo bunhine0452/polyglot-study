@@ -40,9 +40,15 @@ swift run --package-path Tools packtool verify dist/p.tar.staging
 
 ## 상태
 
-> **브랜치는 정리돼 있다.** 릴리스 배선 6건(PR #2, `06b9f7b`)과 콘텐츠 확장 34편
-> (PR #3, `13c6c90`)이 각각 CI 5게이트를 통과해 `main` 에 머지됐고 브랜치는 원격·로컬
-> 모두 지웠다. 워크트리 1개, `.git` 17MB.
+> **알파가 나갔다 — `v0.1.0-alpha.1`(2026-09-07).**
+> https://bunhine0452.github.io/polyglot-study/ 에서 받을 수 있고 GitHub Release 는
+> 프리릴리스로 걸려 있다. appcast 는 실주소에서 200 이고, 내려받은 바이트의 EdDSA 서명이
+> 검증된다(위조 서명·변조 파일은 거부되는 것까지 확인). 브랜치·워크트리 정리 완료.
+>
+> **다음 릴리스에서 반드시 할 것 — 콘텐츠를 바꿨으면 팩 `version` 을 올려라.**
+> 안 올리면 `PackLibrary.provision` 이 "같은 버전" 으로 보고 건너뛰어 앱이 옛 팩을 계속
+> 읽는다. 게이트는 소스 트리만 보므로 초록이다. 2026-09-07 에 릴리스 직전 실행 확인에서
+> 잡았다(`.oculpm/journal/20260907/Bugs/2029_bug_pack-version-not-bumped-stale-packs.md`).
 
 - **저장소 공개**: https://github.com/bunhine0452/polyglot-study
   Pages 살아 있음 — `https://bunhine0452.github.io/polyglot-study/appcast.xml` (HTTP 200).
@@ -60,6 +66,7 @@ swift run --package-path Tools packtool verify dist/p.tar.staging
   build-app 6m26s · packtool validate 4m42s · Tools 4m23s). "20~30분" 은 잡을 가르기 전 값이다.
 - 콘텐츠: **MVP 3트랙 70편**(python 24 · sql 22 · swift 24) 전부 4단계 게이트 통과.
   `TrackCatalog` 의 계획값과 팩의 실제 편수가 이제 같다. 누적 생성 비용 약 $0.30.
+  팩 버전은 **0.2.0** 이다(0.1.0 은 12편짜리 옛 팩).
 
 ## 첫 할 일
 
@@ -75,6 +82,40 @@ swift run --package-path Tools packtool verify dist/p.tar.staging
 
 게이트를 지켜보는 동안 같은 브랜치에 **push 하지 마라** — `concurrency.cancel-in-progress`
 로 자기 잡을 취소시켜 영영 완주하지 못한다.
+
+## 릴리스 절차 — 실측 (2026-09-07, v0.1.0-alpha.1)
+
+```bash
+# 0. 콘텐츠를 바꿨다면 Content/packs/*/manifest.json 의 version 을 먼저 올려라.
+# 1. 앱 조립 + 아카이브
+BUILD_NO=$(git rev-list --count HEAD)
+./App/Scripts/build-app.sh --release --version 0.1.0-alpha.2 --build "$BUILD_NO" \
+  --output App/.build/release-stage
+ditto -c -k --sequesterRsrc --keepParent App/.build/release-stage/Polyglot.app \
+  App/.build/site/Polyglot-0.1.0-alpha.2.zip
+
+# 2. appcast — **포그라운드에서** 돌려라 (아래 참고)
+App/.build/artifacts/sparkle/Sparkle/bin/generate_appcast \
+  --download-url-prefix "https://bunhine0452.github.io/polyglot-study/" \
+  --link "https://github.com/bunhine0452/polyglot-study" \
+  -o App/.build/site/appcast.xml App/.build/site
+
+# 3. 조립된 앱을 띄워 확인 — 게이트가 못 보는 자리다
+POLYGLOT_SNAPSHOT_PATH=/tmp/shot.png POLYGLOT_SNAPSHOT_DELAY=8 \
+  App/.build/release-stage/Polyglot.app/Contents/MacOS/Polyglot
+
+# 4. gh-pages 발행 (워크트리는 push 직후 remove)
+# 5. git tag -a vX.Y.Z && gh release create ... --prerelease
+```
+
+- **`generate_appcast` 는 포그라운드에서 돌려야 한다.** 분리된 백그라운드 프로세스에서는
+  키체인 승인 대화상자(`SecurityAgent`)를 못 띄워 `errSecUserCanceled(-128)` 로 실패하는데,
+  Sparkle 은 그걸 `Private key ... not found in the Keychain` 으로 찍는다 — 키는 멀쩡히 있다.
+  키체인 ACL 에서 "항상 허용" 을 누르기 전까지 **매 릴리스마다** 뜬다.
+- `release.sh` 의 기본 `--output` 은 SwiftPM 릴리스 빌드 디렉터리와 겹친다. 깨끗한
+  디렉터리를 주는 편이 낫다(`generate_appcast` 가 그 디렉터리를 통째로 훑는다).
+- `sign_update --verify <file> <sig>` 는 성공 시 **조용히 0**, 실패 시 1 과 메시지다.
+  검증기가 실제로 판별하는지 위조 서명으로 한 번 확인하고 믿어라.
 
 ## 릴리스까지 남은 것
 

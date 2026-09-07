@@ -1,0 +1,150 @@
+name: release
+
+# 태그를 밀면 앱을 굽고 서명한 appcast 와 함께 배포한다 — {#release-ci}.
+#
+# 로컬 릴리스와 이 워크플로의 유일한 차이는 **서명 키를 어디서 꺼내는가** 다.
+# 로컬은 로그인 키체인, 여기는 저장소 시크릿 `SPARKLE_ED_PRIVATE_KEY` 를 stdin 으로 받는다
+# (`release.sh --ed-key-file -`). 키가 파일로도 인자로도 로그로도 남지 않는다.
+#
+# 시크릿의 내용은 `generate_keys -x <file>` 이 내보내는 것 그대로다 — **32바이트 시드의
+# base64**(44자)이지 64바이트 키쌍이 아니다(실측 2026-09-07). 형식이 틀리면
+# `Failed to decode private and public keys from secret data` 로 죽는다.
+#
+# 키체인 경로가 CI 에서 안 되는 이유는 실측이다(2026-09-07): 분리된 프로세스에서는
+# 키체인 승인 대화상자(SecurityAgent)를 띄울 수 없어 errSecUserCanceled(-128) 로
+# 실패하는데, Sparkle 은 그것을 "Private key not found in the Keychain" 으로 찍는다.
+# 헤드리스 러너는 언제나 그 상태다.
+#
+# **공증은 아직 없다.** Developer ID Application 인증서가 없어 ad-hoc 서명이고,
+# 받는 사람은 Gatekeeper 를 한 번 우회해야 한다(랜딩 페이지 안내 참고).
+# 인증서가 생기면 3-4 단계 사이에 notarytool 잡을 끼운다 — {#notarize-staple-dmg}.
+
+"on":
+  push:
+    tags: ["v*"]
+
+# 같은 태그를 다시 밀어도 두 릴리스가 gh-pages 를 동시에 밀지 않게 한다.
+# cancel-in-progress 는 **쓰지 않는다** — 릴리스는 중간에 끊기면 gh-pages 와
+# GitHub Release 가 어긋난 채로 남는다.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: 굽고 배포
+    # macos-26 이어야 한다 — macos-14 는 Swift 5.10, macos-15 는 6.1.2 라 tools 6.2 를 못 받는다.
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+      - name: 체크아웃 (전체 이력)
+        uses: actions/checkout@v4
+        with:
+          # CFBundleVersion 을 커밋 수에서 뽑으므로 얕은 클론이면 안 된다.
+          fetch-depth: 0
+
+      - name: 버전 뽑기
+        id: version
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          VERSION="${TAG#v}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          # 프리릴리스 판정은 semver 의 하이픈이다 — 0.1.0-alpha.1 은 프리, 0.1.0 은 정식.
+          case "$VERSION" in
+            *-*) echo "prerelease=true"  >> "$GITHUB_OUTPUT" ;;
+            *)   echo "prerelease=false" >> "$GITHUB_OUTPUT" ;;
+          esac
+          echo "==> $TAG → $VERSION"
+
+      - name: 툴체인 확인
+        run: |
+          swift --version
+          ./scripts/ci-assert-toolchain.sh
+
+      - name: Sparkle 도구 준비
+        run: swift package resolve --package-path App
+
+      - name: gh-pages 를 산출물 디렉터리로 받는다
+        # generate_appcast 는 이 디렉터리를 통째로 훑어 appcast 를 만든다. 기존 아카이브가
+        # 함께 있어야 옛 버전 항목이 피드에서 사라지지 않는다.
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+
+      - name: 릴리스 굽기 (앱 → zip → 서명된 appcast)
+        env:
+          ED_KEY: ${{ secrets.SPARKLE_ED_PRIVATE_KEY }}
+        run: |
+          if [ -z "$ED_KEY" ]; then
+            echo "::error::시크릿 SPARKLE_ED_PRIVATE_KEY 가 없다. 이게 없으면 서명 없는 appcast 가 나가고" \
+                 "이미 설치된 앱이 업데이트를 거부한다."
+            exit 1
+          fi
+          # 키는 stdin 으로만 흘린다 — 인자·파일·로그 어디에도 남기지 않는다.
+          printf '%s' "$ED_KEY" | ./App/Scripts/release.sh \
+            --version "${{ steps.version.outputs.version }}" \
+            --output "$GITHUB_WORKSPACE/site" \
+            --link "https://github.com/${{ github.repository }}" \
+            --ed-key-file -
+
+      - name: 랜딩 페이지 렌더
+        run: |
+          ./App/Scripts/render-page.sh \
+            --version "${{ steps.version.outputs.version }}" \
+            --archive "site/Polyglot-${{ steps.version.outputs.version }}.zip" \
+            --out site/index.html
+
+      - name: 산출물 확인
+        # release.sh 가 이미 서명과 length 를 단언한다. 여기서는 **배포되는 트리**가
+        # 기대한 모양인지만 본다 — old_updates/ 가 섞여 나가면 옛 아카이브가 두 벌 올라간다.
+        run: |
+          set -e
+          rm -rf site/old_updates
+          test -f "site/Polyglot-${{ steps.version.outputs.version }}.zip"
+          test -f site/appcast.xml
+          test -f site/index.html
+          grep -q "sparkle:edSignature=\"[^\"]\+\"" site/appcast.xml \
+            || { echo "::error::appcast 에 서명이 없다"; exit 1; }
+          echo "==> 배포될 파일"
+          ls -1 site
+
+      - name: gh-pages 발행
+        working-directory: site
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "바뀐 것이 없다 — 발행을 건너뛴다."
+            exit 0
+          fi
+          git commit -m "release: ${{ steps.version.outputs.version }} — 아카이브와 appcast"
+          git push origin gh-pages
+
+      - name: GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          NOTES="$(mktemp)"
+          {
+            echo "**Polyglot Study ${{ steps.version.outputs.version }}**"
+            echo
+            echo "받기: https://bunhine0452.github.io/polyglot-study/"
+            echo
+            echo "macOS 14 이상 · Apple Silicon. 이 빌드는 **ad-hoc 서명**이라 첫 실행에"
+            echo "Gatekeeper 를 한 번 우회해야 합니다 — 랜딩 페이지의 \"처음 열 때\" 를 보십시오."
+            echo "(macOS 15 이상에서는 우클릭 → 열기가 통하지 않습니다.)"
+            echo
+            echo "자동 업데이트는 EdDSA 서명으로 검증되며 이 문제와 무관합니다."
+          } > "$NOTES"
+          FLAGS=""
+          if [ "${{ steps.version.outputs.prerelease }}" = "true" ]; then FLAGS="--prerelease"; fi
+          gh release create "${{ steps.version.outputs.tag }}" \
+            --title "Polyglot Study ${{ steps.version.outputs.version }}" \
+            --notes-file "$NOTES" $FLAGS \
+            "site/Polyglot-${{ steps.version.outputs.version }}.zip"

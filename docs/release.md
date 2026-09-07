@@ -119,7 +119,8 @@ Sparkle 은 SPM 바이너리 타깃이라 `swift build` 가 링크만 하고 번
 
 ## ad-hoc 서명과 Sparkle — 실측
 
-이 저장소에는 Developer ID 인증서가 없어서 `build-app.sh` 가 ad-hoc(`-`) 으로 서명한다.
+`build-app.sh` 는 키체인에 **Developer ID Application** 신원이 없으면 ad-hoc(`-`) 으로
+떨어진다. 알파 v0.1.0-alpha.1 이 그렇게 나갔고, 아래는 그때 확인한 사실이다.
 "Sparkle 이 코드 서명 동일성을 검사하니 ad-hoc 으로는 설치까지 못 간다" 는 흔한 오해다.
 `Sparkle/SUUpdateValidator.m` 의 규칙은 이렇다.
 
@@ -132,6 +133,107 @@ Sparkle 은 SPM 바이너리 타깃이라 `swift build` 가 링크만 하고 번
 
 그래서 ad-hoc + EdDSA 조합으로 설치까지 간다. Developer ID 가 필요한 것은 Sparkle 이
 아니라 **Gatekeeper/공증**이다 — 남의 맥에서 앱이 처음 열릴 때. `Codesign/notarize.sh` 참고.
+
+## 서명과 공증 — {#notarize-staple-dmg}
+
+Apple Developer Program 가입은 끝났고(2026-09-07) Developer ID Application 인증서도
+발급했다. `build-app.sh` 는 키체인에서 그 신원을 **이름으로** 골라 서명한다 — 목록의
+첫 줄을 집지 않는 이유는 Xcode 로 로그인하면 함께 생기는 `Apple Development:` 가 배포에
+쓸 수 없는 신원이고, 그걸로 서명하면 실패가 한참 뒤 공증 단계에서야 드러나기 때문이다.
+
+### 순서가 전부다 — {#staple-before-zip}
+
+```
+build-app.sh(서명) → notarize.sh(공증·스테이플) → ditto zip → generate_appcast
+```
+
+`stapler` 는 **zip 에 스테이플하지 못한다.** 티켓은 `.app` 번들 안으로 들어간다. 그래서
+공증이 아카이브 뒤로 밀리면 appcast 가 광고하는 `edSignature`·`length` 가 실제 배포
+파일과 어긋나고, 업데이트는 "받아지긴 하는데 설치가 안 되는" 형태로 조용히 깨진다.
+`release.sh --notarize` 가 이 순서를 강제한다.
+
+공증은 **옵트인**이다. `verify-sparkle.sh` 가 검증용 릴리스를 `release.sh` 로 굽는데,
+공증을 기본값으로 두면 로컬 검증 한 번마다 애플 서버 왕복 몇 분과 자격증명이 필요해진다.
+태그를 미는 release 워크플로는 항상 `--notarize` 를 넘긴다.
+
+### 자격증명 — {#notary-credentials}
+
+애플 ID·앱 암호·API 키는 스크립트·인자·로그 어디에도 리터럴로 남지 않는다.
+
+**로컬** — notarytool 키체인 프로파일을 한 번만 저장하고 이후로는 이름만 부른다:
+
+```
+xcrun notarytool store-credentials "oculpm-notary" \
+  --apple-id "<Apple ID>" --team-id "<TEAM_ID>" --password "<앱 암호>"
+```
+
+앱 암호는 appleid.apple.com 에서 만드는 app-specific password 다(계정 비밀번호가 아니다).
+셸 히스토리에 남기기 싫으면 인자 없이 돌려 대화형으로 넣어라.
+
+**CI** — Apple ID + 앱 전용 암호를 notarytool 에 직접 넘긴다. 헤드리스 러너에서 막히는
+것은 키체인 **프로파일** 경로뿐이다: 분리된 프로세스가 승인 대화상자를 못 띄워
+`errSecUserCanceled`(-128) 로 실패한다(EdDSA 키에서 부딪힌 그 벽과 같다). 자격증명을
+인자로 주는 경로는 키체인을 아예 타지 않아 멀쩡히 돈다. 저장소 시크릿 다섯:
+
+| 시크릿 | 내용 |
+| --- | --- |
+| `APPLE_CERTIFICATE` | Developer ID Application 인증서 `.p12` 의 base64 |
+| `APPLE_CERTIFICATE_PASSWORD` | 그 `.p12` 를 내보낼 때 건 암호 |
+| `APPLE_ID` | 공증에 쓸 Apple ID (이메일) |
+| `APPLE_PASSWORD` | 그 계정의 **앱 전용 암호** (계정 비밀번호가 아니다) |
+| `APPLE_TEAM_ID` | 10자 팀 식별자 |
+
+`--password` 가 인자로 들어가므로 같은 머신의 `ps` 에 잠깐 보인다. 러너는 이 잡 전용으로
+떴다 사라지므로 감수한다 — **로컬에서는 이 경로 대신 키체인 프로파일을 쓴다.**
+`notarize.sh` 는 App Store Connect API 키 경로(`NOTARY_API_KEY_P8_BASE64` ·
+`NOTARY_API_KEY_ID` · `NOTARY_API_ISSUER_ID`)도 그대로 지원한다 — 셋 중 먼저 발견한 것을 쓴다.
+
+### .p12 는 인증서와 개인 키를 **둘 다** 담아야 한다
+
+키체인 접근에서 인증서와 개인 키는 형제 행으로 보인다. **"개인 키" 행을 내보내면 키만
+담긴 `.p12`** 가 나오고, `security import` 는 성공하는데 `find-identity` 에 신원이 안 잡혀
+빌드가 조용히 ad-hoc 으로 떨어진다(실측 2026-09-07). 카테고리를 **"내 인증서"** 로 두고
+인증서 행을 내보내거나, 두 행을 함께 선택해 내보낸다.
+
+내보낸 파일이 맞는지는 크기와 구조로 판정한다 — 제대로 된 것은 3KB 안팎이고
+**`pkcs7-encryptedData` 컨테이너를 하나** 갖는다(인증서가 그 안에 암호화돼 들어간다).
+`certBag` OID 를 찾는 검사는 통하지 않는다. 암호화 영역 안이라 평문에 안 보인다.
+
+```
+openssl asn1parse -inform DER -in cert.p12 | head    # 구조
+xxd -p cert.p12 | tr -d '\n' | grep -c 2a864886f70d010706   # encryptedData = 1 이어야 한다
+```
+
+### base64 실패는 조용하다
+
+`base64 -i <경로> | gh secret set <이름>` 에서 경로에 공백이 있는데 따옴표를 빼면 `base64` 가
+실패하고 **빈 표준 출력**을 흘린다. `gh secret set` 은 그것을 받아 "✓ Set" 을 찍는다 — 빈
+시크릿이 성공으로 보인다(실측 2026-09-07). 파이프 전에 길이를 먼저 확인한다:
+
+```
+base64 -i "$HOME/Desktop/cert.p12" | wc -c    # 4000 이상
+```
+
+`~` 는 따옴표 안에서 확장되지 않으므로 `$HOME` 을 쓴다.
+
+워크플로는 이것을 러너 전용 임시 키체인에 넣고, `set-key-partition-list` 로 승인
+대화상자를 막고, 잡이 끝나면 (`if: always()`) 지운다.
+
+### 검증
+
+`notarize.sh` 는 제출 전에 세 가지를 먼저 막는다 — ad-hoc 번들(Team ID 없음), ad-hoc
+전용 `disable-library-validation` 예외 잔존, 보안 타임스탬프 누락. 셋 다 올려 봐야 몇 분
+뒤 Invalid 로 돌아온다.
+
+제출 뒤에는 `stapler validate` · `spctl --assess` · `codesign --verify --deep --strict`
+를 돌린다. 릴리스 워크플로는 한 발 더 나가 **배포되는 zip 을 실제로 풀어** 같은 검사를
+한다 — 랜딩 페이지에 "그냥 열면 됩니다" 라고 적어 놓고 정작 Gatekeeper 가 막는 사태를
+막는 게이트다.
+
+`spctl` 출력으로 상태를 읽는다:
+
+- `rejected` / `source=Unnotarized Developer ID` — 서명은 됐고 공증 전
+- `accepted` / `source=Notarized Developer ID` — 공증·스테이플 완료
 
 ## 아직 안 닫힌 것
 
@@ -146,7 +248,12 @@ Sparkle 은 SPM 바이너리 타깃이라 `swift build` 가 링크만 하고 번
   주소를 실제로 확보했다면 `Info.plist` 의 `SUFeedURL` 을 그 주소로 바꾸고
   `release.sh` 의 `UNVERIFIED_FEED_HOSTS` 에서 호스트를 지워라. 검증 목적이면
   `--feed-url` 로 덮어쓰거나 `POLYGLOT_FEED_HOST_VERIFIED=1` 을 줘라.
-- **Developer ID 인증서가 없다.** 배포본은 ad-hoc 서명이라 다른 맥에서 Gatekeeper 에
-  막힌다. 업데이트 경로 자체와는 별개 문제다.
+- **공증이 아직 한 번도 실행되지 않았다.** 스크립트·CI 배선과 제출 전 검사는 끝났고
+  로컬에서 Developer ID 서명까지 확인했지만(Team ID 가 번들에 박히고 보안 타임스탬프가
+  붙는 것), 실제 제출은 자격증명이 들어와야 한다. 위 표의 시크릿과 로컬
+  `store-credentials` 가 그 조건이다. **이미 나간 v0.1.0-alpha.1 은 ad-hoc 그대로다** —
+  공증본은 다음 태그부터다.
+- **DMG 를 아직 만들지 않는다** — {#dmg-notarize}. 배포는 zip 하나이고 Sparkle 도 zip 을
+  쓴다. DMG 는 사람이 내려받는 경로용이라 별개 항목으로 남아 있다.
 - **키체인 승인**을 아직 아무도 누르지 않았다. 배포용 키로 appcast 를 처음 구울 때
   대화상자가 뜬다.

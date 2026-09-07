@@ -22,6 +22,11 @@
 #   어긋나면 업데이트는 "받아지긴 하는데 설치가 안 되는" 형태로 조용히 깨진다.
 #   `--feed-url` 은 로컬 검증(Scripts/verify-sparkle.sh)에서만 쓴다.
 #
+# 공증 — {#notarize-staple-dmg}:
+#   `--notarize` 를 주면 앱 조립과 아카이브 **사이**에서 `Codesign/notarize.sh` 가 돈다.
+#   그 자리여야 하는 이유는 그 스크립트 헤더의 {#staple-before-zip} 에 적혀 있다.
+#   기본값은 끔 — verify-sparkle.sh 의 로컬 검증을 애플 서버 왕복에 묶지 않는다.
+#
 # 사용법:
 #   Scripts/release.sh --version 0.2.0
 #   Scripts/release.sh --version 0.2.0 --build 42 --output /tmp/site
@@ -40,6 +45,7 @@ OVERRIDE_PUBLIC_KEY=""
 FEED_URL_OVERRIDE=""
 PRODUCT_LINK=""
 ED_KEY_FILE=""
+NOTARIZE=0
 
 while [ $# -gt 0 ]; do
 	case "$1" in
@@ -71,6 +77,9 @@ while [ $# -gt 0 ]; do
 		OVERRIDE_PUBLIC_KEY="${2:-}"
 		shift
 		;;
+	--notarize)
+		NOTARIZE=1
+		;;
 	*)
 		echo "알 수 없는 인자: $1" >&2
 		exit 2
@@ -80,7 +89,7 @@ while [ $# -gt 0 ]; do
 done
 
 if [ -z "$SHORT_VERSION" ]; then
-	echo "사용법: $0 --version <X.Y.Z> [--build <N>] [--output <DIR>] [--feed-url <URL>]" >&2
+	echo "사용법: $0 --version <X.Y.Z> [--build <N>] [--output <DIR>] [--feed-url <URL>] [--notarize]" >&2
 	exit 2
 fi
 
@@ -161,6 +170,21 @@ if [ -z "$PUBLIC_KEY" ]; then
 	exit 1
 fi
 echo "    공개키    : $PUBLIC_KEY"
+
+# ── 1.5 공증·스테이플 — {#notarize-staple-dmg} ───────────────────────────
+#
+# **zip 을 만들기 전에** 해야 한다. `stapler` 는 zip 에 스테이플하지 못하고 티켓은
+# .app 안으로 들어가므로, 공증이 아카이브 뒤로 밀리면 appcast 가 광고하는
+# edSignature·length 가 실제 배포 파일과 어긋난다 — {#staple-before-zip}.
+#
+# 옵트인인 이유: `Scripts/verify-sparkle.sh` 가 이 스크립트로 검증용 릴리스를 굽는다.
+# 공증을 기본값으로 두면 로컬 검증 한 번마다 애플 서버 왕복 몇 분과 자격증명이 필요해진다.
+# 실제 배포(태그 푸시)에서는 release 워크플로가 항상 --notarize 를 넘긴다.
+if [ "$NOTARIZE" -eq 1 ]; then
+	"$APP_DIR/Codesign/notarize.sh" "$APP_BUNDLE" </dev/null
+else
+	echo "==> 공증 건너뜀 (--notarize 없음) — 이 산출물은 배포용이 아니다"
+fi
 
 # ── 2. 아카이브 ──────────────────────────────────────────────────────────
 #

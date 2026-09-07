@@ -160,6 +160,24 @@ struct BlockGate: Sendable {
                     RunRequest(
                         files: [SourceFile(path: "main.swift", contents: code)],
                         entryPoint: "main.swift", limits: limits)))
+        case .cpp:
+            // 예제는 `main` 을 가진 완결된 프로그램이다 — 채점 하네스와 달리 여기서는
+            // 사용자 코드가 진입점을 들고 있다.
+            let runner = SubprocessRunner(
+                program: CppProgram(), configuration: subprocessConfiguration())
+            return await RunTranscript.collect(
+                runner.run(
+                    RunRequest(
+                        files: [SourceFile(path: "main.cpp", contents: code)],
+                        entryPoint: "main.cpp", limits: limits)))
+        case .rust:
+            let runner = SubprocessRunner(
+                program: RustProgram(), configuration: subprocessConfiguration())
+            return await RunTranscript.collect(
+                runner.run(
+                    RunRequest(
+                        files: [SourceFile(path: "main.rs", contents: code)],
+                        entryPoint: "main.rs", limits: limits)))
         case .sql:
             let runner = InProcessRunner()
             var resources: [String: URL] = [:]
@@ -194,6 +212,8 @@ struct BlockGate: Sendable {
         case .python: await gradePython(submission: submission, tests: tests)
         case .swift: await gradeSwift(submission: submission, tests: tests)
         case .sql: await gradeSQL(submission: submission, reference: tests)
+        case .cpp: await gradeCpp(submission: submission, tests: tests)
+        case .rust: await gradeRust(submission: submission, tests: tests)
         default:
             GradeOutcome(passed: false, evidence: "채점기가 없는 언어: \(language.rawValue)")
         }
@@ -204,6 +224,36 @@ struct BlockGate: Sendable {
         do {
             let grading = try await grader.grade(
                 solution: [SourceFile(path: "solution.py", contents: submission)],
+                tests: tests,
+                limits: limits)
+            return GradeOutcome(passed: grading.passed, evidence: describe(grading.result))
+        } catch {
+            return GradeOutcome(passed: false, evidence: "채점 실패: \(error)")
+        }
+    }
+
+    private func gradeCpp(submission: String, tests: String) async -> GradeOutcome {
+        // 제출을 **`solution.h` 로 놓는다.** `CppProgram` 은 `.h` 를 번역 단위로 세지
+        // 않으므로(`sourceExtensions` 는 cpp/cc/cxx), 테스트가 `#include "solution.h"` 로
+        // 끌어와도 중복 정의가 나지 않는다. Rust 의 `include!` 와 같은 구조이고,
+        // 저자는 파일 하나만 쓰면 된다.
+        let grader = CppAssertGrader(runnerConfiguration: subprocessConfiguration())
+        do {
+            let grading = try await grader.grade(
+                solution: [SourceFile(path: "solution.h", contents: submission)],
+                tests: tests,
+                limits: limits)
+            return GradeOutcome(passed: grading.passed, evidence: describe(grading.result))
+        } catch {
+            return GradeOutcome(passed: false, evidence: "채점 실패: \(error)")
+        }
+    }
+
+    private func gradeRust(submission: String, tests: String) async -> GradeOutcome {
+        let grader = RustTestGrader(runnerConfiguration: subprocessConfiguration())
+        do {
+            let grading = try await grader.grade(
+                solution: [SourceFile(path: "solution.rs", contents: submission)],
                 tests: tests,
                 limits: limits)
             return GradeOutcome(passed: grading.passed, evidence: describe(grading.result))

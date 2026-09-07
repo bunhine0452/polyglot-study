@@ -147,6 +147,10 @@ public enum RepairPrompt {
         case .python: "`raise NotImplementedError` 한 줄이면 된다"
         case .sql: "채워야 할 자리를 주석으로 표시한 골격 질의만 남겨라"
         case .swift: "`fatalError(\"여기를 구현해라\")` 한 줄이면 된다"
+        // 둘 다 컴파일은 되어야 한다 — starter 가 컴파일조차 안 되면 학습자는 "무엇을
+        // 채워야 하는가" 대신 "왜 안 되는가" 를 먼저 만난다.
+        case .cpp: "본문을 `throw std::runtime_error(\"여기를 구현해라\");` 한 줄로 두고 시그니처는 남겨라"
+        case .rust: "본문을 `unimplemented!(\"여기를 구현해라\")` 한 줄로 두고 시그니처는 남겨라"
         }
     }
 }

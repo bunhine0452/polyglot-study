@@ -30,6 +30,8 @@ extension LanguageID {
     public static let python = LanguageID("python")
     public static let sql = LanguageID("sql")
     public static let swift = LanguageID("swift")
+    public static let cpp = LanguageID("cpp")
+    public static let rust = LanguageID("rust")
 }
 
 /// 레슨 하나를 **팩까지 포함해** 가리키는 참조.

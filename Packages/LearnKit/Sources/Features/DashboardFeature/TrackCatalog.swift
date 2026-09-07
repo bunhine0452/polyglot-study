@@ -30,16 +30,19 @@ public struct TrackDescriptor: Identifiable, Hashable, Sendable {
 /// 나열하면 사용자가 같은 표를 두 번 읽어야 한다. 대시보드는 여기에 **활동 순서**를
 /// 한 겹 더 얹는다(`DashboardModel.rows` 참고).
 ///
-/// - Note: `LanguageID` 에는 python·sql·swift 세 개만 상수로 있다(`LearnCore.Identifiers`).
-///   나머지 7개는 여기서 rawValue 로 만든다. 철자는 `OnboardingModel.trackName(for:)` 의
-///   `switch` 와 정확히 같아야 한다.
+/// - Note: `LanguageID` 에 상수가 있는 것은 **실행기와 채점기가 있는 언어**뿐이다
+///   (`LearnCore.Identifiers`: python·sql·swift·cpp·rust). 나머지는 여기서 rawValue 로
+///   만든다 — 상수를 먼저 만들면 "태울 수 있다" 는 착각을 부른다. 철자는
+///   `OnboardingModel.trackName(for:)` 의 `switch` 와 정확히 같아야 한다.
+///   `hasContent` 는 팩이 실릴 때까지 false 다. 앱은 콘텐츠가 있는 트랙의 이 값과
+///   레슨 총수를 팩에서 다시 읽는다(`Composition.catalog`).
 public enum TrackCatalog {
     public static let all: [TrackDescriptor] = [
         TrackDescriptor(languageID: .python, name: "Python", lessonTotal: 24, hasContent: true),
         TrackDescriptor(languageID: .sql, name: "SQL", lessonTotal: 22, hasContent: true),
         TrackDescriptor(languageID: .swift, name: "Swift", lessonTotal: 24, hasContent: true),
-        TrackDescriptor(languageID: LanguageID("rust"), name: "Rust", lessonTotal: 26, hasContent: false),
-        TrackDescriptor(languageID: LanguageID("cpp"), name: "C++", lessonTotal: 26, hasContent: false),
+        TrackDescriptor(languageID: .rust, name: "Rust", lessonTotal: 26, hasContent: false),
+        TrackDescriptor(languageID: .cpp, name: "C++", lessonTotal: 26, hasContent: false),
         TrackDescriptor(languageID: LanguageID("go"), name: "Go", lessonTotal: 20, hasContent: false),
         TrackDescriptor(languageID: LanguageID("java"), name: "Java", lessonTotal: 24, hasContent: false),
         TrackDescriptor(languageID: LanguageID("nextjs"), name: "Next.js", lessonTotal: 18, hasContent: false),

@@ -267,7 +267,10 @@ print(f"{name} has {count} tracks")
 }
 ```
 
-- `language` 는 `python | sql | swift` (MVP 3종).
+- `language` 는 `python | sql | swift | cpp | rust`.
+  이 목록은 `LessonParser.supportedLanguages` 가 정본이고, **거기에 언어를 더하려면
+  `RunnerKit` 에 실행기와 채점기가 먼저 있어야 한다** — 실행 게이트를 세울 수 없으면
+  과제가 통과도 실패도 아닌 채로 지나가 검증되지 않은 콘텐츠가 팩에 들어간다.
 - `expected` 는 `expected/` 아래여야 한다.
 
 #### `@Blank(id:, language:)` + `@Answer(slot:)`

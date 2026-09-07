@@ -219,9 +219,14 @@ struct ExecutionStage: Sendable {
         case .sql:
             // 인프로세스 러너다. 외부 바이너리가 하나도 필요 없다 — `sqlite3` CLI 조차.
             return .ready
-        case .python, .swift:
+        case .python, .swift, .cpp, .rust:
             guard launcher != nil else { return .unavailable(LauncherDiscovery.hint) }
-            let spec = language == .python ? ToolchainCatalog.python : ToolchainCatalog.swift
+            let spec: ToolSpec = switch language {
+            case .python: ToolchainCatalog.python
+            case .swift: ToolchainCatalog.swift
+            case .cpp: ToolchainCatalog.cpp
+            default: ToolchainCatalog.rust
+            }
             switch await LanguageToolchain.shared.availability(for: spec) {
             case .ready:
                 return .ready

@@ -67,13 +67,20 @@ struct ExecutionGateTests {
         #expect(FileManager.default.fileExists(atPath: root))
     }
 
-    @Test("MVP 3종 밖의 언어는 태우지 않는다")
+    @Test("실행기가 없는 언어는 태우지 않는다")
     func unknownLanguageIsUnavailable() async {
-        guard case .unavailable = await ExecutionStage.readiness(
-            for: LanguageID("rust"), launcher: URL(fileURLWithPath: "/bin/echo"))
-        else {
-            Issue.record("rust 를 태울 수 있다고 한다")
-            return
+        // 예전에는 `rust` 가 이 자리의 예시였다. 2026-09-07 에 Rust·C++ 실행기와 채점기가
+        // 생기면서 실제로 태울 수 있게 됐으므로, 아직 백엔드가 없는 언어로 바꾼다.
+        // 이 테스트가 지키는 것은 "특정 언어" 가 아니라 **모르는 언어를 조용히 통과시키지
+        // 않는다** 는 성질이다 — 통과도 실패도 아닌 채로 지나가면 검증되지 않은 콘텐츠가
+        // 팩에 들어간다.
+        for language in ["go", "java", "typescript", "assembly"] {
+            guard case .unavailable = await ExecutionStage.readiness(
+                for: LanguageID(language), launcher: URL(fileURLWithPath: "/bin/echo"))
+            else {
+                Issue.record("\(language) 를 태울 수 있다고 한다")
+                return
+            }
         }
     }
 

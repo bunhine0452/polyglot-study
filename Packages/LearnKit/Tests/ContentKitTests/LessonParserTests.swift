@@ -136,12 +136,16 @@ struct LessonParserTests {
 
     @Test("모르는 언어 토큰은 throw")
     func unknownLanguageThrows() {
+        // 예전에는 `rust` 가 이 자리의 예시였다. 2026-09-07 에 Rust 실행기·채점기가 생기면서
+        // 실제로 지원 언어가 됐으므로, 아직 백엔드가 없는 언어로 바꾼다. 허용 목록은
+        // `LessonParser.supportedLanguages` 에서 파생시켜 여기에 두 번 적지 않는다 —
+        // 손으로 적으면 언어를 더할 때마다 이 줄이 낡는다.
         let broken = """
-            @Example(id: run-it, language: rust, expected: expected/run-it.txt) {
+            @Example(id: run-it, language: haskell, expected: expected/run-it.txt) {
             본문
 
-            ```rust
-            fn main() {}
+            ```haskell
+            main = putStrLn "hi"
             ```
             }
             """
@@ -149,8 +153,8 @@ struct LessonParserTests {
         #expect(
             error?.reason
                 == .unknownArgumentToken(
-                    directive: "Example", argument: "language", value: "rust",
-                    allowed: ["python", "sql", "swift"]))
+                    directive: "Example", argument: "language", value: "haskell",
+                    allowed: LessonParser.supportedLanguages.map(\.rawValue)))
     }
 
     @Test("에러 메시지에 경로와 line:column 이 붙는다")

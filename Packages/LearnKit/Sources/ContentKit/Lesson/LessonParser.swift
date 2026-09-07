@@ -7,9 +7,14 @@ internal import Markdown
 /// 아니라서 nonisolated 코어와 UI 가 값으로 들고 다닐 수 없다. 그래서 파싱 결과는 전부
 /// 문자열·정수·자체 위치 타입으로 옮겨 담고, 산문은 마크다운 **소스**로 되돌려 저장한다.
 public enum LessonParser {
-    /// 실행 트랙으로 인정하는 언어. MVP 3종. 팩의 `languages` 와는 별개로,
-    /// 파서가 아는 언어만 디렉티브 인자에 쓸 수 있다.
-    public static let supportedLanguages: [LanguageID] = [.python, .sql, .swift]
+    /// 실행 트랙으로 인정하는 언어. 팩의 `languages` 와는 별개로, 파서가 아는 언어만
+    /// 디렉티브 인자에 쓸 수 있다.
+    ///
+    /// **여기에 언어를 더하기 전에 `RunnerKit` 에 실행기와 채점기가 있어야 한다.**
+    /// 이 목록은 "레슨을 쓸 수 있다" 는 뜻인데, 실행 게이트를 세울 수 없으면 검증되지
+    /// 않은 콘텐츠가 팩에 들어간다. `packtool validate` 의 실행 단계가 언어를 모르면
+    /// 과제는 통과도 실패도 아닌 채로 지나간다 — 그게 이 목록이 좁은 이유다.
+    public static let supportedLanguages: [LanguageID] = [.python, .sql, .swift, .cpp, .rust]
 
     /// 레슨 본문을 파싱한다.
     ///

@@ -219,7 +219,9 @@ struct LessonSerializerTests {
         #expect(!markdown.contains("   \n"))
     }
 
-    @Test("세 언어 모두 여섯 블록으로 구워진다")
+    /// `allCases` 를 도므로 새 트랙을 더하면 자동으로 여기 들어온다 — 이름에 개수를
+    /// 박지 않는 이유다(예전에는 "세 언어" 였다).
+    @Test("모든 트랙 언어가 여섯 블록으로 구워진다")
     func allLanguages() throws {
         for language in LessonLanguage.allCases {
             var draft = LessonFixtures.draft()

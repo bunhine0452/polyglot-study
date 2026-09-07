@@ -24,55 +24,45 @@ jobs:
   #
   # 타임아웃만 올리지 않고 가른 이유는 신호다. 한 잡이면 어느 쪽이 느린지·어느 쪽이
   # 깨졌는지 로그를 뒤져야 알지만, 갈라 두면 체크 이름이 바로 말해 준다.
-  # ── 임시 진단 (2026-09-07) ────────────────────────────────────────────────
+  # ── 게이트 1/4 — RunnerKit (프로세스를 실제로 띄우는 스위트) ────────────────
   #
-  # LearnKit 스위트가 러너에서 55분 30초 동안 로그 한 줄 없이 멈췄다가 60분
-  # 타임아웃에 잘렸다. 빌드는 4.7분이었고 테스트 시작 3.2초 만에 순수 계산 스위트
-  # 8개가 통과한 뒤 완전히 조용해졌다 — 느린 게 아니라 **매달린 것**이다.
-  # 끝난 8개는 전부 프로세스를 안 띄우는 스위트다.
+  # **직렬로 돌린다.** 병렬이면 러너에서 물린다 — 실측(2026-09-07):
+  #   병렬        25분 상한 초과, 로그 19분간 침묵, 34개 스위트 중 0개 종료
+  #   --no-parallel  8분 47초 통과
+  # 같은 코드·같은 러너다. 특정 테스트가 매달리는 게 아니라 동시에 수십 개가
+  # 로그인 셸(`zsh -lic`)·sandbox-exec·swiftc 를 띄우면서 물린다. RLIMIT_NPROC 이
+  # 프로세스 트리가 아니라 uid 전체를 센다는 실측(HANDOFF.md)과 맞물리는 자리다.
   #
-  # 후보가 셋이라 한 번의 push 로 가른다. 각 잡의 상한을 짧게 잡아 매달리면 빨리
-  # 죽게 한다 — 어느 잡이 상한에 걸리는지가 곧 답이다.
-  # 확정되면 이 셋을 지우고 원래 잡 하나로 되돌린다.
-  probe-lsp:
-    name: 진단 — LSPKitTests
+  # 회피가 아니라 이 스위트에 맞는 실행 방식이다 — 사용자 코드를 가두는 우리를
+  # 검사하는 테스트라 하나씩 돌리는 게 맞다. 나머지 잡은 병렬 그대로다.
+  swift-test-runnerkit:
+    name: swift test (RunnerKit · 직렬)
     runs-on: macos-26
-    timeout-minutes: 12
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - name: 툴체인 확인
         run: scripts/ci-assert-toolchain.sh
-      - run: swift test --package-path Packages/LearnKit --filter LSPKitTests
-
-  probe-runner:
-    name: 진단 — RunnerKitTests
-    runs-on: macos-26
-    timeout-minutes: 25
-    steps:
-      - uses: actions/checkout@v4
-      - name: 툴체인 확인
-        run: scripts/ci-assert-toolchain.sh
-      # **직렬로** 돌린다. 병렬이면 프로세스를 기다리는 테스트가 물릴 때 동시성 풀이
-      # 고갈돼 순수 테스트까지 뒤에 밀리고, 로그만 봐서는 누가 범인인지 알 수 없다.
-      # 직렬이면 "시작했는데 끝나지 않은 테스트" 가 정확히 하나로 나온다.
-      # Swift Testing 의 .timeLimit 은 여기서 못 쓴다 — 그건 Task 취소에 기대는데
-      # 블로킹 syscall(waitpid·read)에 갇힌 스레드는 취소로 깨지 않는다.
       - run: swift test --package-path Packages/LearnKit --filter RunnerKitTests --no-parallel
 
-  probe-rest:
-    name: 진단 — 나머지 (LSPKit·RunnerKit 제외)
+  # ── 게이트 2/4 — LearnKit 나머지 (병렬) ────────────────────────────────────
+  #
+  # RunnerKit 만 떼어낸 이유는 신호다. 한 잡이면 어느 쪽이 느린지·깨졌는지 로그를
+  # 뒤져야 알지만, 갈라 두면 체크 이름이 바로 말해 준다.
+  swift-test-learnkit:
+    name: swift test (LearnKit)
     runs-on: macos-26
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - name: 툴체인 확인
         run: scripts/ci-assert-toolchain.sh
-      - run: swift test --package-path Packages/LearnKit --skip LSPKitTests --skip RunnerKitTests
+      - run: swift test --package-path Packages/LearnKit --skip RunnerKitTests
 
   swift-test-tools:
     name: swift test (Tools)
     runs-on: macos-26
-    timeout-minutes: 60
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - name: 툴체인 확인

@@ -24,15 +24,45 @@ jobs:
   #
   # 타임아웃만 올리지 않고 가른 이유는 신호다. 한 잡이면 어느 쪽이 느린지·어느 쪽이
   # 깨졌는지 로그를 뒤져야 알지만, 갈라 두면 체크 이름이 바로 말해 준다.
-  swift-test-learnkit:
-    name: swift test (LearnKit)
+  # ── 임시 진단 (2026-09-07) ────────────────────────────────────────────────
+  #
+  # LearnKit 스위트가 러너에서 55분 30초 동안 로그 한 줄 없이 멈췄다가 60분
+  # 타임아웃에 잘렸다. 빌드는 4.7분이었고 테스트 시작 3.2초 만에 순수 계산 스위트
+  # 8개가 통과한 뒤 완전히 조용해졌다 — 느린 게 아니라 **매달린 것**이다.
+  # 끝난 8개는 전부 프로세스를 안 띄우는 스위트다.
+  #
+  # 후보가 셋이라 한 번의 push 로 가른다. 각 잡의 상한을 짧게 잡아 매달리면 빨리
+  # 죽게 한다 — 어느 잡이 상한에 걸리는지가 곧 답이다.
+  # 확정되면 이 셋을 지우고 원래 잡 하나로 되돌린다.
+  probe-lsp:
+    name: 진단 — LSPKitTests
     runs-on: macos-26
-    timeout-minutes: 60
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
       - name: 툴체인 확인
         run: scripts/ci-assert-toolchain.sh
-      - run: swift test --package-path Packages/LearnKit
+      - run: swift test --package-path Packages/LearnKit --filter LSPKitTests
+
+  probe-runner:
+    name: 진단 — RunnerKitTests
+    runs-on: macos-26
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: 툴체인 확인
+        run: scripts/ci-assert-toolchain.sh
+      - run: swift test --package-path Packages/LearnKit --filter RunnerKitTests
+
+  probe-rest:
+    name: 진단 — 나머지 (LSPKit·RunnerKit 제외)
+    runs-on: macos-26
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: 툴체인 확인
+        run: scripts/ci-assert-toolchain.sh
+      - run: swift test --package-path Packages/LearnKit --skip LSPKitTests --skip RunnerKitTests
 
   swift-test-tools:
     name: swift test (Tools)

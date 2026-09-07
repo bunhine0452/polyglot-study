@@ -24,10 +24,15 @@
 # 서명 — {#codesign-hardened-runtime} {#helper-signing}:
 #   Hardened Runtime 을 켜고(`--options runtime`) App Sandbox 는 켜지 않는다
 #   (`Codesign/Polyglot.entitlements` 에 `com.apple.security.app-sandbox` 키 자체가 없다).
-#   개발자 인증서가 있으면 그 Team ID 로, 없으면 **ad-hoc(`-`) 으로** 앱과 헬퍼를 같은
-#   신원으로 서명한다 — 어느 쪽이든 둘은 항상 같은 identity 를 쓴다. `--deep` 은 쓰지
-#   않는다: 헬퍼를 먼저 개별 서명해 번들에 넣고, 그다음 바깥 `.app` 을 서명한다(중첩
-#   서명을 건드리지 않는 표준 순서 — leaf 먼저, 컨테이너 나중).
+#   키체인에 **Developer ID Application** 신원이 있으면 그 Team ID 로, 없으면
+#   **ad-hoc(`-`) 으로** 앱과 헬퍼를 같은 신원으로 서명한다 — 어느 쪽이든 둘은 항상 같은
+#   identity 를 쓴다. `--deep` 은 쓰지 않는다: 헬퍼를 먼저 개별 서명해 번들에 넣고,
+#   그다음 바깥 `.app` 을 서명한다(중첩 서명을 건드리지 않는 표준 순서 — leaf 먼저,
+#   컨테이너 나중).
+#
+#   Developer ID 로 서명할 때는 `--timestamp` 으로 보안 타임스탬프를 받는다(공증의
+#   요구 조건이라 네트워크를 탄다). ad-hoc 은 공증 대상이 아니므로 타임스탬프를 끈
+#   채로 둔다 — 오프라인에서도 빌드가 돈다.
 #
 # 공증({#notarize-staple-dmg})은 이 스크립트가 하지 않는다 — `Codesign/notarize.sh` 참고.
 #
@@ -186,22 +191,40 @@ LSREGISTER="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchS
 # ── 서명 ─────────────────────────────────────────────────────────────────
 #
 # 개발자 인증서가 이 머신에 없을 수 있다({#codesign-hardened-runtime} 확인 사항).
-# `security find-identity` 가 유효 신원을 하나도 못 찾으면 있는 척하지 않고 ad-hoc
-# 으로 떨어진다 — 그 사실을 표준 출력에 남긴다.
+# `security find-identity` 가 쓸 만한 신원을 못 찾으면 있는 척하지 않고 ad-hoc 으로
+# 떨어진다 — 그 사실을 표준 출력에 남긴다.
+#
+# **아무 신원이나 집으면 안 된다 — 이름으로 고른다.** Xcode 에 애플 ID 로 로그인하면
+# 키체인에 `Apple Development: ...` 가 함께 생긴다. 그건 이 맥에서 돌려보기용이라
+# 배포에 쓸 수 없고, 그걸로 서명한 번들은 공증이 거부한다. 목록의 첫 줄을 집으면
+# 정렬상 Apple Development 가 먼저 와서 조용히 잘못된 신원으로 서명되고, 그 사실은
+# 한참 뒤 공증 단계에서야 드러난다. 그래서 순서에 기대지 않는다.
 SIGN_IDENTITY="-"
 # 형식: `  1) <SHA1 40자> "<Common Name>"`. 유효 신원이 없으면 이 패턴의 줄 자체가 없다
 # ("0 valid identities found" 만 남는다).
-IDENTITY_LINE="$(security find-identity -v -p codesigning 2>/dev/null | grep -E '^[[:space:]]*[0-9]+\)' | head -1 || true)"
+IDENTITY_LINES="$(security find-identity -v -p codesigning 2>/dev/null | grep -E '^[[:space:]]*[0-9]+\)' || true)"
+IDENTITY_LINE="$(printf '%s\n' "$IDENTITY_LINES" | grep -F 'Developer ID Application:' | head -1 || true)"
 if [ -n "$IDENTITY_LINE" ]; then
-	CANDIDATE_HASH="$(echo "$IDENTITY_LINE" | awk '{print $2}')"
+	CANDIDATE_HASH="$(printf '%s\n' "$IDENTITY_LINE" | awk '{print $2}')"
 	if [ -n "$CANDIDATE_HASH" ]; then
 		SIGN_IDENTITY="$CANDIDATE_HASH"
 	fi
 fi
 
+# 공증은 보안 타임스탬프를 요구한다. ad-hoc 에는 받을 인증서가 없고 공증 대상도
+# 아니므로 타임스탬프 서버에 갈 이유가 없다 — 오프라인 빌드를 네트워크에 묶지 않는다.
+TIMESTAMP_FLAG="--timestamp"
 EFFECTIVE_ENTITLEMENTS="$ENTITLEMENTS"
 if [ "$SIGN_IDENTITY" = "-" ]; then
-	echo "==> 서명: ad-hoc (개발자 인증서 없음 — security find-identity -v -p codesigning 결과 0건)"
+	TIMESTAMP_FLAG="--timestamp=none"
+	if [ -n "$IDENTITY_LINES" ]; then
+		# 신원은 있는데 Developer ID 가 아니다. 조용히 넘어가면 "인증서를 넣었는데 왜
+		# 여전히 ad-hoc 인가" 를 나중에 디버깅하게 된다 — 무엇을 찾았는지 찍어 준다.
+		echo "==> 서명: ad-hoc — 키체인에 신원은 있으나 Developer ID Application 이 없다:"
+		printf '%s\n' "$IDENTITY_LINES" | sed 's/^/    /'
+	else
+		echo "==> 서명: ad-hoc (개발자 인증서 없음 — security find-identity -v -p codesigning 결과 0건)"
+	fi
 
 	# ── ad-hoc + Hardened Runtime + 동적 프레임워크 = 라이브러리 검증 충돌 ──
 	#
@@ -241,22 +264,22 @@ for component in \
 	"$SPARKLE_VERSION_DIR/Updater.app"; do
 	[ -e "$component" ] || continue
 	codesign --force --options runtime --preserve-metadata=entitlements \
-		--sign "$SIGN_IDENTITY" --timestamp=none "$component"
+		--sign "$SIGN_IDENTITY" $TIMESTAMP_FLAG "$component"
 done
 # 버전 디렉터리를 서명한다(`Sparkle.framework` 가 아니라). 버전 있는 프레임워크에서
 # 봉인 대상은 Versions/<X> 이고, 최상위는 그 안을 가리키는 심볼릭 링크 모음일 뿐이다.
-codesign --force --options runtime --sign "$SIGN_IDENTITY" --timestamp=none "$SPARKLE_VERSION_DIR"
+codesign --force --options runtime --sign "$SIGN_IDENTITY" $TIMESTAMP_FLAG "$SPARKLE_VERSION_DIR"
 
 # 2) 헬퍼를 개별 서명한다. --deep 은 쓰지 않는다 — 이건 단일 실행 파일이라
 #    상관없지만, 습관을 여기서부터 지킨다.
-codesign --force --options runtime --sign "$SIGN_IDENTITY" --timestamp=none \
+codesign --force --options runtime --sign "$SIGN_IDENTITY" $TIMESTAMP_FLAG \
 	"$CONTENTS/Helpers/$HELPER_NAME"
 
 # 3) 바깥 .app 을 서명한다. 헬퍼·Sparkle 은 이미 서명됐으므로 --deep 없이도 그 서명이
 #    보존된다 (top-level 서명은 이미 서명된 중첩 코드를 재서명하지 않고 CodeResources
 #    해시로만 봉인한다).
 codesign --force --options runtime --entitlements "$EFFECTIVE_ENTITLEMENTS" \
-	--sign "$SIGN_IDENTITY" --timestamp=none "$APP_BUNDLE"
+	--sign "$SIGN_IDENTITY" $TIMESTAMP_FLAG "$APP_BUNDLE"
 
 echo "==> 서명 검증"
 codesign --verify --deep --strict "$APP_BUNDLE"

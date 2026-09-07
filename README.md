@@ -12,8 +12,9 @@ macOS 14+ · Swift 6.3 / SwiftUI · MIT.
 
 **알파가 나갔다 — [v0.1.0-alpha.1](https://github.com/bunhine0452/polyglot-study/releases/tag/v0.1.0-alpha.1)**
 ([받기](https://bunhine0452.github.io/polyglot-study/) · macOS 14+ · Apple Silicon). 앱이 MVP 세 트랙 70편을 읽고
-코드를 쓰고 채점까지 간다. ad-hoc 서명이라 첫 실행에 우클릭 → 열기가 필요하다 — 공증과 DMG 는
-Developer ID 인증서가 있어야 시작된다.
+코드를 쓰고 채점까지 간다. **그 알파는 ad-hoc 서명**이라 첫 실행에 Gatekeeper 를 한 번
+우회해야 한다. Developer ID 인증서를 확보해(2026-09-07) 서명·공증 배선을 끝냈으므로 —
+다음 태그부터는 받아서 그냥 열면 된다.
 
 | 영역 | 상태 |
 |---|---|
@@ -24,7 +25,7 @@ Developer ID 인증서가 있어야 시작된다.
 | 콘텐츠 파이프라인 (`packtool`) | **완료.** `validate` 가 구조·문법·의미·실행 네 단계를 돌리고 예제는 expected 와 바이트 대조, 과제는 solution 통과와 **starter 실패**를 둘 다 확인한다. `build` 는 solutions 를 벗겨 결정적 tar 로 굽고(두 번 구우면 바이트 동일), `sign`/`verify` 가 Ed25519 분리 서명과 해시를 함께 본다. |
 | 레슨 생성기 (`lessongen`) | **완료.** `outline` · `lesson` · `repair` 가 모두 돈다. 세 트랙 70편이 이 루프로 만들어졌고, 실행 게이트가 결함을 잡아 `repair` 가 고쳤다 — 재검증 실패 0건. 레슨당 약 $0.005. |
 | CI | **PR 필수 체크 5게이트.** `swift test` 셋(RunnerKit 직렬 · LearnKit 나머지 · Tools) · 앱 번들 조립 · `packtool validate` 가 PR 마다 돈다. PR #2 에서 다섯 잡이 병렬로 돌아 벽시계 약 9분이었다(최장은 RunnerKit 8분 25초). `lessongen` 은 크레딧이 나가므로 `workflow_dispatch` 전용이다. |
-| 서명·배포 | **Sparkle 자동 업데이트 왕복 검증됨.** 구버전이 appcast 를 읽어 신버전을 받고 EdDSA 검증 후 설치까지 가는 것과, 서명이 어긋난 업데이트가 거부되는 것을 자동 테스트로 확인한다(`App/Scripts/verify-sparkle.sh`). 공증·DMG 는 **Developer ID 인증서가 없어** 아직 못 한다 — 지금 산출물은 ad-hoc 서명이다. |
+| 서명·배포 | **Sparkle 자동 업데이트 왕복 검증됨.** 구버전이 appcast 를 읽어 신버전을 받고 EdDSA 검증 후 설치까지 가는 것과, 서명이 어긋난 업데이트가 거부되는 것을 자동 테스트로 확인한다(`App/Scripts/verify-sparkle.sh`). **공증 통과** — `notarytool submit` 이 Accepted 를 받고 `stapler` 로 봉인한 뒤 `spctl` 이 **`Notarized Developer ID`** 로 읽는다(로컬 실측 2026-09-07). 스테이플 후에도 `codesign --verify --deep --strict` 가 통과한다. **CI 경로는 아직 태그로 증명하지 않았다** — 워크플로에 배선은 됐고 다음 태그가 첫 실행이다. DMG 는 아직이다. |
 
 진행 상황의 항목별 근거는 `.oculpm/planner/polyglot-surface.md` 에 있고, 각 판단의 경위와
 실측은 `.oculpm/journal/` 에 남아 있다.
@@ -209,12 +210,18 @@ docs/                포맷 스펙, 스크린샷.
 서명하고 컨테이너를 나중에 서명하는 순서로. `codesign --verify --deep --strict` 가 헬퍼를
 포함해 통과한다.
 
-스크립트는 서명 신원을 `security find-identity -v -p codesigning` 으로 찾는다. **이
-저장소를 만드는 데 쓰인 머신에는 Developer ID 인증서가 없다** — 그 결과 앱과 헬퍼 둘 다
-**ad-hoc(`-`) 서명**으로 떨어진다. 인증서가 있는 머신에서 같은 스크립트를 돌리면 그 신원으로
-서명된다. 공증(`notarytool`)·스테이플·DMG 서명·Sparkle 자동 업데이트는 Apple Developer
-계정이 있어야 의미가 있어서 `App/Codesign/notarize.sh` 에 순서만 문서화해 두고 실행하지
-않는다.
+스크립트는 서명 신원을 `security find-identity -v -p codesigning` 에서 찾되 **이름으로**
+고른다 — `Developer ID Application` 만 쓴다. 목록의 첫 줄을 집지 않는 이유는 Xcode 로
+로그인하면 함께 생기는 `Apple Development:` 가 배포에 쓸 수 없는 신원이고, 그걸로 서명하면
+실패가 한참 뒤 공증 단계에서야 드러나기 때문이다. 그 신원이 없으면 앱과 헬퍼 둘 다
+**ad-hoc(`-`) 서명**으로 떨어지고, 무엇을 찾았는지 표준 출력에 찍는다.
+
+Developer ID 로 서명할 때는 `--timestamp` 으로 보안 타임스탬프를 받는다(공증의 요구
+조건). ad-hoc 은 공증 대상이 아니라 타임스탬프를 끈 채로 둬서 오프라인에서도 빌드가 돈다.
+
+공증은 `App/Codesign/notarize.sh` 가 하고, `release.sh --notarize` 가 **zip 을 만들기
+전에** 그것을 부른다 — `stapler` 는 zip 에 스테이플하지 못하므로 순서가 뒤바뀌면 appcast
+해시가 실제 파일과 어긋난다. 자세한 것은 `docs/release.md` 의 서명·공증 절을 보라.
 
 ## 폰트
 

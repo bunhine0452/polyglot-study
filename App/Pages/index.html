@@ -27,26 +27,13 @@ SQL 은 앱에 내장돼 있어 따로 설치할 것이 없습니다.<br>
 
 <hr>
 
-<h2>처음 열 때 — Gatekeeper</h2>
-<p>이 알파는 <strong>Apple Developer ID 인증서 없이 ad-hoc 서명</strong>돼 있어, 처음 실행하면
-macOS 가 <em>"Apple은 악성 코드가 없음을 확인할 수 없습니다"</em> 라며 막습니다.
-<strong>"휴지통으로 이동" 을 누르지 마시고 "완료"</strong> 를 누른 뒤, 아래 둘 중 하나로 여십시오.</p>
+<h2>설치</h2>
+<p>내려받아 압축을 풀고 <strong>Polyglot.app 을 응용 프로그램 폴더로 옮긴 뒤 그냥 열면 됩니다.</strong>
+이 빌드는 <strong>Apple Developer ID 로 서명하고 애플 공증(notarization)을 거쳤으므로</strong>
+Gatekeeper 경고가 뜨지 않습니다 — 우회 절차도, 터미널 명령도 필요 없습니다.</p>
 
-<p><strong>방법 1 — 시스템 설정</strong></p>
-<ol>
-<li>앱을 한 번 실행해 위 대화상자를 띄우고 <strong>완료</strong>를 누릅니다.</li>
-<li><strong>시스템 설정 → 개인정보 보호 및 보안</strong> 을 열고 아래로 스크롤합니다.</li>
-<li><code>"Polyglot.app"이(가) 차단되었습니다</code> 옆의 <strong>그래도 열기</strong> 를 누릅니다.</li>
-<li>Touch ID 나 암호로 확인하면 열립니다. 이 뒤로는 그냥 열립니다.</li>
-</ol>
-
-<p><strong>방법 2 — 터미널 한 줄</strong> (앱을 옮겨 둔 경로로 바꾸세요)</p>
-<p><code>xattr -dr com.apple.quarantine /Applications/Polyglot.app</code></p>
-
-<p><small><strong>macOS 15 이상에서는 "우클릭 → 열기" 가 통하지 않습니다.</strong> Apple 이 그
-우회 경로를 없앴습니다 — 예전 안내를 보셨다면 위 방법을 쓰십시오.<br>
-인증서(Apple Developer Program, 연 $99)를 확보하면 공증을 붙여 이 단계가 완전히 사라집니다.
-앱 안의 자동 업데이트는 지금도 EdDSA 서명으로 검증되므로 이 문제와 무관합니다.</small></p>
+<p><small>공증 티켓이 앱에 스테이플돼 있어 <strong>인터넷이 끊긴 맥에서도</strong> 온라인 조회 없이
+열립니다. 앱 안의 자동 업데이트는 그와 별개로 EdDSA 서명이 검증합니다.</small></p>
 
 <hr>
 

@@ -1,14 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
-  <channel>
-    <title>Polyglot Study</title>
-    <link>https://bunhine0452.github.io/polyglot-study/appcast.xml</link>
-    <description>Polyglot Study 업데이트 피드</description>
-    <language>ko</language>
-    <!--
-      아직 릴리스가 없다. 항목이 없는 appcast 는 404 와 다르다 — 업데이터가
-      "받을 것 없음" 으로 정상 종료한다. 첫 릴리스는 App/Scripts/release.sh 가
-      이 파일을 통째로 다시 굽는다.
-    -->
-  </channel>
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>Polyglot</title>
+        <item>
+            <title>0.1.0-alpha.1</title>
+            <pubDate>Mon, 07 Sep 2026 20:18:50 +0900</pubDate>
+            <link>https://github.com/bunhine0452/polyglot-study</link>
+            <sparkle:version>110</sparkle:version>
+            <sparkle:shortVersionString>0.1.0-alpha.1</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
+            <enclosure url="https://bunhine0452.github.io/polyglot-study/Polyglot-0.1.0-alpha.1.zip" length="19884235" type="application/octet-stream" sparkle:edSignature="ZrGbA5IVxL7LG/Kgq02gSVuK9C3GCsiQ5pSIOCyx4EQizF9V4X9o8vkdfM+CD6BeVMTVtVYrAOPS3ZiGynMtAw=="/>
+        </item>
+    </channel>
 </rss>

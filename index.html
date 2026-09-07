@@ -3,10 +3,50 @@
 <title>Polyglot Study</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>body{font-family:-apple-system,system-ui,sans-serif;max-width:38rem;margin:4rem auto;padding:0 1.5rem;line-height:1.7;color:#141414;background:#F4F4F2}
-a{color:#141414}code{background:#E9E9E6;padding:.1rem .3rem;border-radius:2px}</style>
+a{color:#141414}code{background:#E9E9E6;padding:.1rem .3rem;border-radius:2px}
+.tag{display:inline-block;border:1px solid #141414;padding:.05rem .4rem;font-size:.75rem;letter-spacing:.04em;vertical-align:.15em}
+.dl{display:inline-block;border:1px solid #141414;padding:.5rem 1.1rem;text-decoration:none;margin:.4rem 0}
+hr{border:0;border-top:1px solid #D9D9D6;margin:2.2rem 0}
+th,td{text-align:left;padding:.2rem 1.2rem .2rem 0;vertical-align:top}
+small{color:#5F5F5C}</style>
 </head><body>
-<h1>Polyglot Study</h1>
-<p>10개 언어를 개별 트랙으로 학습하는 macOS 네이티브 앱. 로컬 툴체인으로 실제 실행·채점하고 FSRS-6 로 복습합니다.</p>
-<p>이 사이트는 업데이트 피드(<code>appcast.xml</code>)와 릴리스 아카이브를 서빙합니다.</p>
-<p><a href="https://github.com/bunhine0452/polyglot-study">소스 저장소 →</a></p>
+<h1>Polyglot Study <span class="tag">ALPHA</span></h1>
+<p>10개 언어를 개별 트랙으로 학습하는 macOS 네이티브 앱. 학습자가 쓴 코드를 그 사람 맥에서
+<strong>실제로 실행하고 채점</strong>하며, FSRS-6 로 복습을 스케줄합니다.</p>
+
+<p><a class="dl" href="Polyglot-0.1.0-alpha.1.zip">Polyglot 0.1.0-alpha.1 내려받기 (19MB)</a></p>
+
+<table>
+<tr><th>지금 배울 수 있는 것</th><td>Python 24편 · SQL 22편 · Swift 24편 (총 70편)<br>
+<small>나머지 7트랙은 앱에서 "준비 중" 으로 보입니다.</small></td></tr>
+<tr><th>요구 사양</th><td>macOS 14 이상 · Apple Silicon</td></tr>
+<tr><th>툴체인</th><td>Python 은 <code>python3</code>, Swift 는 Xcode 툴체인이 필요합니다.
+SQL 은 앱에 내장돼 있어 따로 설치할 것이 없습니다.<br>
+<small>앱의 <strong>툴체인</strong> 화면이 무엇이 있고 무엇이 없는지 진단해 줍니다.</small></td></tr>
+</table>
+
+<hr>
+
+<h2>처음 열 때 — Gatekeeper</h2>
+<p>이 알파는 <strong>Apple Developer ID 인증서 없이 ad-hoc 서명</strong>돼 있습니다.
+그래서 처음 실행하면 macOS 가 "확인되지 않은 개발자" 라며 막습니다. 한 번만 이렇게 열면 됩니다:</p>
+<p><strong>Finder 에서 Polyglot.app 을 우클릭 → 열기 → 다시 열기</strong></p>
+<p>또는 터미널에서:</p>
+<p><code>xattr -d com.apple.quarantine /Applications/Polyglot.app</code></p>
+<p><small>인증서(Apple Developer Program, 연 $99)를 확보하면 공증을 붙여 이 단계가 사라집니다.
+앱 안의 자동 업데이트는 지금도 EdDSA 서명으로 검증되므로 이 문제와 무관합니다.</small></p>
+
+<hr>
+
+<h2>알파입니다</h2>
+<p>동작하는 것과 아직 아닌 것을 정직하게 적습니다.</p>
+<ul>
+<li><strong>됩니다</strong> — 온보딩·대시보드·트랙·레슨·에디터+콘솔·복습 여섯 화면. 과제 블록에서
+에디터로 들어가 코드를 쓰고 실행·채점까지 갑니다. Swift 는 코드 완성과 인라인 진단도 됩니다.</li>
+<li><strong>아직입니다</strong> — 공증(위 참고), 나머지 7개 트랙의 콘텐츠, Assembly 레지스터 패널.</li>
+</ul>
+<p>버그와 의견은 <a href="https://github.com/bunhine0452/polyglot-study/issues">이슈</a>로 주세요.</p>
+
+<p><a href="https://github.com/bunhine0452/polyglot-study">소스 저장소 →</a>
+&nbsp;·&nbsp; <a href="appcast.xml">업데이트 피드</a></p>
 </body></html>

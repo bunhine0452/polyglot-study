@@ -1,0 +1,13 @@
+# polyglot stableids v1
+swift-arrays-and-element-access	swift	lessons/swift-arrays-and-element-access.md
+swift-basic-types-and-type-inference	swift	lessons/swift-basic-types-and-type-inference.md
+swift-closures-map-filter	swift	lessons/swift-closures-map-filter.md
+swift-conditionals-if-switch	swift	lessons/swift-conditionals-if-switch.md
+swift-dictionaries-key-value	swift	lessons/swift-dictionaries-key-value.md
+swift-functions-and-return-values	swift	lessons/swift-functions-and-return-values.md
+swift-loops-for-while	swift	lessons/swift-loops-for-while.md
+swift-optional-binding-patterns	swift	lessons/swift-optional-binding-patterns.md
+swift-optionals-and-nil	swift	lessons/swift-optionals-and-nil.md
+swift-string-interpolation	swift	lessons/swift-string-interpolation.md
+swift-structs-properties-methods	swift	lessons/swift-structs-properties-methods.md
+swift-variables-and-constants	swift	lessons/swift-variables-and-constants.md

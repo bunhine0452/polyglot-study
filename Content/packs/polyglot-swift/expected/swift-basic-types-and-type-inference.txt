@@ -1,0 +1,9 @@
+20
+Int
+3.14
+Double
+민수
+String
+true
+Bool
+165.5

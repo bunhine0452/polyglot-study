@@ -10,20 +10,21 @@ macOS 14+ · Swift 6.3 / SwiftUI · MIT.
 
 ## 지금 어디까지 왔는가
 
-**정직하게 말하면: 실행되는 앱은 있지만, 커리큘럼도 화면도 절반이 안 됐다.**
+**정직하게 말하면: MVP 세 트랙과 파이프라인은 닫혔지만, 앱 화면이 아직 커리큘럼을 못 따라간다.**
 
 | 영역 | 상태 |
 |---|---|
-| 코어 (스케줄러 · 실행 · 영속화) | **완료.** FSRS-6 복습 스케줄러, 6종 언어 백엔드를 아우르는 `CodeRunner` 프로토콜, GRDB 기반 저장소, sandbox-exec 격리 서브프로세스 러너·C 런처. `Packages/LearnKit` 테스트 870개가 이를 검증한다. |
-| 화면 | **7개 중 4개.** 대시보드(오늘) · 레슨 · 복습 · 툴체인 진단은 실제로 뜬다. 에디터+콘솔, SQL 결과 diff, ARM64 레지스터 패널은 아직 없다 — 지금 코드 에디터로 과제를 풀 수는 없다. |
-| 레슨 콘텐츠 | **3편뿐.** `Content/packs/polyglot-mvp` 에 Python·SQL·Swift 각 1편씩 샘플 팩으로 있다. 나머지 7개 트랙(Rust·C++·Go·Java·Next.js·TypeScript·Assembly)은 화면상 "준비 중"으로만 뜨고 콘텐츠가 전혀 없다. |
-| 콘텐츠 파이프라인 (`packtool`) | **스텁.** `validate`/`build`/`sign` 세 하위 명령이 정의만 돼 있고 구현이 없다 (`swift run --package-path Tools packtool --help` 로 직접 확인 가능). 팩이 실제로 실행 검증을 통과하는지 자동으로 보장하는 게이트가 아직 없다. |
-| 레슨 생성기 (`lessongen`) | **`outline` 만.** OpenRouter 로 트랙 개요를 구조화 출력으로 뽑는 것까지는 실왕복 검증됐다. 레슨 본문을 실제로 생성하는 `lesson`, 실패를 고치는 `repair` 는 아직 없다. |
-| 서명·배포 | **로컬 실행 가능한 수준.** Hardened Runtime 을 켜고 App Sandbox 를 끈 서명 파이프라인은 있다 — 단 이 저장소를 체크아웃한 머신에 Developer ID 인증서가 없어 **ad-hoc 서명**으로 떨어진다(아래 [서명·배포](#서명·배포) 참고). 공증·스테이플·DMG·Sparkle 자동 업데이트는 스크립트 자리만 있고 실행되지 않는다. |
+| 코어 (스케줄러 · 실행 · 영속화) | **완료.** FSRS-6 복습 스케줄러, 6종 언어 백엔드를 아우르는 `CodeRunner` 프로토콜, GRDB 기반 저장소, sandbox-exec 격리 서브프로세스 러너·C 런처. SQL 은 인프로세스 SQLite 를 실행마다 클론해 돌리고 쓰기는 열되 파일 크기를 64MB 로 묶는다. `Packages/LearnKit` 테스트 1058개가 이를 검증한다. |
+| 화면 | **앱에서 뜨는 것은 4개** — 온보딩(툴체인 진단) · 대시보드 · 레슨 · 복습. 에디터+콘솔과 SQL 결과 diff 는 타깃과 테스트가 다 있지만 **셸이 아직 라우팅하지 않아 실행 중인 앱에서는 도달할 수 없다**(아래 아키텍처 도식 참고). ARM64 레지스터 패널은 Assembly 트랙 착수까지 후순위다(`docs/milestones/`). |
+| 에디터 | **sourcekit-lsp 연동됨 — 단 앱에는 아직 안 붙었다.** Swift 트랙에 완성과 진단이 동작한다(완성은 워밍 후 중앙값 28ms, 진단은 swiftc 와 같은 인라인 컴포넌트로 렌더하고 출처만 라벨로 구분). 실제 서버를 띄우는 테스트 11개가 이를 검증하지만, 앱 셸에 목적지를 붙이는 일이 남았다. |
+| 레슨 콘텐츠 | **MVP 세 트랙 완성 — 파이썬 12편 · SQL 12편 · Swift 12편** (+ 샘플 팩 3편). 36편 전부가 `packtool validate` 의 네 단계를 통과한다 — 예제는 실제로 실행돼 expected 와 바이트 대조되고, 과제는 solution 통과와 starter 실패를 둘 다 확인받는다. 나머지 7개 트랙은 화면상 "준비 중" 으로 뜬다. |
+| 콘텐츠 파이프라인 (`packtool`) | **완료.** `validate` 가 구조·문법·의미·실행 네 단계를 돌리고 예제는 expected 와 바이트 대조, 과제는 solution 통과와 **starter 실패**를 둘 다 확인한다. `build` 는 solutions 를 벗겨 결정적 tar 로 굽고(두 번 구우면 바이트 동일), `sign`/`verify` 가 Ed25519 분리 서명과 해시를 함께 본다. |
+| 레슨 생성기 (`lessongen`) | **완료.** `outline` · `lesson` · `repair` 가 모두 돈다. 세 트랙 36편이 이 루프로 만들어졌고, 실행 게이트가 16건의 결함을 잡아 `repair` 가 고쳤다 — 재검증 실패 0건. 레슨당 약 $0.005. |
+| CI | **PR 필수 체크 3게이트.** `swift test`(양쪽 패키지) · 앱 번들 조립 · `packtool validate` 가 PR 마다 돈다. `lessongen` 은 크레딧이 나가므로 `workflow_dispatch` 전용이다. |
+| 서명·배포 | **Sparkle 자동 업데이트 왕복 검증됨.** 구버전이 appcast 를 읽어 신버전을 받고 EdDSA 검증 후 설치까지 가는 것과, 서명이 어긋난 업데이트가 거부되는 것을 자동 테스트로 확인한다(`App/Scripts/verify-sparkle.sh`). 공증·DMG 는 **Developer ID 인증서가 없어** 아직 못 한다 — 지금 산출물은 ad-hoc 서명이다. |
 
-7개 트랙 중 4개(Rust·C++·Go·Java 등)는 화면에도 콘텐츠에도 아직 손을 대지 않은, 말 그대로
-"이름만 있는" 상태다. 진행 상황의 항목별 근거는 `.oculpm/planner/polyglot-surface.md` 에
-있다.
+진행 상황의 항목별 근거는 `.oculpm/planner/polyglot-surface.md` 에 있고, 각 판단의 경위와
+실측은 `.oculpm/journal/` 에 남아 있다.
 
 ## 스크린샷
 
@@ -63,6 +64,117 @@ swift run --package-path Tools lessongen outline --language python --lessons 3
 ```
 
 `.env` 는 `.gitignore` 로 막혀 있다 — 커밋되는 건 `.env.example` 뿐이다.
+
+## 아키텍처
+
+### 패키지 셋과 의존 방향
+
+SPM 패키지 셋이다. **의존은 한 방향으로만 흐른다** — `LearnKit` 은 자기를 쓰는 쪽을 모른다.
+그래서 `ArgumentParser` 는 CLI 산출물에만, `Sparkle` 은 앱 산출물에만 링크된다.
+
+```mermaid
+graph LR
+  subgraph App["App/ — SwiftUI 앱"]
+    PolyglotApp["PolyglotApp<br/>조립·번들·서명"]
+  end
+  subgraph Tools["Tools/ — 개발자 CLI"]
+    packtool["packtool<br/>validate·build·sign"]
+    lessongen["lessongen<br/>outline·lesson·repair"]
+  end
+  subgraph LearnKit["Packages/LearnKit/ — 도메인·실행·UI"]
+    LK["14 타깃"]
+  end
+  PolyglotApp --> LK
+  packtool --> LK
+  lessongen --> LK
+  PolyglotApp -.->|링크| Sparkle(["Sparkle 2.9.6"])
+  packtool -.->|링크| AP(["ArgumentParser"])
+  lessongen -.->|링크| AP
+```
+
+### LearnKit 내부
+
+`LearnCore` 는 **아무것도 의존하지 않는 값·프로토콜 층**이다. GRDB 도 Subprocess 도 모른다.
+저장소는 `LearnPersistence` 안에만, 프로세스는 `RunnerKit` 안에만 있다.
+
+```mermaid
+graph TD
+  LearnCore["LearnCore<br/><i>값·프로토콜. 외부 의존 0</i>"]
+
+  LanguageKit["LanguageKit<br/><i>CodeRunner 프로토콜</i>"] --> LearnCore
+  ContentKit["ContentKit<br/><i>팩 포맷·레슨 파서·서명</i>"] --> LearnCore
+  LearnScheduling["LearnScheduling<br/><i>FSRS-6</i>"] --> LearnCore
+  LearnPersistence["LearnPersistence<br/><i>GRDB 는 여기에만</i>"] --> LearnCore
+  DesignSystem["DesignSystem<br/><i>토큰·프리미티브·셸</i>"] --> LearnCore
+
+  RunnerKit["RunnerKit<br/><i>서브프로세스·인프로세스 실행</i>"] --> LanguageKit
+  launcher["learn-launcher (C)<br/><i>rlimit·killpg·setsid</i>"] -.->|실행 시 호출| RunnerKit
+  LSPKit["LSPKit<br/><i>sourcekit-lsp</i>"] --> RunnerKit
+  EditorUI["EditorUI<br/><i>벤더링 CodeEditSourceEditor</i>"] --> DesignSystem
+
+  Onboarding["OnboardingFeature"] --> RunnerKit
+  Dashboard["DashboardFeature"] --> LearnPersistence
+  Lesson["LessonFeature"] --> ContentKit
+  Lesson --> RunnerKit
+  Review["ReviewFeature"] --> LearnScheduling
+  Editor["EditorFeature<br/><i>앱에 아직 링크되지 않음</i>"] --> LSPKit
+  Editor --> EditorUI
+
+  Onboarding --> DesignSystem
+  Dashboard --> DesignSystem
+  Lesson --> DesignSystem
+  Review --> DesignSystem
+
+  style Editor stroke-dasharray: 5 5
+  style launcher stroke-dasharray: 5 5
+```
+
+> `EditorFeature`(에디터+콘솔·SQL 결과 diff)와 `LSPKit`(완성·진단)은 타깃과 테스트가 다
+> 있지만 **앱 셸이 아직 라우팅하지 않는다.** 실행 중인 앱에서는 도달할 수 없다.
+
+### 학습자 코드는 어떻게 실행되는가
+
+언어마다 격리 방식이 다르다. 하나의 `CodeRunner` 프로토콜 뒤에 두 백엔드가 있다.
+
+```mermaid
+graph LR
+  code["학습자 코드"] --> CR{{"CodeRunner"}}
+  CR -->|"Python · Swift"| SP["SubprocessRunner"]
+  CR -->|"SQL"| IP["InProcessRunner"]
+
+  SP --> L["learn-launcher (C)"]
+  L --> S1["sandbox-exec 격리"]
+  L --> S2["rlimit · killpg · setsid"]
+  L --> S3["proc_pid_rusage 메모리 폴링"]
+
+  IP --> C1["실행마다 DB 클론"]
+  IP --> C2["authorizer<br/>ATTACH·비허용 PRAGMA 거부"]
+  IP --> C3["max_page_count<br/>파일 64MB 상한"]
+  IP --> C4["hard_heap_limit64"]
+```
+
+SQL 이 인프로세스인 이유는 툴체인 의존을 0으로 만들기 위해서다 — `sqlite3` CLI 가 없는
+머신에서도 SQL 트랙이 돈다. 쓰기는 **클론에 한해** 열려 있고(그래야 `INSERT`·`CREATE TABLE`
+을 가르친다), 그 대가로 파일 크기 상한이 서 있다.
+
+### 콘텐츠 파이프라인
+
+생성기와 검증기는 **서로를 직접 의존하지 않는다.** 유일한 접점이 `PackReport` 다 —
+생성기가 검증기의 내부를 알면 검증기의 약점을 우회하게 된다.
+
+```mermaid
+graph LR
+  outline["lessongen outline<br/><i>사람이 읽고 확인</i>"] --> lesson["lessongen lesson"]
+  lesson --> pack[("Content/packs/*")]
+  pack --> validate["packtool validate<br/>구조·문법·의미·실행"]
+  validate -->|"통과"| build["packtool build<br/><i>solutions 제거·결정적 tar</i>"]
+  validate -->|"실패"| report[/"PackReport (JSON)"/]
+  report --> repair["lessongen repair<br/><i>실패한 레슨만</i>"]
+  repair --> pack
+  build --> sign["packtool sign<br/>Ed25519 분리 서명"]
+  sign --> verify["packtool verify<br/><i>서명 + 해시 둘 다</i>"]
+  repair -.->|"3회 실패"| quarantine["격리 후 non-zero"]
+```
 
 ## 구조
 

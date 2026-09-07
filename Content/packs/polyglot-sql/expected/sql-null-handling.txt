@@ -1,0 +1,2 @@
+n_rows | n_with_city | n_null_city
+6 | 4 | 2

@@ -1,0 +1,515 @@
+{
+  "displayName" : "SQL 기초",
+  "files" : [
+    {
+      "bytes" : 3331,
+      "path" : "assets/shop-seed.sql",
+      "sha256" : "c5bd8b82225ba0bcc1cf5110aa5fd452b097af25ea39f275ea4ce7b75eba8260"
+    },
+    {
+      "bytes" : 53,
+      "path" : "expected/sql-aggregate-functions.txt",
+      "sha256" : "4696bf73e382ab2d7234978abbef7008bb4c445ca2c7be75366b34223eae97fa"
+    },
+    {
+      "bytes" : 66,
+      "path" : "expected/sql-create-table-constraints.txt",
+      "sha256" : "ceaec5327eabfb6c1b61a5142a1bb97804b07755b5c127afacb2645109403365"
+    },
+    {
+      "bytes" : 38,
+      "path" : "expected/sql-exists-correlated-subqueries.txt",
+      "sha256" : "01e5b269a8c17662f4e76db6de00332d6c17ff754ed47579464b79167ba0a73f"
+    },
+    {
+      "bytes" : 62,
+      "path" : "expected/sql-group-by-having.txt",
+      "sha256" : "1674990178aec900f95559254621dd9809863161b1b9458b211bb066f590ae93"
+    },
+    {
+      "bytes" : 89,
+      "path" : "expected/sql-inner-joins.txt",
+      "sha256" : "98068df77014c3d521fe304803096c60b2873f5b8c0d2b7fa834b8c2cc755fa1"
+    },
+    {
+      "bytes" : 51,
+      "path" : "expected/sql-insert-update-delete.txt",
+      "sha256" : "4e20c11f6d867d8f87cad92e1a40013b6ff9fc291bc2560aa23dda973d61711a"
+    },
+    {
+      "bytes" : 54,
+      "path" : "expected/sql-left-outer-joins.txt",
+      "sha256" : "6bc73b38873540be7c154ac2cf3c97d6181f17c8d84dc20c06049c21fbb61ef5"
+    },
+    {
+      "bytes" : 45,
+      "path" : "expected/sql-null-handling.txt",
+      "sha256" : "147c9661705d45d11dd9cd612613294939f8d48e28de43a59fb74ffaabf79583"
+    },
+    {
+      "bytes" : 46,
+      "path" : "expected/sql-order-by-limit-distinct.txt",
+      "sha256" : "622060222da3e92384a516f6a8799b6bbc8e65a62c6d870bbc19985c6322c9ba"
+    },
+    {
+      "bytes" : 59,
+      "path" : "expected/sql-select-from-where.txt",
+      "sha256" : "e6cb9f5b443bed16002ec5355c2fb99b7c1f6cf8461b329e14ebb7b7ddb39148"
+    },
+    {
+      "bytes" : 27,
+      "path" : "expected/sql-subqueries.txt",
+      "sha256" : "b177dea5606a6fdc48a2e4e85c1c4f04394574b2b022b87d8d18585a8e4c3abf"
+    },
+    {
+      "bytes" : 127,
+      "path" : "expected/sql-window-functions.txt",
+      "sha256" : "97c5ac6a260811e8ee19a74fd5294f13446ca3e2c15a9de000fb7901d28bd9e5"
+    },
+    {
+      "bytes" : 5345,
+      "path" : "lessons/sql-aggregate-functions.md",
+      "sha256" : "2ee6477e93fdc3dbf73d6014ace34284cc37e9fbd9b801b53d39355373ab5d46"
+    },
+    {
+      "bytes" : 5978,
+      "path" : "lessons/sql-create-table-constraints.md",
+      "sha256" : "f4ae9e18e45c41c42476ab94d4c0e0e3cb8cf6ec73883e6436d16dab73633169"
+    },
+    {
+      "bytes" : 4102,
+      "path" : "lessons/sql-exists-correlated-subqueries.md",
+      "sha256" : "cacf18dada09077e8184d1de21167664a7058881e43f3936d6f740796decca9e"
+    },
+    {
+      "bytes" : 4434,
+      "path" : "lessons/sql-group-by-having.md",
+      "sha256" : "b1b4ecaa8afec50c676d82c2f2a0ceb79ab066b0a24f4ae7ebdc01bb5118d440"
+    },
+    {
+      "bytes" : 4479,
+      "path" : "lessons/sql-inner-joins.md",
+      "sha256" : "62071a035ba72404e4f571fb5f53f39cdb984028598356c491656d29e0ab76d6"
+    },
+    {
+      "bytes" : 3939,
+      "path" : "lessons/sql-insert-update-delete.md",
+      "sha256" : "2cb018ae161a06573639d4ec6a2a61f5c7de2a21546e042a04cc111fe97c82b5"
+    },
+    {
+      "bytes" : 4732,
+      "path" : "lessons/sql-left-outer-joins.md",
+      "sha256" : "5e134fb51055757cec03286a36caccd862b924f48d2705aea48cad1f9e27d8d9"
+    },
+    {
+      "bytes" : 4002,
+      "path" : "lessons/sql-null-handling.md",
+      "sha256" : "aca88ea6e3966d9ceb6be42959d2b3e7e1c27948b7361f74a203d91ac704442d"
+    },
+    {
+      "bytes" : 6214,
+      "path" : "lessons/sql-order-by-limit-distinct.md",
+      "sha256" : "c9575aa9aa52c42f0861e9a77835d598ba126f4d67fd921a5b76bfe5b37578d9"
+    },
+    {
+      "bytes" : 5815,
+      "path" : "lessons/sql-select-from-where.md",
+      "sha256" : "8ab2746e0a8c88d5748be756df183e6285e57871ef45e01d68f710ae64d101aa"
+    },
+    {
+      "bytes" : 4311,
+      "path" : "lessons/sql-subqueries.md",
+      "sha256" : "ba8d774c571bacb103c0e35dbb91bfe03fa41852f6b1f2c98a9ff7a72aea170c"
+    },
+    {
+      "bytes" : 5187,
+      "path" : "lessons/sql-window-functions.md",
+      "sha256" : "16215cb1266021b4c0ef508b4a508d98b77966120289d77bad3ba65f4821af00"
+    },
+    {
+      "bytes" : 177,
+      "path" : "solutions/sql-aggregate-functions.sql",
+      "sha256" : "cc2e5d0c71a736b640a46d83d25ee277cd04419705962ecbff4a3cfd4c1ffddc"
+    },
+    {
+      "bytes" : 614,
+      "path" : "solutions/sql-create-table-constraints.sql",
+      "sha256" : "5272a660a86a63a28ac28aff2335f51b2176f08b4aa7b5a649b52a45b84301a8"
+    },
+    {
+      "bytes" : 247,
+      "path" : "solutions/sql-exists-correlated-subqueries.sql",
+      "sha256" : "83b9cb0c564968f2e916c61febaef9d871adda67a56b7c472ecb89f44ee2779c"
+    },
+    {
+      "bytes" : 298,
+      "path" : "solutions/sql-group-by-having.sql",
+      "sha256" : "f2534be3e25716c822f61ce8ccd8b62f5c62e01faa226fea196067032ee97a21"
+    },
+    {
+      "bytes" : 257,
+      "path" : "solutions/sql-inner-joins.sql",
+      "sha256" : "21c1818ec38bada9d055c69eee8715eba71c07c40e30662b4b9c66c866db5eef"
+    },
+    {
+      "bytes" : 117,
+      "path" : "solutions/sql-insert-update-delete.sql",
+      "sha256" : "cbd7eff4bb65dc1cc419f71a4624d5e376e332e79f3ac15499379a4d8ad0c143"
+    },
+    {
+      "bytes" : 167,
+      "path" : "solutions/sql-left-outer-joins.sql",
+      "sha256" : "033321a32266e2b438825674cdf90ec01c50505c255634f872f84ca59fa14e21"
+    },
+    {
+      "bytes" : 110,
+      "path" : "solutions/sql-null-handling.sql",
+      "sha256" : "b3237fcfb4e38263a6ff895950a2c1bb59fb341b1c29810779b787d8c11269ad"
+    },
+    {
+      "bytes" : 477,
+      "path" : "solutions/sql-order-by-limit-distinct.sql",
+      "sha256" : "2026c989458b567f806929fcc1b7218bd2b6bda9986fc676830460dfe17cf2bf"
+    },
+    {
+      "bytes" : 131,
+      "path" : "solutions/sql-select-from-where.sql",
+      "sha256" : "d72f19e25ae21219e59554a86f943970f013ab9335c8b6c7cb794547e7c03914"
+    },
+    {
+      "bytes" : 97,
+      "path" : "solutions/sql-subqueries.sql",
+      "sha256" : "77a3f9b70f5039951b67c1a6b79999f14032c791908f9fabf6503d81040d259c"
+    },
+    {
+      "bytes" : 267,
+      "path" : "solutions/sql-window-functions.sql",
+      "sha256" : "e2c14a8ef1becb9bc1d424028537ea87101d8fc2a68c92c58434104801d16a01"
+    },
+    {
+      "bytes" : 748,
+      "path" : "stableids.lock",
+      "sha256" : "773c33c2344da566a5ea6172a963fed8539d72874341b52a66b8b1c3ad660da1"
+    },
+    {
+      "bytes" : 47,
+      "path" : "starters/sql-aggregate-functions.sql",
+      "sha256" : "775e9223f9fef1dd91d998d8973b90b6c068127811a9188f564fb7b7f1e5d814"
+    },
+    {
+      "bytes" : 611,
+      "path" : "starters/sql-create-table-constraints.sql",
+      "sha256" : "9665ebefe479575c11f1a307b9b09fc1f7f1cee1e2f72d383ccd2f84fa3bdbad"
+    },
+    {
+      "bytes" : 123,
+      "path" : "starters/sql-exists-correlated-subqueries.sql",
+      "sha256" : "6da18f86a7861231af0ac955dec3354503a2c27faa5942320d1136490d9dafee"
+    },
+    {
+      "bytes" : 394,
+      "path" : "starters/sql-group-by-having.sql",
+      "sha256" : "330bc10d74f9eee905eac8feb58b4591935c4b32e3e2b23e6a2d51e69239e9d6"
+    },
+    {
+      "bytes" : 227,
+      "path" : "starters/sql-inner-joins.sql",
+      "sha256" : "96d70aeb115c5ebc12d261a57a8c4c7cf228fb5eab15f355b7d5c1820512ea49"
+    },
+    {
+      "bytes" : 129,
+      "path" : "starters/sql-insert-update-delete.sql",
+      "sha256" : "270f6a8c6af21f1491a01e4ae6a19c644c4803f76b0ec1d744fb17bc8dad1620"
+    },
+    {
+      "bytes" : 235,
+      "path" : "starters/sql-left-outer-joins.sql",
+      "sha256" : "b994c803e9cc45b7b8ab144e5c159916e335752e68c9d928189bb7644838eb21"
+    },
+    {
+      "bytes" : 164,
+      "path" : "starters/sql-null-handling.sql",
+      "sha256" : "6c4e6d4f1565d8be9f5eb725c6da2b2711dcde522ae11fc6479ebb6b78ca6b34"
+    },
+    {
+      "bytes" : 619,
+      "path" : "starters/sql-order-by-limit-distinct.sql",
+      "sha256" : "6bc245eb2d4d38941ee85a02b7e2369b1504172fae46b34d1be48b816f50abca"
+    },
+    {
+      "bytes" : 216,
+      "path" : "starters/sql-select-from-where.sql",
+      "sha256" : "95e3425921591ff69c7388194d7651221fd094515d96eb4a4e0e78b849252642"
+    },
+    {
+      "bytes" : 41,
+      "path" : "starters/sql-subqueries.sql",
+      "sha256" : "51b9b475609b47c536021e40bc4812c7f6e04a9240c56e6cacccf1e87bcda278"
+    },
+    {
+      "bytes" : 161,
+      "path" : "starters/sql-window-functions.sql",
+      "sha256" : "c39a1e5f70ae0f1de943fb959a126a74fdf7d47a033fe84adf29a269ffa3f3b3"
+    },
+    {
+      "bytes" : 177,
+      "path" : "tests/sql-aggregate-functions.sql",
+      "sha256" : "cc2e5d0c71a736b640a46d83d25ee277cd04419705962ecbff4a3cfd4c1ffddc"
+    },
+    {
+      "bytes" : 186,
+      "path" : "tests/sql-create-table-constraints.sql",
+      "sha256" : "8d21d496daeaba95bfe0be64c37cfc9e0224c02d343a9a62b8c479a3bc3998e8"
+    },
+    {
+      "bytes" : 101,
+      "path" : "tests/sql-exists-correlated-subqueries.sql",
+      "sha256" : "81151b9f085f4c13a0e646f31d32f6a190e22cabcb0c9d5f3d48bd93d43a7d42"
+    },
+    {
+      "bytes" : 101,
+      "path" : "tests/sql-group-by-having.sql",
+      "sha256" : "af5f21eb1335680e143a11ea80a99f8d49864ce06a711de1c577e70ddd0131dd"
+    },
+    {
+      "bytes" : 257,
+      "path" : "tests/sql-inner-joins.sql",
+      "sha256" : "21c1818ec38bada9d055c69eee8715eba71c07c40e30662b4b9c66c866db5eef"
+    },
+    {
+      "bytes" : 36,
+      "path" : "tests/sql-insert-update-delete.sql",
+      "sha256" : "1a309385f1d55df2d9cb77ef7a000690ec1db05316b370a08bcec0a878c17cc2"
+    },
+    {
+      "bytes" : 167,
+      "path" : "tests/sql-left-outer-joins.sql",
+      "sha256" : "033321a32266e2b438825674cdf90ec01c50505c255634f872f84ca59fa14e21"
+    },
+    {
+      "bytes" : 79,
+      "path" : "tests/sql-null-handling.sql",
+      "sha256" : "e33ee25f21a79e4f9a17fab2e637ca1cd71623e3603c9debeadacb3183c591ad"
+    },
+    {
+      "bytes" : 101,
+      "path" : "tests/sql-order-by-limit-distinct.sql",
+      "sha256" : "bdd70b819ddd1ea5a40ac14923a92d4ea263e5e469f1d2ca870dc9ac6f8f6f5a"
+    },
+    {
+      "bytes" : 217,
+      "path" : "tests/sql-select-from-where.sql",
+      "sha256" : "a5a4506022c1c1eee200d6063bed6e6d363cf4688078e63df9e1a29f33ee2cc8"
+    },
+    {
+      "bytes" : 110,
+      "path" : "tests/sql-subqueries.sql",
+      "sha256" : "b3237fcfb4e38263a6ff895950a2c1bb59fb341b1c29810779b787d8c11269ad"
+    },
+    {
+      "bytes" : 405,
+      "path" : "tests/sql-window-functions.sql",
+      "sha256" : "b0e375450fb7d81673095f6715d816c32cf4c5d45006d2da145fac54a11c3322"
+    }
+  ],
+  "generatedAt" : "2026-09-07T00:00:00Z",
+  "languages" : [
+    "sql"
+  ],
+  "lessons" : [
+    {
+      "language" : "sql",
+      "objectives" : [
+        "SELECT 와 FROM 을 사용해 테이블의 전체 행과 특정 열을 조회할 수 있다",
+        "WHERE 절에 비교 연산자(=, <>, <, >=)를 적용해 조건에 맞는 행만 골라낼 수 있다",
+        "AND 와 OR 를 조합해 두 개 이상의 조건을 동시에 만족하거나 하나라도 만족하는 행을 조회할 수 있다"
+      ],
+      "order" : 1,
+      "path" : "lessons/sql-select-from-where.md",
+      "prerequisites" : [
+
+      ],
+      "stableID" : "sql-select-from-where",
+      "title" : "테이블에서 원하는 데이터 꺼내기"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "ORDER BY 를 사용해 결과를 오름차순과 내림차순으로 정렬할 수 있다",
+        "LIMIT 을 적용해 정렬된 결과에서 상위 N 개 행만 반환할 수 있다",
+        "DISTINCT 를 사용해 중복을 제거한 고유한 값 목록을 얻을 수 있다"
+      ],
+      "order" : 2,
+      "path" : "lessons/sql-order-by-limit-distinct.md",
+      "prerequisites" : [
+        "sql-select-from-where"
+      ],
+      "stableID" : "sql-order-by-limit-distinct",
+      "title" : "결과 정렬하고 다듬기"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "COUNT 를 사용해 행 개수와 열 값 개수를 구할 수 있다",
+        "SUM 과 AVG 를 사용해 수치 열의 합계와 평균을 계산할 수 있다",
+        "MIN 과 MAX 를 사용해 최솟값과 최댓값을 가진 결과를 조회할 수 있다"
+      ],
+      "order" : 3,
+      "path" : "lessons/sql-aggregate-functions.md",
+      "prerequisites" : [
+        "sql-select-from-where",
+        "sql-order-by-limit-distinct"
+      ],
+      "stableID" : "sql-aggregate-functions",
+      "title" : "집계 함수로 요약하기"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "GROUP BY 를 사용해 열 값을 기준으로 행을 묶고 집계 함수를 적용할 수 있다",
+        "여러 열을 GROUP BY 에 나열해 복합 기준으로 그룹화할 수 있다",
+        "HAVING 을 사용해 집계 결과에 조건을 걸어 그룹을 골라낼 수 있다"
+      ],
+      "order" : 4,
+      "path" : "lessons/sql-group-by-having.md",
+      "prerequisites" : [
+        "sql-aggregate-functions",
+        "sql-select-from-where"
+      ],
+      "stableID" : "sql-group-by-having",
+      "title" : "그룹으로 묶어 집계하기"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "INNER JOIN 과 ON 을 사용해 두 테이블을 키로 연결해 조회할 수 있다",
+        "테이블 별칭을 붙여 여러 테이블이 섞인 질의를 간결하게 쓸 수 있다",
+        "조인된 결과에 WHERE 와 GROUP BY 를 결합해 조건부 집계를 수행할 수 있다"
+      ],
+      "order" : 5,
+      "path" : "lessons/sql-inner-joins.md",
+      "prerequisites" : [
+        "sql-select-from-where",
+        "sql-group-by-having"
+      ],
+      "stableID" : "sql-inner-joins",
+      "title" : "두 테이블을 키로 연결하기"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "LEFT JOIN 을 사용해 왼쪽 테이블의 모든 행을 결과에 유지할 수 있다",
+        "매칭되지 않은 행이 채워지는 값을 관찰해 OUTER JOIN 과 INNER JOIN 의 차이를 설명할 수 있다",
+        "LEFT JOIN 결과에서 매칭되지 않은 행만 골라내는 질의를 작성할 수 있다"
+      ],
+      "order" : 6,
+      "path" : "lessons/sql-left-outer-joins.md",
+      "prerequisites" : [
+        "sql-inner-joins"
+      ],
+      "stableID" : "sql-left-outer-joins",
+      "title" : "없는 쪽까지 포함하는 조인"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "= 과 <> 비교에 NULL 이 포함된 결과가 참도 거짓도 아님을 실행으로 확인하고 설명할 수 있다",
+        "IS NULL 과 IS NOT NULL 을 사용해 값이 없는 행과 있는 행을 정확히 골라낼 수 있다",
+        "COALESCE 를 사용해 NULL 을 지정한 기본값으로 바꿔 출력할 수 있다"
+      ],
+      "order" : 7,
+      "path" : "lessons/sql-null-handling.md",
+      "prerequisites" : [
+        "sql-left-outer-joins",
+        "sql-select-from-where"
+      ],
+      "stableID" : "sql-null-handling",
+      "title" : "값이 없는 세계, NULL 다루기"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "WHERE 절의 스칼라 서브쿼리를 사용해 집계 결과를 비교 조건에 쓸 수 있다",
+        "IN 뒤에 서브쿼리를 넣어 목록에 속한 행만 조회할 수 있다",
+        "NOT IN 을 사용해 서브쿼리 결과에 속하지 않는 행을 골라낼 수 있다"
+      ],
+      "order" : 8,
+      "path" : "lessons/sql-subqueries.md",
+      "prerequisites" : [
+        "sql-aggregate-functions",
+        "sql-null-handling"
+      ],
+      "stableID" : "sql-subqueries",
+      "title" : "쿼리 안에 쿼리 넣기"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "EXISTS 를 사용해 서브쿼리 결과가 존재하는지 검사하는 질의를 작성할 수 있다",
+        "바깥 열을 참조하는 상관 서브쿼리를 작성해 행마다 조건을 검사할 수 있다",
+        "NOT EXISTS 를 사용해 대응되는 행이 하나도 없는 경우를 골라낼 수 있다"
+      ],
+      "order" : 9,
+      "path" : "lessons/sql-exists-correlated-subqueries.md",
+      "prerequisites" : [
+        "sql-subqueries",
+        "sql-inner-joins"
+      ],
+      "stableID" : "sql-exists-correlated-subqueries",
+      "title" : "존재를 검사하는 질의"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "INSERT INTO ... VALUES 를 사용해 새 행을 테이블에 추가할 수 있다",
+        "UPDATE ... SET ... WHERE 를 사용해 조건에 맞는 기존 행의 값을 수정할 수 있다",
+        "DELETE ... WHERE 를 사용해 조건에 맞는 행만 안전하게 삭제할 수 있다"
+      ],
+      "order" : 10,
+      "path" : "lessons/sql-insert-update-delete.md",
+      "prerequisites" : [
+        "sql-select-from-where",
+        "sql-subqueries"
+      ],
+      "stableID" : "sql-insert-update-delete",
+      "title" : "데이터를 바꾸는 문법"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "CREATE TABLE 로 열의 타입과 제약을 지정해 테이블을 직접 만들 수 있다",
+        "PRIMARY KEY 와 UNIQUE 제약이 위반되는 INSERT 를 시도해 제약이 지켜지는지 확인할 수 있다",
+        "FOREIGN KEY 와 CHECK 제약을 선언하고, 위반 데이터가 거부되는 것을 실행으로 관찰할 수 있다"
+      ],
+      "order" : 11,
+      "path" : "lessons/sql-create-table-constraints.md",
+      "prerequisites" : [
+        "sql-insert-update-delete",
+        "sql-inner-joins"
+      ],
+      "stableID" : "sql-create-table-constraints",
+      "title" : "테이블을 직접 만들고 규칙 세우기"
+    },
+    {
+      "language" : "sql",
+      "objectives" : [
+        "OVER 와 PARTITION BY 를 사용해 그룹을 유지한 채로 행마다 집계 값을 붙일 수 있다",
+        "ROW_NUMBER 와 RANK 를 사용해 그룹 내 순위를 매기고 순위 조건으로 행을 골라낼 수 있다",
+        "LAG 를 사용해 이전 행의 값을 참조해 변화량을 계산할 수 있다"
+      ],
+      "order" : 12,
+      "path" : "lessons/sql-window-functions.md",
+      "prerequisites" : [
+        "sql-group-by-having",
+        "sql-exists-correlated-subqueries",
+        "sql-create-table-constraints"
+      ],
+      "stableID" : "sql-window-functions",
+      "title" : "그룹을 유지한 채 계산하는 창 함수"
+    }
+  ],
+  "minAppVersion" : "0.1.0",
+  "packID" : "polyglot-sql",
+  "schemaVersion" : 1,
+  "version" : "0.1.0"
+}

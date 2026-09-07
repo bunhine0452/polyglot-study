@@ -1,0 +1,268 @@
+{
+  "generatorModel" : "z-ai/glm-5.3-flash",
+  "language" : "sql",
+  "lessons" : [
+    {
+      "concepts" : [
+        "SELECT",
+        "FROM",
+        "WHERE",
+        "AND",
+        "OR"
+      ],
+      "estimatedMinutes" : 20,
+      "objectives" : [
+        "SELECT 와 FROM 을 사용해 테이블의 전체 행과 특정 열을 조회할 수 있다",
+        "WHERE 절에 비교 연산자(=, <>, <, >=)를 적용해 조건에 맞는 행만 골라낼 수 있다",
+        "AND 와 OR 를 조합해 두 개 이상의 조건을 동시에 만족하거나 하나라도 만족하는 행을 조회할 수 있다"
+      ],
+      "ordinal" : 1,
+      "prerequisites" : [
+
+      ],
+      "stableID" : "sql.select-from-where",
+      "summary" : "SELECT 문으로 테이블에서 원하는 열과 행을 꺼내는 가장 기본적인 질의를 작성한다.",
+      "title" : "테이블에서 원하는 데이터 꺼내기"
+    },
+    {
+      "concepts" : [
+        "ORDER BY",
+        "LIMIT",
+        "DISTINCT"
+      ],
+      "estimatedMinutes" : 20,
+      "objectives" : [
+        "ORDER BY 를 사용해 결과를 오름차순과 내림차순으로 정렬할 수 있다",
+        "LIMIT 을 적용해 정렬된 결과에서 상위 N 개 행만 반환할 수 있다",
+        "DISTINCT 를 사용해 중복을 제거한 고유한 값 목록을 얻을 수 있다"
+      ],
+      "ordinal" : 2,
+      "prerequisites" : [
+        "sql.select-from-where"
+      ],
+      "stableID" : "sql.order-by-limit-distinct",
+      "summary" : "조회 결과를 정렬하고 개수를 제한하고 중복 없이 뽑아내는 방법을 익힌다.",
+      "title" : "결과 정렬하고 다듬기"
+    },
+    {
+      "concepts" : [
+        "COUNT",
+        "SUM",
+        "AVG",
+        "MIN",
+        "MAX"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "COUNT 를 사용해 행 개수와 열 값 개수를 구할 수 있다",
+        "SUM 과 AVG 를 사용해 수치 열의 합계와 평균을 계산할 수 있다",
+        "MIN 과 MAX 를 사용해 최솟값과 최댓값을 가진 결과를 조회할 수 있다"
+      ],
+      "ordinal" : 3,
+      "prerequisites" : [
+        "sql.select-from-where",
+        "sql.order-by-limit-distinct"
+      ],
+      "stableID" : "sql.aggregate-functions",
+      "summary" : "COUNT, SUM, AVG, MIN, MAX 로 여러 행을 하나의 값으로 요약한다.",
+      "title" : "집계 함수로 요약하기"
+    },
+    {
+      "concepts" : [
+        "GROUP BY",
+        "HAVING"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "GROUP BY 를 사용해 열 값을 기준으로 행을 묶고 집계 함수를 적용할 수 있다",
+        "여러 열을 GROUP BY 에 나열해 복합 기준으로 그룹화할 수 있다",
+        "HAVING 을 사용해 집계 결과에 조건을 걸어 그룹을 골라낼 수 있다"
+      ],
+      "ordinal" : 4,
+      "prerequisites" : [
+        "sql.aggregate-functions",
+        "sql.select-from-where"
+      ],
+      "stableID" : "sql.group-by-having",
+      "summary" : "GROUP BY 로 행을 그룹으로 묶고, HAVING 으로 집계 결과에 조건을 적용한다.",
+      "title" : "그룹으로 묶어 집계하기"
+    },
+    {
+      "concepts" : [
+        "INNER JOIN",
+        "ON",
+        "별칭"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "INNER JOIN 과 ON 을 사용해 두 테이블을 키로 연결해 조회할 수 있다",
+        "테이블 별칭을 붙여 여러 테이블이 섞인 질의를 간결하게 쓸 수 있다",
+        "조인된 결과에 WHERE 와 GROUP BY 를 결합해 조건부 집계를 수행할 수 있다"
+      ],
+      "ordinal" : 5,
+      "prerequisites" : [
+        "sql.select-from-where",
+        "sql.group-by-having"
+      ],
+      "stableID" : "sql.inner-joins",
+      "summary" : "INNER JOIN 으로 키를 기준으로 두 테이블의 행을 연결해 하나의 결과로 만든다.",
+      "title" : "두 테이블을 키로 연결하기"
+    },
+    {
+      "concepts" : [
+        "LEFT JOIN",
+        "OUTER JOIN"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "LEFT JOIN 을 사용해 왼쪽 테이블의 모든 행을 결과에 유지할 수 있다",
+        "매칭되지 않은 행이 채워지는 값을 관찰해 OUTER JOIN 과 INNER JOIN 의 차이를 설명할 수 있다",
+        "LEFT JOIN 결과에서 매칭되지 않은 행만 골라내는 질의를 작성할 수 있다"
+      ],
+      "ordinal" : 6,
+      "prerequisites" : [
+        "sql.inner-joins"
+      ],
+      "stableID" : "sql.left-outer-joins",
+      "summary" : "LEFT JOIN 으로 매칭되지 않은 행까지 포함해 조회하고, 그 차이를 실행 결과로 확인한다.",
+      "title" : "없는 쪽까지 포함하는 조인"
+    },
+    {
+      "concepts" : [
+        "NULL",
+        "IS NULL",
+        "IS NOT NULL",
+        "COALESCE"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "= 과 <> 비교에 NULL 이 포함된 결과가 참도 거짓도 아님을 실행으로 확인하고 설명할 수 있다",
+        "IS NULL 과 IS NOT NULL 을 사용해 값이 없는 행과 있는 행을 정확히 골라낼 수 있다",
+        "COALESCE 를 사용해 NULL 을 지정한 기본값으로 바꿔 출력할 수 있다"
+      ],
+      "ordinal" : 7,
+      "prerequisites" : [
+        "sql.left-outer-joins",
+        "sql.select-from-where"
+      ],
+      "stableID" : "sql.null-handling",
+      "summary" : "NULL 이 비교와 집계에서 어떻게 동작하는지 실행으로 확인하고 안전하게 다룬다.",
+      "title" : "값이 없는 세계, NULL 다루기"
+    },
+    {
+      "concepts" : [
+        "서브쿼리",
+        "IN",
+        "스칼라 서브쿼리"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "WHERE 절의 스칼라 서브쿼리를 사용해 집계 결과를 비교 조건에 쓸 수 있다",
+        "IN 뒤에 서브쿼리를 넣어 목록에 속한 행만 조회할 수 있다",
+        "NOT IN 을 사용해 서브쿼리 결과에 속하지 않는 행을 골라낼 수 있다"
+      ],
+      "ordinal" : 8,
+      "prerequisites" : [
+        "sql.aggregate-functions",
+        "sql.null-handling"
+      ],
+      "stableID" : "sql.subqueries",
+      "summary" : "쿼리 안에 쿼리를 넣는 서브쿼리로, 이전 단계에서 알 수 없는 기준을 만든다.",
+      "title" : "쿼리 안에 쿼리 넣기"
+    },
+    {
+      "concepts" : [
+        "EXISTS",
+        "NOT EXISTS",
+        "상관 서브쿼리"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "EXISTS 를 사용해 서브쿼리 결과가 존재하는지 검사하는 질의를 작성할 수 있다",
+        "바깥 열을 참조하는 상관 서브쿼리를 작성해 행마다 조건을 검사할 수 있다",
+        "NOT EXISTS 를 사용해 대응되는 행이 하나도 없는 경우를 골라낼 수 있다"
+      ],
+      "ordinal" : 9,
+      "prerequisites" : [
+        "sql.subqueries",
+        "sql.inner-joins"
+      ],
+      "stableID" : "sql.exists-correlated-subqueries",
+      "summary" : "EXISTS 와 상관 서브쿼리로 '하나라도 있는가', '하나도 없는가'를 검사한다.",
+      "title" : "존재를 검사하는 질의"
+    },
+    {
+      "concepts" : [
+        "INSERT",
+        "UPDATE",
+        "DELETE",
+        "RETURNING"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "INSERT INTO ... VALUES 를 사용해 새 행을 테이블에 추가할 수 있다",
+        "UPDATE ... SET ... WHERE 를 사용해 조건에 맞는 기존 행의 값을 수정할 수 있다",
+        "DELETE ... WHERE 를 사용해 조건에 맞는 행만 안전하게 삭제할 수 있다"
+      ],
+      "ordinal" : 10,
+      "prerequisites" : [
+        "sql.select-from-where",
+        "sql.subqueries"
+      ],
+      "stableID" : "sql.insert-update-delete",
+      "summary" : "INSERT, UPDATE, DELETE 로 데이터를 추가·수정·삭제하고 실행 결과를 조회로 검증한다.",
+      "title" : "데이터를 바꾸는 문법"
+    },
+    {
+      "concepts" : [
+        "CREATE TABLE",
+        "PRIMARY KEY",
+        "FOREIGN KEY",
+        "NOT NULL",
+        "UNIQUE",
+        "CHECK"
+      ],
+      "estimatedMinutes" : 35,
+      "objectives" : [
+        "CREATE TABLE 로 열의 타입과 제약을 지정해 테이블을 직접 만들 수 있다",
+        "PRIMARY KEY 와 UNIQUE 제약이 위반되는 INSERT 를 시도해 제약이 지켜지는지 확인할 수 있다",
+        "FOREIGN KEY 와 CHECK 제약을 선언하고, 위반 데이터가 거부되는 것을 실행으로 관찰할 수 있다"
+      ],
+      "ordinal" : 11,
+      "prerequisites" : [
+        "sql.insert-update-delete",
+        "sql.inner-joins"
+      ],
+      "stableID" : "sql.create-table-constraints",
+      "summary" : "CREATE TABLE 로 테이블을 직접 만들고, 제약이 잘못된 데이터를 어떻게 막는지 확인한다.",
+      "title" : "테이블을 직접 만들고 규칙 세우기"
+    },
+    {
+      "concepts" : [
+        "OVER",
+        "PARTITION BY",
+        "ROW_NUMBER",
+        "RANK",
+        "LAG"
+      ],
+      "estimatedMinutes" : 40,
+      "objectives" : [
+        "OVER 와 PARTITION BY 를 사용해 그룹을 유지한 채로 행마다 집계 값을 붙일 수 있다",
+        "ROW_NUMBER 와 RANK 를 사용해 그룹 내 순위를 매기고 순위 조건으로 행을 골라낼 수 있다",
+        "LAG 를 사용해 이전 행의 값을 참조해 변화량을 계산할 수 있다"
+      ],
+      "ordinal" : 12,
+      "prerequisites" : [
+        "sql.group-by-having",
+        "sql.exists-correlated-subqueries",
+        "sql.create-table-constraints"
+      ],
+      "stableID" : "sql.window-functions",
+      "summary" : "OVER, PARTITION BY, ROW_NUMBER 로 그룹을 접지 않고 행마다 분석 값을 계산한다.",
+      "title" : "그룹을 유지한 채 계산하는 창 함수"
+    }
+  ],
+  "schemaVersion" : 1,
+  "trackSummary" : "SELECT 한 줄에서 시작해 조인, NULL 처리, 서브쿼리, 데이터 변경, 테이블 설계, 창 함수까지 단계적으로 올라가는 SQL 입문 트랙. 모든 레슨에서 직접 쿼리를 실행해 결과로 배운 것을 확인한다.",
+  "trackTitle" : "SQL 기초: 실행하며 배우는 데이터 조회"
+}

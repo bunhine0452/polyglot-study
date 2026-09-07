@@ -1,0 +1,2 @@
+joined_rows | matched_rows | unmatched_rows
+9 | 7 | 2

@@ -1,0 +1,7 @@
+Optional(90)
+nil
+kim: Optional(95)
+lee: Optional(85)
+park: Optional(60)
+sun: Optional(88)
+합격 인원: 3

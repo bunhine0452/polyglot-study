@@ -1,0 +1,7 @@
+SELECT 'city' AS city
+UNION ALL
+SELECT '대전'
+UNION ALL
+SELECT '부산'
+UNION ALL
+SELECT '서울';

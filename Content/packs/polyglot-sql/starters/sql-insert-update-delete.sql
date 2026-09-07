@@ -1,0 +1,2 @@
+-- customer 표에 새 고객 한 행을 INSERT 하고
+-- RETURNING 으로 추가된 행의 id 와 name 을 돌려받아 보라.

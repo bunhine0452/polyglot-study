@@ -91,19 +91,36 @@ struct SQLInProcessRunnerIsolationTests {
         }
     }
 
-    @Test("READONLY 라서 쓰기 문장은 전부 실패한다", arguments: [
+    /// 쓰기 문장 표본. 예전에는 이 여섯이 **전부 거부**되는 것이 계약이었다.
+    ///
+    /// 지금은 아니다 — SQL 커리큘럼의 3분의 1이 DML·DDL 이라 클론에 한해 열었다
+    /// (``SQLiteCage/WritePolicy``). 원본이 보호된다는 진짜 보장은 여전히
+    /// `originalDatabaseIsNeverTouched` 가 지키고, 폭주는 페이지 상한이 막는다
+    /// (`SQLWritePolicyTests`). 여기서는 **정책 스위치가 실제로 정책을 가른다**는 것만 본다.
+    static let writeStatements = [
         "INSERT INTO members (id, name) VALUES (99, 'x');",
         "UPDATE members SET name = 'x' WHERE id = 1;",
         "DELETE FROM members WHERE id = 1;",
         "CREATE TABLE t (x);",
         "CREATE TEMP TABLE t (x);",
         "DROP TABLE members;",
-    ])
-    func writesAreRejected(sql: String) async throws {
+    ]
+
+    @Test("읽기 전용으로 열면 쓰기 문장은 전부 거부된다", arguments: writeStatements)
+    func writesAreRejectedWhenReadOnly(sql: String) async throws {
         try await SQLTestDatabase.withDatabase { databaseURL in
-            let runner = InProcessRunner()
+            let runner = InProcessRunner(
+                configuration: SQLRunnerConfiguration(allowsWrites: false))
             let result = try await runner.execute(sql: sql, database: databaseURL)
             #expect(result.failed, "\(sql) 가 통과했습니다")
+        }
+    }
+
+    @Test("기본값(쓰기 허용)에서는 같은 문장이 클론 위에서 성공한다", arguments: writeStatements)
+    func writesSucceedOnCloneByDefault(sql: String) async throws {
+        try await SQLTestDatabase.withDatabase { databaseURL in
+            let result = try await InProcessRunner().execute(sql: sql, database: databaseURL)
+            #expect(!result.failed, "\(sql) 가 거부됐습니다: \(result.diagnostics.map(\.message))")
         }
     }
 

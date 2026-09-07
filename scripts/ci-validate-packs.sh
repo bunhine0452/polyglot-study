@@ -114,6 +114,20 @@ fi
 
 mkdir -p "$JUNIT_OUT_DIR"
 
+# ── learn-launcher 를 먼저 굽는다 ──────────────────────────────────────────
+#
+# `swift build --package-path Tools` 는 런처를 만들지 않는다. 런처는 LearnKit 의
+# 실행 타깃이고 Tools 의 의존성 그래프 밖이라, packtool 만 빌드하면 Swift·Python 블록의
+# 실행 게이트가 통째로 "실행 게이트를 태울 수 없다" 로 죽는다.
+#
+# 로컬에서는 개발자가 LearnKit 을 이미 빌드해 뒀기 때문에 이 구멍이 안 보인다.
+# 실제 CI 러너에서 Swift 팩 36건 실패로 처음 드러났다(2026-09-07). SQL 팩은 인프로세스
+# 러너라 런처가 필요 없어 같은 실행에서 통과했고, 그 대비가 원인을 바로 가리켰다.
+if [ "$allow_missing_toolchain" -eq 0 ]; then
+	echo "==> learn-launcher 빌드 (Tools 빌드로는 안 만들어진다)"
+	swift build --package-path "$REPO_ROOT/Packages/LearnKit" --product learn-launcher
+fi
+
 validate_flags=(--report junit)
 [ "$allow_missing_toolchain" -eq 1 ] && validate_flags+=(--allow-missing-toolchain)
 

@@ -40,16 +40,37 @@ swift run --package-path Tools packtool verify dist/p.tar.staging
 
 ## 상태
 
+> **⚠ 브랜치 상태부터 확인해라.** 릴리스 배선 커밋 6건이 `feat/release-wiring` 에 있고
+> **아직 푸시되지 않았다.** `main` 은 `origin/main` 그대로다. 다음 세션의 첫 행동은
+> 이 브랜치를 올려 PR 을 여는 것이다 (아래 "첫 할 일").
+>
+> ```bash
+> git log --oneline origin/main..feat/release-wiring   # 6건 (feat 4 + docs 2)
+> git status --short                                    # 비어 있어야 한다
+> ```
+
 - **저장소 공개**: https://github.com/bunhine0452/polyglot-study
   Pages 살아 있음 — `https://bunhine0452.github.io/polyglot-study/appcast.xml` (HTTP 200).
   앱이 실주소로 업데이트 확인까지 왕복 검증됨.
 - 워킹트리 깨끗. **LearnKit 1087 + Tools 307 = 1394 테스트**, 컴파일러 경고 0.
-  (Tools 가 둘 줄어든 것은 `SwiftGradingGate` 를 `RunnerKit` 으로 올리며 중복을 지웠기 때문이다.)
-- 플랜: `polyglot-core` **55/55**, `polyglot-surface` **54/58**, `polyglot-tutor` 0/25.
-- CI 4게이트가 실제 러너에서 통과 — swift test(RunnerKit 직렬 / LearnKit 나머지 / Tools),
-  build-app.sh, packtool validate.
+  (Tools 가 둘 줄어든 것은 `SwiftGradingGate` 를 `RunnerKit` 으로 올리며 중복을 지웠기 때문이다.
+  링커 경고 105건은 벤더 바이너리에서 나온다 — 아래 "앱 배선" 참고.)
+- **전체 스위트 5회 반복 통과**(2026-09-07): LearnKit 814(RunnerKit 제외) + RunnerKit 273(직렬)
+  + Tools 307, 15/15 초록.
+- 플랜: `polyglot-core` **55/55(archived)**, `polyglot-surface` **54/58**, `polyglot-tutor` 0/25.
+- CI **5게이트**가 PR 필수 체크로 걸려 있고 실제 러너에서 통과한 이력이 있다(PR #1) —
+  swift test 셋(RunnerKit 직렬 / LearnKit 나머지 / Tools), build-app.sh, packtool validate.
 - 콘텐츠: **MVP 3트랙 36편**(python·sql·swift 각 12편) 전부 4단계 게이트 통과.
   누적 생성 비용 약 $0.19, 레슨당 약 $0.005.
+
+## 첫 할 일
+
+1. `feat/release-wiring` 을 푸시하고 PR 을 연다. **5게이트가 초록인지 확인하고 머지**,
+   그다음 `git worktree list` 로 잔여 워크트리 0개인지 보고 브랜치를 지운다.
+   - CI 는 `macos-26` 러너에서 20~30분 걸린다. 게이트를 지켜보는 동안 **push 하지 마라** —
+     `concurrency.cancel-in-progress` 로 자기 잡을 취소시켜 영영 완주하지 못한다.
+2. 머지 후에는 **코드로 풀 수 있는 릴리스 항목이 없다**(아래). 아래 "열린 결정" 둘을
+   먼저 정하는 편이 다음 작업 범위를 정한다.
 
 ## 릴리스까지 남은 것
 
@@ -75,7 +96,9 @@ Sparkle 자동 업데이트는 ad-hoc 서명으로도 왕복이 검증돼 있다
 2. `.oculpm/planner/polyglot-surface.md` · `polyglot-tutor.md` — 항목마다 완료 기준이 붙어 있다.
 3. `.oculpm/discussion/mac-polyglot-learning-app/discussion.md` — **하단 토의 로그의 정정 항목을
    특히.** 본문에 낡은 기록이 남아 있을 수 있고 로그가 최신이다.
-4. `.oculpm/journal/20260906/` · `20260907/` — 일지 36건. 같은 함정을 다시 밟지 마라.
+4. `.oculpm/journal/20260906/` · `20260907/` — 일지 36건(14 + 22). 같은 함정을 다시 밟지 마라.
+   특히 `20260907/Errors/1732_error_actor-hop-corrupts-grade-result.md` — 이번 세션이
+   5회 반복에서만 잡은 결함이고, 이분법으로 좁힌 재현 표가 그대로 들어 있다.
 
 ## 작업 방식
 
@@ -143,6 +166,7 @@ python3 이 셋 있고 로그인 셸은 `/usr/bin` 의 3.9.6 을 준다(감지�
   상호 배제는 이제 **그 안에** 있다(`ExecutionLimits.swiftTemplateGate`, 2026-09-07) —
   호출자에 두면 새 호출자가 생길 때마다 같은 실수를 반복한다. 액터만으로는 부족하다
   (메서드 안에서 `await` 하면 재진입이 허용된다). 같은 종류의 버그를 세 번 밟았다.
+  **`grade`/`warmUp` 을 쪼개지 마라** — 아래 "동시성" 의 마지막 항목이 이유다.
 
 **sourcekit-lsp**
 
@@ -178,7 +202,7 @@ python3 이 셋 있고 로그인 셸은 `/usr/bin` 의 3.9.6 을 준다(감지�
 - 같은 종류의 버그가 넷째다. 앞의 셋은 "예열·재사용을 위해 공유한 자원에 동시 접근" 이었다.
 - **문지기는 `ConcurrencyGate` 하나뿐이다**(`RunnerKit/Concurrency`). 같은 모양의 세마포어를
   세 곳에 각자 적어 두고 있었다. 액터가 **아니라** 잠금인 이유: 액터로 만들면 `withSlot` 의
-  본문이 액터 위에서 돌아 본문·반환값에 `Sendable` 요구가 붙는다. 여기서는 상태만 잠금으로
+  본문이 액터 위에서 돌아 본문에 `Sendable` 요구가 붙는다. 여기서는 상태만 잠금으로
   지키고 본문은 호출자의 격리에서 돈다(`isolation: isolated (any Actor)? = #isolation`).
   반납이 동기 함수인 것도 그래서다 — `defer` 안에서 `Task { await … }` 로 미루면 안전 보장이
   취소 가능한 Task 에 매달린다.
@@ -240,7 +264,8 @@ python3 이 셋 있고 로그인 셸은 `/usr/bin` 의 3.9.6 을 준다(감지�
 - `Markup` 은 `Sendable` 이 아니다.
 - `FileManager.enumerator(at:)` 가 베이스 경로 심볼릭 링크를 해석한다(`/var`→`/private/var`).
   접두사 자르기가 **조용히 0개**를 반환한다.
-- 문법 스펙은 `docs/pack-format.md`, 샘플 팩은 `Content/packs/polyglot-mvp`.
+- 문법 스펙은 `docs/pack-format.md`, 샘플 팩은 `Content/fixtures/polyglot-mvp`
+  (배포되지 않는 픽스처다 — 아래 "앱 배선" 참고).
 
 **OpenRouter (`z-ai/glm-5.3-flash`)**
 
@@ -268,6 +293,17 @@ oculpm 이 `.env*` 경로를 일지 파일 목록에서 차단한다. 실왕복�
 재시도·백오프 검증은 루프백 서버로 한다.
 
 ## 열린 결정
+
+**먼저 정해야 다음 범위가 잡히는 둘.**
+
+- **MVP 를 3트랙 36편으로 낼 것인가, 트랙당 더 채울 것인가.** 지금 앱은 트랙당 12편을
+  보여주고 그 숫자를 팩에서 읽으므로 어느 쪽이든 화면은 정직하다. 더 채운다면
+  `lessongen outline` → `lesson` → `validate` 루프가 이미 돌아가고 비용은 레슨당 약 $0.005 다.
+- **나머지 7개 트랙을 "준비 중" 으로 둔 채 낼 것인가.** 지금은 대시보드·트랙 화면 둘 다
+  흐리게 "N 레슨 · 콘텐츠 준비 중" 으로 그린다. 릴리스에 포함해도 거짓말은 아니지만,
+  10트랙을 광고하는 첫인상이 3트랙 제품과 어긋나는지가 판단할 지점이다.
+
+**그 밖에.**
 
 - `SubmissionRecord` 의 `passed`/`failureKind` 를 `.passed`/`.failed(kind)` 한 열거형으로 합칠지.
   지금은 도메인 타입이 DB CHECK 가 거부하는 조합을 표현할 수 있다(아무도 안 밟고 있음).

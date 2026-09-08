@@ -34,3 +34,6 @@ Tools/.build/
 .env
 .env.*
 !.env.example
+
+# 아이콘 미리보기 — make-icon.py --png 이 만드는 생성물
+App/Icon/preview/

@@ -1,0 +1,274 @@
+{
+  "schemaVersion": 1,
+  "id": "connected-components",
+  "kind": "graph",
+  "nodes": [
+    {
+      "id": "0",
+      "label": "0",
+      "x": 50,
+      "y": 50
+    },
+    {
+      "id": "1",
+      "label": "1",
+      "x": 150,
+      "y": 50
+    },
+    {
+      "id": "2",
+      "label": "2",
+      "x": 250,
+      "y": 50
+    },
+    {
+      "id": "3",
+      "label": "3",
+      "x": 50,
+      "y": 150
+    },
+    {
+      "id": "4",
+      "label": "4",
+      "x": 150,
+      "y": 150
+    },
+    {
+      "id": "5",
+      "label": "5",
+      "x": 50,
+      "y": 250
+    },
+    {
+      "id": "6",
+      "label": "6",
+      "x": 150,
+      "y": 250
+    }
+  ],
+  "edges": [
+    {
+      "from": "0",
+      "to": "1"
+    },
+    {
+      "from": "1",
+      "to": "2"
+    },
+    {
+      "from": "3",
+      "to": "4"
+    },
+    {
+      "from": "5",
+      "to": "6"
+    }
+  ],
+  "frames": [
+    {
+      "caption": "정점 0부터 스캔합니다. 아직 아무 데도 방문하지 않았습니다.",
+      "nodeStates": []
+    },
+    {
+      "caption": "0은 미방문이므로 새 컴포넌트 1을 시작하고 DFS로 이웃을 펼칩니다: 0→1.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "current"
+        },
+        {
+          "id": "1",
+          "role": "current"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "1의 이웃 2로 계속 뻗어 갑니다. 컴포넌트 1: [0, 1, 2].",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "current"
+        },
+        {
+          "id": "1",
+          "role": "current"
+        },
+        {
+          "id": "2",
+          "role": "current"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "current"
+        },
+        {
+          "from": "1",
+          "to": "2",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "컴포넌트 1이 끝났습니다. 다음 미방문 정점 3에서 컴포넌트 2를 시작합니다: [3, 4].",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "current"
+        },
+        {
+          "id": "4",
+          "role": "current"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "4",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "컴포넌트 2가 끝났습니다. 다음 미방문 정점 5에서 컴포넌트 3을 시작합니다: [5, 6].",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        },
+        {
+          "id": "5",
+          "role": "current"
+        },
+        {
+          "id": "6",
+          "role": "current"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "5",
+          "to": "6",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "모든 정점을 다 봤습니다. 연결 요소는 3개 — [0,1,2], [3,4], [5,6].",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        },
+        {
+          "id": "5",
+          "role": "visited"
+        },
+        {
+          "id": "6",
+          "role": "visited"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "5",
+          "to": "6",
+          "role": "visited"
+        }
+      ]
+    }
+  ]
+}

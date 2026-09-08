@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "prefix-sum",
+  "kind": "array",
+  "values": [4, 2, 7, 1, 5, 3, 8],
+  "frames": [
+    {
+      "caption": "배열 [4, 2, 7, 1, 5, 3, 8]의 구간 합을 매번 더하지 않고 빠르게 구하려고 누적합(prefix)을 먼저 만듭니다.",
+      "segments": [{ "role": "highlighted", "start": 0, "end": 6 }]
+    },
+    {
+      "caption": "prefix[i+1]은 xs[0]부터 xs[i]까지의 합입니다. 끝까지 누적하면 prefix = [0, 4, 6, 13, 14, 19, 22, 30] 입니다.",
+      "segments": [{ "role": "highlighted", "start": 0, "end": 6 }]
+    },
+    {
+      "caption": "xs[0..=2] 합을 구합니다: prefix[3] - prefix[0] = 13 - 0 = 13. 세 칸을 더하는 대신 뺄셈 한 번입니다.",
+      "segments": [{ "role": "highlighted", "start": 0, "end": 2 }, { "role": "excluded", "start": 3, "end": 6 }]
+    },
+    {
+      "caption": "xs[3..=5] 합: prefix[6] - prefix[3] = 22 - 13 = 9.",
+      "segments": [{ "role": "highlighted", "start": 3, "end": 5 }, { "role": "excluded", "start": 0, "end": 2 }, { "role": "excluded", "start": 6, "end": 6 }]
+    },
+    {
+      "caption": "xs[1..=6] 합: prefix[7] - prefix[1] = 30 - 4 = 26.",
+      "segments": [{ "role": "highlighted", "start": 1, "end": 6 }, { "role": "excluded", "start": 0, "end": 0 }]
+    },
+    {
+      "caption": "xs[0..=6] 합: prefix[7] - prefix[0] = 30 - 0 = 30 — 배열 전체 합입니다.",
+      "segments": [{ "role": "highlighted", "start": 0, "end": 6 }]
+    }
+  ]
+}

@@ -3,7 +3,7 @@ internal import LearnCore
 internal import Foundation
 internal import PackReport
 
-/// 구조 단계 — 매니페스트 디코딩·잠금 위반·디스크와의 양방향 대조.
+/// 구조 단계 — 매니페스트 디코딩·잠금 위반·디스크와의 양방향 대조·시각화 사이드카 디코딩.
 ///
 /// **툴체인을 전혀 쓰지 않는다.** python 도 swiftc 도 없는 머신에서 그대로 돈다.
 ///
@@ -16,6 +16,8 @@ enum StructuralStage {
     static func run(pack: ContentPack, into table: inout FailureTable) {
         checkLock(pack: pack, into: &table)
         compareFiles(pack: pack, into: &table)
+        // 실행이 필요 없는 구조 검사라는 성격이 같다 — 자세한 이유는 ``VisualsStage`` 참고.
+        VisualsStage.run(pack: pack, into: &table)
     }
 
     // MARK: - stableids.lock

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "binary-search",
+  "kind": "array",
+  "values": [2, 5, 8, 12, 16, 23, 38, 56, 72, 91],
+  "frames": [
+    {
+      "caption": "정렬된 배열에서 16 을 찾습니다. 후보는 아직 열 칸 전부입니다.",
+      "pointers": [{ "name": "lo", "index": 0 }, { "name": "hi", "index": 9 }],
+      "segments": [{ "role": "highlighted", "start": 0, "end": 9 }]
+    },
+    {
+      "caption": "가운데 xs[5] = 23 을 봅니다. 16 보다 크니 오른쪽 절반에는 답이 없습니다.",
+      "pointers": [{ "name": "lo", "index": 0 }, { "name": "mid", "index": 5 }, { "name": "hi", "index": 9 }]
+    },
+    {
+      "caption": "오른쪽을 버립니다. 한 번 비교로 후보가 열에서 다섯으로 줄었습니다.",
+      "pointers": [{ "name": "lo", "index": 0 }, { "name": "hi", "index": 4 }],
+      "segments": [{ "role": "excluded", "start": 5, "end": 9 }]
+    },
+    {
+      "caption": "가운데 xs[2] = 8 은 16 보다 작습니다. 이번엔 왼쪽이 사라집니다.",
+      "pointers": [{ "name": "lo", "index": 0 }, { "name": "mid", "index": 2 }, { "name": "hi", "index": 4 }],
+      "segments": [{ "role": "excluded", "start": 5, "end": 9 }]
+    },
+    {
+      "caption": "후보가 둘 남았습니다. 8 자리도 답이 아니므로 lo 는 그 다음 칸으로 갑니다.",
+      "pointers": [{ "name": "lo", "index": 3 }, { "name": "hi", "index": 4 }],
+      "segments": [{ "role": "excluded", "start": 0, "end": 2 }, { "role": "excluded", "start": 5, "end": 9 }]
+    },
+    {
+      "caption": "가운데 xs[4] = 16 — 찾았습니다. 열 칸을 세 번 비교로 끝냈습니다.",
+      "pointers": [{ "name": "답", "index": 4 }],
+      "segments": [{ "role": "excluded", "start": 0, "end": 3 }, { "role": "excluded", "start": 5, "end": 9 }, { "role": "highlighted", "start": 4, "end": 4 }]
+    }
+  ]
+}

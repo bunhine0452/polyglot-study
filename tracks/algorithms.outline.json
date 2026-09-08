@@ -1,0 +1,701 @@
+{
+  "generatorModel": "claude-sonnet-5 (hand-authored)",
+  "language": "rust",
+  "lessons": [
+    {
+      "concepts": [
+        "정렬된 배열",
+        "이진 탐색",
+        "시간복잡도",
+        "O(log n)",
+        "O(n)"
+      ],
+      "estimatedMinutes": 25,
+      "objectives": [
+        "정렬된 배열에서 이진 탐색으로 값을 찾는 과정을 직접 진행할 수 있다",
+        "탐색 범위가 매 단계 절반으로 줄어드는 이유를 설명할 수 있다",
+        "선형 탐색과 비교해 O(log n)이 O(n)보다 왜 빠른지 입력 크기로 설명할 수 있다"
+      ],
+      "ordinal": 1,
+      "prerequisites": [],
+      "stableID": "algorithms.binary-search",
+      "summary": "정렬된 배열에서 절반씩 줄여가며 값을 찾는 이진 탐색을 만들고, 그 과정에서 왜 O(log n)이 O(n)보다 빠른지 눈으로 확인한다.",
+      "title": "이진 탐색: 절반씩 줄이며 찾기",
+      "visual": "array"
+    },
+    {
+      "concepts": [
+        "하한(lower bound)",
+        "상한(upper bound)",
+        "회전 정렬 배열",
+        "경계 조건"
+      ],
+      "estimatedMinutes": 30,
+      "objectives": [
+        "중복된 값 중 첫 번째·마지막 위치를 이진 탐색으로 찾을 수 있다",
+        "탐색 범위를 좁히는 조건을 바꿔 하한과 상한을 구분할 수 있다",
+        "회전된 정렬 배열에서 어느 절반이 정렬 상태인지 판단해 탐색할 수 있다"
+      ],
+      "ordinal": 2,
+      "prerequisites": [
+        "algorithms.binary-search"
+      ],
+      "stableID": "algorithms.binary-search-variants",
+      "summary": "기본 이진 탐색을 변형해 중복값의 첫/마지막 위치를 찾고, 한 번 회전된 정렬 배열에서도 탐색이 가능함을 확인한다.",
+      "title": "이진 탐색 응용: 첫 위치·마지막 위치·회전 배열",
+      "visual": "array"
+    },
+    {
+      "concepts": [
+        "인접 교환",
+        "O(n^2)",
+        "제자리 정렬"
+      ],
+      "estimatedMinutes": 20,
+      "objectives": [
+        "인접한 두 값을 비교·교환해 배열을 정렬할 수 있다",
+        "바깥/안쪽 반복이 몇 번 도는지 세어 O(n^2)을 도출할 수 있다",
+        "이미 정렬된 배열에서 조기 종료로 최선의 경우를 앞당길 수 있다"
+      ],
+      "ordinal": 3,
+      "prerequisites": [
+        "algorithms.binary-search"
+      ],
+      "stableID": "algorithms.bubble-sort",
+      "summary": "이웃한 두 값을 비교해 교환하는 것만으로 배열이 정렬되는 과정을 보고, O(n^2)이 실제로 얼마나 느려지는지 가늠한다.",
+      "title": "버블 정렬: 인접 교환으로 정렬하기",
+      "visual": "array"
+    },
+    {
+      "concepts": [
+        "최솟값 탐색",
+        "교환 횟수",
+        "불안정 정렬"
+      ],
+      "estimatedMinutes": 20,
+      "objectives": [
+        "남은 구간의 최솟값을 찾아 정렬된 부분 뒤에 배치할 수 있다",
+        "버블 정렬과 비교해 교환 횟수가 줄어드는 이유를 설명할 수 있다",
+        "선택 정렬이 안정 정렬이 아닐 수 있는 예를 들 수 있다"
+      ],
+      "ordinal": 4,
+      "prerequisites": [
+        "algorithms.bubble-sort"
+      ],
+      "stableID": "algorithms.selection-sort",
+      "summary": "남은 구간에서 최솟값을 찾아 맨 앞과 교환하는 선택 정렬을 만들고, 버블 정렬과 비교 횟수·교환 횟수가 어떻게 다른지 본다.",
+      "title": "선택 정렬: 최솟값을 찾아 앞으로",
+      "visual": "array"
+    },
+    {
+      "concepts": [
+        "정렬된 부분",
+        "밀어 넣기",
+        "적응 정렬(adaptive)"
+      ],
+      "estimatedMinutes": 20,
+      "objectives": [
+        "정렬된 앞부분에 다음 값을 알맞은 위치까지 밀어 넣을 수 있다",
+        "이미 정렬에 가까운 입력에서 삽입 정렬이 O(n)에 가까워지는 이유를 설명할 수 있다",
+        "세 가지 O(n^2) 정렬(버블·선택·삽입)의 비교 방식 차이를 정리할 수 있다"
+      ],
+      "ordinal": 5,
+      "prerequisites": [
+        "algorithms.selection-sort"
+      ],
+      "stableID": "algorithms.insertion-sort",
+      "summary": "정렬된 앞부분에 다음 값을 알맞은 자리로 밀어 넣는 삽입 정렬을 만들고, 거의 정렬된 입력에서 왜 유리한지 확인한다.",
+      "title": "삽입 정렬: 이미 정렬된 부분에 끼워 넣기",
+      "visual": "array"
+    },
+    {
+      "concepts": [
+        "베이스 케이스",
+        "호출 스택",
+        "분할정복"
+      ],
+      "estimatedMinutes": 25,
+      "objectives": [
+        "베이스 케이스와 재귀 케이스를 갖춘 재귀 함수를 정의할 수 있다",
+        "재귀 호출이 스택에 쌓였다가 베이스 케이스에서 풀리는 과정을 추적할 수 있다",
+        "베이스 케이스가 빠지면 무한히 재귀하며 스택이 넘친다는 것을 확인할 수 있다"
+      ],
+      "ordinal": 6,
+      "prerequisites": [
+        "algorithms.binary-search"
+      ],
+      "stableID": "algorithms.recursion-basics",
+      "summary": "문제를 더 작은 같은 모양의 문제로 쪼개고 스스로를 호출해 푸는 재귀를 만든다. 베이스 케이스와 호출 스택이 이 트랙 뒤쪽 절반의 기반이 된다.",
+      "title": "재귀: 자신을 다시 부르는 함수",
+      "visual": "array"
+    },
+    {
+      "concepts": [
+        "분할정복",
+        "병합",
+        "O(n log n)",
+        "안정 정렬"
+      ],
+      "estimatedMinutes": 35,
+      "objectives": [
+        "배열을 반으로 나누고 재귀로 각각 정렬한 뒤 병합할 수 있다",
+        "두 정렬된 배열을 하나로 합치는 과정을 O(n)에 구현할 수 있다",
+        "분할 깊이와 병합 비용을 곱해 O(n log n)을 도출할 수 있다"
+      ],
+      "ordinal": 7,
+      "prerequisites": [
+        "algorithms.recursion-basics"
+      ],
+      "stableID": "algorithms.merge-sort",
+      "summary": "배열을 반으로 계속 나눠 재귀로 정렬한 뒤 두 정렬된 절반을 합친다. O(n log n)이 어디서 나오는지, 왜 안정 정렬인지 본다.",
+      "title": "병합 정렬: 나누고 정복하고 합치기",
+      "visual": "array"
+    },
+    {
+      "concepts": [
+        "피벗",
+        "분할(partition)",
+        "평균 O(n log n)",
+        "최악 O(n^2)"
+      ],
+      "estimatedMinutes": 35,
+      "objectives": [
+        "피벗을 기준으로 배열을 작은 값과 큰 값으로 분할할 수 있다",
+        "분할된 두 구간을 재귀로 각각 정렬해 전체를 정렬할 수 있다",
+        "피벗을 잘못 고르면 최악의 경우 O(n^2)이 되는 입력을 만들 수 있다"
+      ],
+      "ordinal": 8,
+      "prerequisites": [
+        "algorithms.merge-sort"
+      ],
+      "stableID": "algorithms.quick-sort",
+      "summary": "피벗을 기준으로 작은 값과 큰 값을 나누는 퀵 정렬을 만든다. 병합 정렬과 달리 제자리에서 정렬되지만 최악의 경우 O(n^2)이 되는 이유를 확인한다.",
+      "title": "퀵 정렬: 피벗으로 나누기",
+      "visual": "array"
+    },
+    {
+      "concepts": [
+        "시간복잡도 비교",
+        "안정성",
+        "추가 메모리(공간복잡도)"
+      ],
+      "estimatedMinutes": 25,
+      "objectives": [
+        "다섯 정렬의 최선·평균·최악 시간복잡도를 표로 정리할 수 있다",
+        "안정 정렬이 필요한 상황을 예로 들 수 있다",
+        "입력 크기와 정렬 상태에 따라 적절한 정렬을 고를 수 있다"
+      ],
+      "ordinal": 9,
+      "prerequisites": [
+        "algorithms.bubble-sort",
+        "algorithms.selection-sort",
+        "algorithms.insertion-sort",
+        "algorithms.merge-sort",
+        "algorithms.quick-sort"
+      ],
+      "stableID": "algorithms.sorting-comparison",
+      "summary": "버블·선택·삽입·병합·퀵 정렬을 시간복잡도·안정성·추가 메모리 기준으로 나란히 놓고, 입력 상황에 따라 어떤 정렬이 유리한지 판단한다.",
+      "title": "정렬 다섯 가지 비교: 언제 무엇을 쓸까",
+      "visual": "array"
+    },
+    {
+      "concepts": [
+        "양 끝 포인터",
+        "O(n)",
+        "정렬 전제"
+      ],
+      "estimatedMinutes": 25,
+      "objectives": [
+        "정렬된 배열에서 두 포인터를 양 끝에 두고 조건에 따라 이동시킬 수 있다",
+        "중첩 반복 O(n^2) 대신 투 포인터로 O(n)에 두 수의 합 문제를 풀 수 있다",
+        "투 포인터가 정렬을 전제로 한다는 것을 설명할 수 있다"
+      ],
+      "ordinal": 10,
+      "prerequisites": [
+        "algorithms.sorting-comparison"
+      ],
+      "stableID": "algorithms.two-pointers",
+      "summary": "정렬된 배열의 양 끝에서 시작해 조건에 따라 안쪽으로 좁혀가는 투 포인터로, 중첩 반복 없이 O(n)에 두 수의 합 같은 문제를 푼다.",
+      "title": "투 포인터: 두 지점을 좁혀가기",
+      "visual": "array"
+    },
+    {
+      "concepts": [
+        "누적합",
+        "구간 합",
+        "전처리"
+      ],
+      "estimatedMinutes": 20,
+      "objectives": [
+        "배열의 누적합 배열을 O(n)에 만들 수 있다",
+        "누적합 배열에서 두 값을 빼 임의 구간의 합을 O(1)에 구할 수 있다",
+        "구간 합 질의를 매번 새로 더하는 방식과 비교해 이득을 설명할 수 있다"
+      ],
+      "ordinal": 11,
+      "prerequisites": [
+        "algorithms.two-pointers"
+      ],
+      "stableID": "algorithms.prefix-sum",
+      "summary": "누적합 배열을 한 번 만들어 두면 어떤 구간의 합도 뺄셈 한 번으로 구할 수 있다. 매번 구간을 더하는 것과 비교해 얻는 이득을 본다.",
+      "title": "프리픽스 합: 구간 합을 미리 쌓아두기",
+      "visual": "array"
+    },
+    {
+      "concepts": [
+        "윈도우(구간)",
+        "확장과 축소",
+        "O(n)"
+      ],
+      "estimatedMinutes": 30,
+      "objectives": [
+        "크기가 고정된 윈도우를 옮기며 구간 합의 최댓값을 O(n)에 구할 수 있다",
+        "조건에 따라 윈도우를 늘리거나 줄이는 가변 윈도우를 구현할 수 있다",
+        "투 포인터·프리픽스 합과 슬라이딩 윈도우의 관계를 설명할 수 있다"
+      ],
+      "ordinal": 12,
+      "prerequisites": [
+        "algorithms.prefix-sum",
+        "algorithms.two-pointers"
+      ],
+      "stableID": "algorithms.sliding-window",
+      "summary": "고정되거나 늘었다 줄었다 하는 구간(창)을 배열 위에서 옮기며, 매번 처음부터 계산하지 않고도 조건을 만족하는 최적 구간을 O(n)에 찾는다.",
+      "title": "슬라이딩 윈도우: 창을 옮기며 훑기",
+      "visual": "array"
+    },
+    {
+      "concepts": [
+        "정점",
+        "간선",
+        "인접 리스트",
+        "인접 행렬",
+        "방향/무방향"
+      ],
+      "estimatedMinutes": 25,
+      "objectives": [
+        "간선 목록을 인접 리스트로 변환해 각 정점의 이웃을 저장할 수 있다",
+        "같은 그래프를 인접 행렬로도 표현할 수 있다",
+        "정점·간선 수에 따라 인접 리스트와 인접 행렬 중 무엇이 메모리에 유리한지 판단할 수 있다"
+      ],
+      "ordinal": 13,
+      "prerequisites": [
+        "algorithms.recursion-basics"
+      ],
+      "stableID": "algorithms.graph-representation",
+      "summary": "정점과 간선으로 이루어진 그래프를 인접 리스트와 인접 행렬 두 가지로 표현해보고, 각각이 언제 유리한지 메모리와 조회 속도로 비교한다.",
+      "title": "그래프 표현: 인접 리스트와 인접 행렬",
+      "visual": "graph"
+    },
+    {
+      "concepts": [
+        "큐",
+        "방문 표시",
+        "레벨(거리)"
+      ],
+      "estimatedMinutes": 30,
+      "objectives": [
+        "큐를 이용해 시작 정점에서부터 BFS로 모든 정점을 방문할 수 있다",
+        "방문 표시를 하지 않으면 같은 정점을 무한히 재방문한다는 것을 확인할 수 있다",
+        "BFS의 방문 순서가 시작 정점으로부터의 거리(레벨) 순서와 같다는 것을 설명할 수 있다"
+      ],
+      "ordinal": 14,
+      "prerequisites": [
+        "algorithms.graph-representation"
+      ],
+      "stableID": "algorithms.bfs",
+      "summary": "큐를 이용해 시작 정점에서 가까운 정점부터 차례로 방문하는 BFS를 만들고, 방문 순서가 왜 '레벨' 단위로 퍼지는지 확인한다.",
+      "title": "너비 우선 탐색(BFS): 가까운 정점부터",
+      "visual": "graph"
+    },
+    {
+      "concepts": [
+        "최단 거리",
+        "부모 포인터",
+        "경로 복원"
+      ],
+      "estimatedMinutes": 25,
+      "objectives": [
+        "BFS로 방문하며 각 정점까지의 거리를 기록할 수 있다",
+        "부모 포인터를 남겨 시작 정점부터 목표 정점까지의 경로를 복원할 수 있다",
+        "가중치가 없는 그래프에서 BFS가 왜 최단 경로를 보장하는지 설명할 수 있다"
+      ],
+      "ordinal": 15,
+      "prerequisites": [
+        "algorithms.bfs"
+      ],
+      "stableID": "algorithms.shortest-path-unweighted",
+      "summary": "간선에 가중치가 없을 때 BFS 한 번으로 시작 정점에서 모든 정점까지의 최단 거리와 경로를 구한다.",
+      "title": "가중치 없는 최단 경로: BFS로 거리 구하기",
+      "visual": "graph"
+    },
+    {
+      "concepts": [
+        "재귀 호출",
+        "명시적 스택",
+        "역추적(backtrack)"
+      ],
+      "estimatedMinutes": 30,
+      "objectives": [
+        "재귀로 DFS를 구현해 그래프의 모든 정점을 방문할 수 있다",
+        "같은 DFS를 명시적 스택으로 재귀 없이 구현할 수 있다",
+        "DFS와 BFS의 방문 순서가 왜 다른지 예시 그래프로 설명할 수 있다"
+      ],
+      "ordinal": 16,
+      "prerequisites": [
+        "algorithms.graph-representation"
+      ],
+      "stableID": "algorithms.dfs",
+      "summary": "한 방향으로 갈 수 있는 데까지 파고들었다가 막히면 되돌아오는 DFS를 재귀와 스택 두 가지 방식으로 만든다.",
+      "title": "깊이 우선 탐색(DFS): 갈 수 있는 데까지",
+      "visual": "graph"
+    },
+    {
+      "concepts": [
+        "연결 요소",
+        "미방문 정점",
+        "그래프 순회 재시작"
+      ],
+      "estimatedMinutes": 25,
+      "objectives": [
+        "방문하지 않은 정점이 남아 있는 한 탐색을 새로 시작해 모든 연결 요소를 찾을 수 있다",
+        "BFS와 DFS 둘 중 어느 것으로 구현해도 같은 개수의 연결 요소가 나오는 이유를 설명할 수 있다",
+        "정점과 간선 수에 따른 연결 요소 탐색의 시간복잡도를 말할 수 있다"
+      ],
+      "ordinal": 17,
+      "prerequisites": [
+        "algorithms.bfs",
+        "algorithms.dfs"
+      ],
+      "stableID": "algorithms.connected-components",
+      "summary": "BFS나 DFS로 아직 방문하지 않은 정점에서 계속 탐색을 새로 시작해, 그래프가 서로 연결되지 않은 몇 개의 조각으로 나뉘는지 센다.",
+      "title": "연결 요소: 그래프가 몇 조각인가",
+      "visual": "graph"
+    },
+    {
+      "concepts": [
+        "방문 중/방문 완료",
+        "역방향 간선(back edge)",
+        "방향 그래프"
+      ],
+      "estimatedMinutes": 30,
+      "objectives": [
+        "DFS 도중 현재 경로에 있는 정점을 표시해 역방향 간선을 찾을 수 있다",
+        "역방향 간선의 존재로 방향 그래프에 사이클이 있는지 판정할 수 있다",
+        "무방향 그래프에서는 부모 간선을 예외로 두어야 하는 이유를 설명할 수 있다"
+      ],
+      "ordinal": 18,
+      "prerequisites": [
+        "algorithms.dfs"
+      ],
+      "stableID": "algorithms.cycle-detection",
+      "summary": "DFS로 정점을 방문 중·방문 완료로 구분해, 방향 그래프에 사이클이 있는지 판정한다.",
+      "title": "사이클 탐지: DFS로 순환을 찾기",
+      "visual": "graph"
+    },
+    {
+      "concepts": [
+        "DAG",
+        "후위 순서",
+        "선행 관계"
+      ],
+      "estimatedMinutes": 30,
+      "objectives": [
+        "그래프에 사이클이 없는지 먼저 확인해야 위상 정렬이 가능한 이유를 설명할 수 있다",
+        "DFS의 후위 순서를 뒤집어 위상 정렬 결과를 만들 수 있다",
+        "같은 DAG에 위상 정렬 결과가 여럿일 수 있는 이유를 예로 들 수 있다"
+      ],
+      "ordinal": 19,
+      "prerequisites": [
+        "algorithms.cycle-detection"
+      ],
+      "stableID": "algorithms.topological-sort",
+      "summary": "선행 관계가 있는 작업들을, 사이클이 없는 방향 그래프(DAG) 위에서 DFS 후위 순서를 뒤집어 하나의 순서로 줄 세운다.",
+      "title": "위상 정렬: 순서가 있는 일을 줄 세우기",
+      "visual": "graph"
+    },
+    {
+      "concepts": [
+        "가중치",
+        "거리 갱신(relaxation)",
+        "탐욕적 선택"
+      ],
+      "estimatedMinutes": 35,
+      "objectives": [
+        "시작 정점의 거리를 0, 나머지를 무한대로 두고 거리 배열을 초기화할 수 있다",
+        "미확정 정점 중 거리가 가장 짧은 정점을 골라 이웃의 거리를 갱신할 수 있다",
+        "가중치가 모두 0 이상이어야 다익스트라가 성립하는 이유를 설명할 수 있다"
+      ],
+      "ordinal": 20,
+      "prerequisites": [
+        "algorithms.shortest-path-unweighted"
+      ],
+      "stableID": "algorithms.dijkstra",
+      "summary": "간선마다 가중치가 있을 때, 아직 확정되지 않은 정점 중 거리가 가장 짧은 정점을 매번 골라 거리를 갱신하는 다익스트라 알고리즘을 만든다.",
+      "title": "다익스트라: 가중 그래프의 최단 경로",
+      "visual": "graph"
+    },
+    {
+      "concepts": [
+        "루트",
+        "부모/자식",
+        "리프",
+        "높이",
+        "이진 트리"
+      ],
+      "estimatedMinutes": 20,
+      "objectives": [
+        "트리가 사이클 없는 연결 그래프의 특수한 형태임을 설명할 수 있다",
+        "루트·부모·자식·리프·높이 용어로 주어진 트리를 설명할 수 있다",
+        "이진 트리를 노드와 왼쪽/오른쪽 자식 포인터로 표현할 수 있다"
+      ],
+      "ordinal": 21,
+      "prerequisites": [
+        "algorithms.graph-representation"
+      ],
+      "stableID": "algorithms.tree-basics",
+      "summary": "트리를 사이클이 없는 연결 그래프로 보고, 루트·부모·자식·리프·높이 같은 용어를 정의한 뒤 이진 트리를 노드와 포인터로 표현한다.",
+      "title": "트리 표현: 사이클 없는 그래프",
+      "visual": "graph"
+    },
+    {
+      "concepts": [
+        "전위 순회",
+        "중위 순회",
+        "후위 순회",
+        "재귀"
+      ],
+      "estimatedMinutes": 25,
+      "objectives": [
+        "전위·중위·후위 순회를 각각 재귀로 구현할 수 있다",
+        "같은 트리에서 세 순회의 방문 순서가 어떻게 다른지 비교할 수 있다",
+        "이진 탐색 트리의 중위 순회가 오름차순이 되는 이유를 짐작할 수 있다"
+      ],
+      "ordinal": 22,
+      "prerequisites": [
+        "algorithms.tree-basics",
+        "algorithms.dfs"
+      ],
+      "stableID": "algorithms.tree-traversal-dfs",
+      "summary": "재귀로 트리를 훑는 세 가지 순서 — 전위·중위·후위 — 를 만들고, 같은 트리라도 순서에 따라 결과가 왜 달라지는지 본다.",
+      "title": "트리 순회: 전위·중위·후위",
+      "visual": "graph"
+    },
+    {
+      "concepts": [
+        "레벨 순회",
+        "큐",
+        "층 단위 방문"
+      ],
+      "estimatedMinutes": 25,
+      "objectives": [
+        "큐를 이용해 트리를 레벨 단위로 방문하는 순회를 구현할 수 있다",
+        "레벨 순회 결과를 층별로 묶어 출력할 수 있다",
+        "재귀 기반 순회와 큐 기반 순회의 방문 순서 차이를 설명할 수 있다"
+      ],
+      "ordinal": 23,
+      "prerequisites": [
+        "algorithms.tree-traversal-dfs",
+        "algorithms.bfs"
+      ],
+      "stableID": "algorithms.tree-traversal-bfs",
+      "summary": "큐를 이용해 트리를 위에서부터 한 층씩 방문하는 레벨 순회(BFS)를 만들고, 전위·중위·후위 순회와 무엇이 다른지 비교한다.",
+      "title": "트리의 레벨 순회: 층마다 훑기",
+      "visual": "graph"
+    },
+    {
+      "concepts": [
+        "왼쪽 < 루트 < 오른쪽",
+        "삽입",
+        "탐색",
+        "트리 높이"
+      ],
+      "estimatedMinutes": 30,
+      "objectives": [
+        "값의 크기를 비교하며 이진 탐색 트리에 새 값을 삽입할 수 있다",
+        "같은 규칙으로 값을 탐색해 있는지 없는지 판정할 수 있다",
+        "삽입·탐색의 시간복잡도가 트리의 높이에 따라 달라지는 이유를 설명할 수 있다"
+      ],
+      "ordinal": 24,
+      "prerequisites": [
+        "algorithms.tree-traversal-dfs"
+      ],
+      "stableID": "algorithms.bst",
+      "summary": "왼쪽 서브트리는 더 작은 값, 오른쪽 서브트리는 더 큰 값이라는 규칙 하나로 삽입과 탐색을 O(트리 높이)에 해내는 이진 탐색 트리를 만든다.",
+      "title": "이진 탐색 트리: 삽입과 탐색",
+      "visual": "graph"
+    },
+    {
+      "concepts": [
+        "삭제 경우 세 가지",
+        "중위 후속자",
+        "편향 트리",
+        "균형"
+      ],
+      "estimatedMinutes": 30,
+      "objectives": [
+        "자식이 0개·1개·2개인 노드를 각각 다른 방식으로 삭제할 수 있다",
+        "삭제할 노드의 자식이 둘일 때 중위 후속자로 대체하는 이유를 설명할 수 있다",
+        "값을 오름차순으로만 삽입하면 트리가 한 줄로 늘어져 성능이 O(n)까지 떨어지는 것을 확인할 수 있다"
+      ],
+      "ordinal": 25,
+      "prerequisites": [
+        "algorithms.bst"
+      ],
+      "stableID": "algorithms.bst-delete-and-balance",
+      "summary": "이진 탐색 트리에서 자식이 0·1·2개인 노드를 각각 다르게 삭제하고, 값을 한쪽으로만 넣으면 트리가 한 줄로 늘어져 O(n)까지 느려짐을 확인한다.",
+      "title": "BST 삭제와 균형: 모양이 성능을 정한다",
+      "visual": "graph"
+    },
+    {
+      "concepts": [
+        "완전 이진 트리",
+        "힙 속성",
+        "sift-up/sift-down",
+        "배열 표현"
+      ],
+      "estimatedMinutes": 30,
+      "objectives": [
+        "힙을 배열로 표현하고 부모·자식 인덱스를 계산할 수 있다",
+        "삽입 시 sift-up, 최솟값 추출 시 sift-down으로 힙 속성을 유지할 수 있다",
+        "힙이 완전 이진 트리라서 삽입·추출이 항상 O(log n)인 이유를 이진 탐색 트리와 비교해 설명할 수 있다"
+      ],
+      "ordinal": 26,
+      "prerequisites": [
+        "algorithms.tree-traversal-bfs",
+        "algorithms.bst-delete-and-balance"
+      ],
+      "stableID": "algorithms.heap-priority-queue",
+      "summary": "부모가 항상 자식보다 작다(또는 크다)는 규칙만으로 모양이 절대 무너지지 않는 완전 이진 트리, 힙을 배열로 구현하고 우선순위 큐로 쓴다.",
+      "title": "힙과 우선순위 큐: 항상 균형 잡힌 트리",
+      "visual": "graph"
+    },
+    {
+      "concepts": [
+        "부분 문제 중복",
+        "캐시",
+        "하향식(top-down)"
+      ],
+      "estimatedMinutes": 30,
+      "objectives": [
+        "재귀 호출 중 같은 입력이 반복되는 것을 호출 트리로 확인할 수 있다",
+        "캐시(맵이나 배열)에 결과를 저장해 중복 계산을 없앨 수 있다",
+        "메모이제이션 전후로 시간복잡도가 지수에서 선형으로 바뀌는 이유를 설명할 수 있다"
+      ],
+      "ordinal": 27,
+      "prerequisites": [
+        "algorithms.recursion-basics"
+      ],
+      "stableID": "algorithms.dp-memoization",
+      "summary": "피보나치처럼 같은 부분 문제를 몇 번이고 다시 계산하는 재귀에 캐시 하나를 더해, 지수 시간을 선형 시간으로 줄인다.",
+      "title": "메모이제이션: 재귀에 기억을 더하기",
+      "visual": "table"
+    },
+    {
+      "concepts": [
+        "상향식(bottom-up)",
+        "점화식",
+        "1차원 표"
+      ],
+      "estimatedMinutes": 25,
+      "objectives": [
+        "점화식을 세워 작은 인덱스부터 표를 채울 수 있다",
+        "타뷸레이션 결과가 같은 문제의 메모이제이션 결과와 일치함을 확인할 수 있다",
+        "재귀 호출 스택 없이 반복문만으로 답을 구했을 때의 이점을 설명할 수 있다"
+      ],
+      "ordinal": 28,
+      "prerequisites": [
+        "algorithms.dp-memoization"
+      ],
+      "stableID": "algorithms.dp-tabulation",
+      "summary": "재귀 없이 작은 부분 문제부터 표를 차례로 채워 올라가는 상향식(bottom-up) DP를 만들고, 메모이제이션과 같은 답을 다른 방향에서 구한다는 것을 확인한다.",
+      "title": "타뷸레이션: 아래에서부터 표 채우기",
+      "visual": "table"
+    },
+    {
+      "concepts": [
+        "상태 전이",
+        "선택(고르기/건너뛰기)",
+        "1차원 표"
+      ],
+      "estimatedMinutes": 30,
+      "objectives": [
+        "직전 상태들로부터 현재 칸의 값을 정하는 점화식을 세울 수 있다",
+        "'고르거나 건너뛴다'는 선택이 있는 문제를 1차원 DP로 풀 수 있다",
+        "표의 각 칸이 어떤 부분 문제의 답인지 말로 설명할 수 있다"
+      ],
+      "ordinal": 29,
+      "prerequisites": [
+        "algorithms.dp-tabulation"
+      ],
+      "stableID": "algorithms.dp-1d-problems",
+      "summary": "직전 한두 칸의 결과만 참고해 다음 칸을 채우는 1차원 DP를, '계단을 몇 가지로 오르나'와 '이웃한 집은 털지 않기'라는 두 문제로 연습한다.",
+      "title": "1차원 DP 응용: 계단 오르기와 집 도둑",
+      "visual": "table"
+    },
+    {
+      "concepts": [
+        "2차원 표",
+        "위/왼쪽 칸 참조",
+        "경로 문제"
+      ],
+      "estimatedMinutes": 30,
+      "objectives": [
+        "격자의 각 칸을 위 칸과 왼쪽 칸의 값으로부터 채울 수 있다",
+        "2차원 DP 표의 행과 열이 각각 무엇을 나타내는지 설명할 수 있다",
+        "1차원 DP와 비교해 2차원 DP에서 참조하는 이전 상태가 왜 두 방향인지 설명할 수 있다"
+      ],
+      "ordinal": 30,
+      "prerequisites": [
+        "algorithms.dp-1d-problems"
+      ],
+      "stableID": "algorithms.dp-2d-grid",
+      "summary": "격자의 왼쪽 위에서 오른쪽 아래까지 가는 경로 수나 최소 비용을, 위 칸과 왼쪽 칸만 참고해 2차원 표로 채워 구한다.",
+      "title": "2차원 DP: 격자 위의 경로",
+      "visual": "table"
+    },
+    {
+      "concepts": [
+        "무게/가치",
+        "담기/안 담기",
+        "2차원 표"
+      ],
+      "estimatedMinutes": 35,
+      "objectives": [
+        "물건 번호와 남은 무게를 두 축으로 하는 DP 표를 정의할 수 있다",
+        "각 칸에서 물건을 담는 경우와 담지 않는 경우 중 더 나은 값을 고를 수 있다",
+        "같은 물건을 두 번 담지 않기 위해 표를 채우는 순서가 왜 중요한지 설명할 수 있다"
+      ],
+      "ordinal": 31,
+      "prerequisites": [
+        "algorithms.dp-2d-grid"
+      ],
+      "stableID": "algorithms.dp-knapsack",
+      "summary": "무게 제한이 있는 배낭에 물건을 담을지 말지 고르는 0/1 배낭 문제를, 물건과 무게를 두 축으로 하는 2차원 표로 푼다.",
+      "title": "0/1 배낭 문제: 담을까 말까",
+      "visual": "table"
+    },
+    {
+      "concepts": [
+        "부분 수열",
+        "문자 일치/불일치",
+        "2차원 표"
+      ],
+      "estimatedMinutes": 35,
+      "objectives": [
+        "두 문자열의 길이를 두 축으로 하는 DP 표를 정의할 수 있다",
+        "두 위치의 문자가 같을 때와 다를 때 표를 채우는 규칙을 구분할 수 있다",
+        "완성된 표에서 최장 공통 부분 수열의 길이와 실제 문자열을 복원할 수 있다"
+      ],
+      "ordinal": 32,
+      "prerequisites": [
+        "algorithms.dp-knapsack"
+      ],
+      "stableID": "algorithms.dp-lcs",
+      "summary": "두 문자열을 각각 축으로 하는 2차원 표를 채워, 순서를 지키며 공통으로 뽑을 수 있는 가장 긴 부분 수열을 구한다. 이 트랙의 마지막 알고리즘이다.",
+      "title": "최장 공통 부분 수열(LCS): 두 문자열 비교하기",
+      "visual": "table"
+    }
+  ],
+  "schemaVersion": 1,
+  "trackSummary": "이진 탐색으로 시간복잡도를 보는 눈을 기르고, 다섯 가지 정렬과 투 포인터·슬라이딩 윈도우로 배열을 다루는 법을 거쳐, 그래프의 BFS·DFS·최단 경로·위상 정렬·다익스트라, 트리 순회·이진 탐색 트리·힙으로 나아간다. 마지막은 메모이제이션에서 배낭 문제·최장 공통 부분 수열까지 이어지는 동적 계획법이다. 풀이는 원하는 언어로 하고, 모든 개념은 배열·그래프·표 시각화로 확인한다.",
+  "trackTitle": "알고리즘 입문: 배열에서 그래프·트리·동적 계획법까지"
+}

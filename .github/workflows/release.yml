@@ -176,6 +176,7 @@ jobs:
           set -e
           rm -rf site/old_updates
           test -f "site/Polyglot-${{ steps.version.outputs.version }}.zip"
+          test -f "site/Polyglot-${{ steps.version.outputs.version }}.dmg"
           test -f site/appcast.xml
           test -f site/index.html
           grep -q "sparkle:edSignature=\"[^\"]\+\"" site/appcast.xml \
@@ -193,7 +194,24 @@ jobs:
           # 공증된 배포본이면 "accepted / source=Notarized Developer ID" 여야 한다.
           spctl --assess --type execute -vv "$VERIFY_DIR/Polyglot.app"
           rm -rf "$VERIFY_DIR"
-          echo "==> 배포본 공증·스테이플 확인됨"
+          echo "==> 배포본(zip) 공증·스테이플 확인됨"
+
+          # DMG 도 같은 수준으로 확인한다 — {#dmg-notarize} 의 완료 기준은 **DMG 단독으로**
+          # stapler validate 가 통과하는 것이다. 평가 타입이 앱과 다르다: DMG 는 실행형이
+          # 아니라 "연 파일" 이라 --type open --context context:primary-signature 를 쓴다.
+          DMG_FILE="site/Polyglot-${{ steps.version.outputs.version }}.dmg"
+          xcrun stapler validate "$DMG_FILE"
+          codesign --verify --strict "$DMG_FILE"
+          spctl --assess --type open --context context:primary-signature -vv "$DMG_FILE"
+          echo "==> DMG 공증·스테이플 확인됨"
+
+          # DMG 는 GitHub Release 자산으로만 올라간다({#dmg-notarize}) — Sparkle 피드는
+          # zip 만 가리키므로, DMG 를 gh-pages 커밋 대상에 남겨 매 릴리스마다 그 큰 이력을
+          # 반복해서 쌓을 이유가 없다. 뒤의 gh-pages 발행 단계 전에 러너 임시 디렉터리로
+          # 옮겨 두고, GitHub Release 단계에서 거기서 집어 올린다.
+          mkdir -p "$RUNNER_TEMP/dist"
+          mv "$DMG_FILE" "$RUNNER_TEMP/dist/"
+          echo "==> DMG 를 gh-pages 발행 대상에서 뺐다 → $RUNNER_TEMP/dist"
 
 
       - name: gh-pages 발행
@@ -227,10 +245,13 @@ jobs:
           {
             echo "**Polyglot Study ${{ steps.version.outputs.version }}**"
             echo
-            echo "받기: https://bunhine0452.github.io/polyglot-study/"
+            echo "받기: https://bunhine0452.github.io/polyglot-study/ (자동 업데이트 경로)"
+            echo "또는 아래 DMG 를 내려받아 열고 Polyglot.app 을 응용 프로그램 폴더로 옮기세요."
             echo
             echo "macOS 14 이상 · Apple Silicon. **Developer ID 서명 + 애플 공증**을 거쳤으므로"
-            echo "받아서 그냥 열면 됩니다 — Gatekeeper 우회 절차가 필요 없습니다."
+            echo "받아서 그냥 열면 됩니다 — Gatekeeper 우회 절차가 필요 없습니다. zip 과 DMG"
+            echo "둘 다 같은 앱이고 어느 쪽으로 받아도 동일합니다 — zip 은 이후 앱 안의"
+            echo "자동 업데이트가 받는 형태와 같고, DMG 는 처음 설치할 때 더 익숙한 형태입니다."
             echo
             echo "자동 업데이트는 EdDSA 서명으로 검증되며 이 문제와 무관합니다."
           } > "$NOTES"
@@ -239,4 +260,5 @@ jobs:
           gh release create "${{ steps.version.outputs.tag }}" \
             --title "Polyglot Study ${{ steps.version.outputs.version }}" \
             --notes-file "$NOTES" $FLAGS \
-            "site/Polyglot-${{ steps.version.outputs.version }}.zip"
+            "site/Polyglot-${{ steps.version.outputs.version }}.zip" \
+            "$RUNNER_TEMP/dist/Polyglot-${{ steps.version.outputs.version }}.dmg"

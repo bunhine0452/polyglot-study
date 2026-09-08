@@ -1,0 +1,536 @@
+{
+  "schemaVersion": 1,
+  "id": "bst",
+  "kind": "graph",
+  "nodes": [
+    {
+      "id": "5",
+      "label": "5",
+      "x": 300,
+      "y": 0
+    },
+    {
+      "id": "3",
+      "label": "3",
+      "x": 150,
+      "y": 80
+    },
+    {
+      "id": "8",
+      "label": "8",
+      "x": 450,
+      "y": 80
+    },
+    {
+      "id": "1",
+      "label": "1",
+      "x": 75,
+      "y": 160
+    },
+    {
+      "id": "4",
+      "label": "4",
+      "x": 225,
+      "y": 160
+    },
+    {
+      "id": "7",
+      "label": "7",
+      "x": 375,
+      "y": 160
+    },
+    {
+      "id": "9",
+      "label": "9",
+      "x": 525,
+      "y": 160
+    }
+  ],
+  "edges": [
+    {
+      "from": "5",
+      "to": "3"
+    },
+    {
+      "from": "5",
+      "to": "8"
+    },
+    {
+      "from": "3",
+      "to": "1"
+    },
+    {
+      "from": "3",
+      "to": "4"
+    },
+    {
+      "from": "8",
+      "to": "7"
+    },
+    {
+      "from": "8",
+      "to": "9"
+    }
+  ],
+  "frames": [
+    {
+      "caption": "빈 트리에 5를 넣습니다. 5가 루트가 됩니다.",
+      "nodeStates": [
+        {
+          "id": "5",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "3을 넣습니다. 5보다 작으니 왼쪽으로 — 비어 있어 그 자리에 넣습니다.",
+      "nodeStates": [
+        {
+          "id": "5",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "current"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "5",
+          "to": "3",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "8을 넣습니다. 5보다 크니 오른쪽으로 — 비어 있어 바로 넣습니다.",
+      "nodeStates": [
+        {
+          "id": "5",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        },
+        {
+          "id": "8",
+          "role": "current"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "5",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "5",
+          "to": "8",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "1을 넣습니다. 5보다 작아 왼쪽(3)으로, 3보다 작아 다시 왼쪽 — 비어 있어 넣습니다.",
+      "nodeStates": [
+        {
+          "id": "5",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        },
+        {
+          "id": "8",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "current"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "5",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "5",
+          "to": "8",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "1",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "4를 넣습니다. 5보다 작아 왼쪽(3)으로, 3보다 커서 오른쪽 — 비어 있어 넣습니다.",
+      "nodeStates": [
+        {
+          "id": "5",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        },
+        {
+          "id": "8",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "current"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "5",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "5",
+          "to": "8",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "4",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "7을 넣습니다. 5보다 커 오른쪽(8)으로, 8보다 작아 왼쪽 — 비어 있어 넣습니다.",
+      "nodeStates": [
+        {
+          "id": "5",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        },
+        {
+          "id": "8",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        },
+        {
+          "id": "7",
+          "role": "current"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "5",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "5",
+          "to": "8",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "8",
+          "to": "7",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "9를 넣습니다. 5보다 커 오른쪽(8)으로, 8보다 커 오른쪽 — 비어 있어 넣습니다. 트리 완성.",
+      "nodeStates": [
+        {
+          "id": "5",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        },
+        {
+          "id": "8",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        },
+        {
+          "id": "7",
+          "role": "visited"
+        },
+        {
+          "id": "9",
+          "role": "current"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "5",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "5",
+          "to": "8",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "8",
+          "to": "7",
+          "role": "visited"
+        },
+        {
+          "from": "8",
+          "to": "9",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "중위 순회로 왼쪽→루트→오른쪽 순서로 훑으면 자동으로 오름차순 [1,3,4,5,7,8,9]이 나옵니다.",
+      "nodeStates": [
+        {
+          "id": "5",
+          "role": "settled"
+        },
+        {
+          "id": "3",
+          "role": "settled"
+        },
+        {
+          "id": "8",
+          "role": "settled"
+        },
+        {
+          "id": "1",
+          "role": "settled"
+        },
+        {
+          "id": "4",
+          "role": "settled"
+        },
+        {
+          "id": "7",
+          "role": "settled"
+        },
+        {
+          "id": "9",
+          "role": "settled"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "5",
+          "to": "3",
+          "role": "settled"
+        },
+        {
+          "from": "5",
+          "to": "8",
+          "role": "settled"
+        },
+        {
+          "from": "3",
+          "to": "1",
+          "role": "settled"
+        },
+        {
+          "from": "3",
+          "to": "4",
+          "role": "settled"
+        },
+        {
+          "from": "8",
+          "to": "7",
+          "role": "settled"
+        },
+        {
+          "from": "8",
+          "to": "9",
+          "role": "settled"
+        }
+      ]
+    },
+    {
+      "caption": "4를 찾습니다: 5보다 작아 왼쪽(3), 3보다 커 오른쪽(4) — 찾았습니다(true).",
+      "nodeStates": [
+        {
+          "id": "5",
+          "role": "current"
+        },
+        {
+          "id": "3",
+          "role": "current"
+        },
+        {
+          "id": "8",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "current"
+        },
+        {
+          "id": "7",
+          "role": "visited"
+        },
+        {
+          "id": "9",
+          "role": "visited"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "5",
+          "to": "3",
+          "role": "current"
+        },
+        {
+          "from": "5",
+          "to": "8",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "4",
+          "role": "current"
+        },
+        {
+          "from": "8",
+          "to": "7",
+          "role": "visited"
+        },
+        {
+          "from": "8",
+          "to": "9",
+          "role": "visited"
+        }
+      ]
+    },
+    {
+      "caption": "6을 찾습니다: 5보다 크니 오른쪽(8), 8보다 작으니 왼쪽(7), 7보다 작으니 왼쪽인데 자식이 없어 찾지 못합니다(false).",
+      "nodeStates": [
+        {
+          "id": "5",
+          "role": "current"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        },
+        {
+          "id": "8",
+          "role": "current"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        },
+        {
+          "id": "7",
+          "role": "current"
+        },
+        {
+          "id": "9",
+          "role": "visited"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "5",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "5",
+          "to": "8",
+          "role": "current"
+        },
+        {
+          "from": "3",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "8",
+          "to": "7",
+          "role": "current"
+        },
+        {
+          "from": "8",
+          "to": "9",
+          "role": "visited"
+        }
+      ]
+    }
+  ]
+}

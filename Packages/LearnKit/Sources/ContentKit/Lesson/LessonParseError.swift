@@ -1,3 +1,5 @@
+public import LearnCore
+
 /// 레슨 파싱이 실패한 이유 하나. **항상 `line:column` 을 들고 있다.**
 ///
 /// swift-markdown 은 잘못된 디렉티브를 대부분 조용히 삼킨다 — 중괄호 없는 디렉티브
@@ -39,6 +41,15 @@ public struct LessonParseError: Error, Hashable, Sendable, CustomStringConvertib
         case duplicateBlock(LessonBlockKind)
         /// 블록 id 가 레슨 안에서 중복.
         case duplicateBlockID(String)
+        /// 한 언어가 같은 종류의 블록을 두 번 갖는다.
+        case duplicateLanguage(kind: LessonBlockKind, language: LanguageID)
+        /// 매니페스트가 선언한 언어와 본문이 선언한 언어가 다르다.
+        case manifestLanguageMismatch(manifest: [LanguageID], body: [LanguageID])
+        /// 선언한 언어에 짝이 되는 블록이 없다.
+        ///
+        /// 예제를 rust·python 으로 썼는데 과제가 rust 뿐이면 python 학습자는 읽기만 하고
+        /// 풀 수 없다. 그 상태를 팩에 넣지 않는다.
+        case languageWithoutBlock(language: LanguageID, missing: LessonBlockKind)
 
         // MARK: 소스 문법 (렉시컬 사전 검사)
         /// 디렉티브 헤더가 한 줄에 끝나지 않는다.
@@ -102,6 +113,19 @@ public struct LessonParseError: Error, Hashable, Sendable, CustomStringConvertib
                 "블록 `@\(kind.directiveName)` 가 두 번 나온다"
             case .duplicateBlockID(let id):
                 "블록 id `\(id)` 가 레슨 안에서 중복이다"
+            case .manifestLanguageMismatch(let manifest, let body):
+                """
+                매니페스트가 선언한 언어와 본문이 다르다 — \
+                매니페스트 [\(manifest.map(\.rawValue).sorted().joined(separator: ", "))], \
+                본문 [\(body.map(\.rawValue).sorted().joined(separator: ", "))]
+                """
+            case .duplicateLanguage(let kind, let language):
+                "`@\(kind.directiveName)` 가 \(language.rawValue) 로 두 번 나온다"
+            case .languageWithoutBlock(let language, let missing):
+                """
+                \(language.rawValue) 에 `@\(missing.directiveName)` 가 없다 — \
+                한 언어를 선언했으면 예제·빈칸·과제가 모두 있어야 한다
+                """
             case .headerNotSingleLine(let directive):
                 "`@\(directive)` 의 인자 목록은 한 줄에 끝나야 한다 — 닫는 `)` 가 같은 줄에 없다"
             case .singleLineBody(let directive):

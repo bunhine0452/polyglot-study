@@ -23,6 +23,19 @@ public struct LessonView: View {
                 onBack: onBack
             )
             Rule(.hard)
+            // 언어가 하나인 레슨에서는 이 줄이 통째로 사라진다.
+            if model.languages.count > 1 {
+                HStack {
+                    LanguagePicker(
+                        languages: model.languages,
+                        selected: model.language
+                    ) { model.selectLanguage($0) }
+                    Spacer(minLength: 0)
+                }
+                .padding(.horizontal, LessonLayout.horizontalPadding)
+                .padding(.vertical, Spacing.s)
+                Rule(.soft)
+            }
             LessonStepBar(steps: model.steps) { model.revisit($0) }
             Rule(.soft)
             ScrollView(.vertical) {

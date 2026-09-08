@@ -79,16 +79,25 @@ SUFeedURL = https://bunhine0452.github.io/polyglot-study/appcast.xml
    고치면 그 자리에서 서명이 깨진다.
 2. 조립된 번들에 `SUPublicEDKey` 가 있는지 확인. 없으면 거기서 멈춘다 — 공개키 없는
    앱은 피드를 영영 못 읽는데, 그걸 릴리스를 굽고 나서 알면 늦다.
-3. `ditto -c -k --sequesterRsrc --keepParent` 로 zip. `/usr/bin/zip` 을 쓰면 안 된다 —
+3. `--notarize` 가 있으면 여기서 `Codesign/notarize.sh` 가 앱을 공증·스테이플한다
+   ({#notarize-staple-dmg}, 아래 절 참고). 없으면 건너뛴다.
+4. `ditto -c -k --sequesterRsrc --keepParent` 로 zip. `/usr/bin/zip` 을 쓰면 안 된다 —
    심볼릭 링크를 따라가 버려 `Sparkle.framework/Versions` 구조가 뭉개지고, 압축을 푼
    앱의 코드 서명이 깨진다.
-4. `generate_appcast` 로 `appcast.xml` 갱신 — 새 항목의 `sparkle:edSignature` 와
+5. **`--notarize` 가 있을 때만** `Scripts/make-dmg.sh` 로 DMG 조립 + 서명 + 공증 +
+   스테이플. 없으면 아예 건너뛴다 — DMG 는 스테이플된 앱을 요구하고, 스테이플은
+   공증을 거쳐야 나오므로 공증 없는 DMG 는 배포할 수 없는 물건이다. 실질적으로
+   **DMG 는 CI 에서만 만들어진다**. 자세한 내용은 아래 `DMG — 사람이 내려받는 경로`
+   절({#dmg-notarize}).
+6. `generate_appcast` 로 `appcast.xml` 갱신 — 새 항목의 `sparkle:edSignature` 와
    `length` 가 이때 채워진다.
-5. **단언**: appcast 의 해당 버전 항목에 서명이 비어 있지 않고, `length` 가 실제 zip
+7. **단언**: appcast 의 해당 버전 항목에 서명이 비어 있지 않고, `length` 가 실제 zip
    크기와 같은지 확인. 어긋나면 릴리스 실패.
 
-산출물(`App/.build/release/`)을 GitHub Pages 에 그대로 올리면 된다. `old_updates/` 는
-`generate_appcast` 가 밀어낸 옛 아카이브라 올리지 않는다.
+산출물(`App/.build/release/`)에서 zip · appcast.xml · index.html 을 GitHub Pages 에
+그대로 올리면 된다. `old_updates/` 는 `generate_appcast` 가 밀어낸 옛 아카이브라 올리지
+않는다. **DMG 는 gh-pages 로 올리지 않는다** — Sparkle 피드는 zip 만 가리키므로, DMG 는
+GitHub Release 자산으로만 올라간다(release 워크플로가 그렇게 배선돼 있다).
 
 ## 앱 쪽 배선
 
@@ -144,13 +153,18 @@ Apple Developer Program 가입은 끝났고(2026-09-07) Developer ID Application
 ### 순서가 전부다 — {#staple-before-zip}
 
 ```
-build-app.sh(서명) → notarize.sh(공증·스테이플) → ditto zip → generate_appcast
+build-app.sh(서명) → notarize.sh(공증·스테이플, 앱) → ditto zip → generate_appcast
+                                  │
+                                  └→ make-dmg.sh(DMG 조립·서명) → notarize.sh(공증·스테이플, DMG)
 ```
 
-`stapler` 는 **zip 에 스테이플하지 못한다.** 티켓은 `.app` 번들 안으로 들어간다. 그래서
-공증이 아카이브 뒤로 밀리면 appcast 가 광고하는 `edSignature`·`length` 가 실제 배포
-파일과 어긋나고, 업데이트는 "받아지긴 하는데 설치가 안 되는" 형태로 조용히 깨진다.
-`release.sh --notarize` 가 이 순서를 강제한다.
+`stapler` 는 **zip 에 스테이플하지 못한다.** 티켓은 `.app` 번들(또는 DMG) 안/위로
+들어간다. 그래서 공증이 아카이브 뒤로 밀리면 appcast 가 광고하는 `edSignature`·`length`
+가 실제 배포 파일과 어긋나고, 업데이트는 "받아지긴 하는데 설치가 안 되는" 형태로
+조용히 깨진다. `release.sh --notarize` 가 이 순서를 강제한다 — 앱을 먼저 공증·스테이플한
+뒤에야 zip 을 묶고 DMG 에 담는다. DMG 는 **그 뒤에** 따로 서명·공증·스테이플한다 — 앱과
+DMG 는 Gatekeeper 가 검사하는 시점이 서로 다른 별개의 서명 대상이라, 앱만 하고 DMG
+컨테이너를 안 하면 `stapler validate` 가 DMG 단독으로는 통과하지 못한다.
 
 공증은 **옵트인**이다. `verify-sparkle.sh` 가 검증용 릴리스를 `release.sh` 로 굽는데,
 공증을 기본값으로 두면 로컬 검증 한 번마다 애플 서버 왕복 몇 분과 자격증명이 필요해진다.
@@ -221,19 +235,91 @@ base64 -i "$HOME/Desktop/cert.p12" | wc -c    # 4000 이상
 
 ### 검증
 
-`notarize.sh` 는 제출 전에 세 가지를 먼저 막는다 — ad-hoc 번들(Team ID 없음), ad-hoc
+`notarize.sh` 는 제출 전에 세 가지를 먼저 막는다 — ad-hoc 대상(Team ID 없음), ad-hoc
 전용 `disable-library-validation` 예외 잔존, 보안 타임스탬프 누락. 셋 다 올려 봐야 몇 분
 뒤 Invalid 로 돌아온다.
 
-제출 뒤에는 `stapler validate` · `spctl --assess` · `codesign --verify --deep --strict`
-를 돌린다. 릴리스 워크플로는 한 발 더 나가 **배포되는 zip 을 실제로 풀어** 같은 검사를
-한다 — 랜딩 페이지에 "그냥 열면 됩니다" 라고 적어 놓고 정작 Gatekeeper 가 막는 사태를
-막는 게이트다.
+제출 뒤에는 `stapler validate` · `spctl --assess` · `codesign --verify` 를 돌린다. 앱과
+DMG 는 평가 방식이 다르다 — 앱은 `--type execute` + `--verify --deep --strict`(번들이라
+중첩 코드가 있다), DMG 는 `--type open --context context:primary-signature` +
+`--verify --strict`(단일 서명 대상이라 `--deep` 이 필요 없다). `notarize.sh` 는 인자로
+받은 것이 디렉터리(`.app`)인지 파일(`.dmg`)인지로 이 둘을 스스로 가른다 — 호출하는
+쪽에서 따로 알려줄 필요가 없다.
+
+릴리스 워크플로는 한 발 더 나가 **배포되는 zip 을 실제로 풀어** 같은 검사를 한다 —
+랜딩 페이지에 "그냥 열면 됩니다" 라고 적어 놓고 정작 Gatekeeper 가 막는 사태를 막는
+게이트다. DMG 도 같은 자리에서 독립적으로 확인한다.
 
 `spctl` 출력으로 상태를 읽는다:
 
 - `rejected` / `source=Unnotarized Developer ID` — 서명은 됐고 공증 전
 - `accepted` / `source=Notarized Developer ID` — 공증·스테이플 완료
+
+## DMG — 사람이 내려받는 경로 {#dmg-notarize}
+
+zip 은 Sparkle 자동 업데이트가 쓰는 산출물이다. DMG 는 **사람이 내려받는 경로**로
+따로 만든다 — 둘 다 매 릴리스마다 나간다.
+
+**DMG 는 이 기계가 아니라 GitHub 에서 만든다.** 태그를 밀면 release 워크플로가
+`release.sh --notarize` 를 돌리고, 그 안에서 DMG 가 조립·서명·공증·스테이플되어
+GitHub Release 자산으로 올라간다. 로컬에서 `release.sh` 를 `--notarize` 없이 돌리면
+DMG 단계는 그냥 건너뛴다 — 검증용 로컬 실행이 hdiutil 과 애플 서버 왕복을 탈 이유가
+없고, 공증 없이 나온 DMG 는 어차피 배포물이 아니다.
+
+```bash
+# release.sh --notarize 가 자동으로 부른다 (앱 공증·스테이플 뒤, appcast 생성 전).
+# 손으로 부를 일은 스크립트 자체를 고칠 때뿐이다 — 앱이 스테이플되어 있어야 한다.
+Codesign/notarize.sh App/.build/bundle/Polyglot.app
+Scripts/make-dmg.sh App/.build/bundle/Polyglot.app --version 0.2.0 --notarize
+```
+
+`make-dmg.sh` 가 하는 일:
+
+0. **앱에 티켓이 스테이플돼 있는지 먼저 확인하고, 아니면 거기서 멈춘다**
+   (`xcrun stapler validate`). 이 검사가 없던 동안 스테이플 안 된 앱으로도 DMG 가
+   조용히 만들어졌다(실측 2026-09-08) — 그렇게 나온 DMG 는 컨테이너만 티켓이 있고
+   안의 앱은 없어서, `stapler validate` 는 통과하는데 앱을 Applications 로 옮겨
+   **오프라인에서 처음 열 때만** 경고가 뜬다. 만든 사람은 온라인이라 못 본다.
+1. `hdiutil create -format UDZO` 로 앱 하나와 `/Applications` 심볼릭 링크만 담은 압축
+   읽기 전용 DMG 를 만든다. 배경 이미지·아이콘 배치는 범위 밖이다 — 이 항목의 완료
+   기준은 "DMG 단독으로 `stapler validate` 통과" 이지 겉모습이 아니다.
+2. `codesign --sign "<Developer ID>" --timestamp` 로 **DMG 컨테이너 자체를 서명**한다.
+   신원은 `build-app.sh` 와 같은 방식으로 **이름으로** 고른다(목록 순서에 기대지 않는다).
+   Developer ID 가 없으면 ad-hoc 으로 떨어지고, 그 DMG 는 공증 대상이 아니라고 표준
+   출력에 남긴다.
+3. `--notarize` 가 있으면 `Codesign/notarize.sh` 를 그 DMG 에 대해 그대로 부른다.
+   `notarize.sh` 는 이제 `.app` 번들과 `.dmg` 파일을 둘 다 받는다 — 자격증명 경로·
+   제출 전 검사·스테이플 로직은 공유하고, DMG 일 때만 압축을 건너뛰고(이미 단일
+   파일이라 notarytool 이 직접 받는다) 검증 시 `spctl` 평가 타입을 바꾼다.
+
+`release.sh` 는 앱을 공증·스테이플한 뒤(`--notarize` 가 있을 때) `ditto` 로 zip 을 묶고,
+그 **직후에** `make-dmg.sh` 를 부른다 — 이미 스테이플된 앱을 그대로 DMG 에 담기 위해서다.
+release 워크플로는 zip 과 DMG 를 **둘 다** GitHub Release 자산으로 올린다. DMG 는
+gh-pages 에는 올라가지 않는다 — Sparkle 피드가 zip 만 가리키므로 DMG 를 그 이력에 반복해서
+쌓을 이유가 없다.
+
+DMG 는 `$OUTPUT`(appcast·zip 이 최종적으로 쌓이는 그 디렉터리)이 **아니라** 별도
+스테이징 디렉터리(`.build/release-dmg-stage`)에 먼저 만들어지고, `generate_appcast` 가
+다 돈 뒤에야 `$OUTPUT` 으로 옮겨진다. 실측(2026-09-08): `generate_appcast` 는 넘겨받은
+디렉터리를 통째로 스캔해서 그 안의 zip·dmg 를 전부 "업데이트 아카이브" 로 취급하고
+서명까지 시도한다 — DMG 를 appcast 를 굽기 전에 `$OUTPUT` 에 두면 같은 버전(0.2.0 등)의
+zip 과 dmg 가 appcast 에 **항목 두 개**로 잡혀, Sparkle 피드가 어느 쪽을 배포판으로
+써야 할지 불분명해진다. 순서를 지키면 DMG 는 appcast 생성 시점에 그 디렉터리에 아예
+없으므로 이 문제 자체가 생기지 않는다.
+
+**실제로 확인한 것(2026-09-08)**: 이미 Developer ID 로 서명된 앱 번들로 `make-dmg.sh` 를
+돌려 DMG 를 만들고 서명한 뒤, `NOTARY_PROFILE=oculpm-notary Codesign/notarize.sh` 로 그
+DMG 를 실제 제출해 공증 받고 스테이플까지 마쳤다. 그 뒤 `stapler validate` 가 **DMG
+단독으로** "The validate action worked!" 를 냈고, `spctl --assess --type open
+--context context:primary-signature` 가 `accepted / source=Notarized Developer ID` 를
+반환했으며, DMG 를 마운트해도 스테이플이 살아 있었다 — 이 항목의 완료 기준을 실측으로
+만족했다.
+
+**랜딩 페이지(`App/Pages/index.html`)는 아직 DMG 를 가리키지 않는다** — zip 다운로드
+링크만 있다. 이 파일은 이번 작업의 범위 밖(`App/Codesign/`·`App/Scripts/`·release
+워크플로·이 문서만 건드리기로 했다)이라 손대지 않았다. DMG 링크를 추가하려면
+`render-page.sh` 의 치환 로직(`@VERSION@` 등)과 같은 패턴으로 `Polyglot-@VERSION@.dmg`
+자리를 하나 더 만들면 된다.
 
 ## 아직 안 닫힌 것
 
@@ -253,7 +339,11 @@ base64 -i "$HOME/Desktop/cert.p12" | wc -c    # 4000 이상
   붙는 것), 실제 제출은 자격증명이 들어와야 한다. 위 표의 시크릿과 로컬
   `store-credentials` 가 그 조건이다. **이미 나간 v0.1.0-alpha.1 은 ad-hoc 그대로다** —
   공증본은 다음 태그부터다.
-- **DMG 를 아직 만들지 않는다** — {#dmg-notarize}. 배포는 zip 하나이고 Sparkle 도 zip 을
-  쓴다. DMG 는 사람이 내려받는 경로용이라 별개 항목으로 남아 있다.
+- **DMG 는 만들고 서명·공증·스테이플까지 실측했다** — {#dmg-notarize}. `Scripts/make-dmg.sh`
+  가 조립·서명하고, `Codesign/notarize.sh` 가 이제 DMG 도 받는다. `release.sh --notarize`
+  가 zip 뒤에 DMG 까지 자동으로 만들고, release 워크플로가 GitHub Release 자산으로
+  둘 다 올린다(gh-pages 에는 zip 만). 위 `DMG — 사람이 내려받는 경로` 절({#dmg-notarize})
+  참고. **아직 안 된 것**: `App/Pages/index.html` 랜딩 페이지가 DMG 다운로드 링크를
+  가리키도록 바꾸는 일 — 범위 밖으로 남겨 뒀다.
 - **키체인 승인**을 아직 아무도 누르지 않았다. 배포용 키로 appcast 를 처음 구울 때
   대화상자가 뜬다.

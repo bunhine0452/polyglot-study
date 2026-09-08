@@ -1,0 +1,1469 @@
+{
+  "displayName" : "알고리즘 입문",
+  "files" : [
+    {
+      "bytes" : 189,
+      "path" : "expected/algorithms-bfs.txt",
+      "sha256" : "965ee4d6a56c5712bf5ddedc5057a02ac1343038c3f21827139b705ead8cc3db"
+    },
+    {
+      "bytes" : 156,
+      "path" : "expected/algorithms-binary-search-variants.txt",
+      "sha256" : "50457b9f24583cb129be404f89e1f6df8d5e74c9c106888e0bc6593d51a2b8d7"
+    },
+    {
+      "bytes" : 152,
+      "path" : "expected/algorithms-binary-search.txt",
+      "sha256" : "c960ba27e17e6b89da42549695d379956b25bac2845aec48afdb8c54de104da8"
+    },
+    {
+      "bytes" : 191,
+      "path" : "expected/algorithms-bst-delete-and-balance.txt",
+      "sha256" : "8c71733893cccd21df5cafc098012a71d086b3f3246ceb64b5f0df2591d88b30"
+    },
+    {
+      "bytes" : 82,
+      "path" : "expected/algorithms-bst.txt",
+      "sha256" : "9e67c028103bdd9f8655eeb4b69bc0f90b4dc1040039a6aa5dbbc066022df35d"
+    },
+    {
+      "bytes" : 176,
+      "path" : "expected/algorithms-bubble-sort.txt",
+      "sha256" : "699eb88d057f3a0ce28869f86610c429440c7fd56e6b3a36e06d1d07cca8da46"
+    },
+    {
+      "bytes" : 91,
+      "path" : "expected/algorithms-connected-components.txt",
+      "sha256" : "657f1755d23250fcf744065fac5366444efaf79c487b87e32b3cd6db44995a7d"
+    },
+    {
+      "bytes" : 127,
+      "path" : "expected/algorithms-cycle-detection.txt",
+      "sha256" : "18e463356da9a74d304378fd8c56ef166eb0f28d380eb82059fc59deaaf159d8"
+    },
+    {
+      "bytes" : 171,
+      "path" : "expected/algorithms-dfs.txt",
+      "sha256" : "bc61dd8ef100139a36ded78504062019e5db85abd98617d5eb5827a4f3a2aa8c"
+    },
+    {
+      "bytes" : 327,
+      "path" : "expected/algorithms-dijkstra.txt",
+      "sha256" : "83b3dce450ee7719e49617acf3c4ce8b74a29a5e56b70c01e4f3cea733372d41"
+    },
+    {
+      "bytes" : 419,
+      "path" : "expected/algorithms-dp-1d-problems.txt",
+      "sha256" : "b88b1615e6c948213b41e75236db2b29ef5ccc31d0f5047c011e9fdd7ee6e773"
+    },
+    {
+      "bytes" : 213,
+      "path" : "expected/algorithms-dp-2d-grid.txt",
+      "sha256" : "0519766dc284a5b2dd5c20ad0fe763195d1ab6b655cba4adedbe8010b10b58a3"
+    },
+    {
+      "bytes" : 206,
+      "path" : "expected/algorithms-dp-knapsack.txt",
+      "sha256" : "9e069eab662135a080b7eedbb1add02b2ab116782b31fa24370651a3a97a4ebd"
+    },
+    {
+      "bytes" : 210,
+      "path" : "expected/algorithms-dp-lcs.txt",
+      "sha256" : "6dccff990494109db670e9b27cc09ffb78efefb373c64c4ea06c55046aa5b6ac"
+    },
+    {
+      "bytes" : 240,
+      "path" : "expected/algorithms-dp-memoization.txt",
+      "sha256" : "6cc76bf14e4dc33c3c25cb5fc7d810651d01cc3a86ce8ee451cca4129ebb6b28"
+    },
+    {
+      "bytes" : 460,
+      "path" : "expected/algorithms-dp-tabulation.txt",
+      "sha256" : "c98b9ba679c445da74d72eef3adf85f40439c3ea88130e74bf25f83d0e28dc34"
+    },
+    {
+      "bytes" : 92,
+      "path" : "expected/algorithms-graph-representation.txt",
+      "sha256" : "53a083bc24c6a5a97f39d8a81bdd6e8bfc9204dc11bac9eceb1a3c99593e5fe1"
+    },
+    {
+      "bytes" : 207,
+      "path" : "expected/algorithms-heap-priority-queue.txt",
+      "sha256" : "641b10186fa7f8bbf6d32944eb2b1b56bd598dfcab1fa8fc91e2c4dba4dde181"
+    },
+    {
+      "bytes" : 160,
+      "path" : "expected/algorithms-insertion-sort.txt",
+      "sha256" : "97c463868b8f48862a8c98055646e4d46466810cbe54b552cb0096ea42dbb444"
+    },
+    {
+      "bytes" : 123,
+      "path" : "expected/algorithms-merge-sort.txt",
+      "sha256" : "88536a1233f3d7aaef9892cc5bfed854bf1242157f90b9fd9ba56a80548bc7e5"
+    },
+    {
+      "bytes" : 114,
+      "path" : "expected/algorithms-prefix-sum.txt",
+      "sha256" : "4d6eea2957c4c17e4473a5f222b5856cc6807ce47aa6336e47e58720bdae7b48"
+    },
+    {
+      "bytes" : 245,
+      "path" : "expected/algorithms-quick-sort.txt",
+      "sha256" : "17d1c3acefc36c9ba04e5a8c7c816e76ca83f10d155939ff40e96ab740664e69"
+    },
+    {
+      "bytes" : 240,
+      "path" : "expected/algorithms-recursion-basics.txt",
+      "sha256" : "1e736a8aba34218887fb440b0c427151bda6e8d99d17e0ab384c3b2b5d21c37d"
+    },
+    {
+      "bytes" : 375,
+      "path" : "expected/algorithms-selection-sort.txt",
+      "sha256" : "949897898118c595d0a164fdf646b0fb070c7b5777d4838881faf55de79ab19a"
+    },
+    {
+      "bytes" : 47,
+      "path" : "expected/algorithms-shortest-path-unweighted.txt",
+      "sha256" : "c7f5ca8f34250354a5ac4a83c3692ef540c064fc64b0ae913f80956f854b25c9"
+    },
+    {
+      "bytes" : 87,
+      "path" : "expected/algorithms-sliding-window.txt",
+      "sha256" : "fbeb376bdf529a512e55e6e1f5af77c7bc8689ba525f1e88a8b46449d595610a"
+    },
+    {
+      "bytes" : 129,
+      "path" : "expected/algorithms-sorting-comparison.txt",
+      "sha256" : "2a84f47aba1aeda4edb9f20ec386288ed4bf75d62130753a0fd406fbc7644ab5"
+    },
+    {
+      "bytes" : 112,
+      "path" : "expected/algorithms-topological-sort.txt",
+      "sha256" : "fb98ffc8100d7cc61e03061f4ea9ac9b131277f1bee83c36c45a53d52fa379e9"
+    },
+    {
+      "bytes" : 41,
+      "path" : "expected/algorithms-tree-basics.txt",
+      "sha256" : "f16cff48a9e2fd74af4a8b25ef029b9ee26d98c6b308e0a114dd17e1fc1d7765"
+    },
+    {
+      "bytes" : 39,
+      "path" : "expected/algorithms-tree-traversal-bfs.txt",
+      "sha256" : "10e1b434f92e2eda98256dc84fb983adc60933474fc9fcb69ac907eced32e353"
+    },
+    {
+      "bytes" : 72,
+      "path" : "expected/algorithms-tree-traversal-dfs.txt",
+      "sha256" : "d57d89da42a2a14227b46ee61ef75673b049401d7ef9cf4e8af7e2447ebad347"
+    },
+    {
+      "bytes" : 206,
+      "path" : "expected/algorithms-two-pointers.txt",
+      "sha256" : "7a8995378921826f9ac0ddac19e19e6d216baa154559bb1d83cc9c73573baa24"
+    },
+    {
+      "bytes" : 5447,
+      "path" : "lessons/algorithms-bfs.md",
+      "sha256" : "8a53547031b004334d969f3e28a7ad8adffdf05114eebad1c9fb0c17374bb8dc"
+    },
+    {
+      "bytes" : 5496,
+      "path" : "lessons/algorithms-binary-search-variants.md",
+      "sha256" : "16a9368672c160ee85be851a85603c2843e76de03df37dfc53f36a52da138db1"
+    },
+    {
+      "bytes" : 4347,
+      "path" : "lessons/algorithms-binary-search.md",
+      "sha256" : "6adcfeae31d1e2a90068901e503033ac89df342a3f53b1f2118154460df73875"
+    },
+    {
+      "bytes" : 10895,
+      "path" : "lessons/algorithms-bst-delete-and-balance.md",
+      "sha256" : "c8304e9ef28ed039f9ea1cb604475c5c99b7817ac63d0c6383217efaf6da2472"
+    },
+    {
+      "bytes" : 6760,
+      "path" : "lessons/algorithms-bst.md",
+      "sha256" : "80170765e7dba62cb665946bcdd0846cf03400b06074f1303ec973707d63dd3a"
+    },
+    {
+      "bytes" : 4238,
+      "path" : "lessons/algorithms-bubble-sort.md",
+      "sha256" : "b45ba2f9047b1506226553465d1ffab98f50a31416b91651d24423679dae170b"
+    },
+    {
+      "bytes" : 6023,
+      "path" : "lessons/algorithms-connected-components.md",
+      "sha256" : "d9a5e65ba8b10ef6452d1f0f5c52b1b46c473a505ebcfb9f0291d14be8819794"
+    },
+    {
+      "bytes" : 6298,
+      "path" : "lessons/algorithms-cycle-detection.md",
+      "sha256" : "ceefa0cf0444b53b5823e7a1e178cf5d79f09daaa8c426c9d7091d0403fae118"
+    },
+    {
+      "bytes" : 5789,
+      "path" : "lessons/algorithms-dfs.md",
+      "sha256" : "f59aa4995cba597d05ace7933863a0247679aaf868f69dab2fb7ab8a99ac80c2"
+    },
+    {
+      "bytes" : 7290,
+      "path" : "lessons/algorithms-dijkstra.md",
+      "sha256" : "55e6573bf6f3b5e33955617cfd79a71c3603e35d6f7529a756afa755e4c85ad4"
+    },
+    {
+      "bytes" : 5910,
+      "path" : "lessons/algorithms-dp-1d-problems.md",
+      "sha256" : "41308ff1c0888d932776f68bae0da03252c71318baa95155b13d4ea13f7140e1"
+    },
+    {
+      "bytes" : 5236,
+      "path" : "lessons/algorithms-dp-2d-grid.md",
+      "sha256" : "545c1cd3d4bd4fd6a2a4bd7bec19af1da643b40e521e46a2a746d3a09ba54a69"
+    },
+    {
+      "bytes" : 5803,
+      "path" : "lessons/algorithms-dp-knapsack.md",
+      "sha256" : "c395033ea38c9840803ecd4b03005642d6306085b8b5c8d5c84347786ca627c0"
+    },
+    {
+      "bytes" : 6051,
+      "path" : "lessons/algorithms-dp-lcs.md",
+      "sha256" : "92c8caf0a6c28460b2fc8b76138c88af4ef0d366724dcff8d7d3bc7095e25a9c"
+    },
+    {
+      "bytes" : 5663,
+      "path" : "lessons/algorithms-dp-memoization.md",
+      "sha256" : "26d0c375ff75cdcc2e61e0177691b45d083e2927b777664430516505ae7c99c3"
+    },
+    {
+      "bytes" : 4810,
+      "path" : "lessons/algorithms-dp-tabulation.md",
+      "sha256" : "c06781ee95c0f037f8831715b61c609ea7979d9a4d21880215f76f2311196ad0"
+    },
+    {
+      "bytes" : 5332,
+      "path" : "lessons/algorithms-graph-representation.md",
+      "sha256" : "db9c09727be277f5514b2dc4c335c5d6006d6b939699f203526489b2493f7cfe"
+    },
+    {
+      "bytes" : 6927,
+      "path" : "lessons/algorithms-heap-priority-queue.md",
+      "sha256" : "776732c9761d3f4d749df55683f83fa99f9376dd0abcacd0865b76a175f722f2"
+    },
+    {
+      "bytes" : 4549,
+      "path" : "lessons/algorithms-insertion-sort.md",
+      "sha256" : "76af052d1fc05f577585c4ebeaba76fcfc7efc29bce027c329f513b559f03b0c"
+    },
+    {
+      "bytes" : 5237,
+      "path" : "lessons/algorithms-merge-sort.md",
+      "sha256" : "cac077b87718067c09add28114874a89fd993c94f9502ae3366abe59dc907120"
+    },
+    {
+      "bytes" : 4414,
+      "path" : "lessons/algorithms-prefix-sum.md",
+      "sha256" : "be74e0fe33c6226e43b4b897b959db2ddf4afca31ead799fee88973c11993bc0"
+    },
+    {
+      "bytes" : 5291,
+      "path" : "lessons/algorithms-quick-sort.md",
+      "sha256" : "3fad470e511156a76b3cd798c4d7a9de5840b2b29fc18cdcc45807b438d1e8a4"
+    },
+    {
+      "bytes" : 4510,
+      "path" : "lessons/algorithms-recursion-basics.md",
+      "sha256" : "cecfe98d6db86b7c3a1fde2a31efa70a3a3a2a5364bd8c74b4f8ac76e1fb900b"
+    },
+    {
+      "bytes" : 4752,
+      "path" : "lessons/algorithms-selection-sort.md",
+      "sha256" : "05f97c7ccb8dc0e96ca189db328e73e0aaf6fe7c0be0011a4366f7651c7344f1"
+    },
+    {
+      "bytes" : 6052,
+      "path" : "lessons/algorithms-shortest-path-unweighted.md",
+      "sha256" : "b5221f002faa44f1ca882b67813b9f12b1136fd314fa515e0a309b2d15e26ff9"
+    },
+    {
+      "bytes" : 5519,
+      "path" : "lessons/algorithms-sliding-window.md",
+      "sha256" : "c3d96109a44f3a53e9321e5800bfad928c3dea9096a63fc469b5d5f9b99a3efd"
+    },
+    {
+      "bytes" : 6481,
+      "path" : "lessons/algorithms-sorting-comparison.md",
+      "sha256" : "2c3fc5133b8cc541d43dce060f73f30fa4a9f83ba064232918e8e35b3698d334"
+    },
+    {
+      "bytes" : 6060,
+      "path" : "lessons/algorithms-topological-sort.md",
+      "sha256" : "5eac8de1296fc570a6f5d74b9b42d0332b4104528dc113596fc6c2b7de510953"
+    },
+    {
+      "bytes" : 5939,
+      "path" : "lessons/algorithms-tree-basics.md",
+      "sha256" : "5f6eac171a2c954d7ce60781aecdf6f3c67167bcd889b554348352dd18e7433a"
+    },
+    {
+      "bytes" : 6872,
+      "path" : "lessons/algorithms-tree-traversal-bfs.md",
+      "sha256" : "9cfa2af13e2885539de4294dc1a225db8282ecfaa983a7031e76bde2853926e3"
+    },
+    {
+      "bytes" : 6933,
+      "path" : "lessons/algorithms-tree-traversal-dfs.md",
+      "sha256" : "ead0eff6d214be638ad384eab1eb1a3b396eb7a9d8bb721bdf4c95055c231e80"
+    },
+    {
+      "bytes" : 5698,
+      "path" : "lessons/algorithms-two-pointers.md",
+      "sha256" : "4a92ad29c9ff791e52d94895aa0c9b8f8d3597ffea05c39a6c25ce7c5dca40d7"
+    },
+    {
+      "bytes" : 497,
+      "path" : "solutions/algorithms-bfs.rs",
+      "sha256" : "3ef93af7122c3076db32fac78e36d0cfc0f1c7a3fadaf520af41dfdb62384372"
+    },
+    {
+      "bytes" : 616,
+      "path" : "solutions/algorithms-binary-search-variants.rs",
+      "sha256" : "7fc8e0e6bc9123ff6d7ceb182b48f4ad94fb84f4eebfe132f3109327160a05ca"
+    },
+    {
+      "bytes" : 365,
+      "path" : "solutions/algorithms-binary-search.rs",
+      "sha256" : "454b2878d8e6dab51c800f50a7bede208de108a74063c07e6eeca53a85ac454c"
+    },
+    {
+      "bytes" : 1604,
+      "path" : "solutions/algorithms-bst-delete-and-balance.rs",
+      "sha256" : "ac4d2021b189f1dbcd6a0cc4db613785a7c60529301e29e3dd81c796bae85bbb"
+    },
+    {
+      "bytes" : 526,
+      "path" : "solutions/algorithms-bst.rs",
+      "sha256" : "7c1d0650355f6ac80f042f14f9d45bf90b4eabe3b8cede4ef59bcec23c936b16"
+    },
+    {
+      "bytes" : 346,
+      "path" : "solutions/algorithms-bubble-sort.rs",
+      "sha256" : "bed94eba6b6c5e4ae285e57303b9c2677400f0512ae5df673c86cf89dc2273e9"
+    },
+    {
+      "bytes" : 622,
+      "path" : "solutions/algorithms-connected-components.rs",
+      "sha256" : "4a34520bece69e14d1328d8e31fa2e71231e466163636dfe7c3b8a2655a2ef97"
+    },
+    {
+      "bytes" : 601,
+      "path" : "solutions/algorithms-cycle-detection.rs",
+      "sha256" : "df4989ce39b79fd1c721e24b958182f3af6aa56ea2e6387260e3b4979417d2b9"
+    },
+    {
+      "bytes" : 479,
+      "path" : "solutions/algorithms-dfs.rs",
+      "sha256" : "c4bd9cdf0620a60efbd90224592c7f26fd15659cc6eef6a4f935ade2205d101a"
+    },
+    {
+      "bytes" : 708,
+      "path" : "solutions/algorithms-dijkstra.rs",
+      "sha256" : "81dd5674b31ce78277761f4bc3147a46686f66ed1db2b8db5cee4a66c477a075"
+    },
+    {
+      "bytes" : 303,
+      "path" : "solutions/algorithms-dp-1d-problems.rs",
+      "sha256" : "20db19a951fce1f917bb9c290176335d013a4774d76200eedff9f8b7387bb843"
+    },
+    {
+      "bytes" : 572,
+      "path" : "solutions/algorithms-dp-2d-grid.rs",
+      "sha256" : "695b305b11c3200b9789d942f2b2c5250e374b02c8b16f4b2ff4c6d6367f822f"
+    },
+    {
+      "bytes" : 563,
+      "path" : "solutions/algorithms-dp-knapsack.rs",
+      "sha256" : "f01638d8a35b8928979abb53a4ce6a08b3c150fc774f5cb7a19f64a3c99aea0c"
+    },
+    {
+      "bytes" : 864,
+      "path" : "solutions/algorithms-dp-lcs.rs",
+      "sha256" : "6230e0ecce84b56bb5a6468168fd82127649e223a4ca16d9b5bdfee580f46f66"
+    },
+    {
+      "bytes" : 478,
+      "path" : "solutions/algorithms-dp-memoization.rs",
+      "sha256" : "7b3ec8bb8de7317f55f1bc96a4f94d2ac2bd7230c1a59ac73fb1995b9489c3ba"
+    },
+    {
+      "bytes" : 331,
+      "path" : "solutions/algorithms-dp-tabulation.rs",
+      "sha256" : "9356329222b3f43c8a6aaa338e84a5163330a7fd22b712665a5ae056e791466e"
+    },
+    {
+      "bytes" : 309,
+      "path" : "solutions/algorithms-graph-representation.rs",
+      "sha256" : "f3e5dcae541f99b5966a16f64fcfcf642bd2733b52a58ec02af1b442035999fc"
+    },
+    {
+      "bytes" : 814,
+      "path" : "solutions/algorithms-heap-priority-queue.rs",
+      "sha256" : "3fca91ff50600f7861581e326a3b3e33d4cb334155cde3ee7fe7d283c4606ee1"
+    },
+    {
+      "bytes" : 249,
+      "path" : "solutions/algorithms-insertion-sort.rs",
+      "sha256" : "8c1971c190cc67178ef0444a8906423683c269edbb9ef7718e69d071b1615817"
+    },
+    {
+      "bytes" : 712,
+      "path" : "solutions/algorithms-merge-sort.rs",
+      "sha256" : "c22b8d5b2427c191cfe436d4c041aa7b9f9563164dfa3aadc3190be0d6af23ee"
+    },
+    {
+      "bytes" : 274,
+      "path" : "solutions/algorithms-prefix-sum.rs",
+      "sha256" : "1c4f8c201a632dfd0826fee6ef218d0baa2845d2013b4af3213e629b77dc2564"
+    },
+    {
+      "bytes" : 427,
+      "path" : "solutions/algorithms-quick-sort.rs",
+      "sha256" : "9089110b787d2ae5a678328d31ddbf46c406fa64c0f4e4da8f7231daeba4dcf4"
+    },
+    {
+      "bytes" : 119,
+      "path" : "solutions/algorithms-recursion-basics.rs",
+      "sha256" : "00fa2f63833147859c5fa61435049df113ea4645d610886499fbf471e7013142"
+    },
+    {
+      "bytes" : 271,
+      "path" : "solutions/algorithms-selection-sort.rs",
+      "sha256" : "a05304b711b667ba421d5179d7d053f6de5e554c854545352f6df94d58d55a0c"
+    },
+    {
+      "bytes" : 891,
+      "path" : "solutions/algorithms-shortest-path-unweighted.rs",
+      "sha256" : "2997825d4b9d2368db4c366c3d80ba31cfc94ce85af09f9c75b1f3c5ff1be1a2"
+    },
+    {
+      "bytes" : 478,
+      "path" : "solutions/algorithms-sliding-window.rs",
+      "sha256" : "811c59645bb40c8f53253406314ec217bdeeb7a5d2142b79bb5c591ea3348495"
+    },
+    {
+      "bytes" : 280,
+      "path" : "solutions/algorithms-sorting-comparison.rs",
+      "sha256" : "801c02bc06384a560419c68b22597bdeee4582a8f841ac42be5be1c73c32ad0a"
+    },
+    {
+      "bytes" : 773,
+      "path" : "solutions/algorithms-topological-sort.rs",
+      "sha256" : "85c16ad03ebca722680fafce8c81fa01d2f80a684ce1ae7f8a4bbac659895793"
+    },
+    {
+      "bytes" : 271,
+      "path" : "solutions/algorithms-tree-basics.rs",
+      "sha256" : "29d2e9f7dee6d7f3acd4d4783d8206b30cadbe3d1d481b92d08e108e98eddca8"
+    },
+    {
+      "bytes" : 831,
+      "path" : "solutions/algorithms-tree-traversal-bfs.rs",
+      "sha256" : "cfdf89eecbbf2a1df38d9ff9a9f57d998158788c4d72e7ee88b136c167057c33"
+    },
+    {
+      "bytes" : 437,
+      "path" : "solutions/algorithms-tree-traversal-dfs.rs",
+      "sha256" : "2fe83a11468275e5e5350303ab200bdd004305f754e401f2fde1cd83909d46cd"
+    },
+    {
+      "bytes" : 416,
+      "path" : "solutions/algorithms-two-pointers.rs",
+      "sha256" : "112ff8a421c05116daa57e2696e1c5361acd8e0ae0c8e7cb9f4aadf8eadfc302"
+    },
+    {
+      "bytes" : 2168,
+      "path" : "stableids.lock",
+      "sha256" : "aed38d9229c7fd4500120fb237298506aef443a700eaae80cf4a3101ac5f8230"
+    },
+    {
+      "bytes" : 329,
+      "path" : "starters/algorithms-bfs.rs",
+      "sha256" : "1e6b1e5dfb0f7e272e44e0d89846ab27730124c7b89b12f79db554512b5c6a66"
+    },
+    {
+      "bytes" : 274,
+      "path" : "starters/algorithms-binary-search-variants.rs",
+      "sha256" : "00a0ee98e4e4a19b5a9431a1de9aeb10d6a2ccdbd5d6a47e6ea3d28a6dab400e"
+    },
+    {
+      "bytes" : 241,
+      "path" : "starters/algorithms-binary-search.rs",
+      "sha256" : "c6725a32208c80f8efe94665566a24f03c0d6c654f4d3cc5731cd7c20b3d139c"
+    },
+    {
+      "bytes" : 962,
+      "path" : "starters/algorithms-bst-delete-and-balance.rs",
+      "sha256" : "7e23d8ea1d20850114ab1abf231e5e4af53f322189e4c518b2c53f9c8183f35f"
+    },
+    {
+      "bytes" : 494,
+      "path" : "starters/algorithms-bst.rs",
+      "sha256" : "cd3ef696aac44361e63e998dba1f00e08326bca5cf8af83ce68f7b15645a8856"
+    },
+    {
+      "bytes" : 228,
+      "path" : "starters/algorithms-bubble-sort.rs",
+      "sha256" : "e5022f213f31f5976c06fc556c46bfa607482def778379037b720dac3f18cfe6"
+    },
+    {
+      "bytes" : 330,
+      "path" : "starters/algorithms-connected-components.rs",
+      "sha256" : "58195be573d8ac6bae1e516486a1ea68aede2abd0e33a34493fb637eeb535ddf"
+    },
+    {
+      "bytes" : 270,
+      "path" : "starters/algorithms-cycle-detection.rs",
+      "sha256" : "fa34318353f77571b9d3ae4d32677bea7d330a75dfdb2ab283afcf1b71c4668f"
+    },
+    {
+      "bytes" : 356,
+      "path" : "starters/algorithms-dfs.rs",
+      "sha256" : "d915f6b06a7a7f432f7763174509096b32b2df7151a1ca20763adca308d6fb9e"
+    },
+    {
+      "bytes" : 380,
+      "path" : "starters/algorithms-dijkstra.rs",
+      "sha256" : "bb87e84e805dae118019a0cdc5f19353ca0355e7c929ce97cbee5ba2427b5c47"
+    },
+    {
+      "bytes" : 323,
+      "path" : "starters/algorithms-dp-1d-problems.rs",
+      "sha256" : "93216f2f08df66149cf28fd87a55828f656949f632650a799b91bb060aa88d98"
+    },
+    {
+      "bytes" : 348,
+      "path" : "starters/algorithms-dp-2d-grid.rs",
+      "sha256" : "e101c6e1acb26f778bd26ba2f16d22b57e8725dc4269621b06107fa548318749"
+    },
+    {
+      "bytes" : 434,
+      "path" : "starters/algorithms-dp-knapsack.rs",
+      "sha256" : "d53e0304c889aa8a4047fda88e0a41448d37b1c5867b7af4f25f0c9597d37ddb"
+    },
+    {
+      "bytes" : 414,
+      "path" : "starters/algorithms-dp-lcs.rs",
+      "sha256" : "73d0735df84b26ecf7ed65ea9883297d3bbdae8da9c98d836b73927b85f6376d"
+    },
+    {
+      "bytes" : 289,
+      "path" : "starters/algorithms-dp-memoization.rs",
+      "sha256" : "e5639ee743281d9efb46949ebb5ff57aa17e0936b4576db6da54ce2b132c5393"
+    },
+    {
+      "bytes" : 344,
+      "path" : "starters/algorithms-dp-tabulation.rs",
+      "sha256" : "6d67fbfeb08632dcdd4e593696ec487b0454625ed30797618815f22ee43da03f"
+    },
+    {
+      "bytes" : 343,
+      "path" : "starters/algorithms-graph-representation.rs",
+      "sha256" : "c32a3315281b6877b3cea6f17a88a8ab6d878385855f43cb65c62a4c43e5b957"
+    },
+    {
+      "bytes" : 569,
+      "path" : "starters/algorithms-heap-priority-queue.rs",
+      "sha256" : "d2a45ea4c9375c9ca06b6fb24be026c7e7111b11f8b46cf79a3d2ac6c8232d12"
+    },
+    {
+      "bytes" : 310,
+      "path" : "starters/algorithms-insertion-sort.rs",
+      "sha256" : "e46dbe533013a2c92db50566bf1eb775bf35b97c35512dd8d63f2b3f733e4f69"
+    },
+    {
+      "bytes" : 265,
+      "path" : "starters/algorithms-merge-sort.rs",
+      "sha256" : "ccad02639e41fc25adcdaa01ed1492250c0541b3b5c0f4b0e501835fb5746039"
+    },
+    {
+      "bytes" : 302,
+      "path" : "starters/algorithms-prefix-sum.rs",
+      "sha256" : "b7b1a85903c0401387ad484095ed6885ca36d3946f7997e2b64eab17f5589073"
+    },
+    {
+      "bytes" : 340,
+      "path" : "starters/algorithms-quick-sort.rs",
+      "sha256" : "64c2623fcf0d0899835ba7b95dc28b550f601b834c06c8403544ae6c68573a50"
+    },
+    {
+      "bytes" : 252,
+      "path" : "starters/algorithms-recursion-basics.rs",
+      "sha256" : "7699cf4e46988419774f8623715f0672e10d9fc08f9de342d91017b22a6ffa2c"
+    },
+    {
+      "bytes" : 253,
+      "path" : "starters/algorithms-selection-sort.rs",
+      "sha256" : "4acf5751667b05767f8302cbab27b676d9c5e648d124d5975cec6753011995bb"
+    },
+    {
+      "bytes" : 407,
+      "path" : "starters/algorithms-shortest-path-unweighted.rs",
+      "sha256" : "2bf1e13b5728580596a2b8c72f1bcdebfc06729bfa6de0b4a941174c18480c07"
+    },
+    {
+      "bytes" : 307,
+      "path" : "starters/algorithms-sliding-window.rs",
+      "sha256" : "655bda52a9c49ddfece6226e48e1fcb063456b50a0d725b9cc4c2960104fdb63"
+    },
+    {
+      "bytes" : 360,
+      "path" : "starters/algorithms-sorting-comparison.rs",
+      "sha256" : "906282a11b092ad1edd4ec8135a24f0d7ffe2abb553b8ea0ca3c2725d9cac9f5"
+    },
+    {
+      "bytes" : 312,
+      "path" : "starters/algorithms-topological-sort.rs",
+      "sha256" : "0cdfcf1136762ddd750c1095a801d3fb7ae36fb3d16b6ff93ae7c203b64f2292"
+    },
+    {
+      "bytes" : 408,
+      "path" : "starters/algorithms-tree-basics.rs",
+      "sha256" : "734bf64ea28b4b850050bb6e75c0bc47b44aab969b68d6247fac910ea7d46b58"
+    },
+    {
+      "bytes" : 410,
+      "path" : "starters/algorithms-tree-traversal-bfs.rs",
+      "sha256" : "f83b1a77051df124c32d48f501244ab2c2403b02e7dadf0f82a8da95a30f728b"
+    },
+    {
+      "bytes" : 333,
+      "path" : "starters/algorithms-tree-traversal-dfs.rs",
+      "sha256" : "06942d2608da5cf642bdbe8ad2a466be5d667e7b765214e28c1e5543fa4a1000"
+    },
+    {
+      "bytes" : 313,
+      "path" : "starters/algorithms-two-pointers.rs",
+      "sha256" : "0eeab8e7e16a1f4b11b973435e16d2859b08665dc51ea2153bdc059a267c7723"
+    },
+    {
+      "bytes" : 1037,
+      "path" : "tests/algorithms-bfs.rs",
+      "sha256" : "5b61eca16c0e77b5f38c1e892981105e2d00df71eaedcb9399ab03a1ca4d4e4c"
+    },
+    {
+      "bytes" : 720,
+      "path" : "tests/algorithms-binary-search-variants.rs",
+      "sha256" : "b67f3b026ca9ef4d89418bdca1b1fd287e802d0570f1a71296351b44c2ec7061"
+    },
+    {
+      "bytes" : 760,
+      "path" : "tests/algorithms-binary-search.rs",
+      "sha256" : "1a77ed73d8b2242c5d63e605809f4457d06fee2f6510daa4cb1547ebe4ac97b4"
+    },
+    {
+      "bytes" : 2134,
+      "path" : "tests/algorithms-bst-delete-and-balance.rs",
+      "sha256" : "55e6cb3ef54985866d15cfe1009e8bb3ddca4cdfa230718ebe7f688c39a32460"
+    },
+    {
+      "bytes" : 1998,
+      "path" : "tests/algorithms-bst.rs",
+      "sha256" : "b151d5e9d54afbe355b1c2723ae7ff707237f6da9ca050dcc741d768d6923c74"
+    },
+    {
+      "bytes" : 777,
+      "path" : "tests/algorithms-bubble-sort.rs",
+      "sha256" : "ab916a3ed4c93ea54d3152ad23256a9b4a84f2fc3c33849f3a2c2866aee1df91"
+    },
+    {
+      "bytes" : 1220,
+      "path" : "tests/algorithms-connected-components.rs",
+      "sha256" : "b132784a5935a68fa28c49d2958b5de0028882262b95278aea404d53006813e6"
+    },
+    {
+      "bytes" : 1082,
+      "path" : "tests/algorithms-cycle-detection.rs",
+      "sha256" : "5ae797e05282ad2c3f811fb1720e1f6dbbb658852c1de5a8f1c4725f962d3a2b"
+    },
+    {
+      "bytes" : 1418,
+      "path" : "tests/algorithms-dfs.rs",
+      "sha256" : "c6b504f9d5c1bf00fd185c2548975e8957b75eefedb2d9c1b8a2cfea2150040b"
+    },
+    {
+      "bytes" : 1618,
+      "path" : "tests/algorithms-dijkstra.rs",
+      "sha256" : "9ac3ddd2df7ca00acc806916e93385e63df53bf063c46126167080bba531ae0f"
+    },
+    {
+      "bytes" : 535,
+      "path" : "tests/algorithms-dp-1d-problems.rs",
+      "sha256" : "b5d34cdd9f213a90e8eb342b01ec2c34a255a648bf817ee5babd6e1178830f00"
+    },
+    {
+      "bytes" : 799,
+      "path" : "tests/algorithms-dp-2d-grid.rs",
+      "sha256" : "ffc937ed65b72e2ac101ddca8cc0a5f2786f7e39738cd188dbcd712abf0d4aac"
+    },
+    {
+      "bytes" : 703,
+      "path" : "tests/algorithms-dp-knapsack.rs",
+      "sha256" : "fbfa5ae27d3bce3e086f8d0bcd94f6c430fe4793b6c26822c8c7e3119727a65d"
+    },
+    {
+      "bytes" : 771,
+      "path" : "tests/algorithms-dp-lcs.rs",
+      "sha256" : "d40b54f9bd1d9cc19f2bb429035a34368501fb5b6195a96bd5e696614cfe6414"
+    },
+    {
+      "bytes" : 683,
+      "path" : "tests/algorithms-dp-memoization.rs",
+      "sha256" : "0dc7ede2952e84916c364f4e2648c489e668673360c1a127d2e46c139ea2d88d"
+    },
+    {
+      "bytes" : 571,
+      "path" : "tests/algorithms-dp-tabulation.rs",
+      "sha256" : "2eb61c85d84224c7f5a8d550e9a7cecb2d55435c690ec2819cd9f215b45dc046"
+    },
+    {
+      "bytes" : 921,
+      "path" : "tests/algorithms-graph-representation.rs",
+      "sha256" : "aff08c19709ce8d4cd8a1a595fbe58bd7c4b5e04074b8c8a3e7bead790d0e1e0"
+    },
+    {
+      "bytes" : 1480,
+      "path" : "tests/algorithms-heap-priority-queue.rs",
+      "sha256" : "ea9bad431f3571e707560b26daa02a0dfd8dc7a7c8fe03196a6e8096a4ad85e1"
+    },
+    {
+      "bytes" : 802,
+      "path" : "tests/algorithms-insertion-sort.rs",
+      "sha256" : "8176a94ad22a47297955f1d4a0e1114e5bc8898a8f0bc3233ab0a8479c346972"
+    },
+    {
+      "bytes" : 641,
+      "path" : "tests/algorithms-merge-sort.rs",
+      "sha256" : "4e7143f1ac6cf949e783cd6f873d28ba5464c064ee95df53b5cfbf779c299eb0"
+    },
+    {
+      "bytes" : 907,
+      "path" : "tests/algorithms-prefix-sum.rs",
+      "sha256" : "8d73212eb993a1f06733ca899ded5a9c9592b4ad8375e6b27249e5b441ea13da"
+    },
+    {
+      "bytes" : 866,
+      "path" : "tests/algorithms-quick-sort.rs",
+      "sha256" : "d6fd25ee665627c7b0c6e55e7b7fc4b4c65fe322fa398833d80e961102d796b5"
+    },
+    {
+      "bytes" : 557,
+      "path" : "tests/algorithms-recursion-basics.rs",
+      "sha256" : "4a61ca52a3bc8c7f49bdd32441e9aec2f32c91b1ded62a58b8d9f361f2a9cdb5"
+    },
+    {
+      "bytes" : 789,
+      "path" : "tests/algorithms-selection-sort.rs",
+      "sha256" : "96ca99ef9c8e4a10635a7f4c2217f70400ba0f94e6935d92acedfd972427880a"
+    },
+    {
+      "bytes" : 1277,
+      "path" : "tests/algorithms-shortest-path-unweighted.rs",
+      "sha256" : "b4b0e5fcaa2ec63dddff836468876a38dcf321ecc8a2170e84beb1a3d442fb03"
+    },
+    {
+      "bytes" : 684,
+      "path" : "tests/algorithms-sliding-window.rs",
+      "sha256" : "26328d5330e0b5d849dd4f310be0344496bd55fe228351b2a155d01cd4eafc33"
+    },
+    {
+      "bytes" : 887,
+      "path" : "tests/algorithms-sorting-comparison.rs",
+      "sha256" : "57a2531e37b04ba83dea5bb98513682a75cfa6e8c729bd1c772388d4e747a1cf"
+    },
+    {
+      "bytes" : 1857,
+      "path" : "tests/algorithms-topological-sort.rs",
+      "sha256" : "88c607773d739f8f01b330191470326ce18143abfc0344f1efafb641c78a9edc"
+    },
+    {
+      "bytes" : 1280,
+      "path" : "tests/algorithms-tree-basics.rs",
+      "sha256" : "3414298543d06522f11c389ff08e74d94cb8d4d2d3c1f7b355b3b807096f08df"
+    },
+    {
+      "bytes" : 1377,
+      "path" : "tests/algorithms-tree-traversal-bfs.rs",
+      "sha256" : "511f02ab6eaf8197f320f8d5a52f9c2c9da721bfe9652e1fe3707289d5e46a5a"
+    },
+    {
+      "bytes" : 1314,
+      "path" : "tests/algorithms-tree-traversal-dfs.rs",
+      "sha256" : "62383355aa94c170fb8e4bbf44031946b04d8352e71e8b31c9a326e35c53161e"
+    },
+    {
+      "bytes" : 833,
+      "path" : "tests/algorithms-two-pointers.rs",
+      "sha256" : "17b095f402c760a5dbb2571b84ce2eed18de4d7f8f6085758c67ca6b21c5e2e4"
+    },
+    {
+      "bytes" : 8296,
+      "path" : "visuals/bfs.json",
+      "sha256" : "02f6f88ca3acbfbfaccd378fffbc31981085e30ff8844567552d7ee83a02f375"
+    },
+    {
+      "bytes" : 1888,
+      "path" : "visuals/binary-search-variants.json",
+      "sha256" : "25f7e32b8cadae4e2bd23f7b47461425662a69c6712833d169e9946a35bb93a4"
+    },
+    {
+      "bytes" : 1870,
+      "path" : "visuals/binary-search.json",
+      "sha256" : "f6c2acbc4e59a381712729534a40e313dda16cde6381b20dec406ef6384cf52a"
+    },
+    {
+      "bytes" : 15625,
+      "path" : "visuals/bst-delete-and-balance.json",
+      "sha256" : "25b30d136525966726c162a24d27a7d0ad56c4a90bf4c6903f639a26ff646afb"
+    },
+    {
+      "bytes" : 9970,
+      "path" : "visuals/bst.json",
+      "sha256" : "8e9ddaa423d05921384e0d1987a48e32e8eadbc31b35327187e7da644d2c4413"
+    },
+    {
+      "bytes" : 1484,
+      "path" : "visuals/bubble-sort.json",
+      "sha256" : "eb78464c43c76365599bcea5a3d94e5969f7539e65751e5fc77ed9d6ac43ef41"
+    },
+    {
+      "bytes" : 4931,
+      "path" : "visuals/connected-components.json",
+      "sha256" : "d45836be7f65e64d08ac0f2ce37bf7bbf1d3ec4d9fac9a61de82c63c9bd3bb18"
+    },
+    {
+      "bytes" : 5053,
+      "path" : "visuals/cycle-detection.json",
+      "sha256" : "0082934c3c8010e4a6129ff4f1a6132c87d977d05851cd5b786b29e32f7c4f24"
+    },
+    {
+      "bytes" : 7446,
+      "path" : "visuals/dfs.json",
+      "sha256" : "910d6d7c05e29e332aa661480c22e96f673fed3f91b41a5f8488cf0c478eb62e"
+    },
+    {
+      "bytes" : 7967,
+      "path" : "visuals/dijkstra.json",
+      "sha256" : "93df19f701c89704869a3a534be691c2b175fd0eed7eedaf38de09ab81e50488"
+    },
+    {
+      "bytes" : 9386,
+      "path" : "visuals/dp-1d-problems.json",
+      "sha256" : "84285527bd08c29b84414240639fc85676e7cce2bfe6c37a437f3dd562dfd06b"
+    },
+    {
+      "bytes" : 9375,
+      "path" : "visuals/dp-2d-grid.json",
+      "sha256" : "76cc5b2133b042eb0991d33b51dd898b6a979768c2bbdef0b57cc585e600d465"
+    },
+    {
+      "bytes" : 16334,
+      "path" : "visuals/dp-knapsack.json",
+      "sha256" : "82bfe4c1bf299eac312b7486bec70dc43573b2a91f2828333bcedf95ca9b6536"
+    },
+    {
+      "bytes" : 30410,
+      "path" : "visuals/dp-lcs.json",
+      "sha256" : "12b4d50be71a269a01e3b39b286dd5aa2b68260be8b772cdd5364270808ce98b"
+    },
+    {
+      "bytes" : 5779,
+      "path" : "visuals/dp-memoization.json",
+      "sha256" : "7dd3499c0ba0469743867984175db19ea03aa1239f10e4c032ba4a71c9c0f7b6"
+    },
+    {
+      "bytes" : 7757,
+      "path" : "visuals/dp-tabulation.json",
+      "sha256" : "c3ef7d549186866646f0a18430af2213fd22dbd27ac92834a239cf349431ef92"
+    },
+    {
+      "bytes" : 4564,
+      "path" : "visuals/graph-representation.json",
+      "sha256" : "a31d2681e059bc5f64e54b61c72a77700867dbc5d5c43051269e4ee495953a39"
+    },
+    {
+      "bytes" : 10240,
+      "path" : "visuals/heap-priority-queue.json",
+      "sha256" : "981192cbf5163f3480b6771765570f84a086c9b2220dc2752b9293427638d639"
+    },
+    {
+      "bytes" : 1570,
+      "path" : "visuals/insertion-sort.json",
+      "sha256" : "ffdd3c65edf1da179cdaa4399e70aca3516bc9787bcac3c605fb9eb876c7befd"
+    },
+    {
+      "bytes" : 2710,
+      "path" : "visuals/merge-sort.json",
+      "sha256" : "5674c7f96901cf7a5726fd6999b2fa1ec947d98c065d12f8fb44328c55d65b3b"
+    },
+    {
+      "bytes" : 1481,
+      "path" : "visuals/prefix-sum.json",
+      "sha256" : "55705dfe99365140e6437c2e51bc00b369c96eab74b142180cd4440349f8234e"
+    },
+    {
+      "bytes" : 1919,
+      "path" : "visuals/quick-sort.json",
+      "sha256" : "3950e7752370870a9d8aa6b2d8cfd36ade0de4c048de41619e1d4e85bba64335"
+    },
+    {
+      "bytes" : 2066,
+      "path" : "visuals/recursion-basics.json",
+      "sha256" : "68cd5d4b200d7e0af8252d5ba4db2f19c88561eaceb23281f707b711cbf2a4e9"
+    },
+    {
+      "bytes" : 1725,
+      "path" : "visuals/selection-sort.json",
+      "sha256" : "1c427e8149a5c24c2cf211cc58078521faf23597d0d3b468e077c76e07cbaf88"
+    },
+    {
+      "bytes" : 6700,
+      "path" : "visuals/shortest-path-unweighted.json",
+      "sha256" : "d7a26445e06dc7050a93ea051c60b0546eecb58b5f1d7565aecef4d891d15533"
+    },
+    {
+      "bytes" : 1516,
+      "path" : "visuals/sliding-window.json",
+      "sha256" : "3b0f73a8c68985acafea27f4741051d59152f1bb8cd490c793473c550e7c55a6"
+    },
+    {
+      "bytes" : 1781,
+      "path" : "visuals/sorting-comparison.json",
+      "sha256" : "658b533e5d97b858638b9d0802ac5f886efeeb1481b82590d8b342a7fd7a908c"
+    },
+    {
+      "bytes" : 6458,
+      "path" : "visuals/topological-sort.json",
+      "sha256" : "70f9a52000ba94795fc695124570851331ee9c1fa29beb63186784c980432b14"
+    },
+    {
+      "bytes" : 5278,
+      "path" : "visuals/tree-basics.json",
+      "sha256" : "73eaaac1b685a3cb2cbcca836e9152d8f067b689cbaf7ad451a8ec1ac424c535"
+    },
+    {
+      "bytes" : 5910,
+      "path" : "visuals/tree-traversal-bfs.json",
+      "sha256" : "99c259a5fadfcbaac986b07121c14820c2624673f242b8319dd6687bf3c7a684"
+    },
+    {
+      "bytes" : 6935,
+      "path" : "visuals/tree-traversal-dfs.json",
+      "sha256" : "9ea8b0d1c382503a7d7563f091ee9bb05340b2bd1c3d8a3fe345b397d1f9f9fd"
+    },
+    {
+      "bytes" : 1495,
+      "path" : "visuals/two-pointers.json",
+      "sha256" : "d2df5c548268cd09e69d69e0e67137a474bcf298b7bfc7b769d8f9914dcc05f7"
+    }
+  ],
+  "generatedAt" : "2026-09-08T05:00:00Z",
+  "languages" : [
+    "rust"
+  ],
+  "lessons" : [
+    {
+      "language" : "rust",
+      "objectives" : [
+        "정렬된 배열에서 이진 탐색으로 값을 찾는 과정을 직접 진행할 수 있다",
+        "탐색 범위가 매 단계 절반으로 줄어드는 이유를 설명할 수 있다",
+        "선형 탐색과 비교해 O(log n)이 O(n)보다 왜 빠른지 입력 크기로 설명할 수 있다"
+      ],
+      "order" : 1,
+      "path" : "lessons/algorithms-binary-search.md",
+      "prerequisites" : [
+
+      ],
+      "stableID" : "algorithms-binary-search",
+      "title" : "이진 탐색: 절반씩 줄이며 찾기"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "중복된 값 중 첫 번째·마지막 위치를 이진 탐색으로 찾을 수 있다",
+        "탐색 범위를 좁히는 조건을 바꿔 하한과 상한을 구분할 수 있다",
+        "회전된 정렬 배열에서 어느 절반이 정렬 상태인지 판단해 탐색할 수 있다"
+      ],
+      "order" : 2,
+      "path" : "lessons/algorithms-binary-search-variants.md",
+      "prerequisites" : [
+        "algorithms-binary-search"
+      ],
+      "stableID" : "algorithms-binary-search-variants",
+      "title" : "이진 탐색 응용: 첫 위치·마지막 위치·회전 배열"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "인접한 두 값을 비교·교환해 배열을 정렬할 수 있다",
+        "바깥/안쪽 반복이 몇 번 도는지 세어 O(n^2)을 도출할 수 있다",
+        "이미 정렬된 배열에서 조기 종료로 최선의 경우를 앞당길 수 있다"
+      ],
+      "order" : 3,
+      "path" : "lessons/algorithms-bubble-sort.md",
+      "prerequisites" : [
+        "algorithms-binary-search"
+      ],
+      "stableID" : "algorithms-bubble-sort",
+      "title" : "버블 정렬: 인접 교환으로 정렬하기"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "남은 구간의 최솟값을 찾아 정렬된 부분 뒤에 배치할 수 있다",
+        "버블 정렬과 비교해 교환 횟수가 줄어드는 이유를 설명할 수 있다",
+        "선택 정렬이 안정 정렬이 아닐 수 있는 예를 들 수 있다"
+      ],
+      "order" : 4,
+      "path" : "lessons/algorithms-selection-sort.md",
+      "prerequisites" : [
+        "algorithms-bubble-sort"
+      ],
+      "stableID" : "algorithms-selection-sort",
+      "title" : "선택 정렬: 최솟값을 찾아 앞으로"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "정렬된 앞부분에 다음 값을 알맞은 위치까지 밀어 넣을 수 있다",
+        "이미 정렬에 가까운 입력에서 삽입 정렬이 O(n)에 가까워지는 이유를 설명할 수 있다",
+        "세 가지 O(n^2) 정렬(버블·선택·삽입)의 비교 방식 차이를 정리할 수 있다"
+      ],
+      "order" : 5,
+      "path" : "lessons/algorithms-insertion-sort.md",
+      "prerequisites" : [
+        "algorithms-selection-sort"
+      ],
+      "stableID" : "algorithms-insertion-sort",
+      "title" : "삽입 정렬: 이미 정렬된 부분에 끼워 넣기"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "베이스 케이스와 재귀 케이스를 갖춘 재귀 함수를 정의할 수 있다",
+        "재귀 호출이 스택에 쌓였다가 베이스 케이스에서 풀리는 과정을 추적할 수 있다",
+        "베이스 케이스가 빠지면 무한히 재귀하며 스택이 넘친다는 것을 확인할 수 있다"
+      ],
+      "order" : 6,
+      "path" : "lessons/algorithms-recursion-basics.md",
+      "prerequisites" : [
+        "algorithms-binary-search"
+      ],
+      "stableID" : "algorithms-recursion-basics",
+      "title" : "재귀: 자신을 다시 부르는 함수"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "배열을 반으로 나누고 재귀로 각각 정렬한 뒤 병합할 수 있다",
+        "두 정렬된 배열을 하나로 합치는 과정을 O(n)에 구현할 수 있다",
+        "분할 깊이와 병합 비용을 곱해 O(n log n)을 도출할 수 있다"
+      ],
+      "order" : 7,
+      "path" : "lessons/algorithms-merge-sort.md",
+      "prerequisites" : [
+        "algorithms-recursion-basics"
+      ],
+      "stableID" : "algorithms-merge-sort",
+      "title" : "병합 정렬: 나누고 정복하고 합치기"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "피벗을 기준으로 배열을 작은 값과 큰 값으로 분할할 수 있다",
+        "분할된 두 구간을 재귀로 각각 정렬해 전체를 정렬할 수 있다",
+        "피벗을 잘못 고르면 최악의 경우 O(n^2)이 되는 입력을 만들 수 있다"
+      ],
+      "order" : 8,
+      "path" : "lessons/algorithms-quick-sort.md",
+      "prerequisites" : [
+        "algorithms-merge-sort"
+      ],
+      "stableID" : "algorithms-quick-sort",
+      "title" : "퀵 정렬: 피벗으로 나누기"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "다섯 정렬의 최선·평균·최악 시간복잡도를 표로 정리할 수 있다",
+        "안정 정렬이 필요한 상황을 예로 들 수 있다",
+        "입력 크기와 정렬 상태에 따라 적절한 정렬을 고를 수 있다"
+      ],
+      "order" : 9,
+      "path" : "lessons/algorithms-sorting-comparison.md",
+      "prerequisites" : [
+        "algorithms-bubble-sort",
+        "algorithms-selection-sort",
+        "algorithms-insertion-sort",
+        "algorithms-merge-sort",
+        "algorithms-quick-sort"
+      ],
+      "stableID" : "algorithms-sorting-comparison",
+      "title" : "정렬 다섯 가지 비교: 언제 무엇을 쓸까"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "정렬된 배열에서 두 포인터를 양 끝에 두고 조건에 따라 이동시킬 수 있다",
+        "중첩 반복 O(n^2) 대신 투 포인터로 O(n)에 두 수의 합 문제를 풀 수 있다",
+        "투 포인터가 정렬을 전제로 한다는 것을 설명할 수 있다"
+      ],
+      "order" : 10,
+      "path" : "lessons/algorithms-two-pointers.md",
+      "prerequisites" : [
+        "algorithms-sorting-comparison"
+      ],
+      "stableID" : "algorithms-two-pointers",
+      "title" : "투 포인터: 두 지점을 좁혀가기"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "배열의 누적합 배열을 O(n)에 만들 수 있다",
+        "누적합 배열에서 두 값을 빼 임의 구간의 합을 O(1)에 구할 수 있다",
+        "구간 합 질의를 매번 새로 더하는 방식과 비교해 이득을 설명할 수 있다"
+      ],
+      "order" : 11,
+      "path" : "lessons/algorithms-prefix-sum.md",
+      "prerequisites" : [
+        "algorithms-two-pointers"
+      ],
+      "stableID" : "algorithms-prefix-sum",
+      "title" : "프리픽스 합: 구간 합을 미리 쌓아두기"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "크기가 고정된 윈도우를 옮기며 구간 합의 최댓값을 O(n)에 구할 수 있다",
+        "조건에 따라 윈도우를 늘리거나 줄이는 가변 윈도우를 구현할 수 있다",
+        "투 포인터·프리픽스 합과 슬라이딩 윈도우의 관계를 설명할 수 있다"
+      ],
+      "order" : 12,
+      "path" : "lessons/algorithms-sliding-window.md",
+      "prerequisites" : [
+        "algorithms-prefix-sum",
+        "algorithms-two-pointers"
+      ],
+      "stableID" : "algorithms-sliding-window",
+      "title" : "슬라이딩 윈도우: 창을 옮기며 훑기"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "간선 목록을 인접 리스트로 변환해 각 정점의 이웃을 저장할 수 있다",
+        "같은 그래프를 인접 행렬로도 표현할 수 있다",
+        "정점·간선 수에 따라 인접 리스트와 인접 행렬 중 무엇이 메모리에 유리한지 판단할 수 있다"
+      ],
+      "order" : 13,
+      "path" : "lessons/algorithms-graph-representation.md",
+      "prerequisites" : [
+        "algorithms-recursion-basics"
+      ],
+      "stableID" : "algorithms-graph-representation",
+      "title" : "그래프 표현: 인접 리스트와 인접 행렬"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "큐를 이용해 시작 정점에서부터 BFS로 모든 정점을 방문할 수 있다",
+        "방문 표시를 하지 않으면 같은 정점을 무한히 재방문한다는 것을 확인할 수 있다",
+        "BFS의 방문 순서가 시작 정점으로부터의 거리(레벨) 순서와 같다는 것을 설명할 수 있다"
+      ],
+      "order" : 14,
+      "path" : "lessons/algorithms-bfs.md",
+      "prerequisites" : [
+        "algorithms-graph-representation"
+      ],
+      "stableID" : "algorithms-bfs",
+      "title" : "너비 우선 탐색(BFS): 가까운 정점부터"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "BFS로 방문하며 각 정점까지의 거리를 기록할 수 있다",
+        "부모 포인터를 남겨 시작 정점부터 목표 정점까지의 경로를 복원할 수 있다",
+        "가중치가 없는 그래프에서 BFS가 왜 최단 경로를 보장하는지 설명할 수 있다"
+      ],
+      "order" : 15,
+      "path" : "lessons/algorithms-shortest-path-unweighted.md",
+      "prerequisites" : [
+        "algorithms-bfs"
+      ],
+      "stableID" : "algorithms-shortest-path-unweighted",
+      "title" : "가중치 없는 최단 경로: BFS로 거리 구하기"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "재귀로 DFS를 구현해 그래프의 모든 정점을 방문할 수 있다",
+        "같은 DFS를 명시적 스택으로 재귀 없이 구현할 수 있다",
+        "DFS와 BFS의 방문 순서가 왜 다른지 예시 그래프로 설명할 수 있다"
+      ],
+      "order" : 16,
+      "path" : "lessons/algorithms-dfs.md",
+      "prerequisites" : [
+        "algorithms-graph-representation"
+      ],
+      "stableID" : "algorithms-dfs",
+      "title" : "깊이 우선 탐색(DFS): 갈 수 있는 데까지"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "방문하지 않은 정점이 남아 있는 한 탐색을 새로 시작해 모든 연결 요소를 찾을 수 있다",
+        "BFS와 DFS 둘 중 어느 것으로 구현해도 같은 개수의 연결 요소가 나오는 이유를 설명할 수 있다",
+        "정점과 간선 수에 따른 연결 요소 탐색의 시간복잡도를 말할 수 있다"
+      ],
+      "order" : 17,
+      "path" : "lessons/algorithms-connected-components.md",
+      "prerequisites" : [
+        "algorithms-bfs",
+        "algorithms-dfs"
+      ],
+      "stableID" : "algorithms-connected-components",
+      "title" : "연결 요소: 그래프가 몇 조각인가"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "DFS 도중 현재 경로에 있는 정점을 표시해 역방향 간선을 찾을 수 있다",
+        "역방향 간선의 존재로 방향 그래프에 사이클이 있는지 판정할 수 있다",
+        "무방향 그래프에서는 부모 간선을 예외로 두어야 하는 이유를 설명할 수 있다"
+      ],
+      "order" : 18,
+      "path" : "lessons/algorithms-cycle-detection.md",
+      "prerequisites" : [
+        "algorithms-dfs"
+      ],
+      "stableID" : "algorithms-cycle-detection",
+      "title" : "사이클 탐지: DFS로 순환을 찾기"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "그래프에 사이클이 없는지 먼저 확인해야 위상 정렬이 가능한 이유를 설명할 수 있다",
+        "DFS의 후위 순서를 뒤집어 위상 정렬 결과를 만들 수 있다",
+        "같은 DAG에 위상 정렬 결과가 여럿일 수 있는 이유를 예로 들 수 있다"
+      ],
+      "order" : 19,
+      "path" : "lessons/algorithms-topological-sort.md",
+      "prerequisites" : [
+        "algorithms-cycle-detection"
+      ],
+      "stableID" : "algorithms-topological-sort",
+      "title" : "위상 정렬: 순서가 있는 일을 줄 세우기"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "시작 정점의 거리를 0, 나머지를 무한대로 두고 거리 배열을 초기화할 수 있다",
+        "미확정 정점 중 거리가 가장 짧은 정점을 골라 이웃의 거리를 갱신할 수 있다",
+        "가중치가 모두 0 이상이어야 다익스트라가 성립하는 이유를 설명할 수 있다"
+      ],
+      "order" : 20,
+      "path" : "lessons/algorithms-dijkstra.md",
+      "prerequisites" : [
+        "algorithms-shortest-path-unweighted"
+      ],
+      "stableID" : "algorithms-dijkstra",
+      "title" : "다익스트라: 가중 그래프의 최단 경로"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "트리가 사이클 없는 연결 그래프의 특수한 형태임을 설명할 수 있다",
+        "루트·부모·자식·리프·높이 용어로 주어진 트리를 설명할 수 있다",
+        "이진 트리를 노드와 왼쪽/오른쪽 자식 포인터로 표현할 수 있다"
+      ],
+      "order" : 21,
+      "path" : "lessons/algorithms-tree-basics.md",
+      "prerequisites" : [
+        "algorithms-graph-representation"
+      ],
+      "stableID" : "algorithms-tree-basics",
+      "title" : "트리 표현: 사이클 없는 그래프"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "전위·중위·후위 순회를 각각 재귀로 구현할 수 있다",
+        "같은 트리에서 세 순회의 방문 순서가 어떻게 다른지 비교할 수 있다",
+        "이진 탐색 트리의 중위 순회가 오름차순이 되는 이유를 짐작할 수 있다"
+      ],
+      "order" : 22,
+      "path" : "lessons/algorithms-tree-traversal-dfs.md",
+      "prerequisites" : [
+        "algorithms-tree-basics",
+        "algorithms-dfs"
+      ],
+      "stableID" : "algorithms-tree-traversal-dfs",
+      "title" : "트리 순회: 전위·중위·후위"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "큐를 이용해 트리를 레벨 단위로 방문하는 순회를 구현할 수 있다",
+        "레벨 순회 결과를 층별로 묶어 출력할 수 있다",
+        "재귀 기반 순회와 큐 기반 순회의 방문 순서 차이를 설명할 수 있다"
+      ],
+      "order" : 23,
+      "path" : "lessons/algorithms-tree-traversal-bfs.md",
+      "prerequisites" : [
+        "algorithms-tree-traversal-dfs",
+        "algorithms-bfs"
+      ],
+      "stableID" : "algorithms-tree-traversal-bfs",
+      "title" : "트리의 레벨 순회: 층마다 훑기"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "값의 크기를 비교하며 이진 탐색 트리에 새 값을 삽입할 수 있다",
+        "같은 규칙으로 값을 탐색해 있는지 없는지 판정할 수 있다",
+        "삽입·탐색의 시간복잡도가 트리의 높이에 따라 달라지는 이유를 설명할 수 있다"
+      ],
+      "order" : 24,
+      "path" : "lessons/algorithms-bst.md",
+      "prerequisites" : [
+        "algorithms-tree-traversal-dfs"
+      ],
+      "stableID" : "algorithms-bst",
+      "title" : "이진 탐색 트리: 삽입과 탐색"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "자식이 0개·1개·2개인 노드를 각각 다른 방식으로 삭제할 수 있다",
+        "삭제할 노드의 자식이 둘일 때 중위 후속자로 대체하는 이유를 설명할 수 있다",
+        "값을 오름차순으로만 삽입하면 트리가 한 줄로 늘어져 성능이 O(n)까지 떨어지는 것을 확인할 수 있다"
+      ],
+      "order" : 25,
+      "path" : "lessons/algorithms-bst-delete-and-balance.md",
+      "prerequisites" : [
+        "algorithms-bst"
+      ],
+      "stableID" : "algorithms-bst-delete-and-balance",
+      "title" : "BST 삭제와 균형: 모양이 성능을 정한다"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "힙을 배열로 표현하고 부모·자식 인덱스를 계산할 수 있다",
+        "삽입 시 sift-up, 최솟값 추출 시 sift-down으로 힙 속성을 유지할 수 있다",
+        "힙이 완전 이진 트리라서 삽입·추출이 항상 O(log n)인 이유를 이진 탐색 트리와 비교해 설명할 수 있다"
+      ],
+      "order" : 26,
+      "path" : "lessons/algorithms-heap-priority-queue.md",
+      "prerequisites" : [
+        "algorithms-tree-traversal-bfs",
+        "algorithms-bst-delete-and-balance"
+      ],
+      "stableID" : "algorithms-heap-priority-queue",
+      "title" : "힙과 우선순위 큐: 항상 균형 잡힌 트리"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "재귀 호출 중 같은 입력이 반복되는 것을 호출 트리로 확인할 수 있다",
+        "캐시(맵이나 배열)에 결과를 저장해 중복 계산을 없앨 수 있다",
+        "메모이제이션 전후로 시간복잡도가 지수에서 선형으로 바뀌는 이유를 설명할 수 있다"
+      ],
+      "order" : 27,
+      "path" : "lessons/algorithms-dp-memoization.md",
+      "prerequisites" : [
+        "algorithms-recursion-basics"
+      ],
+      "stableID" : "algorithms-dp-memoization",
+      "title" : "메모이제이션: 재귀에 기억을 더하기"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "점화식을 세워 작은 인덱스부터 표를 채울 수 있다",
+        "타뷸레이션 결과가 같은 문제의 메모이제이션 결과와 일치함을 확인할 수 있다",
+        "재귀 호출 스택 없이 반복문만으로 답을 구했을 때의 이점을 설명할 수 있다"
+      ],
+      "order" : 28,
+      "path" : "lessons/algorithms-dp-tabulation.md",
+      "prerequisites" : [
+        "algorithms-dp-memoization"
+      ],
+      "stableID" : "algorithms-dp-tabulation",
+      "title" : "타뷸레이션: 아래에서부터 표 채우기"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "직전 상태들로부터 현재 칸의 값을 정하는 점화식을 세울 수 있다",
+        "'고르거나 건너뛴다'는 선택이 있는 문제를 1차원 DP로 풀 수 있다",
+        "표의 각 칸이 어떤 부분 문제의 답인지 말로 설명할 수 있다"
+      ],
+      "order" : 29,
+      "path" : "lessons/algorithms-dp-1d-problems.md",
+      "prerequisites" : [
+        "algorithms-dp-tabulation"
+      ],
+      "stableID" : "algorithms-dp-1d-problems",
+      "title" : "1차원 DP 응용: 계단 오르기와 집 도둑"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "격자의 각 칸을 위 칸과 왼쪽 칸의 값으로부터 채울 수 있다",
+        "2차원 DP 표의 행과 열이 각각 무엇을 나타내는지 설명할 수 있다",
+        "1차원 DP와 비교해 2차원 DP에서 참조하는 이전 상태가 왜 두 방향인지 설명할 수 있다"
+      ],
+      "order" : 30,
+      "path" : "lessons/algorithms-dp-2d-grid.md",
+      "prerequisites" : [
+        "algorithms-dp-1d-problems"
+      ],
+      "stableID" : "algorithms-dp-2d-grid",
+      "title" : "2차원 DP: 격자 위의 경로"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "물건 번호와 남은 무게를 두 축으로 하는 DP 표를 정의할 수 있다",
+        "각 칸에서 물건을 담는 경우와 담지 않는 경우 중 더 나은 값을 고를 수 있다",
+        "같은 물건을 두 번 담지 않기 위해 표를 채우는 순서가 왜 중요한지 설명할 수 있다"
+      ],
+      "order" : 31,
+      "path" : "lessons/algorithms-dp-knapsack.md",
+      "prerequisites" : [
+        "algorithms-dp-2d-grid"
+      ],
+      "stableID" : "algorithms-dp-knapsack",
+      "title" : "0/1 배낭 문제: 담을까 말까"
+    },
+    {
+      "language" : "rust",
+      "objectives" : [
+        "두 문자열의 길이를 두 축으로 하는 DP 표를 정의할 수 있다",
+        "두 위치의 문자가 같을 때와 다를 때 표를 채우는 규칙을 구분할 수 있다",
+        "완성된 표에서 최장 공통 부분 수열의 길이와 실제 문자열을 복원할 수 있다"
+      ],
+      "order" : 32,
+      "path" : "lessons/algorithms-dp-lcs.md",
+      "prerequisites" : [
+        "algorithms-dp-knapsack"
+      ],
+      "stableID" : "algorithms-dp-lcs",
+      "title" : "최장 공통 부분 수열(LCS): 두 문자열 비교하기"
+    }
+  ],
+  "minAppVersion" : "0.1.0",
+  "packID" : "polyglot-algorithms",
+  "schemaVersion" : 1,
+  "version" : "0.1.0"
+}

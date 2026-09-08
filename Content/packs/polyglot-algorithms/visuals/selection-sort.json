@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "selection-sort",
+  "kind": "array",
+  "values": [5, 2, 4, 1, 3],
+  "frames": [
+    {
+      "caption": "정렬 안 된 구간 0~4 전체에서 최솟값을 찾는 것부터 시작합니다.",
+      "values": [5, 2, 4, 1, 3],
+      "segments": [{ "role": "highlighted", "start": 0, "end": 4 }]
+    },
+    {
+      "caption": "0~4번 중 최솟값 1을 찾아 3번 자리에서 0번 자리로 옮깁니다. 이 구간에서 딱 한 번만 교환합니다.",
+      "values": [1, 2, 4, 5, 3],
+      "pointers": [{ "name": "확정", "index": 0 }],
+      "segments": [{ "role": "highlighted", "start": 0, "end": 0 }]
+    },
+    {
+      "caption": "1번 자리도 이미 최솟값(2)이었습니다 — 교환 없이 그대로 확정됩니다.",
+      "values": [1, 2, 4, 5, 3],
+      "pointers": [{ "name": "확정", "index": 1 }],
+      "segments": [{ "role": "highlighted", "start": 0, "end": 1 }]
+    },
+    {
+      "caption": "남은 구간(2~4)에서 최솟값 3을 찾아 4번 자리에서 2번 자리로 옮깁니다.",
+      "values": [1, 2, 3, 5, 4],
+      "pointers": [{ "name": "확정", "index": 2 }],
+      "segments": [{ "role": "highlighted", "start": 0, "end": 2 }]
+    },
+    {
+      "caption": "남은 두 자리 중 최솟값 4를 찾아 3번 자리로 옮깁니다.",
+      "values": [1, 2, 3, 4, 5],
+      "pointers": [{ "name": "확정", "index": 3 }],
+      "segments": [{ "role": "highlighted", "start": 0, "end": 3 }]
+    },
+    {
+      "caption": "마지막 자리는 값이 하나뿐이라 비교 없이 그대로 확정됩니다. 정렬이 끝났습니다.",
+      "values": [1, 2, 3, 4, 5],
+      "segments": [{ "role": "highlighted", "start": 0, "end": 4 }]
+    }
+  ]
+}

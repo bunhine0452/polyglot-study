@@ -1,0 +1,1592 @@
+{
+  "schemaVersion": 1,
+  "id": "dp-lcs",
+  "kind": "table",
+  "rowHeaders": [
+    "",
+    "A",
+    "B",
+    "C",
+    "B",
+    "D",
+    "A",
+    "B"
+  ],
+  "columnHeaders": [
+    "",
+    "B",
+    "D",
+    "C",
+    "A",
+    "B",
+    "A"
+  ],
+  "frames": [
+    {
+      "caption": "빈 문자열과 비교하면 공통 부분 수열 길이는 항상 0입니다 — 첫 행(i=0)과 첫 열(j=0)은 모두 0으로 시작합니다.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 6,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 4,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 5,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 6,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 7,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        }
+      ]
+    },
+    {
+      "caption": "dp[1][4]: a의 1번째 글자 'A'와 b의 4번째 글자 'A'가 같습니다. 대각선 dp[0][3]=0에 1을 더해 1.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 6,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 4,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 5,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 6,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 7,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 4,
+          "value": 1,
+          "role": "current",
+          "from": [
+            {
+              "row": 0,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "dp[2][1]: a의 2번째 글자 'B'와 b의 1번째 글자 'B'가 같습니다. 대각선 dp[1][0]=0에 1을 더해 1.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 6,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 4,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 5,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 6,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 7,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 4,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 5,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 6,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "value": 1,
+          "role": "current",
+          "from": [
+            {
+              "row": 1,
+              "column": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "dp[2][5]: a의 2번째 글자 'B'와 b의 5번째 글자 'B'가 같습니다. 대각선 dp[1][4]=1에 1을 더해 2.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 6,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 4,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 5,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 6,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 7,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 4,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 5,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 6,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 4,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 5,
+          "value": 2,
+          "role": "current",
+          "from": [
+            {
+              "row": 1,
+              "column": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "dp[3][3]: a의 3번째 글자 'C'와 b의 3번째 글자 'C'가 같습니다. 대각선 dp[2][2]=1에 1을 더해 2.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 6,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 4,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 5,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 6,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 7,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 4,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 5,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 6,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 4,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 5,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 6,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 1,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 3,
+          "value": 2,
+          "role": "current",
+          "from": [
+            {
+              "row": 2,
+              "column": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "dp[4][5]: a의 4번째 글자 'B'와 b의 5번째 글자 'B'가 같습니다. 대각선 dp[3][4]=2에 1을 더해 3.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 6,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 4,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 5,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 6,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 7,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 4,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 5,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 6,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 4,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 5,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 6,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 1,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 3,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 4,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 5,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 6,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 4,
+          "column": 1,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 4,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 4,
+          "column": 3,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 4,
+          "column": 4,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 4,
+          "column": 5,
+          "value": 3,
+          "role": "current",
+          "from": [
+            {
+              "row": 3,
+              "column": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "dp[6][2]: a의 6번째 글자 'A'와 b의 2번째 글자 'D'는 다릅니다. 위 칸 dp[5][2]=2, 왼쪽 칸 dp[6][1]=1 중 위 값인 2를 그대로 가져옵니다.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 6,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 4,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 5,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 6,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 7,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 4,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 5,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 6,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 4,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 5,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 6,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 1,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 3,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 4,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 5,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 6,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 4,
+          "column": 1,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 4,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 4,
+          "column": 3,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 4,
+          "column": 4,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 4,
+          "column": 5,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 4,
+          "column": 6,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 5,
+          "column": 1,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 5,
+          "column": 2,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 5,
+          "column": 3,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 5,
+          "column": 4,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 5,
+          "column": 5,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 5,
+          "column": 6,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 6,
+          "column": 1,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 6,
+          "column": 2,
+          "value": 2,
+          "role": "current",
+          "from": [
+            {
+              "row": 5,
+              "column": 2
+            },
+            {
+              "row": 6,
+              "column": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "dp[7][6]: a의 7번째 글자 'B'와 b의 6번째 글자 'A'는 다릅니다. 위 칸 dp[6][6]과 왼쪽 칸 dp[7][5]이 둘 다 4로 같아, 그 값을 그대로 가져옵니다. 표를 다 채웠습니다. LCS 길이는 4, 되짚어 복원한 실제 문자열은 BCBA입니다.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 6,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 4,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 5,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 6,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 7,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 4,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 5,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 6,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 4,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 5,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 6,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 1,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 3,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 4,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 5,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 6,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 4,
+          "column": 1,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 4,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 4,
+          "column": 3,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 4,
+          "column": 4,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 4,
+          "column": 5,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 4,
+          "column": 6,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 5,
+          "column": 1,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 5,
+          "column": 2,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 5,
+          "column": 3,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 5,
+          "column": 4,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 5,
+          "column": 5,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 5,
+          "column": 6,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 6,
+          "column": 1,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 6,
+          "column": 2,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 6,
+          "column": 3,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 6,
+          "column": 4,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 6,
+          "column": 5,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 6,
+          "column": 6,
+          "value": 4,
+          "role": "filled"
+        },
+        {
+          "row": 7,
+          "column": 1,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 7,
+          "column": 2,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 7,
+          "column": 3,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 7,
+          "column": 4,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 7,
+          "column": 5,
+          "value": 4,
+          "role": "filled"
+        },
+        {
+          "row": 7,
+          "column": 6,
+          "value": 4,
+          "role": "current",
+          "from": [
+            {
+              "row": 6,
+              "column": 6
+            },
+            {
+              "row": 7,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

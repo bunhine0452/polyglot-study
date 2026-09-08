@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "sliding-window",
+  "kind": "array",
+  "values": [2, 1, 5, 1, 3, 2],
+  "frames": [
+    {
+      "caption": "크기 3인 창을 맨 앞에 놓고 처음 합을 구합니다: 2+1+5=8.",
+      "segments": [{ "role": "highlighted", "start": 0, "end": 2 }, { "role": "excluded", "start": 3, "end": 5 }]
+    },
+    {
+      "caption": "창을 오른쪽으로 한 칸 밉니다. 나가는 값 2를 빼고 들어오는 값 1을 더합니다: 8-2+1=7.",
+      "segments": [{ "role": "highlighted", "start": 1, "end": 3 }, { "role": "excluded", "start": 0, "end": 0 }, { "role": "excluded", "start": 4, "end": 5 }]
+    },
+    {
+      "caption": "다시 한 칸 밉니다: 7-1+3=9. 지금까지 나온 것 중 가장 큰 합입니다.",
+      "segments": [{ "role": "highlighted", "start": 2, "end": 4 }, { "role": "excluded", "start": 0, "end": 1 }, { "role": "excluded", "start": 5, "end": 5 }]
+    },
+    {
+      "caption": "마지막으로 한 칸 더 밉니다: 9-5+2=6. 이전 최댓값보다 작아 갱신하지 않습니다.",
+      "segments": [{ "role": "highlighted", "start": 3, "end": 5 }, { "role": "excluded", "start": 0, "end": 2 }]
+    },
+    {
+      "caption": "최댓값은 9, 시작 위치는 2번입니다. 창마다 처음부터 다시 더하지 않고 양 끝만 갱신해 빠르게 구했습니다.",
+      "segments": [{ "role": "highlighted", "start": 2, "end": 4 }, { "role": "excluded", "start": 0, "end": 1 }, { "role": "excluded", "start": 5, "end": 5 }]
+    }
+  ]
+}

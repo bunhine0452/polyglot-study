@@ -75,7 +75,7 @@ public final class DashboardModel {
     ///
     /// 팩 id 를 함께 돌려주는 이유는 "다음 레슨" 을 **열 수 있어야** 하기 때문이다.
     /// 레슨 id 만으로는 어느 팩에서 읽을지가 정해지지 않는다.
-    private let lessonDirectory: (@Sendable (LanguageID) -> [LessonRef])?
+    private let lessonDirectory: (@Sendable (PackID) -> [LessonRef])?
     /// `nil` 이면 모든 트랙이 `.unknown` — 감지 결과를 지어내지 않는다.
     private let toolchainStatus: (@Sendable (LanguageID) -> TrackToolchainStatus)?
 
@@ -92,7 +92,7 @@ public final class DashboardModel {
         dayBoundary: DayBoundary = DayBoundary(),
         queuePolicy: DueQueuePolicy = .default,
         lessonMetadata: (@Sendable (PackID, LessonID) -> LessonMetadata?)? = nil,
-        lessonDirectory: (@Sendable (LanguageID) -> [LessonRef])? = nil,
+        lessonDirectory: (@Sendable (PackID) -> [LessonRef])? = nil,
         toolchainStatus: (@Sendable (LanguageID) -> TrackToolchainStatus)? = nil
     ) {
         // 셋 중 하나만 주어져도 나머지는 같은 컨테이너에서 나와야 한다 — 서로 다른 페이크를
@@ -139,7 +139,7 @@ public final class DashboardModel {
         var counts: [ReviewSummary.TrackCount] = []
 
         for descriptor in catalog {
-            let progress = progressByTrack[descriptor.languageID] ?? []
+            let progress = descriptor.packID.flatMap { progressByTrack[$0] } ?? []
             let due = descriptor.hasContent
                 ? await dueCount(descriptor.languageID, now: now, studyDayStart: studyDayStart)
                 : nil
@@ -263,7 +263,8 @@ public final class DashboardModel {
         }
 
         // 열린 레슨이 없다 — 팩 목록을 알면 다음 레슨을 가리키고, 모르면 가리킬 곳이 없다.
-        guard let directory = lessonDirectory?(descriptor.languageID) else { return nil }
+        guard let packID = descriptor.packID,
+              let directory = lessonDirectory?(packID) else { return nil }
         let settled = Set(
             progress.filter { $0.status == .completed || $0.status == .skipped }.map(\.lessonID)
         )
@@ -304,7 +305,7 @@ public final class DashboardModel {
     ///
     /// 팩 하나라도 못 읽으면 전체가 실패다. 읽힌 것만 그리면 그 트랙은 "아직 시작 안 함"
     /// 으로 보이고, 그건 저장소를 못 읽은 것과 전혀 다른 말이다.
-    private func progressByTrack() async -> [LanguageID: [LessonProgress]]? {
+    private func progressByTrack() async -> [PackID: [LessonProgress]]? {
         var merged: [LessonProgress] = []
         for packID in packIDs {
             guard let list = try? await progressStore.progressList(packID: packID) else {
@@ -312,7 +313,9 @@ public final class DashboardModel {
             }
             merged += list
         }
-        return Dictionary(grouping: merged, by: \.languageID)
+        // 팩으로 묶는다. 언어로 묶으면 같은 언어를 쓰는 두 트랙(Rust 입문·알고리즘)이
+        // 서로의 진도를 먹는다 — 진도의 PK 가 `(pack_id, lesson_id)` 인 것과 같은 이유다.
+        return Dictionary(grouping: merged, by: \.packID)
     }
 
     private func dueCount(

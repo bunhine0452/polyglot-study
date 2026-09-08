@@ -6,6 +6,8 @@
 	<string>ko</string>
 	<key>CFBundleExecutable</key>
 	<string>Polyglot</string>
+	<key>CFBundleIconFile</key>
+	<string>Polyglot</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.polyglotstudy.Polyglot</string>
 	<key>CFBundleInfoDictionaryVersion</key>

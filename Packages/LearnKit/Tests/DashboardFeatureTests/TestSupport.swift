@@ -12,7 +12,17 @@ struct DashboardFixture {
     static let dayBoundary = DayBoundary(rolloverHour: 4, timeZoneIdentifier: "Asia/Seoul")
     /// 2026-09-06 12:00 KST 근처의 고정 시각. 값 자체는 의미가 없고 **차이**만 쓴다.
     static let now = EpochMillis(1_757_127_600_000)
-    static let packID = DashboardModel.defaultPackID
+    /// **트랙마다 팩이 하나다** — 진도가 `(pack_id, lesson_id)` 로 저장되고 대시보드가 팩으로
+    /// 묶으므로({#track-descriptor-pack-id}), 팩 하나를 여러 트랙이 공유하면 서로의 진도를
+    /// 먹는다. 이름 규칙은 `TrackCatalog` 의 실제 팩 id 와 같다.
+    nonisolated static func packID(for languageID: LanguageID) -> PackID {
+        PackID("polyglot-\(languageID.rawValue)")
+    }
+
+    /// 팩 id 에서 언어를 되돌린다. 테스트가 주는 레슨 목록은 언어 기준이라 이 변환이 필요하다.
+    nonisolated static func language(for packID: PackID) -> LanguageID {
+        LanguageID(String(packID.rawValue.dropFirst("polyglot-".count)))
+    }
 
     let stores = InMemoryStores()
 
@@ -31,11 +41,9 @@ struct DashboardFixture {
         lessonDirectory: (@Sendable (LanguageID) -> [LessonID])? = nil,
         toolchainStatus: (@Sendable (LanguageID) -> TrackToolchainStatus)? = nil
     ) -> DashboardModel {
-        // 팩 id 는 클로저 밖에서 값으로 꺼낸다. `Self.packID` 를 `@Sendable` 클로저 안에서
-        // 읽으면 MainActor 격리(uiSettings)를 넘게 된다.
-        let packID = Self.packID
         return DashboardModel(
-            packIDs: [packID],
+            // 카탈로그가 선언한 팩만 읽는다 — 모델이 실제로 그릴 트랙과 정확히 같은 집합이다.
+            packIDs: catalog.compactMap(\.packID),
             catalog: catalog,
             progressStore: progressStore ?? stores.lessonProgress,
             cardStateStore: stores.cardState,
@@ -44,10 +52,11 @@ struct DashboardFixture {
             dayBoundary: Self.dayBoundary,
             queuePolicy: .default,
             lessonMetadata: lessonMetadata,
-            // 픽스처는 팩 하나짜리다 — 테스트가 주는 레슨 목록에 그 팩을 붙여 준다.
+            // 모델은 팩으로 묻고 테스트는 언어로 답한다 — 픽스처가 그 사이를 옮긴다.
             lessonDirectory: lessonDirectory.map { directory in
-                { @Sendable language in
-                    directory(language).map { LessonRef(packID: packID, lessonID: $0) }
+                { @Sendable packID in
+                    directory(DashboardFixture.language(for: packID))
+                        .map { LessonRef(packID: packID, lessonID: $0) }
                 }
             },
             toolchainStatus: toolchainStatus
@@ -61,15 +70,15 @@ struct DashboardFixture {
         lessonMetadata: (@Sendable (PackID, LessonID) -> DashboardModel.LessonMetadata?)? = nil,
         lessonDirectory: (@Sendable (LanguageID) -> [LessonID])? = nil
     ) -> TracksModel {
-        let packID = Self.packID
         return TracksModel(
-            packIDs: [packID],
+            packIDs: catalog.compactMap(\.packID),
             catalog: catalog,
             progressStore: progressStore ?? stores.lessonProgress,
             lessonMetadata: lessonMetadata,
             lessonDirectory: lessonDirectory.map { directory in
-                { @Sendable language in
-                    directory(language).map { LessonRef(packID: packID, lessonID: $0) }
+                { @Sendable packID in
+                    directory(DashboardFixture.language(for: packID))
+                        .map { LessonRef(packID: packID, lessonID: $0) }
                 }
             }
         )
@@ -78,16 +87,18 @@ struct DashboardFixture {
     // MARK: - 진도
 
     /// 완료된 레슨 `count` 개를 심는다. 레슨 id 는 `<lang>-0001` … 로 순번을 담는다.
+    /// - Parameter pack: 트랙이 언어와 1:1 이 아닐 때(같은 언어의 두 트랙) 팩을 직접 준다.
     func seedCompletedLessons(
         _ languageID: LanguageID,
         count: Int,
-        finishedBy timestamp: EpochMillis
+        finishedBy timestamp: EpochMillis,
+        pack: PackID? = nil
     ) async throws {
         guard count > 0 else { return }
         for ordinal in 1...count {
             try await stores.lessonProgress.upsert(
                 LessonProgress(
-                    packID: Self.packID,
+                    packID: pack ?? Self.packID(for: languageID),
                     lessonID: Self.lessonID(languageID, ordinal),
                     languageID: languageID,
                     status: .completed,
@@ -110,7 +121,7 @@ struct DashboardFixture {
     ) async throws {
         try await stores.lessonProgress.upsert(
             LessonProgress(
-                packID: Self.packID,
+                packID: Self.packID(for: languageID),
                 lessonID: Self.lessonID(languageID, ordinal),
                 languageID: languageID,
                 status: .inProgress,

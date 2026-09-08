@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "recursion-basics",
+  "kind": "array",
+  "values": [4, 3, 2, 1, 0],
+  "frames": [
+    {
+      "caption": "sum_to(4)를 호출합니다. 각 자리는 호출 깊이(0~4)이고, 값은 그 깊이에서 넘겨받은 n입니다. 아직 아무것도 계산되지 않았습니다.",
+      "pointers": [{ "name": "호출", "index": 0 }],
+      "segments": [{ "role": "highlighted", "start": 0, "end": 0 }]
+    },
+    {
+      "caption": "n이 0이 될 때까지 재귀 호출이 계속 쌓입니다. sum_to(3), sum_to(2), sum_to(1)까지 결과를 기다리며 대기 중입니다.",
+      "pointers": [{ "name": "호출", "index": 3 }],
+      "segments": [{ "role": "highlighted", "start": 0, "end": 3 }]
+    },
+    {
+      "caption": "sum_to(0)에서 베이스 케이스에 도달합니다. 더 재귀하지 않고 0을 반환하며 스택이 풀리기 시작합니다.",
+      "pointers": [{ "name": "베이스 케이스", "index": 4 }],
+      "segments": [{ "role": "highlighted", "start": 0, "end": 4 }]
+    },
+    {
+      "caption": "sum_to(1)이 되돌아온 0을 받아 1 + 0 = 1을 반환합니다.",
+      "pointers": [{ "name": "반환 1", "index": 3 }],
+      "segments": [{ "role": "excluded", "start": 3, "end": 4 }, { "role": "highlighted", "start": 0, "end": 2 }]
+    },
+    {
+      "caption": "sum_to(2)는 1을 받아 2 + 1 = 3을 반환합니다.",
+      "pointers": [{ "name": "반환 3", "index": 2 }],
+      "segments": [{ "role": "excluded", "start": 2, "end": 4 }, { "role": "highlighted", "start": 0, "end": 1 }]
+    },
+    {
+      "caption": "sum_to(3)은 3을 받아 3 + 3 = 6을 반환합니다.",
+      "pointers": [{ "name": "반환 6", "index": 1 }],
+      "segments": [{ "role": "excluded", "start": 1, "end": 4 }, { "role": "highlighted", "start": 0, "end": 0 }]
+    },
+    {
+      "caption": "sum_to(4)는 6을 받아 4 + 6 = 10을 반환합니다. 합계는 10입니다.",
+      "pointers": [{ "name": "반환 10", "index": 0 }],
+      "segments": [{ "role": "excluded", "start": 0, "end": 4 }]
+    }
+  ]
+}

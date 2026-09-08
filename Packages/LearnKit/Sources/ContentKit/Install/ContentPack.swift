@@ -67,7 +67,7 @@ public struct ContentPack: Sendable {
         let source = try text(at: path)
         do {
             return try LessonParser.parseDocument(
-                source: source, stableID: entry.stableID, language: entry.language, path: path)
+                source: source, stableID: entry.stableID, languages: entry.languages, path: path)
         } catch {
             throw .lessonParse(error)
         }

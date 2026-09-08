@@ -12,7 +12,7 @@ import Testing
 @Suite("의미 단계")
 struct SemanticStageTests {
     private static func document(_ blocks: [LessonBlock]) -> LessonDocument {
-        LessonDocument(stableID: LessonID("t"), language: .python, blocks: blocks)
+        LessonDocument(stableID: LessonID("t"), languages: [.python], blocks: blocks)
     }
 
     private static func at(_ line: Int, _ column: Int) -> SourceSpan {

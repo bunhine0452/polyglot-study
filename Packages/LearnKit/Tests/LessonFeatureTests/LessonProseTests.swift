@@ -60,8 +60,8 @@ struct LessonProseTests {
     func codeStaysOutOfProse() throws {
         for id in SampleLesson.all {
             let content = try SampleLesson.content(id)
-            let example = try #require(content.document.example)
-            let blank = try #require(content.document.blank)
+            let example = try #require(content.document.example(for: content.document.primaryLanguage))
+            let blank = try #require(content.document.blank(for: content.document.primaryLanguage))
             #expect(!ProseParser.parse(example.prose).contains { $0.kindName == "code" })
             #expect(!ProseParser.parse(blank.prose).contains { $0.kindName == "code" })
             // 반대로 코드 자체는 payload 로 따로 실려 있어야 한다.

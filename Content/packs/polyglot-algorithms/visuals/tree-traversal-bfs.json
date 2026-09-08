@@ -1,0 +1,320 @@
+{
+  "schemaVersion": 1,
+  "id": "tree-traversal-bfs",
+  "kind": "graph",
+  "nodes": [
+    {
+      "id": "1",
+      "label": "1",
+      "x": 300,
+      "y": 0
+    },
+    {
+      "id": "2",
+      "label": "2",
+      "x": 150,
+      "y": 100
+    },
+    {
+      "id": "3",
+      "label": "3",
+      "x": 450,
+      "y": 100
+    },
+    {
+      "id": "4",
+      "label": "4",
+      "x": 75,
+      "y": 200
+    },
+    {
+      "id": "5",
+      "label": "5",
+      "x": 225,
+      "y": 200
+    },
+    {
+      "id": "6",
+      "label": "6",
+      "x": 450,
+      "y": 200
+    }
+  ],
+  "edges": [
+    {
+      "from": "1",
+      "to": "2"
+    },
+    {
+      "from": "1",
+      "to": "3"
+    },
+    {
+      "from": "2",
+      "to": "4"
+    },
+    {
+      "from": "2",
+      "to": "5"
+    },
+    {
+      "from": "3",
+      "to": "6"
+    }
+  ],
+  "frames": [
+    {
+      "caption": "루트 1을 큐에 넣습니다. 0층 시작.",
+      "nodeStates": [
+        {
+          "id": "1",
+          "role": "frontier"
+        }
+      ]
+    },
+    {
+      "caption": "이번 층은 큐에 있는 개수(1개)만큼만 꺼냅니다. 1을 꺼내 0층 값으로 기록하고, 자식 2, 3을 큐에 넣습니다.",
+      "nodeStates": [
+        {
+          "id": "1",
+          "role": "current"
+        },
+        {
+          "id": "2",
+          "role": "frontier"
+        },
+        {
+          "id": "3",
+          "role": "frontier"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "1",
+          "to": "2",
+          "role": "current"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "0층 결과: [1]. 이제 1층 — 큐에 있는 개수(2개)만큼 꺼냅니다. 먼저 2를 꺼내 자식 4, 5를 큐에 넣습니다.",
+      "nodeStates": [
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "current"
+        },
+        {
+          "id": "3",
+          "role": "frontier"
+        },
+        {
+          "id": "4",
+          "role": "frontier"
+        },
+        {
+          "id": "5",
+          "role": "frontier"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "1",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "current"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "current"
+        },
+        {
+          "from": "2",
+          "to": "5",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "이어서 3을 꺼냅니다. 3은 왼쪽 자식이 없어 오른쪽 6만 큐에 넣습니다.",
+      "nodeStates": [
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "current"
+        },
+        {
+          "id": "4",
+          "role": "frontier"
+        },
+        {
+          "id": "5",
+          "role": "frontier"
+        },
+        {
+          "id": "6",
+          "role": "frontier"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "1",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "current"
+        },
+        {
+          "from": "2",
+          "to": "5",
+          "role": "current"
+        },
+        {
+          "from": "3",
+          "to": "6",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "1층 결과: [2, 3]. 이제 2층 — 큐에 있는 개수(3개)만큼 4, 5, 6을 차례로 꺼냅니다. 셋 다 리프라 더 넣을 자식이 없습니다.",
+      "nodeStates": [
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "current"
+        },
+        {
+          "id": "5",
+          "role": "current"
+        },
+        {
+          "id": "6",
+          "role": "current"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "1",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "5",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "6",
+          "role": "visited"
+        }
+      ]
+    },
+    {
+      "caption": "2층 결과: [4, 5, 6]. 큐가 비어 BFS가 끝납니다 — 층마다 정확히 한 줄씩 출력됐습니다.",
+      "nodeStates": [
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        },
+        {
+          "id": "5",
+          "role": "visited"
+        },
+        {
+          "id": "6",
+          "role": "visited"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "1",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "5",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "6",
+          "role": "visited"
+        }
+      ]
+    }
+  ]
+}

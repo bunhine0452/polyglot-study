@@ -100,7 +100,7 @@ public struct StableIDLock: Hashable, Sendable {
     public static func from(manifest: PackManifest) -> StableIDLock {
         StableIDLock(
             entries: manifest.lessons.map {
-                Entry(stableID: $0.stableID, language: $0.language, path: $0.path)
+                Entry(stableID: $0.stableID, language: $0.primaryLanguage, path: $0.path)
             })
     }
 

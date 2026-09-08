@@ -64,6 +64,8 @@ public final class TracksModel {
 
         public var id: String { descriptor.id }
         public var name: String { descriptor.name }
+        public var trackID: TrackID { descriptor.trackID }
+        /// 툴체인 조회용. 트랙을 고르는 키가 **아니다** — 그건 `trackID` 다.
         public var languageID: LanguageID { descriptor.languageID }
         public var hasContent: Bool { descriptor.hasContent }
 
@@ -83,14 +85,14 @@ public final class TracksModel {
 
     public private(set) var tracks: [Track] = []
     /// 지금 보고 있는 트랙. 콘텐츠가 있는 첫 트랙이 기본값이다.
-    public var selection: LanguageID?
+    public var selection: TrackID?
     public private(set) var isLoading = false
     /// 진도 읽기가 실패했다. 실패를 "아직 아무것도 안 함" 으로 그리지 않기 위한 플래그.
     public private(set) var lastLoadFailed = false
 
     public var selectedTrack: Track? {
         guard let selection else { return tracks.first { $0.hasContent } }
-        return tracks.first { $0.languageID == selection }
+        return tracks.first { $0.trackID == selection }
     }
 
     // MARK: - 주입
@@ -99,14 +101,14 @@ public final class TracksModel {
     private let catalog: [TrackDescriptor]
     private let progressStore: any LessonProgressStore
     private let lessonMetadata: (@Sendable (PackID, LessonID) -> DashboardModel.LessonMetadata?)?
-    private let lessonDirectory: (@Sendable (LanguageID) -> [LessonRef])?
+    private let lessonDirectory: (@Sendable (PackID) -> [LessonRef])?
 
     public init(
         packIDs: [PackID] = [DashboardModel.defaultPackID],
         catalog: [TrackDescriptor] = TrackCatalog.all,
         progressStore: (any LessonProgressStore)? = nil,
         lessonMetadata: (@Sendable (PackID, LessonID) -> DashboardModel.LessonMetadata?)? = nil,
-        lessonDirectory: (@Sendable (LanguageID) -> [LessonRef])? = nil
+        lessonDirectory: (@Sendable (PackID) -> [LessonRef])? = nil
     ) {
         self.packIDs = packIDs
         self.catalog = catalog
@@ -130,29 +132,29 @@ public final class TracksModel {
         tracks = catalog.map { descriptor in
             Track(
                 descriptor: descriptor,
-                lessons: rows(for: descriptor.languageID, progress: progress)
+                lessons: rows(for: descriptor.packID, progress: progress)
             )
         }
-        if selection == nil || !tracks.contains(where: { $0.languageID == selection }) {
-            selection = tracks.first { $0.hasContent }?.languageID
+        if selection == nil || !tracks.contains(where: { $0.trackID == selection }) {
+            selection = tracks.first { $0.hasContent }?.trackID
         }
     }
 
     /// 선택을 바꾼다. 콘텐츠가 없는 트랙은 고를 수 없다 — 빈 목록을 보여줄 이유가 없다.
-    public func select(_ languageID: LanguageID) {
-        guard tracks.contains(where: { $0.languageID == languageID && $0.hasContent }) else {
+    public func select(_ trackID: TrackID) {
+        guard tracks.contains(where: { $0.trackID == trackID && $0.hasContent }) else {
             return
         }
-        selection = languageID
+        selection = trackID
     }
 
     // MARK: - 조립
 
     private func rows(
-        for languageID: LanguageID,
+        for packID: PackID?,
         progress: [LessonRef: LessonProgress]
     ) -> [LessonRow] {
-        guard let directory = lessonDirectory?(languageID) else { return [] }
+        guard let packID, let directory = lessonDirectory?(packID) else { return [] }
         return directory.enumerated().map { offset, ref in
             let metadata = lessonMetadata?(ref.packID, ref.lessonID)
             let record = progress[ref]

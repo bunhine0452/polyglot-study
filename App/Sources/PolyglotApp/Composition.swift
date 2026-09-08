@@ -183,7 +183,33 @@ final class Composition {
         guard let pack = library.pack(ref.packID) else {
             throw CompositionError.packUnavailable(ref.packID)
         }
-        return try LessonModel(pack: pack, lessonID: ref.lessonID, onOpenEditor: onOpenEditor)
+        return try LessonModel(
+            pack: pack, lessonID: ref.lessonID, onOpenEditor: onOpenEditor,
+            recordBlock: progressRecorder())
+    }
+
+    /// 레슨 화면이 블록을 끝낼 때마다 진도를 적는다 — {#progress-per-lesson-not-language}.
+    ///
+    /// 스토어를 클로저 밖에서 값으로 꺼낸다. `@Sendable` 클로저 안에서 `self` 를 읽으면
+    /// `@MainActor` 격리를 넘게 된다(대시보드 픽스처가 같은 이유로 그렇게 한다).
+    private func progressRecorder() -> (@Sendable (LessonRef, LanguageID, Int) async -> Bool)? {
+        // DB 를 못 열었으면 아무것도 적지 않는다. 인메모리 페이크에 적으면 앱을 닫는
+        // 순간 사라지는데, 학습자는 저장된 줄 안다 — 그건 조용히 잃는 것보다 나쁘다.
+        guard case .success(let db) = database else { return nil }
+        let store = db.lessonProgressStore
+        return { ref, languageID, blockIndex in
+            do {
+                _ = try await store.completeBlock(
+                    packID: ref.packID,
+                    lessonID: ref.lessonID,
+                    languageID: languageID,
+                    blockIndex: blockIndex,
+                    at: EpochMillis(Int64(Date().timeIntervalSince1970 * 1000)))
+                return true
+            } catch {
+                return false
+            }
+        }
     }
 
     /// 레슨의 `@Task` 블록 하나를 에디터 화면으로. 헤더 문구는 이미 열려 있는 레슨에서
@@ -255,21 +281,25 @@ final class Composition {
     /// 총수를 팩에서 읽는 이유는 진도 칸이 거짓말을 하지 않게 하려는 것이다 — 팩에
     /// 12편이 들어 있는데 24칸을 그리면 다 끝낸 학습자가 반만 한 것으로 보인다.
     private lazy var catalog: [TrackDescriptor] = {
-        let available = Set(library.languages)
         return TrackCatalog.all.map { descriptor in
-            guard available.contains(descriptor.languageID) else {
+            // **팩이 실제로 설치돼 있는가**로 판정한다. 언어로 판정하면 같은 언어의 다른
+            // 팩이 깔려 있다는 이유로 이 트랙이 열린 것처럼 보인다.
+            // `hasContent` 는 팩 유무에서 파생되므로 팩을 떼는 것으로 "준비 중" 이 된다.
+            guard let packID = descriptor.packID, library.pack(packID) != nil else {
                 return TrackDescriptor(
+                    trackID: descriptor.trackID,
                     languageID: descriptor.languageID,
+                    packID: nil,
                     name: descriptor.name,
-                    lessonTotal: descriptor.lessonTotal,
-                    hasContent: false
+                    lessonTotal: descriptor.lessonTotal
                 )
             }
             return TrackDescriptor(
+                trackID: descriptor.trackID,
                 languageID: descriptor.languageID,
+                packID: packID,
                 name: descriptor.name,
-                lessonTotal: library.lessonCount(for: descriptor.languageID),
-                hasContent: true
+                lessonTotal: library.lessonCount(inPack: packID)
             )
         }
     }()
@@ -290,11 +320,11 @@ final class Composition {
         return { packID, lessonID in frozen[LessonRef(packID: packID, lessonID: lessonID)] }
     }
 
-    private func packLessonDirectory() -> (@Sendable (LanguageID) -> [LessonRef])? {
+    private func packLessonDirectory() -> (@Sendable (PackID) -> [LessonRef])? {
         guard !library.isEmpty else { return nil }
-        let byLanguage = Dictionary(
-            uniqueKeysWithValues: library.languages.map { ($0, library.lessons(for: $0)) })
-        return { byLanguage[$0] ?? [] }
+        let byPack = Dictionary(
+            uniqueKeysWithValues: library.packIDs.map { ($0, library.lessons(inPack: $0)) })
+        return { byPack[$0] ?? [] }
     }
 }
 

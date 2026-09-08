@@ -39,7 +39,7 @@ private func makePack(
         languages: [.swift],
         lessons: [
             PackManifest.LessonEntry(
-                stableID: LessonID("py-0001-a"), language: .swift, title: "레슨", order: 1,
+                stableID: LessonID("py-0001-a"), languages: [.swift], title: "레슨", order: 1,
                 path: "lessons/py-0001-a.md")
         ],
         files: [])

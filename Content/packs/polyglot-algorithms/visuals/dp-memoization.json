@@ -1,0 +1,289 @@
+{
+  "schemaVersion": 1,
+  "id": "dp-memoization",
+  "kind": "table",
+  "rowHeaders": [
+    "fib(n)"
+  ],
+  "columnHeaders": [
+    "n=0",
+    "n=1",
+    "n=2",
+    "n=3",
+    "n=4",
+    "n=5",
+    "n=6",
+    "n=7",
+    "n=8",
+    "n=9",
+    "n=10"
+  ],
+  "frames": [
+    {
+      "caption": "fib(10)을 재귀로 구합니다. 베이스 케이스 fib(0)=0, fib(1)=1은 캐시를 보기 전에 바로 정해집니다.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 1,
+          "role": "base"
+        }
+      ]
+    },
+    {
+      "caption": "fib(2) 호출: fib(1)과 fib(0) 모두 캐시에 있어 바로 더합니다. 1 + 0 = 1. 결과를 캐시에 저장합니다.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 1,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 1,
+          "role": "current",
+          "from": [
+            {
+              "row": 0,
+              "column": 1
+            },
+            {
+              "row": 0,
+              "column": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "fib(3) 호출: fib(2)는 방금 캐시에 저장한 값(1), fib(1)도 캐시에 있는 값(1). 1 + 1 = 2.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 1,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 2,
+          "role": "current",
+          "from": [
+            {
+              "row": 0,
+              "column": 2
+            },
+            {
+              "row": 0,
+              "column": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "fib(4) 호출: fib(3)=2, fib(2)=1 모두 캐시에서 바로 꺼냅니다. 2 + 1 = 3.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 1,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 3,
+          "role": "current",
+          "from": [
+            {
+              "row": 0,
+              "column": 3
+            },
+            {
+              "row": 0,
+              "column": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "fib(5) 호출: fib(4)=3, fib(3)=2. 3 + 2 = 5. 여기서부터 패턴이 반복됩니다 — 캐시에 없는 입력이 없습니다.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 1,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 5,
+          "role": "current",
+          "from": [
+            {
+              "row": 0,
+              "column": 4
+            },
+            {
+              "row": 0,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "같은 방식으로 fib(6)=8, fib(7)=13, fib(8)=21, fib(9)=34까지 캐시가 채워집니다. 마지막으로 fib(10) = fib(9) + fib(8) = 34 + 21 = 55.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 1,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 5,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 6,
+          "value": 8,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 7,
+          "value": 13,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 8,
+          "value": 21,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 9,
+          "value": 34,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 10,
+          "value": 55,
+          "role": "current",
+          "from": [
+            {
+              "row": 0,
+              "column": 9
+            },
+            {
+              "row": 0,
+              "column": 8
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

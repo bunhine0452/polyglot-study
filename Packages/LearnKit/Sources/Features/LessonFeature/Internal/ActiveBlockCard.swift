@@ -73,6 +73,10 @@ struct ActiveBlockCard: View {
                 if let title = model.advanceTitle {
                     FlatButton(title, emphasis: .secondary) { model.advance() }
                 }
+                // 마지막 블록에만 뜬다. 이게 없으면 레슨이 끝나는 길이 없다.
+                if let title = model.finishTitle {
+                    FlatButton(title, emphasis: .primary) { model.finish() }
+                }
             }
             Spacer(minLength: Spacing.m)
             Text(footerNote)

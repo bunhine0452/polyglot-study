@@ -111,8 +111,9 @@ public struct PackWriter {
         }
 
         let ordered = entries.values.sorted {
-            ($0.language.rawValue, $0.order, $0.stableID.rawValue)
-                < ($1.language.rawValue, $1.order, $1.stableID.rawValue)
+            // 정렬 키의 언어는 대표 언어다 — 목록의 자리를 정하는 것뿐이라 하나면 된다.
+            ($0.primaryLanguage.rawValue, $0.order, $0.stableID.rawValue)
+                < ($1.primaryLanguage.rawValue, $1.order, $1.stableID.rawValue)
         }
         var manifest = PackManifest(
             packID: header.packID,
@@ -160,7 +161,8 @@ public struct PackWriter {
     /// 레슨과 그 사이드카를 지운다. **격리는 흔적을 남기지 않아야 한다** — 등록되지 않은
     /// 파일이 디스크에 남으면 설치가 양방향 대조에서 거부한다.
     private func removeFiles(ofLessonAt entry: PackManifest.LessonEntry) throws {
-        guard let language = LessonLanguage(entry.language) else { return }
+        // 생성기가 만든 레슨은 언어 하나짜리다 — 파일 경로도 그 언어로 정해진다.
+        guard let language = LessonLanguage(entry.primaryLanguage) else { return }
         let paths = try LessonPaths(stableID: entry.stableID, language: language)
         for path in paths.all {
             let url = directory.appendingPathComponent(path.rawValue)
@@ -173,7 +175,9 @@ public struct PackWriter {
     /// 매니페스트의 `languages`. 등장 순서가 아니라 사전순 — 두 번 구운 결과가 같아야 한다.
     private func orderedLanguages(of lessons: [PackManifest.LessonEntry]) -> [LanguageID] {
         var seen: Set<String> = []
-        for lesson in lessons { seen.insert(lesson.language.rawValue) }
+        for lesson in lessons {
+            for language in lesson.languages { seen.insert(language.rawValue) }
+        }
         return seen.sorted().map { LanguageID($0) }
     }
 }

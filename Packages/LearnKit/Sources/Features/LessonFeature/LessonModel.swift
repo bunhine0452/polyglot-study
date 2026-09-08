@@ -105,11 +105,12 @@ public final class LessonModel {
 
     // MARK: - 상태
 
-    public let content: LessonContent
+    public private(set) var content: LessonContent
     public private(set) var activeIndex: Int = 0
 
-    /// 진도를 뺀 스텝 원본. 초기화 때 한 번만 만든다.
-    private let baseSteps: [Step]
+    /// 진도를 뺀 스텝 원본. 언어를 바꾸면 다시 만든다 — 예제·빈칸·과제가 갈아타므로
+    /// 요약 문구가 달라진다.
+    private var baseSteps: [Step]
 
     public private(set) var transcript: ConsoleTranscript = .empty
     public private(set) var resultSet: ResultSet?
@@ -137,17 +138,36 @@ public final class LessonModel {
         (@Sendable (LanguageID, RunRequest) -> AsyncThrowingStream<RunEvent, any Error>)?
     private let onOpenEditor: ((TaskBlock) -> Void)?
 
+    /// 블록 하나를 끝냈다고 저장소에 적는다. `nil` 이면 아무것도 적지 않는다 —
+    /// 목 데이터를 만들지 않는 이 저장소의 습관대로, 진도를 쓰지 않는 테스트는 그냥 안 준다.
+    ///
+    /// **어떤 언어로 풀었는지가 함께 간다**({#progress-per-lesson-not-language}) — 진도는
+    /// 레슨 단위이지만 "무엇으로 풀었나" 는 남겨야 나중에 복습 카드를 그 언어로 낼 수 있다.
+    ///
+    /// 기본 인자 값으로 클로저를 주지 않는 이유는 `runFactory` 와 같다(위 주석 참고).
+    private let recordBlock: (@Sendable (LessonRef, LanguageID, Int) async -> Bool)?
+
+    /// 진도 쓰기가 실패했다. **조용히 넘어가지 않는다** — 학습자가 끝낸 블록이 사라진
+    /// 것을 모르면 다음에 열었을 때 진도가 되돌아가 있다.
+    public private(set) var progressFailed = false
+
     public init(
         content: LessonContent,
         runFactory: (
             @Sendable (LanguageID, RunRequest) -> AsyncThrowingStream<RunEvent, any Error>
         )? = nil,
-        onOpenEditor: ((TaskBlock) -> Void)? = nil
+        onOpenEditor: ((TaskBlock) -> Void)? = nil,
+        recordBlock: (@Sendable (LessonRef, LanguageID, Int) async -> Bool)? = nil
     ) {
         self.content = content
         self.runFactory = runFactory
         self.onOpenEditor = onOpenEditor
-        self.baseSteps = content.blocks.enumerated().map { index, block in
+        self.recordBlock = recordBlock
+        self.baseSteps = LessonModel.steps(of: content)
+    }
+
+    private static func steps(of content: LessonContent) -> [Step] {
+        content.blocks.enumerated().map { index, block in
             Step(
                 id: block.id,
                 index: index,
@@ -166,12 +186,14 @@ public final class LessonModel {
         runFactory: (
             @Sendable (LanguageID, RunRequest) -> AsyncThrowingStream<RunEvent, any Error>
         )? = nil,
-        onOpenEditor: ((TaskBlock) -> Void)? = nil
+        onOpenEditor: ((TaskBlock) -> Void)? = nil,
+        recordBlock: (@Sendable (LessonRef, LanguageID, Int) async -> Bool)? = nil
     ) throws(ContentPackError) {
         self.init(
             content: try LessonContent.load(pack: pack, lessonID: lessonID),
             runFactory: runFactory,
-            onOpenEditor: onOpenEditor
+            onOpenEditor: onOpenEditor,
+            recordBlock: recordBlock
         )
     }
 
@@ -179,6 +201,35 @@ public final class LessonModel {
 
     public var blocks: [LessonBlock] { content.blocks }
     public var language: LanguageID { content.language }
+    /// 이 레슨을 풀 수 있는 언어들. 하나뿐이면 화면이 선택을 그리지 않는다.
+    public var languages: [LanguageID] { content.languages }
+
+    // MARK: - 풀이 언어
+
+    /// 풀이 언어를 바꾼다 — {#lesson-language-picker}.
+    ///
+    /// **개념·퀴즈·돌아보기는 그대로 두고 예제·빈칸·과제만 갈아탄다.** 그래서 퀴즈 선택과
+    /// 회고 답변은 살리고, 빈칸 답과 실행 결과는 지운다: 빈칸 답은 갈아탄 언어의 코드에
+    /// 대한 것이 아니고, 콘솔에 남은 출력은 이제 화면에 없는 코드가 낸 것이다. 남겨 두면
+    /// 학습자가 지금 보고 있는 코드가 그 결과를 냈다고 읽는다.
+    ///
+    /// 선언되지 않은 언어는 무시한다 — 화면이 못 고르게 하지만 모델도 스스로를 지킨다.
+    public func selectLanguage(_ languageID: LanguageID) {
+        guard languageID != content.language, content.languages.contains(languageID) else {
+            return
+        }
+        content.language = languageID
+        baseSteps = LessonModel.steps(of: content)
+
+        blankEntries = [:]
+        blankChecked = false
+        transcript = .empty
+        resultSet = nil
+        diagnostics = []
+        runState = .idle
+        // 블록 수와 순서는 언어와 무관하므로 보고 있던 자리는 지킨다.
+        activeIndex = min(activeIndex, max(0, baseSteps.count - 1))
+    }
     public var presenter: GradeResult.Presenter { LessonPresentation.presenter(for: language) }
 
     /// 헤더의 `Swift · 레슨 07 / 24`.
@@ -232,8 +283,32 @@ public final class LessonModel {
 
     public func advance() {
         guard canAdvance else { return }
+        let finished = activeIndex
         activeIndex += 1
         resetTransientState()
+        record(finished)
+    }
+
+    /// 마지막 블록의 "레슨 마치기". 여기가 없으면 **레슨이 끝나는 길이 없다** —
+    /// `advance()` 는 마지막 블록에서 아무 일도 하지 않으므로 그 블록은 영영 기록되지
+    /// 않고, 여섯 블록이 다 차야 `completed` 로 전이하는 진도가 영원히 `inProgress` 다.
+    public var finishTitle: String? { canAdvance ? nil : "레슨 마치기" }
+
+    public func finish() {
+        guard !canAdvance else { return }
+        record(activeIndex)
+    }
+
+    /// 블록 하나를 끝냈다고 적는다. 화면은 기다리지 않는다 — 저장이 늦다고 다음 블록으로
+    /// 넘어가는 것을 막으면 학습이 저장소 속도에 묶인다.
+    private func record(_ blockIndex: Int) {
+        guard let recordBlock else { return }
+        let ref = content.ref
+        let language = content.language
+        Task { [weak self] in
+            let ok = await recordBlock(ref, language, blockIndex)
+            if !ok { self?.progressFailed = true }
+        }
     }
 
     /// 접힌 행의 "다시 보기". 앞으로는 못 간다 — 스텝바가 진도를 뜻해야 하기 때문이다.
@@ -261,7 +336,7 @@ public final class LessonModel {
 
     /// `@Example` 의 코드를 실제 러너로 태우고 `RunEvent` 를 출력 슬롯에 흘린다.
     public func runExample() async {
-        guard let example = content.document.example, !runState.isBusy else { return }
+        guard let example = content.document.example(for: content.language), !runState.isBusy else { return }
         transcript = ConsoleTranscript(isRunning: true)
         resultSet = nil
         diagnostics = []
@@ -355,7 +430,7 @@ public final class LessonModel {
 
     /// 슬롯별 정오. 아직 채점 전이면 빈 사전이다.
     public var blankResults: [Int: Bool] {
-        guard blankChecked, let blank = content.document.blank else { return [:] }
+        guard blankChecked, let blank = content.document.blank(for: content.language) else { return [:] }
         return Dictionary(
             uniqueKeysWithValues: blank.slots.map {
                 ($0.index, Self.matches($0.answer, blankEntries[$0.index] ?? ""))
@@ -364,7 +439,7 @@ public final class LessonModel {
     }
 
     public var blanksAreComplete: Bool {
-        guard let blank = content.document.blank else { return false }
+        guard let blank = content.document.blank(for: content.language) else { return false }
         return blank.slots.allSatisfy { !(blankEntries[$0.index] ?? "").trimmed.isEmpty }
     }
 
@@ -408,11 +483,11 @@ public final class LessonModel {
     // MARK: - 과제
 
     public func openEditor() {
-        guard let task = content.document.task else { return }
+        guard let task = content.document.task(for: content.language) else { return }
         onOpenEditor?(task)
     }
 
-    public var canOpenEditor: Bool { onOpenEditor != nil && content.document.task != nil }
+    public var canOpenEditor: Bool { onOpenEditor != nil && content.document.task(for: content.language) != nil }
 
     // MARK: - 주 동작
 

@@ -1,0 +1,449 @@
+{
+  "schemaVersion": 1,
+  "id": "dijkstra",
+  "kind": "graph",
+  "nodes": [
+    {
+      "id": "0",
+      "label": "0",
+      "x": 0,
+      "y": 100
+    },
+    {
+      "id": "1",
+      "label": "1",
+      "x": 150,
+      "y": 20
+    },
+    {
+      "id": "2",
+      "label": "2",
+      "x": 150,
+      "y": 180
+    },
+    {
+      "id": "3",
+      "label": "3",
+      "x": 300,
+      "y": 20
+    },
+    {
+      "id": "4",
+      "label": "4",
+      "x": 450,
+      "y": 100
+    }
+  ],
+  "edges": [
+    {
+      "from": "0",
+      "to": "1",
+      "weight": 4,
+      "directed": true
+    },
+    {
+      "from": "0",
+      "to": "2",
+      "weight": 1,
+      "directed": true
+    },
+    {
+      "from": "1",
+      "to": "3",
+      "weight": 1,
+      "directed": true
+    },
+    {
+      "from": "1",
+      "to": "4",
+      "weight": 7,
+      "directed": true
+    },
+    {
+      "from": "2",
+      "to": "1",
+      "weight": 2,
+      "directed": true
+    },
+    {
+      "from": "2",
+      "to": "3",
+      "weight": 5,
+      "directed": true
+    },
+    {
+      "from": "3",
+      "to": "4",
+      "weight": 3,
+      "directed": true
+    }
+  ],
+  "frames": [
+    {
+      "caption": "0의 거리를 0으로 시작합니다. 나머지는 아직 모릅니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "current"
+        }
+      ],
+      "distances": [
+        {
+          "id": "0",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "caption": "0을 확정합니다(거리 0). 이웃 1, 2의 거리를 갱신합니다: 1=4, 2=1.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "settled"
+        },
+        {
+          "id": "1",
+          "role": "frontier"
+        },
+        {
+          "id": "2",
+          "role": "frontier"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "current"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "current"
+        }
+      ],
+      "distances": [
+        {
+          "id": "0",
+          "value": 0
+        },
+        {
+          "id": "1",
+          "value": 4
+        },
+        {
+          "id": "2",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "caption": "미확정 중 거리가 가장 작은 2(거리 1)를 확정합니다. 이웃을 갱신합니다: 1은 4→3(더 짧은 경로 발견), 3은 새로 6.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "settled"
+        },
+        {
+          "id": "1",
+          "role": "frontier"
+        },
+        {
+          "id": "2",
+          "role": "settled"
+        },
+        {
+          "id": "3",
+          "role": "frontier"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "1",
+          "role": "current"
+        },
+        {
+          "from": "2",
+          "to": "3",
+          "role": "current"
+        }
+      ],
+      "distances": [
+        {
+          "id": "0",
+          "value": 0
+        },
+        {
+          "id": "1",
+          "value": 3
+        },
+        {
+          "id": "2",
+          "value": 1
+        },
+        {
+          "id": "3",
+          "value": 6
+        }
+      ]
+    },
+    {
+      "caption": "미확정 중 가장 짧은 1(거리 3)을 확정합니다. 이웃을 갱신합니다: 3은 6→4, 4는 새로 10.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "settled"
+        },
+        {
+          "id": "1",
+          "role": "settled"
+        },
+        {
+          "id": "2",
+          "role": "settled"
+        },
+        {
+          "id": "3",
+          "role": "frontier"
+        },
+        {
+          "id": "4",
+          "role": "frontier"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "current"
+        },
+        {
+          "from": "1",
+          "to": "4",
+          "role": "current"
+        }
+      ],
+      "distances": [
+        {
+          "id": "0",
+          "value": 0
+        },
+        {
+          "id": "1",
+          "value": 3
+        },
+        {
+          "id": "2",
+          "value": 1
+        },
+        {
+          "id": "3",
+          "value": 4
+        },
+        {
+          "id": "4",
+          "value": 10
+        }
+      ]
+    },
+    {
+      "caption": "미확정 중 가장 짧은 3(거리 4)을 확정합니다. 이웃 4를 갱신합니다: 10→7.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "settled"
+        },
+        {
+          "id": "1",
+          "role": "settled"
+        },
+        {
+          "id": "2",
+          "role": "settled"
+        },
+        {
+          "id": "3",
+          "role": "settled"
+        },
+        {
+          "id": "4",
+          "role": "frontier"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "4",
+          "role": "current"
+        }
+      ],
+      "distances": [
+        {
+          "id": "0",
+          "value": 0
+        },
+        {
+          "id": "1",
+          "value": 3
+        },
+        {
+          "id": "2",
+          "value": 1
+        },
+        {
+          "id": "3",
+          "value": 4
+        },
+        {
+          "id": "4",
+          "value": 7
+        }
+      ]
+    },
+    {
+      "caption": "마지막 4(거리 7)를 확정합니다. 모든 정점이 확정됐고 최종 거리는 0, 3, 1, 4, 7입니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "settled"
+        },
+        {
+          "id": "1",
+          "role": "settled"
+        },
+        {
+          "id": "2",
+          "role": "settled"
+        },
+        {
+          "id": "3",
+          "role": "settled"
+        },
+        {
+          "id": "4",
+          "role": "settled"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "4",
+          "role": "visited"
+        }
+      ],
+      "distances": [
+        {
+          "id": "0",
+          "value": 0
+        },
+        {
+          "id": "1",
+          "value": 3
+        },
+        {
+          "id": "2",
+          "value": 1
+        },
+        {
+          "id": "3",
+          "value": 4
+        },
+        {
+          "id": "4",
+          "value": 7
+        }
+      ]
+    }
+  ]
+}

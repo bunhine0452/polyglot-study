@@ -16,7 +16,7 @@ private func healthyManifest() -> PackManifest {
         languages: [.python],
         lessons: [
             PackManifest.LessonEntry(
-                stableID: LessonID("py-0001-a"), language: .python, title: "첫 레슨", order: 1,
+                stableID: LessonID("py-0001-a"), languages: [.python], title: "첫 레슨", order: 1,
                 path: "lessons/py-0001-a.md")
         ],
         files: [
@@ -89,7 +89,7 @@ struct PackManifestValidationTests {
     @Test("6. 미지 언어")
     func unknownLanguage() {
         var manifest = healthyManifest()
-        manifest.lessons[0].language = LanguageID("rust")
+        manifest.lessons[0].languages = [LanguageID("rust")]
         #expect(
             error(manifest) == .unknownLanguage(LanguageID("rust"), lesson: LessonID("py-0001-a")))
     }
@@ -107,7 +107,7 @@ struct PackManifestValidationTests {
         var empty = healthyManifest()
         empty.lessons = []
         var unknown = healthyManifest()
-        unknown.lessons[0].language = LanguageID("rust")
+        unknown.lessons[0].languages = [LanguageID("rust")]
 
         let errors = [duplicate, unregistered, badVersion, escaped, empty, unknown]
             .compactMap { error($0) }
@@ -146,7 +146,7 @@ struct PackManifestValidationTests {
         var manifest = healthyManifest()
         manifest.lessons.append(
             PackManifest.LessonEntry(
-                stableID: LessonID("py-0002-b"), language: .python, title: "둘", order: 1,
+                stableID: LessonID("py-0002-b"), languages: [.python], title: "둘", order: 1,
                 path: "lessons/py-0001-a.md"))
         #expect(error(manifest) == .duplicateOrder(language: .python, order: 1))
     }
@@ -297,6 +297,82 @@ struct CanonicalBytesTests {
     func identifiersEncodeAsStrings() throws {
         let text = try CanonicalJSON.string(healthyManifest())
         #expect(text.contains("\"packID\" : \"sample-pack\""))
+        // 언어가 하나인 레슨은 v1 단수 표기 그대로다({#manifest-languages-plural}).
         #expect(text.contains("\"language\" : \"python\""))
+        // 이 테스트의 본론 — 래퍼가 `{"rawValue": "python"}` 로 풀리면 여기서 잡힌다.
+        #expect(!text.contains("rawValue"))
+    }
+}
+
+/// {#manifest-languages-plural} — 알고리즘 레슨은 여러 언어로 풀 수 있어야 하고, 그 사실이
+/// 매니페스트에도 적혀 있어야 `lessons(for:)` 가 각 언어 목록에서 그 레슨을 찾는다.
+@Suite("매니페스트 — 레슨의 언어 복수")
+struct LessonEntryLanguagesTests {
+    private func entry(_ json: String) throws -> PackManifest.LessonEntry {
+        try JSONDecoder().decode(PackManifest.LessonEntry.self, from: Data(json.utf8))
+    }
+
+    @Test("v1 의 단수 표기를 그대로 읽는다 — 리포의 팩 5종이 그렇게 쓰여 있다")
+    func singularSpellingStillDecodes() throws {
+        let decoded = try entry(
+            """
+            {"stableID": "a", "language": "rust", "title": "t", "order": 1,
+             "path": "lessons/a.md"}
+            """)
+        #expect(decoded.languages == [.rust])
+        #expect(decoded.primaryLanguage == .rust)
+    }
+
+    @Test("복수 표기를 선언 순서 그대로 읽는다")
+    func pluralSpellingKeepsOrder() throws {
+        let decoded = try entry(
+            """
+            {"stableID": "a", "languages": ["rust", "python"], "title": "t", "order": 1,
+             "path": "lessons/a.md"}
+            """)
+        #expect(decoded.languages == [.rust, .python])
+        #expect(decoded.primaryLanguage == .rust)
+    }
+
+    @Test("둘 다 없으면 디코딩 실패 — 언어를 모르는 레슨은 열 수 없다")
+    func missingBothSpellingsThrows() {
+        #expect(throws: (any Error).self) {
+            try entry("""
+                {"stableID": "a", "title": "t", "order": 1, "path": "lessons/a.md"}
+                """)
+        }
+    }
+
+    /// `packtool sign` 이 **정규 매니페스트 바이트에 서명**한다 — 표기를 바꾸면 기존 팩의
+    /// 서명이 전부 무효가 되고 "다시 구우면 바이트가 같다" 는 보장도 깨진다.
+    @Test("언어가 하나면 v1 단수 표기로 되돌아 쓴다 — 기존 팩의 바이트를 지킨다")
+    func singleLanguageRoundTripsToSingularSpelling() throws {
+        let json = """
+            {"stableID": "a", "language": "rust", "title": "t", "order": 1,
+             "path": "lessons/a.md"}
+            """
+        let text = String(decoding: try JSONEncoder().encode(try entry(json)), as: UTF8.self)
+        #expect(text.contains("\"language\":\"rust\"") || text.contains("\"language\" : \"rust\""))
+        #expect(!text.contains("languages"))
+    }
+
+    @Test("언어가 여럿이면 복수 표기로 쓴다 — 단수로는 적을 수 없다")
+    func multipleLanguagesEncodePlural() throws {
+        let json = """
+            {"stableID": "a", "languages": ["rust", "python"], "title": "t", "order": 1,
+             "path": "lessons/a.md"}
+            """
+        let text = String(decoding: try JSONEncoder().encode(try entry(json)), as: UTF8.self)
+        #expect(text.contains("languages"))
+    }
+
+    @Test("여러 언어 레슨은 그 모든 언어의 목록에 잡힌다")
+    func multiLanguageLessonAppearsUnderEachLanguage() throws {
+        var manifest = healthyManifest()
+        manifest.languages = [.python, .rust]
+        manifest.lessons[0].languages = [.python, .rust]
+
+        #expect(manifest.lessons(for: .python).map(\.stableID) == [manifest.lessons[0].stableID])
+        #expect(manifest.lessons(for: .rust).map(\.stableID) == [manifest.lessons[0].stableID])
     }
 }

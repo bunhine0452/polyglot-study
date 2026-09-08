@@ -48,8 +48,10 @@ final class SwiftLanguageSupport: CodeSuggestionDelegate {
     private var service: SwiftLanguageService?
     private var diagnosticsTask: Task<Void, Never>?
 
-    /// 마지막으로 서버에서 받은 후보. `completionOnCursorMove` 가 이것을 로컬로 거른다.
-    private var lastCandidates: [CompletionCandidate] = []
+    /// 팝업 상태. **열림/닫힘·선택 이동·확정이 이 값 하나로 정의된다**(`{#completion-popup}`,
+    /// `CompletionPopupState`) — 뷰·서버 없이 그 타입만 테스트한다.
+    /// `completionOnCursorMove` 가 이것을 로컬로 거른다.
+    private var popupState: CompletionPopupState = .closed
 
     /// 편집 전순서. **이 객체는 `MainActor` 격리라 이 증가는 동기 구간이다** —
     /// 여기서 매긴 순서가 문서 갱신의 유일한 진실이다.
@@ -133,7 +135,7 @@ final class SwiftLanguageSupport: CodeSuggestionDelegate {
         let service = self.service
         self.service = nil
         status = .idle
-        lastCandidates = []
+        popupState = .closed
         await service?.shutdown()
     }
 
@@ -200,8 +202,14 @@ final class SwiftLanguageSupport: CodeSuggestionDelegate {
             // 취소는 여기까지 오지 않는다(위에서 던진다). 그래도 한 번 더 본다 —
             // 취소된 요청의 결과로 창을 여는 것보다 안 여는 편이 낫다.
             guard !Task.isCancelled else { return nil }
-            lastCandidates = candidates
-            return (cursorPosition, candidates.map(SwiftSuggestionEntry.init))
+            // `.open(items:)` 이 "비었으면 닫힌다" 를 강제한다 — 서버가 빈 배열을 주면
+            // `popupState.isOpen` 이 거짓이 되고, 여기서 nil 을 돌려줘 CESE 가 창을 아예
+            // 열지 않는다. `{#completion-popup}` 의 "후보가 없으면 팝업이 뜨지 않습니다"
+            // 요건 — candidates 를 그대로 실어 보내던 예전 코드는 서버가 빈 목록을 줄 때
+            // "No Completions" 빈 팝업을 띄웠다.
+            popupState = .open(items: candidates)
+            guard popupState.isOpen else { return nil }
+            return (cursorPosition, popupState.items.map(SwiftSuggestionEntry.init))
         } catch {
             return nil
         }
@@ -213,16 +221,17 @@ final class SwiftLanguageSupport: CodeSuggestionDelegate {
         textView: TextViewController,
         cursorPosition: CursorPosition
     ) -> [CodeSuggestionEntry]? {
-        guard !lastCandidates.isEmpty else { return nil }
+        guard popupState.isOpen else { return nil }
         let offset = cursorPosition.range.location
         guard offset != NSNotFound, offset >= 0 else { return nil }
         let prefix = SwiftCompletionSupport.identifierPrefix(cursorOffset: offset, in: textView.text)
-        return SwiftCompletionSupport.filter(lastCandidates, byPrefix: prefix)
-            .map(SwiftSuggestionEntry.init)
+        popupState = popupState.filtered(byPrefix: prefix)
+        guard popupState.isOpen else { return nil }
+        return popupState.items.map(SwiftSuggestionEntry.init)
     }
 
     func completionWindowDidClose() {
-        lastCandidates = []
+        popupState = .closed
     }
 
     /// 후보를 확정한다. **커서 앞의 식별자 조각을 갈아 끼운다** — 그냥 끼워 넣으면
@@ -244,6 +253,6 @@ final class SwiftLanguageSupport: CodeSuggestionDelegate {
         textView.setCursorPositions([
             CursorPosition(range: NSRange(location: range.location + (insertion as NSString).length, length: 0))
         ])
-        lastCandidates = []
+        popupState = .closed
     }
 }

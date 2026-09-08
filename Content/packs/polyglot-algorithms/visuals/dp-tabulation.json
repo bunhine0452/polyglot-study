@@ -1,0 +1,409 @@
+{
+  "schemaVersion": 1,
+  "id": "dp-tabulation",
+  "kind": "table",
+  "rowHeaders": [
+    "table[i]"
+  ],
+  "columnHeaders": [
+    "n=0",
+    "n=1",
+    "n=2",
+    "n=3",
+    "n=4",
+    "n=5",
+    "n=6",
+    "n=7",
+    "n=8",
+    "n=9",
+    "n=10"
+  ],
+  "frames": [
+    {
+      "caption": "표의 시작 두 칸을 초기화합니다: table[0] = 0, table[1] = 1.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 1,
+          "role": "base"
+        }
+      ]
+    },
+    {
+      "caption": "table[2] = table[1] + table[0] = 1 + 0 = 1",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 1,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 1,
+          "role": "current",
+          "from": [
+            {
+              "row": 0,
+              "column": 1
+            },
+            {
+              "row": 0,
+              "column": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "table[3] = table[2] + table[1] = 1 + 1 = 2",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 1,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 2,
+          "role": "current",
+          "from": [
+            {
+              "row": 0,
+              "column": 2
+            },
+            {
+              "row": 0,
+              "column": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "table[4] = table[3] + table[2] = 2 + 1 = 3",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 1,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 3,
+          "role": "current",
+          "from": [
+            {
+              "row": 0,
+              "column": 3
+            },
+            {
+              "row": 0,
+              "column": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "table[5] = table[4] + table[3] = 3 + 2 = 5",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 1,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 5,
+          "role": "current",
+          "from": [
+            {
+              "row": 0,
+              "column": 4
+            },
+            {
+              "row": 0,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "table[6] = table[5] + table[4] = 5 + 3 = 8",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 1,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 5,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 6,
+          "value": 8,
+          "role": "current",
+          "from": [
+            {
+              "row": 0,
+              "column": 5
+            },
+            {
+              "row": 0,
+              "column": 4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "table[7] = table[6] + table[5] = 8 + 5 = 13",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 1,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 5,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 6,
+          "value": 8,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 7,
+          "value": 13,
+          "role": "current",
+          "from": [
+            {
+              "row": 0,
+              "column": 6
+            },
+            {
+              "row": 0,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "이후 table[8] = 21, table[9] = 34도 같은 규칙으로 채워집니다. table[10] = table[9] + table[8] = 34 + 21 = 55. 표 전체: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55]. fib(10) = 55.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 1,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 1,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 2,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 5,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 6,
+          "value": 8,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 7,
+          "value": 13,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 8,
+          "value": 21,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 9,
+          "value": 34,
+          "role": "filled"
+        },
+        {
+          "row": 0,
+          "column": 10,
+          "value": 55,
+          "role": "current",
+          "from": [
+            {
+              "row": 0,
+              "column": 9
+            },
+            {
+              "row": 0,
+              "column": 8
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

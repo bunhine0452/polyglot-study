@@ -1,0 +1,366 @@
+{
+  "schemaVersion": 1,
+  "id": "shortest-path-unweighted",
+  "kind": "graph",
+  "nodes": [
+    {
+      "id": "0",
+      "label": "0",
+      "x": 200,
+      "y": 0
+    },
+    {
+      "id": "1",
+      "label": "1",
+      "x": 100,
+      "y": 100
+    },
+    {
+      "id": "2",
+      "label": "2",
+      "x": 300,
+      "y": 100
+    },
+    {
+      "id": "3",
+      "label": "3",
+      "x": 100,
+      "y": 200
+    },
+    {
+      "id": "4",
+      "label": "4",
+      "x": 300,
+      "y": 200
+    },
+    {
+      "id": "5",
+      "label": "5",
+      "x": 200,
+      "y": 300
+    }
+  ],
+  "edges": [
+    {
+      "from": "0",
+      "to": "1"
+    },
+    {
+      "from": "0",
+      "to": "2"
+    },
+    {
+      "from": "1",
+      "to": "3"
+    },
+    {
+      "from": "2",
+      "to": "3"
+    },
+    {
+      "from": "2",
+      "to": "4"
+    },
+    {
+      "from": "3",
+      "to": "5"
+    },
+    {
+      "from": "4",
+      "to": "5"
+    }
+  ],
+  "frames": [
+    {
+      "caption": "0에서 5까지 최단 경로를 찾습니다. 가중치가 없으니 BFS 한 번으로 거리와 경로를 동시에 구합니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "frontier"
+        }
+      ]
+    },
+    {
+      "caption": "0을 처리합니다. 1, 2를 발견하고 parent를 0으로, 거리를 1로 기록합니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "current"
+        },
+        {
+          "id": "1",
+          "role": "frontier"
+        },
+        {
+          "id": "2",
+          "role": "frontier"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "current"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "1을 처리합니다. 3을 새로 발견해 parent=1, 거리=2로 기록합니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "current"
+        },
+        {
+          "id": "2",
+          "role": "frontier"
+        },
+        {
+          "id": "3",
+          "role": "frontier"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "2를 처리합니다. 3은 이미 발견됐으니 건너뛰고, 4를 새로 발견해 parent=2, 거리=2로 기록합니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "current"
+        },
+        {
+          "id": "3",
+          "role": "frontier"
+        },
+        {
+          "id": "4",
+          "role": "frontier"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "3을 처리합니다. 목표 5를 발견해 parent=3, 거리=3으로 기록합니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "current"
+        },
+        {
+          "id": "4",
+          "role": "frontier"
+        },
+        {
+          "id": "5",
+          "role": "frontier"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "5",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "4를 처리합니다. 5는 이미 발견됐으니 새로 기록할 것이 없습니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "current"
+        },
+        {
+          "id": "5",
+          "role": "frontier"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "5",
+          "role": "visited"
+        }
+      ]
+    },
+    {
+      "caption": "parent를 5→3→1→0 순으로 거슬러 올라간 뒤 뒤집으면 경로 [0,1,3,5], 거리 3이 나옵니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "settled"
+        },
+        {
+          "id": "1",
+          "role": "settled"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "settled"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        },
+        {
+          "id": "5",
+          "role": "settled"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "settled"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "settled"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "5",
+          "role": "settled"
+        }
+      ]
+    }
+  ]
+}

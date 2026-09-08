@@ -7,55 +7,52 @@ import Testing
 
 @Suite("대시보드 · 트랙 표")
 struct DashboardTrackTableTests {
-    @Test("10트랙이고 진도 칸 수가 레슨 총수와 정확히 일치한다 `{#screen-dashboard}`")
+    @Test("카탈로그의 모든 트랙이 한 행씩 서고 진도 칸 수가 레슨 총수와 일치한다 `{#screen-dashboard}`")
     func cellCountMatchesLessonTotal() async throws {
         let fixture = DashboardFixture()
         let model = fixture.model()
         await model.load()
 
-        #expect(model.rows.count == 10)
+        #expect(model.rows.count == TrackCatalog.all.count)
         let totals = Dictionary(
             uniqueKeysWithValues: model.rows.map { ($0.name, $0.cells.count) }
         )
         #expect(
-            totals == [
-                "Python": 24, "SQL": 22, "Swift": 24, "Rust": 26, "C++": 26,
-                "Go": 20, "Java": 24, "Next.js": 18, "TypeScript": 24, "Assembly": 20,
-            ]
+            totals == Dictionary(
+                uniqueKeysWithValues: TrackCatalog.all.map { ($0.name, $0.lessonTotal) })
         )
         // 총수와 칸 수가 따로 놀지 않는다 — 한쪽만 고쳐도 여기서 깨진다.
         #expect(model.rows.allSatisfy { $0.cells.count == $0.lessonTotal })
     }
 
-    @Test("활성 3트랙은 잉크, 준비 중 7트랙은 흐림")
-    func threeActiveSevenDimmed() async throws {
+    @Test("콘텐츠가 있는 트랙은 잉크, 준비 중 트랙은 흐림")
+    func activeTracksAreInkComingSoonAreDimmed() async throws {
         let fixture = DashboardFixture()
         let model = fixture.model()
         await model.load()
 
         let dimmed = model.rows.filter(\.stage.isDimmed)
-        #expect(dimmed.count == 7)
-        #expect(Set(dimmed.map(\.name)) == [
-            "Rust", "C++", "Go", "Java", "Next.js", "TypeScript", "Assembly",
-        ])
-        #expect(Set(model.rows.filter { !$0.stage.isDimmed }.map(\.name)) == ["Python", "SQL", "Swift"])
+        #expect(dimmed.count == TrackCatalog.all.count - TrackCatalog.active.count)
+        #expect(Set(dimmed.map(\.name)) == ["Go", "Java", "Next.js", "TypeScript", "Assembly"])
+        #expect(Set(model.rows.filter { !$0.stage.isDimmed }.map(\.name))
+            == Set(TrackCatalog.active.map(\.name)))
         #expect(dimmed.allSatisfy { $0.stage == .comingSoon })
     }
 
     @Test("준비 중 트랙은 진도도 오늘 복습도 없다 — 0 이 아니라 없음이다")
     func comingSoonHasNoNumbers() async throws {
         let fixture = DashboardFixture()
-        try await fixture.seedDueCards(LanguageID("rust"), count: 5)
+        try await fixture.seedDueCards(LanguageID("go"), count: 5)
         let model = fixture.model()
         await model.load()
 
-        let rust = try #require(model.rows.first { $0.name == "Rust" })
+        let go = try #require(model.rows.first { $0.name == "Go" })
         // 콘텐츠가 없는 트랙에 카드가 들어 있어도 표에 세지 않는다. `nil` 은 "—" 로 그려지고
         // `0` 은 "0 장 도착" 이라는 다른 말이다.
-        #expect(rust.dueToday == nil)
-        #expect(rust.resume == nil)
-        #expect(rust.completedLessons == 0)
-        #expect(rust.pendingContentLabel == "26 레슨 · 콘텐츠 준비 중")
+        #expect(go.dueToday == nil)
+        #expect(go.resume == nil)
+        #expect(go.completedLessons == 0)
+        #expect(go.pendingContentLabel == "20 레슨 · 콘텐츠 준비 중")
     }
 
     @Test("활성 트랙이 최근 활동 순으로 먼저, 준비 중 트랙이 카탈로그 순으로 뒤")
@@ -67,10 +64,9 @@ struct DashboardTrackTableTests {
         let model = fixture.model()
         await model.load()
 
-        #expect(model.rows.map(\.name) == [
-            "Swift", "SQL", "Python",
-            "Rust", "C++", "Go", "Java", "Next.js", "TypeScript", "Assembly",
-        ])
+        let touched = ["Swift", "SQL", "Python"]
+        let rest = TrackCatalog.all.map(\.name).filter { !touched.contains($0) }
+        #expect(model.rows.map(\.name) == touched + rest)
     }
 
     @Test("활동 시각이 같으면 카탈로그 순서가 마지막 키다 — 정렬이 흔들리지 않는다")
@@ -233,14 +229,14 @@ struct TodayReviewTests {
 
 @Suite("대시보드 · 빈 상태")
 struct EmptyStateTests {
-    @Test("스토어가 비어 있으면 세 활성 트랙 전부 '아직 시작 안 함' 이다")
+    @Test("스토어가 비어 있으면 활성 트랙 전부 '아직 시작 안 함' 이다")
     func emptyStoresYieldNotStarted() async throws {
         let fixture = DashboardFixture()
         let model = fixture.model()
         await model.load()
 
         let active = model.rows.filter { !$0.stage.isDimmed }
-        #expect(active.count == 3)
+        #expect(active.count == TrackCatalog.active.count)
         #expect(active.allSatisfy { $0.stage == .notStarted })
         #expect(active.allSatisfy { $0.stage.label == "아직 시작 안 함" })
         #expect(active.allSatisfy { $0.completedLessons == 0 })
@@ -250,10 +246,10 @@ struct EmptyStateTests {
         #expect(model.openLesson == nil)
     }
 
-    @Test("load 전에도 10행이 자리를 잡고 있다 — 결과가 채워질 때 표가 튀지 않게")
+    @Test("load 전에도 모든 행이 자리를 잡고 있다 — 결과가 채워질 때 표가 튀지 않게")
     func rowsExistBeforeLoad() {
         let model = DashboardFixture().model()
-        #expect(model.rows.count == 10)
+        #expect(model.rows.count == TrackCatalog.all.count)
         #expect(model.rows.allSatisfy { $0.cells.count == $0.lessonTotal })
         #expect(!model.isLoading)
         #expect(model.lastLoadedAt == nil)
@@ -273,7 +269,7 @@ struct EmptyStateTests {
         #expect(broken.lastLoadFailed)
         // 실패한 적재는 표를 갈아엎지 않는다 — 직전 상태가 그대로 남는다.
         #expect(broken.lastLoadedAt == nil)
-        #expect(broken.rows.count == 10)
+        #expect(broken.rows.count == TrackCatalog.all.count)
         #expect(!broken.isLoading)
     }
 

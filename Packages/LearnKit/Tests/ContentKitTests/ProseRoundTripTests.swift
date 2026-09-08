@@ -25,7 +25,7 @@ struct ProseRoundTripTests {
         let blocks = try LessonParser.parse(
             source: ReferenceLesson.replacing(.concept, with: concept))
         let document = LessonDocument(
-            stableID: LessonID("round-trip"), language: .swift, blocks: blocks)
+            stableID: LessonID("round-trip"), languages: [.swift], blocks: blocks)
         return try #require(document.concept).prose
     }
 
@@ -43,8 +43,8 @@ struct ProseRoundTripTests {
             """
         let blocks = try LessonParser.parse(source: ReferenceLesson.replacing(.task, with: task))
         let document = LessonDocument(
-            stableID: LessonID("round-trip"), language: .swift, blocks: blocks)
-        return try #require(document.task).hints[0].prose
+            stableID: LessonID("round-trip"), languages: [.swift], blocks: blocks)
+        return try #require(document.task(for: document.primaryLanguage)).hints[0].prose
     }
 
     // MARK: - 증상 1 — 평평한 목록이 중첩 목록이 되던 것
@@ -150,7 +150,7 @@ struct ProseRoundTripTests {
                 ReferenceLesson.task, quiz, reflection,
             ]))
         let document = LessonDocument(
-            stableID: LessonID("round-trip"), language: .swift, blocks: parsed)
+            stableID: LessonID("round-trip"), languages: [.swift], blocks: parsed)
 
         #expect(try #require(document.quiz).question == "어느 쪽인가?\n\n- 왼쪽\n- 오른쪽")
         #expect(try #require(document.quiz).choices[0].prose == "첫 줄.\n\n> 인용")

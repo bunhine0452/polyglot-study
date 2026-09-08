@@ -28,7 +28,7 @@ private func makeLibraryPack(
         try Data(ReferenceLesson.full.utf8).write(to: url)
         entries.append(
             PackManifest.LessonEntry(
-                stableID: LessonID(id), language: language, title: "레슨 \(ordinal)",
+                stableID: LessonID(id), languages: [language], title: "레슨 \(ordinal)",
                 order: ordinal, path: path))
     }
     for extra in ["expected/run-it.txt", "starters/a.swift", "tests/a.swift", "solutions/a.swift"] {
@@ -263,7 +263,7 @@ struct PackLibraryTests {
 
     // MARK: - 리포의 실제 팩
 
-    @Test("리포의 트랙 다섯이 한 라이브러리로 열린다 — 언어 5종 · 레슨 122편")
+    @Test("리포의 팩 여섯이 한 라이브러리로 열린다 — 트랙 총수가 카탈로그와 맞는다")
     func repositoryMVPTracksOpen() throws {
         // `Content/packs` 는 **앱이 번들하는 것만** 담는다. 포맷 스펙 픽스처
         // (`polyglot-mvp`)는 `Content/fixtures` 에 따로 산다 — 그래서 여기에 예외가 없다.
@@ -274,17 +274,29 @@ struct PackLibraryTests {
         // 사전순이다 — `PackLibrary.packDirectories` 가 그렇게 정렬한다.
         #expect(
             library.packIDs.map(\.rawValue) == [
-                "polyglot-cpp", "polyglot-python", "polyglot-rust", "polyglot-sql",
-                "polyglot-swift",
+                "polyglot-algorithms", "polyglot-cpp", "polyglot-python", "polyglot-rust",
+                "polyglot-sql", "polyglot-swift",
             ])
         // 총수는 `TrackCatalog` 의 계획값과 같다 — 앱은 콘텐츠가 있는 트랙의 총수를
         // 카탈로그가 아니라 **팩에서** 읽으므로(`Composition.catalog`) 두 값이 어긋나면
         // 진도 칸이 거짓말을 한다.
-        #expect(library.lessonCount(for: .python) == 24)
-        #expect(library.lessonCount(for: .sql) == 22)
-        #expect(library.lessonCount(for: .swift) == 24)
-        #expect(library.lessonCount(for: .rust) == 26)
-        #expect(library.lessonCount(for: .cpp) == 26)
+        //
+        // **팩 단위로 센다.** 언어로 세면 같은 언어를 쓰는 두 팩(Rust 입문·알고리즘)이
+        // 한 숫자로 합쳐져 어느 트랙의 총수도 아닌 값이 나온다({#track-descriptor-pack-id}).
+        // 카탈로그를 직접 참조하지 않는다 — `TrackCatalog` 는 `DashboardFeature` 에 있고
+        // ContentKit 이 그쪽을 의존하면 계층이 뒤집힌다. 두 값이 어긋나면
+        // `DashboardFeatureTests` 의 "진도 칸 수가 레슨 총수와 일치한다" 가 잡는다.
+        let expected: [String: Int] = [
+            "polyglot-algorithms": 32, "polyglot-cpp": 26, "polyglot-python": 24,
+            "polyglot-rust": 26, "polyglot-sql": 22, "polyglot-swift": 24,
+        ]
+        for packID in library.packIDs {
+            let want = try #require(expected[packID.rawValue], "\(packID.rawValue) 이 표에 없다")
+            #expect(library.lessonCount(inPack: packID) == want, "\(packID.rawValue)")
+        }
+
+        // 언어로 세면 Rust 를 쓰는 두 팩이 합쳐진다 — 그 사실을 여기 못박아 둔다.
+        #expect(library.lessonCount(for: .rust) == 26 + 32)
 
         // 대시보드가 "다음 레슨" 으로 가리킬 첫 레슨이 실제로 열려야 한다.
         let first = try #require(library.lessons(for: .python).first)

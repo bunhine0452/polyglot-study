@@ -72,7 +72,7 @@ public struct PackValidator: Sendable {
         for entry in pack.manifest.lessons {
             table.declare(
                 stableID: entry.stableID.rawValue,
-                language: entry.language.rawValue,
+                language: entry.primaryLanguage.rawValue,
                 title: entry.title)
         }
         StructuralStage.run(pack: pack, into: &table)

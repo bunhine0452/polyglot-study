@@ -55,6 +55,14 @@
       "w": 1280,
       "h": 800,
       "title": "복습 · FSRS"
+    },
+    {
+      "file": "AlgorithmLesson.dc.html",
+      "x": 5600,
+      "y": 0,
+      "w": 1600,
+      "h": 900,
+      "title": "알고리즘 레슨 · 3분할 + 시각화"
     }
   ],
   "annotations": [

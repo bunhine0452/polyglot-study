@@ -2,12 +2,19 @@
 #
 # 릴리스 한 번 = 앱 조립 → zip → appcast 갱신 — {#sparkle-appcast}.
 #
-# 이 스크립트가 끝나면 `$OUTPUT` 은 GitHub Pages 에 **그대로 올리면 되는** 디렉터리다:
+# 이 스크립트가 끝나면 `$OUTPUT` 은 GitHub Pages 에 **그대로 올리면 되는** 디렉터리다
+# (DMG 는 예외 — 아래 {#dmg-notarize} 절 참고, gh-pages 가 아니라 GitHub Release 로 간다):
 #
 #   App/.build/release/
 #     Polyglot-0.2.0.zip
+#     Polyglot-0.2.0.dmg    <- 사람이 내려받는 경로. **--notarize 일 때만** 나온다
 #     appcast.xml          <- 이 릴리스의 sparkle:edSignature 와 length 가 갱신돼 있다
 #     old_updates/         <- generate_appcast 가 밀어낸 옛 아카이브. 올리지 않는다.
+#
+#   DMG 는 appcast 를 다 구운 **뒤에** 이 디렉터리로 옮겨진다({#dmg-notarize} 의 "2.5"·
+#   "5" 단계) — generate_appcast 가 디렉터리를 통째로 스캔해서 안에 있는 zip·dmg 를
+#   전부 업데이트 아카이브로 취급하기 때문이다(실측). 그전에 두면 같은 버전이 appcast
+#   항목 두 개로 잡힌다.
 #
 # 서명 키 — {#sparkle-eddsa-keys}:
 #   `generate_appcast` 는 개인키를 **로그인 키체인**에서 꺼낸다(서비스
@@ -26,6 +33,13 @@
 #   `--notarize` 를 주면 앱 조립과 아카이브 **사이**에서 `Codesign/notarize.sh` 가 돈다.
 #   그 자리여야 하는 이유는 그 스크립트 헤더의 {#staple-before-zip} 에 적혀 있다.
 #   기본값은 끔 — verify-sparkle.sh 의 로컬 검증을 애플 서버 왕복에 묶지 않는다.
+#
+#   DMG 는 `--notarize` 일 때**만** 만들어진다({#dmg-notarize}) — 실질적으로 CI 에서만.
+#   DMG 는 이미 스테이플된 앱을 요구하고(make-dmg.sh 가 강제한다), 스테이플은 공증을
+#   거쳐야 나오므로 공증 없이 나온 DMG 는 배포할 수 없는 물건이다. 그래서 만들지
+#   않는다 — 로컬 검증 경로가 hdiutil·애플 서버 왕복을 탈 이유도 같이 사라진다.
+#   앱과 DMG 는 Gatekeeper 가 검사하는 시점이 서로 다른 별개의 서명 대상이라 — 앱만
+#   공증하고 DMG 컨테이너를 빼먹으면 DMG 를 여는 순간에만 경고가 뜬다.
 #
 # 사용법:
 #   Scripts/release.sh --version 0.2.0
@@ -197,6 +211,39 @@ rm -f "$ARCHIVE"
 echo "==> 아카이브: $ARCHIVE"
 ditto -c -k --sequesterRsrc --keepParent "$APP_BUNDLE" "$ARCHIVE"
 
+# ── 2.5 DMG — {#dmg-notarize} ─────────────────────────────────────────────
+#
+# zip 은 Sparkle 자동 업데이트가 쓰고, DMG 는 사람이 내려받는 경로다. 둘 다 나간다 —
+# 이미 위에서 공증·스테이플까지 끝난 $APP_BUNDLE 을 그대로 담으므로 앱 쪽의 순서만
+# 지켜져 있으면 된다(make-dmg.sh 가 스테이플 여부를 다시 확인하고 아니면 멈춘다).
+#
+# DMG 컨테이너 자체도 별도로 서명·공증·스테이플해야 한다 — `stapler validate` 가
+# **DMG 단독으로** 통과해야 이 항목의 완료 기준을 만족한다. 앱만 공증하고 DMG 를
+# 안 하면 DMG 를 열자마자(마운트 시점) Gatekeeper 평가가 온라인 조회를 요구하고,
+# 오프라인이면 거기서 막힌다.
+#
+# **$OUTPUT 이 아니라 별도 스테이징 디렉터리에 만든다** — 실측(2026-09-08): 아래
+# `generate_appcast` 는 넘겨받은 디렉터리를 통째로 훑어 그 안의 zip·dmg 를 전부
+# "업데이트 아카이브" 로 취급하고 서명까지 시도한다. DMG 를 이 시점에 $OUTPUT 에
+# 두면 같은 버전의 zip 과 DMG 가 appcast 에 **항목 두 개**로 잡혀 Sparkle 피드가
+# 어떤 item 을 골라야 할지 불분명해진다. appcast 를 다 구운 **뒤에** DMG 를 $OUTPUT
+# 으로 옮긴다.
+#
+# **`--notarize` 일 때만 만든다** — 즉 실질적으로 CI 에서만. DMG 는 스테이플된 앱을
+# 요구하고(make-dmg.sh 가 강제한다), 스테이플은 공증을 거쳐야 나온다. 공증 없이
+# 만든 DMG 는 배포할 수 없는 물건이라 만들 이유가 없다. 덕분에 로컬 검증 경로
+# (verify-sparkle.sh 처럼 --notarize 없이 도는 것들)는 hdiutil 왕복을 타지 않는다.
+DMG_STAGE=""
+if [ "$NOTARIZE" -eq 1 ]; then
+	echo "==> DMG 조립"
+	DMG_STAGE="$APP_DIR/.build/release-dmg-stage"
+	rm -rf "$DMG_STAGE"
+	"$APP_DIR/Scripts/make-dmg.sh" "$APP_BUNDLE" \
+		--version "$SHORT_VERSION" --output "$DMG_STAGE" --notarize </dev/null
+else
+	echo "==> DMG 건너뜀 (--notarize 없음) — 공증 없는 DMG 는 배포물이 아니다"
+fi
+
 # ── 3. appcast ───────────────────────────────────────────────────────────
 if [ -n "$ED_KEY_FILE" ]; then
 	echo "==> appcast 생성 (개인키: --ed-key-file $ED_KEY_FILE)"
@@ -244,6 +291,22 @@ else:
     sys.exit("appcast 에 %s 항목이 없다." % version)
 PY
 
-echo "==> 완료. 이 디렉터리를 GitHub Pages 로 올려라 (old_updates/ 는 제외):"
+# ── 5. DMG 를 산출물 디렉터리로 ─────────────────────────────────────────────
+#
+# appcast 를 다 구운 뒤에야 옮긴다 — {#dmg-notarize} 위 "2.5 DMG" 절의 이유 그대로,
+# generate_appcast 가 스캔을 끝낸 다음이라 더는 DMG 를 업데이트 아카이브로 착각할
+# 일이 없다.
+if [ -n "$DMG_STAGE" ]; then
+	DMG_PATH="$OUTPUT/Polyglot-$SHORT_VERSION.dmg"
+	mv "$DMG_STAGE/Polyglot-$SHORT_VERSION.dmg" "$DMG_PATH"
+	rm -rf "$DMG_STAGE"
+	echo "==> DMG: $DMG_PATH"
+fi
+
+echo "==> 완료. 이 디렉터리를 GitHub Pages 로 올려라 (old_updates/ 와 *.dmg 는 제외):"
 echo "    $OUTPUT"
+if [ -n "$DMG_STAGE" ]; then
+	echo "    DMG($DMG_PATH)는 gh-pages 가 아니라 GitHub Release 자산으로 올려라 —"
+	echo "    Sparkle 피드는 zip 만 가리키므로 DMG 를 gh-pages 이력에 반복해서 올릴 이유가 없다."
+fi
 ls -1 "$OUTPUT"

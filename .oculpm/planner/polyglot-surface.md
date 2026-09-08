@@ -100,7 +100,7 @@ owner: claude-code
   - [x] 생성한 공개키를 SUPublicEDKey 에 넣고 개인키는 로그인 키체인에만 보관 — 저장소 전체 grep 에 개인키 0건 {#sparkle-eddsa-keys}
   - [x] 피드 URL 을 GitHub Pages 의 appcast.xml 로 두고 appcast 생성기를 릴리스 스크립트에 편입 — 릴리스 1회로 서명과 길이가 갱신 {#sparkle-appcast}
 - [x] GitHub 공개 준비 — README 와 CONTRIBUTING 작성. LICENSE 는 이미 MIT 로 커밋됨. README 라이선스 절에 Unicorn Engine 도입 시 MIT 선택이 무효화된다는 경고 한 줄 {#github-public-repo}
-- [~] 릴리스 CI — swift test 와 xcodebuild build 와 packtool validate 3게이트를 PR 에 걸고, 공증과 appcast 잡은 태그 푸시에만 Actions secrets 로 실행 {#release-ci}
+- [x] 릴리스 CI — swift test 와 xcodebuild build 와 packtool validate 3게이트를 PR 에 걸고, 공증과 appcast 잡은 태그 푸시에만 Actions secrets 로 실행 {#release-ci}
 
 ## 릴리스 전 앱 배선 {#release-wiring}
 
@@ -197,4 +197,5 @@ owner: claude-code
 | 2026-09-07T21:34:38+09:00 | #notary-credentials | claude-code | ☐→~ | .oculpm/journal/20260907/Features_to_add/2134_feature_developer-id-signing-notarize-wiring.md | 두 경로(로컬 키체인 프로파일·CI API 키) 구현 완료, 스크립트에 리터럴 0건. store-credentials 실행과 시크릿 등록은 미완 |
 | 2026-09-07T22:32:43+09:00 | #notary-credentials | claude-code | ~→x | .oculpm/journal/20260907/Features_to_add/2232_feature_first-notarization-accepted.md | 키체인 프로파일 oculpm-notary 로 실제 공증 통과. 스크립트 전문 grep 에 자격증명 리터럴 0건 — 주석의 플레이스홀더뿐 |
 | 2026-09-07T22:32:49+09:00 | #release-ci | claude-code | !→~ | .oculpm/journal/20260907/Features_to_add/2232_feature_first-notarization-accepted.md | 공증 의존이 풀렸다 — 시크릿 5종 등록 완료, 태그 잡에 서명·공증·배포본 재검증까지 배선됨. 남은 것은 커밋·태그로 한 번 돌리는 것 |
+| 2026-09-07T23:19:24+09:00 | #release-ci | claude-code | ~→x | .oculpm/journal/20260907/Features_to_add/2319_feature_notarized-release-alpha3-shipped.md | v0.1.0-alpha.3 태그 푸시로 실측 — PR 3게이트 + 태그 잡이 서명·공증·appcast·배포까지 9분 9초에 완주. 배포 자산을 격리 속성 붙여 받아 spctl accepted 확인 |
 <!-- oculpm:plan-log end -->

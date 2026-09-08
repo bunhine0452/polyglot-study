@@ -85,8 +85,10 @@ extension PackManifest {
             guard seenIDs.insert(lesson.stableID).inserted else {
                 throw .duplicateLessonID(lesson.stableID)
             }
-            guard languageSet.contains(lesson.language) else {
-                throw .unknownLanguage(lesson.language, lesson: lesson.stableID)
+            // 레슨이 선언한 언어는 **전부** 팩의 languages 안에 있어야 한다. 하나라도
+            // 밖이면 그 언어를 고른 학습자가 실행기 없는 화면을 보게 된다.
+            for language in lesson.languages where !languageSet.contains(language) {
+                throw .unknownLanguage(language, lesson: lesson.stableID)
             }
 
             let path: PackRelativePath
@@ -103,9 +105,13 @@ extension PackManifest {
                 throw .unregisteredFile(path: lesson.path, referencedBy: lesson.stableID)
             }
 
-            let orderKey = "\(lesson.language.rawValue)#\(lesson.order)"
-            guard seenOrders.insert(orderKey).inserted else {
-                throw .duplicateOrder(language: lesson.language, order: lesson.order)
+            // 순번은 **언어마다** 1부터다. 여러 언어를 담은 레슨은 그 언어들의 목록에
+            // 모두 끼므로 각각에서 순번이 겹치지 않아야 한다.
+            for language in lesson.languages {
+                let orderKey = "\(language.rawValue)#\(lesson.order)"
+                guard seenOrders.insert(orderKey).inserted else {
+                    throw .duplicateOrder(language: language, order: lesson.order)
+                }
             }
         }
 

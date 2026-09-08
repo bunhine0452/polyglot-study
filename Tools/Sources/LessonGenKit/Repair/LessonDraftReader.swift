@@ -31,14 +31,16 @@ public enum LessonDraftReader {
         guard let entry = pack.manifest.lesson(stableID) else {
             throw LessonDraftReadError.unknownLesson(stableID.rawValue)
         }
-        guard let language = LessonLanguage(entry.language) else {
-            throw LessonDraftReadError.unsupportedLanguage(entry.language.rawValue)
+        guard let language = LessonLanguage(entry.primaryLanguage) else {
+            throw LessonDraftReadError.unsupportedLanguage(entry.primaryLanguage.rawValue)
         }
         let document = try pack.lesson(stableID)
+        // 수리 대상은 생성기가 만든 단일 언어 레슨이다.
+        let lessonLanguage = document.primaryLanguage
         guard let concept = document.concept,
-            let example = document.example,
-            let blank = document.blank,
-            let task = document.task,
+            let example = document.example(for: lessonLanguage),
+            let blank = document.blank(for: lessonLanguage),
+            let task = document.task(for: lessonLanguage),
             let quiz = document.quiz,
             let reflection = document.reflection
         else {

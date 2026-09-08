@@ -12,9 +12,11 @@ enum ParseFailureClassifier {
         _ error: LessonParseError
     ) -> (stage: PackValidationReport.Stage, kind: PackValidationReport.Failure.Kind) {
         switch error.reason {
-        // 6블록 구성·순서.
+        // 블록 구성·순서. 언어 변형의 짝이 안 맞는 것도 여기다 — 어느 언어에 어떤 블록이
+        // 빠졌는가는 구조의 문제이지 내용의 문제가 아니다({#block-language-variants}).
         case .blockOutOfOrder, .missingBlock, .duplicateBlock, .duplicateBlockID,
-            .unexpectedTopLevelContent:
+            .unexpectedTopLevelContent, .duplicateLanguage, .languageWithoutBlock,
+            .manifestLanguageMismatch:
             (.syntax, .blockStructure)
 
         // 디렉티브가 가리키는 사이드카 경로가 어긋났다 — 문법이 아니라 참조의 문제다.

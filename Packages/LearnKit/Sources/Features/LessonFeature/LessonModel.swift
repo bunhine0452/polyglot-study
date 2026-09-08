@@ -261,7 +261,7 @@ public final class LessonModel {
 
     /// `@Example` 의 코드를 실제 러너로 태우고 `RunEvent` 를 출력 슬롯에 흘린다.
     public func runExample() async {
-        guard let example = content.document.example, !runState.isBusy else { return }
+        guard let example = content.document.example(for: content.language), !runState.isBusy else { return }
         transcript = ConsoleTranscript(isRunning: true)
         resultSet = nil
         diagnostics = []
@@ -355,7 +355,7 @@ public final class LessonModel {
 
     /// 슬롯별 정오. 아직 채점 전이면 빈 사전이다.
     public var blankResults: [Int: Bool] {
-        guard blankChecked, let blank = content.document.blank else { return [:] }
+        guard blankChecked, let blank = content.document.blank(for: content.language) else { return [:] }
         return Dictionary(
             uniqueKeysWithValues: blank.slots.map {
                 ($0.index, Self.matches($0.answer, blankEntries[$0.index] ?? ""))
@@ -364,7 +364,7 @@ public final class LessonModel {
     }
 
     public var blanksAreComplete: Bool {
-        guard let blank = content.document.blank else { return false }
+        guard let blank = content.document.blank(for: content.language) else { return false }
         return blank.slots.allSatisfy { !(blankEntries[$0.index] ?? "").trimmed.isEmpty }
     }
 
@@ -408,11 +408,11 @@ public final class LessonModel {
     // MARK: - 과제
 
     public func openEditor() {
-        guard let task = content.document.task else { return }
+        guard let task = content.document.task(for: content.language) else { return }
         onOpenEditor?(task)
     }
 
-    public var canOpenEditor: Bool { onOpenEditor != nil && content.document.task != nil }
+    public var canOpenEditor: Bool { onOpenEditor != nil && content.document.task(for: content.language) != nil }
 
     // MARK: - 주 동작
 

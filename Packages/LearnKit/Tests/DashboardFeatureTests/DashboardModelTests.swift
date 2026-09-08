@@ -27,35 +27,34 @@ struct DashboardTrackTableTests {
         #expect(model.rows.allSatisfy { $0.cells.count == $0.lessonTotal })
     }
 
-    @Test("활성 3트랙은 잉크, 준비 중 7트랙은 흐림")
-    func threeActiveSevenDimmed() async throws {
+    @Test("활성 5트랙은 잉크, 준비 중 5트랙은 흐림")
+    func activeTracksAreInkComingSoonAreDimmed() async throws {
         let fixture = DashboardFixture()
         let model = fixture.model()
         await model.load()
 
         let dimmed = model.rows.filter(\.stage.isDimmed)
-        #expect(dimmed.count == 7)
-        #expect(Set(dimmed.map(\.name)) == [
-            "Rust", "C++", "Go", "Java", "Next.js", "TypeScript", "Assembly",
-        ])
-        #expect(Set(model.rows.filter { !$0.stage.isDimmed }.map(\.name)) == ["Python", "SQL", "Swift"])
+        #expect(dimmed.count == 5)
+        #expect(Set(dimmed.map(\.name)) == ["Go", "Java", "Next.js", "TypeScript", "Assembly"])
+        #expect(Set(model.rows.filter { !$0.stage.isDimmed }.map(\.name))
+            == ["Python", "SQL", "Swift", "Rust", "C++"])
         #expect(dimmed.allSatisfy { $0.stage == .comingSoon })
     }
 
     @Test("준비 중 트랙은 진도도 오늘 복습도 없다 — 0 이 아니라 없음이다")
     func comingSoonHasNoNumbers() async throws {
         let fixture = DashboardFixture()
-        try await fixture.seedDueCards(LanguageID("rust"), count: 5)
+        try await fixture.seedDueCards(LanguageID("go"), count: 5)
         let model = fixture.model()
         await model.load()
 
-        let rust = try #require(model.rows.first { $0.name == "Rust" })
+        let go = try #require(model.rows.first { $0.name == "Go" })
         // 콘텐츠가 없는 트랙에 카드가 들어 있어도 표에 세지 않는다. `nil` 은 "—" 로 그려지고
         // `0` 은 "0 장 도착" 이라는 다른 말이다.
-        #expect(rust.dueToday == nil)
-        #expect(rust.resume == nil)
-        #expect(rust.completedLessons == 0)
-        #expect(rust.pendingContentLabel == "26 레슨 · 콘텐츠 준비 중")
+        #expect(go.dueToday == nil)
+        #expect(go.resume == nil)
+        #expect(go.completedLessons == 0)
+        #expect(go.pendingContentLabel == "20 레슨 · 콘텐츠 준비 중")
     }
 
     @Test("활성 트랙이 최근 활동 순으로 먼저, 준비 중 트랙이 카탈로그 순으로 뒤")
@@ -233,14 +232,14 @@ struct TodayReviewTests {
 
 @Suite("대시보드 · 빈 상태")
 struct EmptyStateTests {
-    @Test("스토어가 비어 있으면 세 활성 트랙 전부 '아직 시작 안 함' 이다")
+    @Test("스토어가 비어 있으면 활성 트랙 전부 '아직 시작 안 함' 이다")
     func emptyStoresYieldNotStarted() async throws {
         let fixture = DashboardFixture()
         let model = fixture.model()
         await model.load()
 
         let active = model.rows.filter { !$0.stage.isDimmed }
-        #expect(active.count == 3)
+        #expect(active.count == 5)
         #expect(active.allSatisfy { $0.stage == .notStarted })
         #expect(active.allSatisfy { $0.stage.label == "아직 시작 안 함" })
         #expect(active.allSatisfy { $0.completedLessons == 0 })

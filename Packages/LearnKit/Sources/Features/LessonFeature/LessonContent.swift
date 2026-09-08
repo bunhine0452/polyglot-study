@@ -30,9 +30,11 @@ public nonisolated struct LessonContent: Sendable {
         totalInTrack: Int,
         objectives: [String] = [],
         expectedOutput: String? = nil,
-        starterSource: String? = nil
+        starterSource: String? = nil,
+        language: LanguageID? = nil
     ) {
         self.document = document
+        self.language = language ?? document.primaryLanguage
         self.title = title
         self.trackName = trackName
         self.order = order
@@ -42,8 +44,14 @@ public nonisolated struct LessonContent: Sendable {
         self.starterSource = starterSource
     }
 
-    public var language: LanguageID { document.language }
-    public var blocks: [LessonBlock] { document.blocks }
+    /// 학습자가 고른 풀이 언어. 기본값은 레슨이 선언한 첫 언어다({#lesson-language-picker}).
+    ///
+    /// 개념·퀴즈·돌아보기는 이 값과 무관하고, 예제·빈칸·과제만 갈아탄다.
+    public var language: LanguageID
+    /// 고른 언어로 본 6블록. 언어가 하나인 레슨에서는 `document.blocks` 와 같다.
+    public var blocks: [LessonBlock] { document.blocks(for: language) }
+    /// 이 레슨을 풀 수 있는 언어들 — 선택 UI 가 그리는 목록.
+    public var languages: [LanguageID] { document.languages }
 
     /// 팩에서 레슨 하나를 읽어 화면이 쓸 형태로 조립한다.
     ///
@@ -55,16 +63,19 @@ public nonisolated struct LessonContent: Sendable {
     {
         guard let entry = pack.manifest.lesson(lessonID) else { throw .unknownLesson(lessonID) }
         let document = try pack.lesson(lessonID)
-        let siblings = pack.manifest.lessons(for: entry.language)
+        let siblings = pack.manifest.lessons(for: entry.primaryLanguage)
         return LessonContent(
             document: document,
             title: entry.title,
-            trackName: trackName(for: entry.language),
+            trackName: trackName(for: entry.primaryLanguage),
             order: entry.order,
             totalInTrack: max(siblings.count, entry.order),
             objectives: entry.objectives,
-            expectedOutput: document.example.flatMap { try? pack.text(at: $0.expectedStdoutPath) },
-            starterSource: document.task.flatMap { try? pack.text(at: $0.starterPath) }
+            expectedOutput: document.example(for: entry.primaryLanguage)
+                .flatMap { try? pack.text(at: $0.expectedStdoutPath) },
+            starterSource: document.task(for: entry.primaryLanguage)
+                .flatMap { try? pack.text(at: $0.starterPath) },
+            language: entry.primaryLanguage
         )
     }
 

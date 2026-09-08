@@ -28,7 +28,7 @@ private func makeLibraryPack(
         try Data(ReferenceLesson.full.utf8).write(to: url)
         entries.append(
             PackManifest.LessonEntry(
-                stableID: LessonID(id), language: language, title: "레슨 \(ordinal)",
+                stableID: LessonID(id), languages: [language], title: "레슨 \(ordinal)",
                 order: ordinal, path: path))
     }
     for extra in ["expected/run-it.txt", "starters/a.swift", "tests/a.swift", "solutions/a.swift"] {

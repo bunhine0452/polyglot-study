@@ -255,21 +255,25 @@ final class Composition {
     /// 총수를 팩에서 읽는 이유는 진도 칸이 거짓말을 하지 않게 하려는 것이다 — 팩에
     /// 12편이 들어 있는데 24칸을 그리면 다 끝낸 학습자가 반만 한 것으로 보인다.
     private lazy var catalog: [TrackDescriptor] = {
-        let available = Set(library.languages)
         return TrackCatalog.all.map { descriptor in
-            guard available.contains(descriptor.languageID) else {
+            // **팩이 실제로 설치돼 있는가**로 판정한다. 언어로 판정하면 같은 언어의 다른
+            // 팩이 깔려 있다는 이유로 이 트랙이 열린 것처럼 보인다.
+            // `hasContent` 는 팩 유무에서 파생되므로 팩을 떼는 것으로 "준비 중" 이 된다.
+            guard let packID = descriptor.packID, library.pack(packID) != nil else {
                 return TrackDescriptor(
+                    trackID: descriptor.trackID,
                     languageID: descriptor.languageID,
+                    packID: nil,
                     name: descriptor.name,
-                    lessonTotal: descriptor.lessonTotal,
-                    hasContent: false
+                    lessonTotal: descriptor.lessonTotal
                 )
             }
             return TrackDescriptor(
+                trackID: descriptor.trackID,
                 languageID: descriptor.languageID,
+                packID: packID,
                 name: descriptor.name,
-                lessonTotal: library.lessonCount(for: descriptor.languageID),
-                hasContent: true
+                lessonTotal: library.lessonCount(inPack: packID)
             )
         }
     }()
@@ -290,11 +294,11 @@ final class Composition {
         return { packID, lessonID in frozen[LessonRef(packID: packID, lessonID: lessonID)] }
     }
 
-    private func packLessonDirectory() -> (@Sendable (LanguageID) -> [LessonRef])? {
+    private func packLessonDirectory() -> (@Sendable (PackID) -> [LessonRef])? {
         guard !library.isEmpty else { return nil }
-        let byLanguage = Dictionary(
-            uniqueKeysWithValues: library.languages.map { ($0, library.lessons(for: $0)) })
-        return { byLanguage[$0] ?? [] }
+        let byPack = Dictionary(
+            uniqueKeysWithValues: library.packIDs.map { ($0, library.lessons(inPack: $0)) })
+        return { byPack[$0] ?? [] }
     }
 }
 

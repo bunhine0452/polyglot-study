@@ -76,8 +76,8 @@ struct SamplePackTests {
             #expect(
                 document.blocks.map(\.kind) == LessonBlockKind.requiredSequence,
                 "\(document.stableID.rawValue) 의 블록 구성이 다르다")
-            #expect(document.example?.language == document.language)
-            #expect(document.task?.language == document.language)
+            #expect(document.example(for: document.primaryLanguage)?.language == document.primaryLanguage)
+            #expect(document.task(for: document.primaryLanguage)?.language == document.primaryLanguage)
         }
     }
 
@@ -85,7 +85,7 @@ struct SamplePackTests {
     func blanksAreComplete() throws {
         let pack = try ContentPack(directory: RepoPaths.samplePack)
         for document in try pack.allLessons() {
-            let blank = try #require(document.blank)
+            let blank = try #require(document.blank(for: document.primaryLanguage))
             let markers = Set(BlankSlotMarker.indices(in: blank.template))
             #expect(markers == Set(blank.slots.map(\.index)))
             #expect(!blank.filledTemplate().contains("___"))

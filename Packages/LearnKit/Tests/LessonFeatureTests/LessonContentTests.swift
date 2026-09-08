@@ -31,7 +31,7 @@ struct LessonContentTests {
         let content = try SampleLesson.content(id)
         #expect(content.title == entry.title)
         #expect(content.order == entry.order)
-        #expect(content.language == entry.language)
+        #expect(content.language == entry.primaryLanguage)
         #expect(content.objectives == entry.objectives)
         #expect(content.totalInTrack >= 1)
     }
@@ -42,17 +42,17 @@ struct LessonContentTests {
         #expect(content.title == "옵셔널 다루기")
         #expect(content.trackName == "Swift")
 
-        let example = try #require(content.document.example)
+        let example = try #require(content.document.example(for: content.document.primaryLanguage))
         #expect(example.codeFenceLanguage == "swift")
         #expect(example.code.contains("if let text = raw"))
         // 기대 출력 사이드카가 실제로 읽힌다.
         #expect(content.expectedOutput?.trimmingCharacters(in: .whitespacesAndNewlines) == "parsed 42")
 
-        let blank = try #require(content.document.blank)
+        let blank = try #require(content.document.blank(for: content.document.primaryLanguage))
         #expect(blank.slots.map(\.index) == [1])
         #expect(blank.slots[0].answer == "??")
 
-        let task = try #require(content.document.task)
+        let task = try #require(content.document.task(for: content.document.primaryLanguage))
         #expect(task.hints.count == 1)
         #expect(content.starterSource?.isEmpty == false)
 
@@ -68,7 +68,7 @@ struct LessonContentTests {
     @Test("SQL 레슨은 빈칸이 둘이고 정답이 대문자 키워드다")
     func sqlLessonBlanks() throws {
         let content = try SampleLesson.content(SampleLesson.sql)
-        let blank = try #require(content.document.blank)
+        let blank = try #require(content.document.blank(for: content.document.primaryLanguage))
         #expect(blank.slots.map(\.index) == [1, 2])
         #expect(blank.slots.map(\.answer) == ["SUM", "product"])
     }

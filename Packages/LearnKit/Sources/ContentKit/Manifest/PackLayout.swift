@@ -11,6 +11,7 @@
 ///   solutions/  <path>     정답 코드 (배포 팩에서는 벗겨진다)
 ///   expected/   <id>.txt   실행 예제의 기대 stdout
 ///   assets/     <path>     이미지·샘플 DB 등 읽기 전용 자원
+///   visuals/    <id>.json  알고리즘 시각화 프레임({#visualize-directive})
 /// ```
 public enum PackLayout {
     public static let manifestFileName = "manifest.json"
@@ -24,11 +25,13 @@ public enum PackLayout {
     public static let solutionsDirectory = "solutions"
     public static let expectedDirectory = "expected"
     public static let assetsDirectory = "assets"
+    /// 시각화 프레임 사이드카. 파일 이름이 곧 `@Visualize` 가 찾는 id 다.
+    public static let visualsDirectory = "visuals"
 
-    /// `files` 에 등록될 수 있는 최상위 디렉터리 6종. 이 밖의 위치는 검증에서 거부된다.
+    /// `files` 에 등록될 수 있는 최상위 디렉터리 7종. 이 밖의 위치는 검증에서 거부된다.
     public static let contentDirectories: [String] = [
         lessonsDirectory, startersDirectory, testsDirectory,
-        solutionsDirectory, expectedDirectory, assetsDirectory,
+        solutionsDirectory, expectedDirectory, assetsDirectory, visualsDirectory,
     ]
 
     /// 최상위에 그냥 놓일 수 있는 파일. `manifest.json` 은 자기 해시를 담을 수 없으므로

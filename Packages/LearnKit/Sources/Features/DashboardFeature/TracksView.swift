@@ -48,8 +48,8 @@ public struct TracksView: View {
             ForEach(model.tracks) { track in
                 TrackListRow(
                     track: track,
-                    isSelected: track.languageID == model.selectedTrack?.languageID,
-                    onSelect: { model.select(track.languageID) }
+                    isSelected: track.trackID == model.selectedTrack?.trackID,
+                    onSelect: { model.select(track.trackID) }
                 )
             }
         }

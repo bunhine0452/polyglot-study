@@ -43,7 +43,7 @@ public enum LessonSerializer {
             document = try LessonParser.parseDocument(
                 source: markdown,
                 stableID: stableID,
-                language: language.id,
+                languages: [language.id],
                 path: paths.lesson)
         } catch {
             throw .unparsableOutput(error.description)
@@ -248,7 +248,8 @@ public enum LessonSerializer {
                 expected: String(LessonBlockKind.requiredSequence.count),
                 found: String(document.blocks.count))
         }
-        guard let example = document.example else {
+        // 생성기는 언어 하나짜리 레슨을 쓴다 — 왕복 검증은 **쓰려던 그 언어**의 블록을 본다.
+        guard let example = document.example(for: language.id) else {
             throw .roundTripMismatch(field: "example", expected: "존재", found: "없음")
         }
         guard example.expectedStdoutPath == paths.expected else {
@@ -270,7 +271,7 @@ public enum LessonSerializer {
                 found: example.language.rawValue)
         }
 
-        guard let blank = document.blank else {
+        guard let blank = document.blank(for: language.id) else {
             throw .roundTripMismatch(field: "blank", expected: "존재", found: "없음")
         }
         let expectedAnswers = draft.blank.answers.sorted { $0.slot < $1.slot }
@@ -288,7 +289,7 @@ public enum LessonSerializer {
             }
         }
 
-        guard let task = document.task else {
+        guard let task = document.task(for: language.id) else {
             throw .roundTripMismatch(field: "task", expected: "존재", found: "없음")
         }
         for (name, expected, found) in [

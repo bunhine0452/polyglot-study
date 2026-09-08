@@ -47,44 +47,136 @@ public enum LessonParser {
     }
 
     /// 매니페스트가 준 신원과 묶어 완성된 레슨으로.
+    /// - Parameter languages: **매니페스트가** 이 레슨에 선언한 언어들. 본문이 선언한 것과
+    ///   집합이 정확히 같아야 한다.
+    ///
+    ///   한쪽만 있어도 실패시키는 이유: 본문에만 있으면 화면의 언어 선택에는 뜨는데
+    ///   `manifest.lessons(for:)` 가 그 언어의 목록에서 이 레슨을 빼먹고, 매니페스트에만
+    ///   있으면 목록에는 뜨는데 열면 그 언어의 블록이 없다. 둘 다 조용히 어긋난 팩이다.
     public static func parseDocument(
         source: String,
         stableID: LessonID,
-        language: LanguageID,
+        languages: [LanguageID],
         path: PackRelativePath? = nil
     ) throws(LessonParseError) -> LessonDocument {
         let blocks = try parse(source: source, path: path?.rawValue)
+        // 순서의 정본은 **본문**이다 — 화면의 언어 선택 순서가 저작 순서를 따른다.
+        let declared = orderedLanguages(in: blocks)
+        guard Set(declared) == Set(languages) else {
+            let error = LessonParseError(
+                .manifestLanguageMismatch(manifest: languages, body: declared),
+                at: blocks.first?.span.start ?? SourcePosition(line: 1, column: 1))
+            throw path.map { error.annotated(path: $0.rawValue) } ?? error
+        }
         return LessonDocument(
-            stableID: stableID, language: language, blocks: blocks, path: path)
+            stableID: stableID, languages: declared, blocks: blocks, path: path)
+    }
+
+    /// 블록에 나타난 언어를 **처음 나온 순서대로**. 그 순서가 화면의 언어 선택 순서가 된다.
+    static func orderedLanguages(in blocks: [LessonBlock]) -> [LanguageID] {
+        var ordered: [LanguageID] = []
+        for case .some(let language) in blocks.map(\.language) where !ordered.contains(language) {
+            ordered.append(language)
+        }
+        return ordered
     }
 
     // MARK: - 시퀀스
 
+    /// 종류의 **순서**는 여전히 계약이다. 달라진 것은 예제·빈칸·과제가 **언어마다 한 번씩**
+    /// 반복될 수 있다는 것뿐이다({#block-language-variants}).
+    ///
+    /// ```
+    /// @Concept                                        한 번
+    /// @Example(rust)  @Example(python)                언어마다
+    /// @Blank(rust)    @Blank(python)                  언어마다
+    /// @Task(rust)     @Task(python)                   언어마다
+    /// @Quiz  @Reflection                              한 번
+    /// ```
+    ///
+    /// 개념·퀴즈·돌아보기를 공용으로 둔 이유: 이진 탐색이 무엇인지는 Rust 로 풀든 Python 으로
+    /// 풀든 같다. 언어마다 다시 쓰면 같은 설명 넷이 서로 어긋나기 시작한다.
+    ///
+    /// 언어가 하나인 레슨은 규칙이 그대로다 — 기존 122편이 손대지 않고 통과한다.
     private static func validateSequence(_ blocks: [LessonBlock]) throws(LessonParseError) {
-        var seen: Set<LessonBlockKind> = []
         var ids: Set<String> = []
         var expected = LessonBlockKind.requiredSequence[...]
+        /// 종류별로 어떤 언어가 나왔는지. 선언 순서를 지키려고 배열로 모은다.
+        var languagesByKind: [LessonBlockKind: [LanguageID]] = [:]
 
         for block in blocks {
-            guard seen.insert(block.kind).inserted else {
-                throw LessonParseError(.duplicateBlock(block.kind), at: block.span.start)
+            // **구조를 먼저 본다.** id 중복보다 종류 중복이 더 큰 사실이라, 같은 블록을
+            // 통째로 두 번 쓴 경우에 "id 가 겹친다" 가 아니라 "블록이 두 번" 이라고 말한다.
+            //
+            // 같은 종류가 이어지면 언어 변형이다. 앞으로 나아가지 않는다.
+            let isRepeatOfCurrent =
+                languagesByKind[block.kind] != nil && block.kind.allowsLanguageVariants
+            if !isRepeatOfCurrent {
+                guard let next = expected.first else {
+                    throw LessonParseError(.duplicateBlock(block.kind), at: block.span.start)
+                }
+                guard next == block.kind else {
+                    // 이미 지나온 종류가 다시 나온 것이라면 "중복" 이 더 정확한 말이다.
+                    let alreadyPassed = !expected.contains(block.kind)
+                    throw LessonParseError(
+                        alreadyPassed
+                            ? .duplicateBlock(block.kind)
+                            : .blockOutOfOrder(found: block.kind, expected: next),
+                        at: block.span.start)
+                }
+                expected = expected.dropFirst()
             }
+
             guard ids.insert(block.id).inserted else {
                 throw LessonParseError(.duplicateBlockID(block.id), at: block.span.start)
             }
-            guard let next = expected.first else {
-                throw LessonParseError(.duplicateBlock(block.kind), at: block.span.start)
+
+            if let language = block.language {
+                if languagesByKind[block.kind, default: []].contains(language) {
+                    throw LessonParseError(
+                        .duplicateLanguage(kind: block.kind, language: language),
+                        at: block.span.start)
+                }
+                languagesByKind[block.kind, default: []].append(language)
+            } else {
+                languagesByKind[block.kind] = []
             }
-            guard next == block.kind else {
-                throw LessonParseError(
-                    .blockOutOfOrder(found: block.kind, expected: next), at: block.span.start)
-            }
-            expected = expected.dropFirst()
         }
 
         if let missing = expected.first {
             let position = blocks.last?.span.end ?? SourcePosition(line: 1, column: 1)
             throw LessonParseError(.missingBlock(missing), at: position)
+        }
+
+        try validateLanguageParity(blocks, languagesByKind: languagesByKind)
+    }
+
+    /// 선언한 언어마다 예제·빈칸·과제가 **모두** 있어야 한다.
+    ///
+    /// 없으면 그 언어를 고른 학습자가 중간에 막힌다 — 읽을 예제는 있는데 풀 과제가 없는
+    /// 식이다. 팩을 만드는 쪽에서 잡아야 하는 결함이라 파싱을 실패시킨다.
+    private static func validateLanguageParity(
+        _ blocks: [LessonBlock],
+        languagesByKind: [LessonBlockKind: [LanguageID]]
+    ) throws(LessonParseError) {
+        let variantKinds = LessonBlockKind.requiredSequence.filter(\.allowsLanguageVariants)
+        // 어느 종류에서든 등장한 언어는 전부 지원 대상으로 본다.
+        var declared: [LanguageID] = []
+        for kind in variantKinds {
+            for language in languagesByKind[kind] ?? [] where !declared.contains(language) {
+                declared.append(language)
+            }
+        }
+
+        for language in declared {
+            for kind in variantKinds where !(languagesByKind[kind] ?? []).contains(language) {
+                let position =
+                    blocks.first { $0.kind == kind }?.span.start
+                    ?? blocks.last?.span.end
+                    ?? SourcePosition(line: 1, column: 1)
+                throw LessonParseError(
+                    .languageWithoutBlock(language: language, missing: kind), at: position)
+            }
         }
     }
 
@@ -155,14 +247,33 @@ public enum LessonParser {
         var arguments = try DirectiveArguments(directive)
         let id = try arguments.identifier("id")
         try arguments.finish()
-        try rejectChildDirectives(in: directive, allowing: [])
+        try rejectChildDirectives(in: directive, allowing: [DirectiveNames.visualize])
+
+        // 시각화는 **선택**이다. 기존 122편에는 없고, 그것들이 그대로 통과해야 한다.
+        let children = Body.childDirectives(of: directive, named: DirectiveNames.visualize)
+        guard children.count <= 1 else {
+            throw LessonParseError(
+                .unexpectedChildDirective(
+                    parent: directive.name, child: DirectiveNames.visualize),
+                at: .at(children[1].nameLocation))
+        }
+        var visualization: LessonVisualization?
+        if let child = children.first {
+            var childArguments = try DirectiveArguments(child)
+            let visualID = try childArguments.identifier("id")
+            let frames = try childArguments.path("frames", under: PackLayout.visualsDirectory)
+            try childArguments.finish()
+            try rejectChildDirectives(in: child, allowing: [])
+            visualization = LessonVisualization(id: visualID, framesPath: frames)
+        }
 
         let prose = Body.prose(of: directive, includingCode: true)
         guard !prose.isEmpty else {
             throw LessonParseError(
                 .missingProse(directive: directive.name), at: .at(directive.nameLocation))
         }
-        return ConceptBlock(id: id, prose: prose, span: .span(of: directive))
+        return ConceptBlock(
+            id: id, prose: prose, visualization: visualization, span: .span(of: directive))
     }
 
     private static func example(_ directive: BlockDirective) throws(LessonParseError)
@@ -420,9 +531,11 @@ public enum DirectiveNames {
     public static let choice = "Choice"
     public static let explanation = "Explanation"
     public static let prompt = "Prompt"
+    /// `@Concept` 안에만 온다 — 시각화는 개념을 보여주는 것이지 별도 블록이 아니다.
+    public static let visualize = "Visualize"
 
     /// 스펙이 아는 모든 디렉티브 이름.
     public static let all: [String] =
         LessonBlockKind.requiredSequence.map(\.directiveName)
-        + [answer, hint, question, choice, explanation, prompt]
+        + [answer, hint, question, choice, explanation, prompt, visualize]
 }

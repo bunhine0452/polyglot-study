@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "aggregate-fold",
+  "kind": "array",
+  "values": [1200, 890, 1500, 640, 1100],
+  "frames": [
+    {
+      "caption": "집계는 여러 행을 하나로 접습니다. price 열 다섯 행에서 시작합니다.",
+      "segments": [{ "role": "highlighted", "start": 0, "end": 4 }]
+    },
+    {
+      "caption": "MAX 는 첫 행을 잠정 답으로 잡고 훑기 시작합니다 — 지금은 1200 입니다.",
+      "pointers": [{ "name": "지금", "index": 0 }, { "name": "최대", "index": 0 }]
+    },
+    {
+      "caption": "890 은 1200 보다 작습니다. 잠정 답은 그대로입니다.",
+      "pointers": [{ "name": "지금", "index": 1 }, { "name": "최대", "index": 0 }],
+      "segments": [{ "role": "excluded", "start": 1, "end": 1 }]
+    },
+    {
+      "caption": "1500 이 더 큽니다. 잠정 답이 여기로 옮겨 갑니다.",
+      "pointers": [{ "name": "지금", "index": 2 }, { "name": "최대", "index": 2 }],
+      "segments": [{ "role": "highlighted", "start": 2, "end": 2 }]
+    },
+    {
+      "caption": "남은 640 과 1100 은 둘 다 1500 보다 작습니다.",
+      "pointers": [{ "name": "최대", "index": 2 }],
+      "segments": [{ "role": "excluded", "start": 3, "end": 4 }]
+    },
+    {
+      "caption": "다섯 행이 한 값 1500 으로 접혔습니다 — GROUP BY 가 없으면 결과는 한 행입니다.",
+      "pointers": [{ "name": "답", "index": 2 }],
+      "segments": [{ "role": "highlighted", "start": 2, "end": 2 }]
+    }
+  ]
+}

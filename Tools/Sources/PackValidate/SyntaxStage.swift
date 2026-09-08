@@ -40,7 +40,7 @@ enum SyntaxStage {
                 document = try LessonParser.parseDocument(
                     source: source,
                     stableID: entry.stableID,
-                    language: entry.language,
+                    languages: entry.languages,
                     path: try? PackRelativePath(validating: entry.path)
                 )
             } catch {

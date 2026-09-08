@@ -17,12 +17,12 @@ struct LessonParserTests {
     func blockPayloads() throws {
         let blocks = try LessonParser.parse(source: ReferenceLesson.full)
         let document = LessonDocument(
-            stableID: LessonID("ref"), language: .swift, blocks: blocks)
+            stableID: LessonID("ref"), languages: [.swift], blocks: blocks)
 
         let concept = try #require(document.concept)
         #expect(concept.prose.contains("옵셔널은 값이 없을 수 있음"))
 
-        let example = try #require(document.example)
+        let example = try #require(document.example(for: document.primaryLanguage))
         #expect(example.language == .swift)
         #expect(example.code == "print(\"hello\")\n")
         #expect(example.codeFenceLanguage == "swift")
@@ -30,12 +30,12 @@ struct LessonParserTests {
         // 코드 블록은 payload 라서 산문에서 빠진다.
         #expect(!example.prose.contains("print"))
 
-        let blank = try #require(document.blank)
+        let blank = try #require(document.blank(for: document.primaryLanguage))
         #expect(blank.slots.map(\.index) == [1])
         #expect(blank.slots[0].answer == "??")
         #expect(blank.filledTemplate() == "let value = maybe ?? 0\n")
 
-        let task = try #require(document.task)
+        let task = try #require(document.task(for: document.primaryLanguage))
         #expect(task.starterPath.rawValue == "starters/a.swift")
         #expect(task.testsPath.rawValue == "tests/a.swift")
         #expect(task.solutionPath.rawValue == "solutions/a.swift")
@@ -338,6 +338,135 @@ struct LessonBodyRuleTests {
     private func error(for replacement: String, kind: LessonBlockKind) -> LessonParseError? {
         do {
             _ = try LessonParser.parse(source: ReferenceLesson.replacing(kind, with: replacement))
+            return nil
+        } catch {
+            return error
+        }
+    }
+}
+
+/// {#block-language-variants} — 알고리즘 트랙이 성립하려면 레슨 하나가 여러 언어의 풀이를
+/// 담을 수 있어야 한다. 개념·퀴즈·돌아보기는 언어와 무관하므로 공용이다.
+@Suite("레슨 파서 — 언어 변형")
+struct LessonLanguageVariantTests {
+    /// 예제·빈칸·과제를 언어마다 하나씩. 개념·퀴즈·돌아보기는 그대로 하나씩이다.
+    private static func twoLanguageSource() -> String {
+        func retagged(_ block: String, id: String, language: String) -> String {
+            block
+                .replacingOccurrences(of: "language: swift", with: "language: \(language)")
+                .replacingOccurrences(of: "id: run-it", with: "id: \(id)")
+                .replacingOccurrences(of: "id: fill-it", with: "id: \(id)")
+                .replacingOccurrences(of: "id: do-it", with: "id: \(id)")
+        }
+        return ReferenceLesson.joined([
+            ReferenceLesson.concept,
+            ReferenceLesson.example,
+            retagged(ReferenceLesson.example, id: "run-it-py", language: "python"),
+            ReferenceLesson.blank,
+            retagged(ReferenceLesson.blank, id: "fill-it-py", language: "python"),
+            ReferenceLesson.task,
+            retagged(ReferenceLesson.task, id: "do-it-py", language: "python"),
+            ReferenceLesson.quiz,
+            ReferenceLesson.reflection,
+        ])
+    }
+
+    @Test("예제·빈칸·과제는 언어마다 반복되고 개념·퀴즈·돌아보기는 하나씩이다")
+    func variantsParse() throws {
+        let blocks = try LessonParser.parse(source: Self.twoLanguageSource())
+        #expect(blocks.map(\.kind) == [
+            .concept, .example, .example, .blank, .blank, .task, .task, .quiz, .reflection,
+        ])
+
+        let document = LessonDocument(
+            stableID: LessonID("ref"),
+            languages: LessonParser.orderedLanguages(in: blocks),
+            blocks: blocks)
+        // 선언 순서가 그대로 언어 목록이 된다 — 화면의 선택 순서다.
+        #expect(document.languages == [.swift, .python])
+        #expect(document.primaryLanguage == .swift)
+        #expect(document.examples.count == 2)
+        #expect(document.task(for: .python)?.id == "do-it-py")
+        #expect(document.blank(for: .swift)?.id == "fill-it")
+    }
+
+    @Test("고른 언어로 보면 다시 6블록이다 — 공용 블록은 어느 언어에서나 보인다")
+    func blocksForOneLanguage() throws {
+        let blocks = try LessonParser.parse(source: Self.twoLanguageSource())
+        let document = LessonDocument(
+            stableID: LessonID("ref"),
+            languages: LessonParser.orderedLanguages(in: blocks),
+            blocks: blocks)
+
+        for language in document.languages {
+            let view = document.blocks(for: language)
+            #expect(view.map(\.kind) == LessonBlockKind.requiredSequence)
+            #expect(view.compactMap(\.language).allSatisfy { $0 == language })
+            #expect(document.concept != nil)
+        }
+    }
+
+    @Test("언어가 하나인 레슨은 규칙이 그대로다 — 기존 팩이 손대지 않고 통과한다")
+    func singleLanguageUnchanged() throws {
+        let blocks = try LessonParser.parse(source: ReferenceLesson.full)
+        let document = LessonDocument(
+            stableID: LessonID("ref"),
+            languages: LessonParser.orderedLanguages(in: blocks),
+            blocks: blocks)
+        #expect(document.languages == [.swift])
+        #expect(document.blocks(for: .swift) == blocks)
+    }
+
+    @Test("같은 언어로 같은 블록을 두 번 쓰면 throw")
+    func duplicateLanguageThrows() throws {
+        let source = ReferenceLesson.joined([
+            ReferenceLesson.concept,
+            ReferenceLesson.example,
+            // 언어는 그대로 swift 인데 id 만 다르다 — 변형이 아니라 중복이다.
+            ReferenceLesson.example.replacingOccurrences(of: "id: run-it", with: "id: run-it-2"),
+            ReferenceLesson.blank,
+            ReferenceLesson.task,
+            ReferenceLesson.quiz,
+            ReferenceLesson.reflection,
+        ])
+        let error = try #require(parseError(source))
+        #expect(error.reason == .duplicateLanguage(kind: .example, language: .swift))
+    }
+
+    @Test("한 언어에 과제가 없으면 throw — 읽기만 하고 풀 수 없는 상태를 막는다")
+    func languageWithoutTaskThrows() throws {
+        let source = ReferenceLesson.joined([
+            ReferenceLesson.concept,
+            ReferenceLesson.example,
+            ReferenceLesson.example
+                .replacingOccurrences(of: "language: swift", with: "language: python")
+                .replacingOccurrences(of: "id: run-it", with: "id: run-it-py"),
+            ReferenceLesson.blank,
+            ReferenceLesson.blank
+                .replacingOccurrences(of: "language: swift", with: "language: python")
+                .replacingOccurrences(of: "id: fill-it", with: "id: fill-it-py"),
+            // python 과제가 빠졌다.
+            ReferenceLesson.task,
+            ReferenceLesson.quiz,
+            ReferenceLesson.reflection,
+        ])
+        let error = try #require(parseError(source))
+        #expect(error.reason == .languageWithoutBlock(language: .python, missing: .task))
+    }
+
+    @Test("매니페스트가 선언한 언어가 본문에 없으면 throw")
+    func manifestLanguageMismatchThrows() throws {
+        #expect(throws: LessonParseError.self) {
+            try LessonParser.parseDocument(
+                source: ReferenceLesson.full,
+                stableID: LessonID("ref"),
+                languages: [.python])  // 본문은 swift 뿐이다
+        }
+    }
+
+    private func parseError(_ source: String) -> LessonParseError? {
+        do {
+            _ = try LessonParser.parse(source: source)
             return nil
         } catch {
             return error

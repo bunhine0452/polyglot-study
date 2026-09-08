@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&amp;family=IBM+Plex+Sans+KR:wght@400;500;600;700&amp;display=swap">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #F4F4F2; color: #141414; font-family: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Helvetica Neue", Helvetica, sans-serif; font-size: 13px; line-height: 20px; -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; }
+    a { color: #141414; } a:hover { color: #5F5F5C; }
+    .mono { font-family: "IBM Plex Mono", "SF Mono", Menlo, "Courier New", monospace; }
+    .lbl { font-size: 11px; line-height: 16px; letter-spacing: 0.04em; font-weight: 500; color: #5F5F5C; }
+    .dim { color: #9A9A97; }
+    .kw { font-weight: 600; } .ty { font-weight: 500; } .st { color: #5F5F5C; } .cm { color: #9A9A97; font-style: italic; }
+    .z { color: #B4B4B1; }
+    .ln { display: grid; grid-template-columns: 48px minmax(0,1fr); height: 20px; font-size: 12.5px; line-height: 20px; }
+    .ln > :first-child { text-align: right; padding-right: 12px; color: #B4B4B1; }
+    .ln > :last-child { white-space: pre; }
+    .cell { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid #141414; font-size: 13px; }
+    .kind { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border: 1px solid #9A9A97; font-size: 9px; line-height: 1; color: #5F5F5C; flex-shrink: 0; }
+  </style>
+</helmet>
+<div style="width:1600px;height:900px;display:flex;flex-direction:column;background:#F4F4F2;overflow:hidden;">
+
+  <!-- 머리말 -->
+  <header style="height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid #141414;flex-shrink:0;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="display:inline-flex;"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M10 3L5 8l5 5"></path></svg></span>
+      <span class="lbl">알고리즘 · 레슨 07 / 32</span>
+      <span style="font-weight:600;">이진 탐색</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span class="lbl" style="margin-right:8px;">블록 5 / 7 · 테스트 과제</span>
+      <div style="display:inline-flex;align-items:center;justify-content:center;height:36px;padding:0 16px;font-size:13px;font-weight:500;background:#F4F4F2;color:#141414;border:1px solid #141414;white-space:nowrap;">제출</div>
+      <div style="display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 16px;font-size:13px;font-weight:500;background:#141414;color:#F4F4F2;border:1px solid #141414;white-space:nowrap;"><svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><path d="M2 1l7 4-7 4z"></path></svg> 실행 <span class="mono" style="font-size:11px;opacity:0.7;">⌘↩</span></div>
+    </div>
+  </header>
+
+  <!-- 과제 한 줄 + 언어 선택 -->
+  <div style="height:56px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 24px;border-bottom:1px solid #D9D9D6;flex-shrink:0;">
+    <div style="display:flex;align-items:center;gap:16px;min-width:0;">
+      <span class="lbl" style="color:#141414;white-space:nowrap;">05 테스트 과제</span>
+      <span style="font-size:14px;">정렬된 <span class="mono">&amp;[i32]</span> 에서 <span class="mono">target</span> 의 위치를 <span class="mono">Option&lt;usize&gt;</span> 로 돌려주세요. 매 반복마다 후보 구간이 절반으로 줄어야 합니다.</span>
+    </div>
+    <!-- 이 레슨의 개념·시각화는 언어와 무관하다. 언어를 바꾸면 예제·빈칸·과제만 갈아탄다. -->
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+      <span class="lbl">풀이 언어</span>
+      <div style="display:inline-flex;align-items:center;gap:10px;height:28px;padding:0 10px;border:1px solid #141414;">
+        <span class="mono" style="font-size:12px;font-weight:500;">Rust</span>
+        <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1 3l3 3 3-3"></path></svg>
+      </div>
+      <span class="mono lbl" style="font-size:11px;">Python · Swift · C++</span>
+    </div>
+  </div>
+
+  <!-- 3분할 -->
+  <div style="flex-grow:1;display:grid;grid-template-columns:216px minmax(0,1fr) 468px;min-height:0;">
+
+    <!-- 좌: 블록 탐색. 레퍼런스의 파일 트리 자리다 — 우리 레슨은 파일이 하나이므로
+         탐색 단위는 파일이 아니라 **블록**이다. -->
+    <nav style="display:flex;flex-direction:column;border-right:1px solid #141414;min-width:0;">
+      <div style="height:32px;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid #D9D9D6;"><span class="lbl">블록</span></div>
+      <div style="display:flex;flex-direction:column;">
+        <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 16px;"><span class="mono z" style="font-size:11px;width:14px;">01</span><span style="flex-grow:1;color:#5F5F5C;">개념</span><span class="mono" style="font-size:11px;color:#2F8F4E;">✓</span></div>
+        <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 16px;"><span class="mono z" style="font-size:11px;width:14px;">02</span><span style="flex-grow:1;color:#5F5F5C;">시각화</span><span class="mono" style="font-size:11px;color:#2F8F4E;">✓</span></div>
+        <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 16px;"><span class="mono z" style="font-size:11px;width:14px;">03</span><span style="flex-grow:1;color:#5F5F5C;">예제</span><span class="mono" style="font-size:11px;color:#2F8F4E;">✓</span></div>
+        <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 16px;"><span class="mono z" style="font-size:11px;width:14px;">04</span><span style="flex-grow:1;color:#5F5F5C;">빈칸</span><span class="mono" style="font-size:11px;color:#2F8F4E;">✓</span></div>
+        <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 16px;background:#141414;color:#F4F4F2;"><span class="mono" style="font-size:11px;width:14px;opacity:0.6;">05</span><span style="flex-grow:1;font-weight:600;">테스트 과제</span></div>
+        <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 16px;"><span class="mono z" style="font-size:11px;width:14px;">06</span><span class="dim" style="flex-grow:1;">퀴즈</span></div>
+        <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 16px;"><span class="mono z" style="font-size:11px;width:14px;">07</span><span class="dim" style="flex-grow:1;">돌아보기</span></div>
+      </div>
+      <div style="margin-top:auto;padding:16px;border-top:1px solid #D9D9D6;display:flex;flex-direction:column;gap:6px;">
+        <span class="lbl">이 트랙에서</span>
+        <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:12px;">정렬·탐색</span><span class="mono lbl">7 / 12</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:12px;" class="dim">그래프</span><span class="mono lbl">0 / 8</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:12px;" class="dim">트리</span><span class="mono lbl">0 / 6</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:12px;" class="dim">동적 계획법</span><span class="mono lbl">0 / 6</span></div>
+      </div>
+    </nav>
+
+    <!-- 중: 에디터. 자동완성 팝업과 인라인 진단이 붙는다. -->
+    <section style="display:flex;flex-direction:column;background:#FFFFFF;min-width:0;position:relative;">
+      <div style="height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 16px 0 24px;border-bottom:1px solid #D9D9D6;">
+        <span class="mono" style="font-size:12px;font-weight:500;">binary_search.rs</span>
+        <span class="lbl">rustc 1.98.0 · rust-analyzer</span>
+      </div>
+      <div style="display:flex;flex-direction:column;padding-top:12px;">
+        <div class="ln"><div>1</div><div><span class="kw">fn</span> <span class="ty">binary_search</span>(xs: &amp;[<span class="ty">i32</span>], target: <span class="ty">i32</span>) -&gt; <span class="ty">Option</span>&lt;<span class="ty">usize</span>&gt; {</div></div>
+        <div class="ln"><div>2</div><div>    <span class="kw">let mut</span> lo = 0;</div></div>
+
+        <!-- 인라인 진단. 에디터 아트보드와 같은 형식이다 — 줄 아래에 붙고, 원문이 아니라
+             학습자 말로 다시 쓴다. rustc 원문은 우측 stderr 에 그대로 남는다. -->
+        <div class="ln" style="background:#F4F4F2;"><div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;padding-right:12px;color:#9A9A97;"><span style="display:inline-block;width:6px;height:6px;background:#141414;flex-shrink:0;"></span><span>3</span></div><div>    <span class="kw">let mut</span> hi: <span class="ty">i32</span> = xs.len();</div></div>
+        <div style="display:grid;grid-template-columns:48px minmax(0,1fr);background:#F4F4F2;border-top:1px solid #D9D9D6;border-bottom:1px solid #D9D9D6;padding:8px 16px 8px 0;">
+          <div></div>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <div style="font-size:12.5px;line-height:18px;"><span class="mono">len()</span> 은 <span class="mono" style="font-weight:600;">usize</span> 를 돌려줍니다 — 길이는 음수가 될 수 없으니까요. <span class="mono">hi</span> 의 타입을 <span class="mono" style="font-weight:600;">usize</span> 로 두거나 애노테이션을 지우면 됩니다.</div>
+            <div class="lbl">3행 25열 · rustc E0308 · 1개</div>
+          </div>
+        </div>
+
+        <div class="ln"><div>4</div><div>    <span class="kw">while</span> lo &lt; hi {</div></div>
+        <div class="ln"><div>5</div><div>        <span class="kw">let</span> mid = lo + (hi - lo) / 2;</div></div>
+        <div class="ln"><div>6</div><div>        <span class="kw">if</span> xs.</div></div>
+        <div class="ln"><div>7</div><div></div></div>
+        <div class="ln"><div>8</div><div></div></div>
+        <div class="ln"><div>9</div><div></div></div>
+        <div class="ln"><div>10</div><div></div></div>
+        <div class="ln"><div>11</div><div></div></div>
+        <div class="ln"><div>12</div><div>    }</div></div>
+        <div class="ln"><div>13</div><div>    <span class="ty">None</span></div></div>
+        <div class="ln"><div>14</div><div>}</div></div>
+      </div>
+
+      <!-- 자동완성 팝업. 레퍼런스에서 가장 특징적인 요소다. 종류 뱃지 + 아래 문서 패널. -->
+      <div style="position:absolute;left:152px;top:210px;width:372px;border:1px solid #141414;background:#FFFFFF;">
+        <div style="display:flex;align-items:center;gap:8px;height:26px;padding:0 10px;background:#141414;color:#F4F4F2;">
+          <span class="kind" style="border-color:#F4F4F2;color:#F4F4F2;">fn</span>
+          <span class="mono" style="font-size:12px;"><span style="font-weight:600;">len</span>()</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;height:26px;padding:0 10px;"><span class="kind">fn</span><span class="mono" style="font-size:12px;">get(index)</span></div>
+        <div style="display:flex;align-items:center;gap:8px;height:26px;padding:0 10px;"><span class="kind">fn</span><span class="mono" style="font-size:12px;">iter()</span></div>
+        <div style="display:flex;align-items:center;gap:8px;height:26px;padding:0 10px;"><span class="kind">fn</span><span class="mono" style="font-size:12px;">binary_search(x)</span><span class="lbl" style="margin-left:auto;">표준 라이브러리</span></div>
+        <div style="display:flex;align-items:center;gap:8px;height:26px;padding:0 10px;"><span class="kind">fn</span><span class="mono" style="font-size:12px;">is_empty()</span></div>
+        <div style="border-top:1px solid #D9D9D6;padding:10px;display:flex;flex-direction:column;gap:6px;background:#F4F4F2;">
+          <div class="mono" style="font-size:11.5px;line-height:17px;"><span class="kw">pub const fn</span> len(&amp;<span class="kw">self</span>) -&gt; <span class="ty">usize</span></div>
+          <div style="font-size:12px;line-height:18px;color:#5F5F5C;">슬라이스의 원소 개수를 돌려줍니다. 길이는 음수일 수 없어 <span class="mono">usize</span> 입니다.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 우: 시각화. 레퍼런스의 라이브 프리뷰 자리다. -->
+    <aside style="display:flex;flex-direction:column;border-left:1px solid #141414;min-width:0;">
+      <div style="display:flex;height:40px;border-bottom:1px solid #D9D9D6;padding:0 24px;gap:24px;flex-shrink:0;">
+        <div style="display:flex;align-items:center;font-weight:600;border-bottom:2px solid #141414;">시각화</div>
+        <div style="display:flex;align-items:center;color:#5F5F5C;">출력</div>
+        <div style="display:flex;align-items:center;gap:6px;color:#5F5F5C;">테스트 <span class="mono" style="font-size:11px;">4</span></div>
+      </div>
+
+      <div style="padding:20px 24px 0;display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;">
+          <span class="lbl" style="color:#141414;">이진 탐색 · target = 16</span>
+          <span class="mono lbl">단계 3 / 7</span>
+        </div>
+
+        <!-- 배열 장면. 버려진 구간은 흐리게, mid 는 반전, 포인터는 아래에 붙는다. -->
+        <div style="display:flex;flex-direction:column;gap:0;">
+          <div class="mono" style="display:flex;gap:0;">
+            <div class="cell">2</div>
+            <div class="cell" style="border-left:none;">5</div>
+            <div class="cell" style="border-left:none;background:#141414;color:#F4F4F2;font-weight:600;">8</div>
+            <div class="cell" style="border-left:none;">12</div>
+            <div class="cell" style="border-left:none;">16</div>
+            <div class="cell z" style="border-left:none;border-color:#D9D9D6;">23</div>
+            <div class="cell z" style="border-left:none;border-color:#D9D9D6;">38</div>
+            <div class="cell z" style="border-left:none;border-color:#D9D9D6;">56</div>
+            <div class="cell z" style="border-left:none;border-color:#D9D9D6;">72</div>
+            <div class="cell z" style="border-left:none;border-color:#D9D9D6;">91</div>
+          </div>
+          <div class="mono z" style="display:flex;font-size:10px;line-height:14px;">
+            <div style="width:40px;text-align:center;">0</div><div style="width:40px;text-align:center;">1</div><div style="width:40px;text-align:center;">2</div><div style="width:40px;text-align:center;">3</div><div style="width:40px;text-align:center;">4</div><div style="width:40px;text-align:center;">5</div><div style="width:40px;text-align:center;">6</div><div style="width:40px;text-align:center;">7</div><div style="width:40px;text-align:center;">8</div><div style="width:40px;text-align:center;">9</div>
+          </div>
+          <div class="mono" style="display:flex;font-size:11px;line-height:18px;font-weight:500;margin-top:2px;">
+            <div style="width:40px;text-align:center;">lo</div><div style="width:40px;"></div><div style="width:40px;text-align:center;">mid</div><div style="width:40px;"></div><div style="width:40px;"></div><div style="width:40px;text-align:center;">hi</div>
+          </div>
+        </div>
+
+        <!-- 자막. 매 프레임이 한 문장을 갖는다 — 그림만으로는 "왜" 가 안 남는다. -->
+        <div style="border-left:2px solid #141414;padding-left:12px;font-size:12.5px;line-height:19px;">
+          <span class="mono">xs[2] = 8</span> 은 <span class="mono">16</span> 보다 작습니다. 왼쪽 절반에는 답이 없으니 버리고 <span class="mono">lo</span> 를 <span class="mono">3</span> 으로 옮깁니다.
+        </div>
+
+        <!-- 프레임 이동. 눈금 하나가 프레임 하나다. -->
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="display:flex;border:1px solid #141414;">
+            <div style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-right:1px solid #141414;"><svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><path d="M6 0v8L1 4z"></path></svg></div>
+            <div style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-right:1px solid #141414;background:#141414;color:#F4F4F2;"><svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><path d="M0 0h3v8H0zM5 0h3v8H5z"></path></svg></div>
+            <div style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;"><svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><path d="M2 0v8l5-4z"></path></svg></div>
+          </div>
+          <div style="flex-grow:1;display:flex;gap:3px;align-items:center;">
+            <div style="flex:1;height:3px;background:#141414;"></div><div style="flex:1;height:3px;background:#141414;"></div><div style="flex:1;height:3px;background:#141414;"></div><div style="flex:1;height:3px;background:#D9D9D6;"></div><div style="flex:1;height:3px;background:#D9D9D6;"></div><div style="flex:1;height:3px;background:#D9D9D6;"></div><div style="flex:1;height:3px;background:#D9D9D6;"></div>
+          </div>
+          <span class="mono lbl">1x</span>
+        </div>
+      </div>
+
+      <div style="margin-top:auto;border-top:1px solid #141414;padding:12px 24px;display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="lbl">이 시각화는</span>
+          <span class="mono lbl">visuals/binary-search.json</span>
+        </div>
+        <div style="font-size:12px;line-height:18px;color:#5F5F5C;">개념에 붙어 있어 <strong style="font-weight:500;color:#141414;">언어를 바꿔도 그대로</strong>입니다. 같은 재생기가 배열·그래프·트리·표 네 장면을 그립니다.</div>
+      </div>
+    </aside>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

@@ -24,9 +24,41 @@ public enum LessonBlockKind: String, Hashable, Sendable, Codable, CaseIterable {
     public static func kind(forDirective name: String) -> LessonBlockKind? {
         requiredSequence.first { $0.directiveName == name }
     }
+
+    /// 언어마다 한 번씩 반복될 수 있는 종류인가 — {#block-language-variants}.
+    ///
+    /// 실행기를 태우는 셋만 참이다. 개념·퀴즈·돌아보기는 언어와 무관한 내용이라 공용이다.
+    public var allowsLanguageVariants: Bool {
+        switch self {
+        case .example, .blank, .task: true
+        case .concept, .quiz, .reflection: false
+        }
+    }
 }
 
 // MARK: - 6종 값 타입
+
+/// 개념에 붙는 시각화 하나 — {#visualize-directive}.
+///
+/// **왜 개념의 일부인가**: 시각화는 개념을 *보여주는* 것이지 별도의 학습 단계가 아니다.
+/// 블록으로 독립시키려면 레슨의 블록 수가 6에서 7로 늘어야 하는데, 그 값은 전역이다
+/// (`LearnCore.LessonBlockSequence.count`, DB 의 `CHECK (current_block_index BETWEEN 0 AND 5)`).
+/// 7로 올리면 **기존 122편이 전부 "블록 4 / 7" 로 보이고 영원히 완료되지 않는다.**
+/// 레슨마다 블록 수가 다를 수 있게 만드는 것은 진도·대시보드 칸·마이그레이션을 함께
+/// 건드리는 별개의 일이라, 그때까지는 개념 안에 둔다.
+///
+/// 언어와 무관하다 — 이진 탐색이 어떻게 도는지는 Rust 로 풀든 Python 으로 풀든 같다.
+public struct LessonVisualization: Hashable, Sendable {
+    /// `visuals/<id>.json` 의 `id` 필드와 같아야 한다. 검증은 `packtool` 이 한다.
+    public var id: String
+    /// `visuals/…` 사이드카. 프레임 배열이 여기 들어 있다.
+    public var framesPath: PackRelativePath
+
+    public init(id: String, framesPath: PackRelativePath) {
+        self.id = id
+        self.framesPath = framesPath
+    }
+}
 
 /// 개념 설명. 산문만 있고 실행되는 것이 없다.
 public struct ConceptBlock: Hashable, Sendable {
@@ -34,11 +66,19 @@ public struct ConceptBlock: Hashable, Sendable {
     /// 마크다운 **소스**. `Markup` 트리가 아니다 — 트리는 `Sendable` 이 아니라서
     /// 파싱 경계를 넘지 못한다. 렌더러는 이 문자열을 다시 파싱하거나 그대로 태운다.
     public var prose: String
+    /// 있으면 개념 화면이 재생기를 함께 그린다. 대부분의 레슨에는 없다.
+    public var visualization: LessonVisualization?
     public var span: SourceSpan
 
-    public init(id: String, prose: String, span: SourceSpan = .unknown) {
+    public init(
+        id: String,
+        prose: String,
+        visualization: LessonVisualization? = nil,
+        span: SourceSpan = .unknown
+    ) {
         self.id = id
         self.prose = prose
+        self.visualization = visualization
         self.span = span
     }
 }
@@ -349,38 +389,35 @@ public enum LessonBlock: Hashable, Sendable {
 /// 6블록이 순서대로 갖춰진 레슨 하나. 파서가 검증을 통과시킨 뒤에만 만들어진다.
 public struct LessonDocument: Hashable, Sendable {
     public var stableID: LessonID
-    public var language: LanguageID
-    /// 정확히 6개, ``LessonBlockKind/requiredSequence`` 순서.
+    /// 이 레슨을 풀 수 있는 언어들 — **선언 순서 그대로**. 비어 있지 않다.
+    ///
+    /// 첫 번째가 기본 선택이다. 파서가 "선언한 언어마다 예제·빈칸·과제가 모두 있음" 을
+    /// 이미 보장했으므로, 이 목록의 어느 언어를 골라도 6블록이 완성된다.
+    public var languages: [LanguageID]
+    /// ``LessonBlockKind/requiredSequence`` 순서. 예제·빈칸·과제는 언어 수만큼 반복된다.
     public var blocks: [LessonBlock]
     /// 팩 상대 경로. 진단 메시지의 접두사로 쓴다.
     public var path: PackRelativePath?
 
     public init(
         stableID: LessonID,
-        language: LanguageID,
+        languages: [LanguageID],
         blocks: [LessonBlock],
         path: PackRelativePath? = nil
     ) {
         self.stableID = stableID
-        self.language = language
+        self.languages = languages
         self.blocks = blocks
         self.path = path
     }
 
+    /// 언어를 고르지 않은 자리의 기본값.
+    public var primaryLanguage: LanguageID { languages[0] }
+
+    // MARK: 공용 블록 — 언어와 무관하다
+
     public var concept: ConceptBlock? {
         for case .concept(let block) in blocks { return block }
-        return nil
-    }
-    public var example: ExampleBlock? {
-        for case .example(let block) in blocks { return block }
-        return nil
-    }
-    public var blank: BlankBlock? {
-        for case .blank(let block) in blocks { return block }
-        return nil
-    }
-    public var task: TaskBlock? {
-        for case .task(let block) in blocks { return block }
         return nil
     }
     public var quiz: QuizBlock? {
@@ -392,11 +429,50 @@ public struct LessonDocument: Hashable, Sendable {
         return nil
     }
 
+    // MARK: 언어별 블록
+
+    /// 전부. 실행 게이트처럼 **모든 언어를 돌려야 하는** 쪽이 쓴다.
+    public var examples: [ExampleBlock] {
+        blocks.compactMap { if case .example(let b) = $0 { b } else { nil } }
+    }
+    public var blanks: [BlankBlock] {
+        blocks.compactMap { if case .blank(let b) = $0 { b } else { nil } }
+    }
+    public var tasks: [TaskBlock] {
+        blocks.compactMap { if case .task(let b) = $0 { b } else { nil } }
+    }
+
+    public func example(for language: LanguageID) -> ExampleBlock? {
+        examples.first { $0.language == language }
+    }
+    public func blank(for language: LanguageID) -> BlankBlock? {
+        blanks.first { $0.language == language }
+    }
+    public func task(for language: LanguageID) -> TaskBlock? {
+        tasks.first { $0.language == language }
+    }
+
+    /// 이 언어로 학습할 때 화면이 그리는 6블록 — 순서는 `requiredSequence` 그대로다.
+    ///
+    /// 언어가 하나인 레슨에서는 `blocks` 와 같다. 여럿이면 고른 언어의 것만 남는다.
+    public func blocks(for language: LanguageID) -> [LessonBlock] {
+        blocks.filter { block in
+            guard let blockLanguage = block.language else { return true }
+            return blockLanguage == language
+        }
+    }
+
     /// 이 레슨이 참조하는 사이드카 파일 전부. 매니페스트 `files` 대조에 쓴다.
+    ///
+    /// **모든 언어의 것을 센다.** 팩에는 언어별 시작 코드·테스트·정답이 전부 들어 있어야
+    /// 하므로, 고른 언어의 것만 세면 나머지가 미등록 파일로 남는다.
     public var referencedFiles: [PackRelativePath] {
         var paths: [PackRelativePath] = []
-        if let example { paths.append(example.expectedStdoutPath) }
-        if let task {
+        // 시각화 사이드카도 매니페스트에 등록돼 있어야 한다 — 안 그러면 설치가 미등록
+        // 파일로 거부하거나, 반대로 팩에서 빠진 채 나가 재생기가 빈 화면을 그린다.
+        if let visualization = concept?.visualization { paths.append(visualization.framesPath) }
+        for example in examples { paths.append(example.expectedStdoutPath) }
+        for task in tasks {
             paths.append(task.starterPath)
             paths.append(task.testsPath)
             paths.append(task.solutionPath)

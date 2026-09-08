@@ -89,7 +89,7 @@ struct EndowedProgressTests {
         // 저장소에 완료 기록이 하나도 없다. 트랙을 열기만 한 상태.
         try await fixture.stores.lessonProgress.upsert(
             LessonProgress(
-                packID: DashboardFixture.packID,
+                packID: DashboardFixture.packID(for: .python),
                 lessonID: DashboardFixture.lessonID(.python, 1),
                 languageID: .python,
                 status: .skipped,

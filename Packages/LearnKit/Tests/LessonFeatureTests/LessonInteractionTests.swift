@@ -77,7 +77,7 @@ struct LessonBlankTests {
     @Test("채점하면 채운 코드가 보인다 — 표식이 남지 않는다")
     func filledTemplateReplacesMarkers() throws {
         let model = try Self.sqlBlankModel()
-        let blank = try #require(model.content.document.blank)
+        let blank = try #require(model.content.document.blank(for: model.content.document.primaryLanguage))
         #expect(blank.template.contains("___1___"))
         model.blankEntries = [1: "SUM", 2: "product"]
         model.checkBlanks()

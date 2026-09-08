@@ -6,6 +6,10 @@
 붙이면 그룹마다 한 행이 나오고, `SELECT` 목록에는 그룹 키이거나 집계 함수인 것만 올 수 있다.
 
 이 레슨의 샘플 데이터는 `assets/shop-seed.sql` 이 만든 `product` 테이블이다.
+
+@Visualize(id: aggregate-fold, frames: visuals/aggregate-fold.json) {
+MAX 가 다섯 행을 한 값으로 접는 과정을 한 단계씩 봅니다.
+}
 }
 
 @Example(id: aggregate-run, language: sql, expected: expected/sql-0001-aggregate-run.txt) {

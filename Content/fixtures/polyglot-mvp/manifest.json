@@ -27,9 +27,9 @@
       "sha256" : "30020b3e45a54936feabf5069ad59a4c92b2e046c0cf57483a1ca53df91e26f8"
     },
     {
-      "bytes" : 2533,
+      "bytes" : 2684,
       "path" : "lessons/sql-0001-aggregate.md",
-      "sha256" : "a922faefb1bb9abf29f96eee824b4cd7f1aafc5ca4e33e50abe2159a1000684c"
+      "sha256" : "c4059123206bba6a0ba17a58654206edd72ed4a677a23b94382bb3fff5dce930"
     },
     {
       "bytes" : 2898,
@@ -85,6 +85,11 @@
       "bytes" : 326,
       "path" : "tests/swift-0001-safe-divide.swift",
       "sha256" : "977a3f9fa81910ff765fa4c92ce4ee6166a7cc9c73aa2b55443b35b04eea90b5"
+    },
+    {
+      "bytes" : 1515,
+      "path" : "visuals/aggregate-fold.json",
+      "sha256" : "b3f5bcc29cacaafbe2b12bca2618312cdac1f7dbf6a01d772117ceda10380d50"
     }
   ],
   "generatedAt" : "2026-09-06T00:00:00Z",

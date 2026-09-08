@@ -19,13 +19,13 @@ public struct DashboardView: View {
     @State private var model: DashboardModel
     private let onResume: (ResumePoint) -> Void
     private let onStartReview: () -> Void
-    private let onOpenTrack: (LanguageID) -> Void
+    private let onOpenTrack: (TrackID) -> Void
 
     public init(
         model: DashboardModel = DashboardModel(),
         onResume: @escaping (ResumePoint) -> Void = { _ in },
         onStartReview: @escaping () -> Void = {},
-        onOpenTrack: @escaping (LanguageID) -> Void = { _ in }
+        onOpenTrack: @escaping (TrackID) -> Void = { _ in }
     ) {
         _model = State(wrappedValue: model)
         self.onResume = onResume
@@ -36,7 +36,7 @@ public struct DashboardView: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: Spacing.l) {
             cards
-            TrackTable(rows: model.rows) { onOpenTrack($0.languageID) }
+            TrackTable(rows: model.rows) { onOpenTrack($0.descriptor.trackID) }
             Spacer(minLength: 0)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)

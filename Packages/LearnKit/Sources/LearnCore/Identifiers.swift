@@ -14,6 +14,17 @@ public struct PackID: RawRepresentable, Hashable, Sendable, Codable {
     public init(_ rawValue: String) { self.rawValue = rawValue }
 }
 
+/// 트랙 하나의 식별자.
+///
+/// **언어가 아니다.** 한 언어에 트랙이 여럿일 수 있다 — "Rust 입문" 과 "알고리즘(Rust 풀이)"
+/// 은 같은 `rustc` 를 쓰지만 서로 다른 커리큘럼이고 진도도 따로 센다. 반대로 알고리즘
+/// 트랙 하나가 여러 언어의 풀이를 담기도 한다. 그래서 트랙 목록의 키는 언어일 수 없다.
+public struct TrackID: RawRepresentable, Hashable, Sendable, Codable {
+    public let rawValue: String
+    public init(rawValue: String) { self.rawValue = rawValue }
+    public init(_ rawValue: String) { self.rawValue = rawValue }
+}
+
 public struct LessonID: RawRepresentable, Hashable, Sendable, Codable {
     public let rawValue: String
     public init(rawValue: String) { self.rawValue = rawValue }

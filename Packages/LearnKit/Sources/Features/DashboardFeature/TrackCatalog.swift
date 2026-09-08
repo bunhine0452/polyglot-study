@@ -6,21 +6,43 @@ public import LearnCore
 /// 전에도 참인 것들뿐이다. 준비 중인 7트랙이 "26 레슨 · 콘텐츠 준비 중" 을 보여줄 수 있는
 /// 이유가 이것 — 총수는 계획이고, 완료 수는 데이터다.
 public struct TrackDescriptor: Identifiable, Hashable, Sendable {
+    /// 트랙 목록의 키. **언어가 아니다** — 한 언어에 트랙이 여럿일 수 있다({#track-descriptor-pack-id}).
+    public let trackID: TrackID
+    /// 툴체인 조회와 복습 큐가 쓰는 언어. 트랙을 **식별하지 않는다**.
+    ///
+    /// 여러 언어로 풀 수 있는 트랙(알고리즘)에서는 이 값이 기본 언어가 된다 — 학습자가
+    /// 고른 풀이 언어는 레슨 화면이 따로 들고 있다.
     public let languageID: LanguageID
+    /// 이 트랙의 콘텐츠 팩. `nil` 이면 아직 팩이 없다.
+    ///
+    /// 진도의 PK 가 `(pack_id, lesson_id)` 이므로 진도를 트랙에 붙이려면 이 값이 필요하다.
+    /// 언어로 진도를 묶으면 같은 언어의 두 트랙이 서로의 진도를 먹는다.
+    public let packID: PackID?
     /// 화면에 보여줄 트랙 이름. `OnboardingModel.trackName(for:)` 와 같은 표기다.
     public let name: String
     /// 이 트랙의 레슨 총수. **진도 칸 수가 정확히 이 값이어야 한다** (`{#screen-dashboard}`).
     public let lessonTotal: Int
-    /// MVP 범위 — 콘텐츠가 있는 트랙. 나머지는 흐리게 그린다.
-    public let hasContent: Bool
 
-    public var id: String { languageID.rawValue }
+    /// 콘텐츠가 있는 트랙. 없으면 흐리게 그린다.
+    ///
+    /// 저장하지 않고 팩 유무에서 파생시킨다 — 따로 들고 있으면 "콘텐츠는 있다는데 팩이
+    /// 없는" 상태를 만들 수 있고, 그러면 진도를 읽을 곳이 없다.
+    public var hasContent: Bool { packID != nil }
 
-    public init(languageID: LanguageID, name: String, lessonTotal: Int, hasContent: Bool) {
+    public var id: String { trackID.rawValue }
+
+    public init(
+        trackID: TrackID,
+        languageID: LanguageID,
+        packID: PackID?,
+        name: String,
+        lessonTotal: Int
+    ) {
+        self.trackID = trackID
         self.languageID = languageID
+        self.packID = packID
         self.name = name
         self.lessonTotal = lessonTotal
-        self.hasContent = hasContent
     }
 }
 
@@ -37,24 +59,50 @@ public struct TrackDescriptor: Identifiable, Hashable, Sendable {
 ///   `hasContent` 는 팩이 실릴 때까지 false 다. 앱은 콘텐츠가 있는 트랙의 이 값과
 ///   레슨 총수를 팩에서 다시 읽는다(`Composition.catalog`).
 public enum TrackCatalog {
+    /// 언어 하나에 트랙 하나인 동안은 `trackID` 가 언어 이름과 같다 — 기존 진도·선택 상태가
+    /// 그대로 이어지도록 일부러 맞춘 것이다. 알고리즘처럼 언어와 1:1 이 아닌 트랙이 붙으면
+    /// 그때부터 갈라진다.
     public static let all: [TrackDescriptor] = [
-        TrackDescriptor(languageID: .python, name: "Python", lessonTotal: 24, hasContent: true),
-        TrackDescriptor(languageID: .sql, name: "SQL", lessonTotal: 22, hasContent: true),
-        TrackDescriptor(languageID: .swift, name: "Swift", lessonTotal: 24, hasContent: true),
-        TrackDescriptor(languageID: .rust, name: "Rust", lessonTotal: 26, hasContent: false),
-        TrackDescriptor(languageID: .cpp, name: "C++", lessonTotal: 26, hasContent: false),
-        TrackDescriptor(languageID: LanguageID("go"), name: "Go", lessonTotal: 20, hasContent: false),
-        TrackDescriptor(languageID: LanguageID("java"), name: "Java", lessonTotal: 24, hasContent: false),
-        TrackDescriptor(languageID: LanguageID("nextjs"), name: "Next.js", lessonTotal: 18, hasContent: false),
-        TrackDescriptor(languageID: LanguageID("typescript"), name: "TypeScript", lessonTotal: 24, hasContent: false),
-        TrackDescriptor(languageID: LanguageID("assembly"), name: "Assembly", lessonTotal: 20, hasContent: false),
+        .language(.python, name: "Python", lessonTotal: 24, pack: "polyglot-python"),
+        .language(.sql, name: "SQL", lessonTotal: 22, pack: "polyglot-sql"),
+        .language(.swift, name: "Swift", lessonTotal: 24, pack: "polyglot-swift"),
+        .language(.rust, name: "Rust", lessonTotal: 26, pack: "polyglot-rust"),
+        .language(.cpp, name: "C++", lessonTotal: 26, pack: "polyglot-cpp"),
+        .language(LanguageID("go"), name: "Go", lessonTotal: 20, pack: nil),
+        .language(LanguageID("java"), name: "Java", lessonTotal: 24, pack: nil),
+        .language(LanguageID("nextjs"), name: "Next.js", lessonTotal: 18, pack: nil),
+        .language(LanguageID("typescript"), name: "TypeScript", lessonTotal: 24, pack: nil),
+        .language(LanguageID("assembly"), name: "Assembly", lessonTotal: 20, pack: nil),
     ]
 
-    /// 콘텐츠가 있는 트랙 — MVP 3종.
+    /// 콘텐츠가 있는 트랙.
     public static var active: [TrackDescriptor] { all.filter(\.hasContent) }
 
-    public static func descriptor(for languageID: LanguageID) -> TrackDescriptor? {
-        all.first { $0.languageID == languageID }
+    public static func descriptor(for trackID: TrackID) -> TrackDescriptor? {
+        all.first { $0.trackID == trackID }
+    }
+
+    /// 이 언어를 쓰는 트랙 전부. 한 언어에 트랙이 여럿일 수 있으므로 배열이다.
+    public static func descriptors(using languageID: LanguageID) -> [TrackDescriptor] {
+        all.filter { $0.languageID == languageID }
+    }
+}
+
+extension TrackDescriptor {
+    /// 언어와 1:1 인 트랙 — `trackID` 를 언어 이름에서 유도한다.
+    static func language(
+        _ languageID: LanguageID,
+        name: String,
+        lessonTotal: Int,
+        pack: String?
+    ) -> TrackDescriptor {
+        TrackDescriptor(
+            trackID: TrackID(languageID.rawValue),
+            languageID: languageID,
+            packID: pack.map { PackID($0) },
+            name: name,
+            lessonTotal: lessonTotal
+        )
     }
 }
 

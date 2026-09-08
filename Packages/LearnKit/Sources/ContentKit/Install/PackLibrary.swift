@@ -49,8 +49,10 @@ public struct PackLibrary: Sendable {
         var seen: Set<LanguageID> = []
         var ordered: [LanguageID] = []
         for pack in packs {
-            for lesson in pack.manifest.lessons where seen.insert(lesson.language).inserted {
-                ordered.append(lesson.language)
+            for lesson in pack.manifest.lessons {
+                for language in lesson.languages where seen.insert(language).inserted {
+                    ordered.append(language)
+                }
             }
         }
         return ordered
@@ -70,6 +72,21 @@ public struct PackLibrary: Sendable {
 
     public func lessonCount(for language: LanguageID) -> Int {
         packs.reduce(0) { $0 + $1.manifest.lessons(for: language).count }
+    }
+
+    /// 이 팩의 레슨을 `order` 오름차순으로.
+    ///
+    /// 트랙이 팩 단위이므로({#track-descriptor-pack-id}) 트랙 목록의 정본은 이쪽이다.
+    /// 언어로 모으면 같은 언어를 담은 두 팩(Rust 입문·알고리즘)의 레슨이 한 줄로 섞인다.
+    public func lessons(inPack packID: PackID) -> [LessonRef] {
+        guard let pack = pack(packID) else { return [] }
+        return pack.manifest.lessons
+            .sorted { $0.order < $1.order }
+            .map { LessonRef(packID: packID, lessonID: $0.stableID) }
+    }
+
+    public func lessonCount(inPack packID: PackID) -> Int {
+        pack(packID)?.manifest.lessons.count ?? 0
     }
 
     /// 매니페스트가 아는 레슨의 순번·제목. 모르는 조합이면 nil.

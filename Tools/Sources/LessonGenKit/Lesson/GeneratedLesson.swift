@@ -71,7 +71,7 @@ public struct GeneratedLesson: Hashable, Sendable {
     public var manifestEntry: PackManifest.LessonEntry {
         PackManifest.LessonEntry(
             stableID: stableID,
-            language: language.id,
+            languages: [language.id],
             title: title,
             order: order,
             path: paths.lesson.rawValue,

@@ -139,8 +139,8 @@ private struct RootView: View {
     }
 
     /// 대시보드의 트랙 행을 눌렀다 — 트랙 화면으로 옮겨 그 트랙을 편다.
-    private func openTrack(_ languageID: LanguageID) {
-        composition.tracks.select(languageID)
+    private func openTrack(_ trackID: TrackID) {
+        composition.tracks.select(trackID)
         openLesson = nil
         openEditor = nil
         selection = .tracks

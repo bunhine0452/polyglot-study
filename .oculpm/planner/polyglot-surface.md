@@ -93,9 +93,9 @@ owner: claude-code
 ## 서명·공증·배포 {#distribution}
 - [x] Hardened Runtime 을 켜고 App Sandbox 를 끈 서명 설정 확정 — 완료: entitlements 출력에 app-sandbox 가 없고 codesign 에 runtime 플래그가 찍힐 {#codesign-hardened-runtime}
   - [x] 번들된 C 런처 헬퍼를 앱과 같은 Team ID 로 runtime 옵션과 함께 개별 서명 — deep 옵션은 쓰지 않고 verify strict 가 헬퍼 포함 통과 {#helper-signing}
-- [~] notarytool submit 부터 stapler staple 을 거쳐 DMG 까지 스크립트 하나로 — 완료: 네트워크 격리된 다른 맥에서 Gatekeeper 경고 없이 실행되고 spctl 이 accepted {#notarize-staple-dmg}
+- [x] notarytool submit 부터 stapler staple 을 거쳐 DMG 까지 스크립트 하나로 — 완료: 네트워크 격리된 다른 맥에서 Gatekeeper 경고 없이 실행되고 spctl 이 accepted {#notarize-staple-dmg}
   - [x] 자격증명을 notarytool 키체인 프로파일로 저장하고 앱 암호를 스크립트·로그·인자 어디에도 싣지 않음 — 스크립트 전문 grep 에 0건 {#notary-credentials}
-  - [ ] 앱뿐 아니라 DMG 자체도 서명·공증·스테이플 — DMG 파일 단독으로 stapler validate 통과 {#dmg-notarize}
+  - [x] 앱뿐 아니라 DMG 자체도 서명·공증·스테이플 — DMG 파일 단독으로 stapler validate 통과 {#dmg-notarize}
 - [x] Sparkle 2.9.6 자동 업데이트를 EdDSA 서명으로 연결 — 완료: 구버전 앱이 appcast 를 읽어 신버전을 받고 서명 검증 후 설치까지 완료 {#sparkle-updates}
   - [x] 생성한 공개키를 SUPublicEDKey 에 넣고 개인키는 로그인 키체인에만 보관 — 저장소 전체 grep 에 개인키 0건 {#sparkle-eddsa-keys}
   - [x] 피드 URL 을 GitHub Pages 의 appcast.xml 로 두고 appcast 생성기를 릴리스 스크립트에 편입 — 릴리스 1회로 서명과 길이가 갱신 {#sparkle-appcast}
@@ -198,4 +198,5 @@ owner: claude-code
 | 2026-09-07T22:32:43+09:00 | #notary-credentials | claude-code | ~→x | .oculpm/journal/20260907/Features_to_add/2232_feature_first-notarization-accepted.md | 키체인 프로파일 oculpm-notary 로 실제 공증 통과. 스크립트 전문 grep 에 자격증명 리터럴 0건 — 주석의 플레이스홀더뿐 |
 | 2026-09-07T22:32:49+09:00 | #release-ci | claude-code | !→~ | .oculpm/journal/20260907/Features_to_add/2232_feature_first-notarization-accepted.md | 공증 의존이 풀렸다 — 시크릿 5종 등록 완료, 태그 잡에 서명·공증·배포본 재검증까지 배선됨. 남은 것은 커밋·태그로 한 번 돌리는 것 |
 | 2026-09-07T23:19:24+09:00 | #release-ci | claude-code | ~→x | .oculpm/journal/20260907/Features_to_add/2319_feature_notarized-release-alpha3-shipped.md | v0.1.0-alpha.3 태그 푸시로 실측 — PR 3게이트 + 태그 잡이 서명·공증·appcast·배포까지 9분 9초에 완주. 배포 자산을 격리 속성 붙여 받아 spctl accepted 확인 |
+| 2026-09-08T15:47:54+09:00 | #dmg-notarize | claude-code | ☐→x |  | make-dmg.sh + notarize.sh 일반화, 실제 공증·스테이플로 DMG 단독 stapler validate 통과 확인 |
 <!-- oculpm:plan-log end -->

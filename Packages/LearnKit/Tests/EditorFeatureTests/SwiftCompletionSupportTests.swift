@@ -151,7 +151,7 @@ struct SwiftCompletionSupportTests {
         for kind in CompletionCandidate.Kind.allCases {
             #expect(!SwiftCompletionSupport.symbolName(for: kind).isEmpty)
         }
-        #expect(SwiftCompletionSupport.symbolName(for: .method) == "function")
+        #expect(SwiftCompletionSupport.symbolName(for: .method) == "f.square")
         #expect(SwiftCompletionSupport.symbolName(for: .unknown) == "questionmark.square")
     }
 

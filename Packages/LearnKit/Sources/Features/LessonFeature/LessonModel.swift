@@ -105,11 +105,12 @@ public final class LessonModel {
 
     // MARK: - 상태
 
-    public let content: LessonContent
+    public private(set) var content: LessonContent
     public private(set) var activeIndex: Int = 0
 
-    /// 진도를 뺀 스텝 원본. 초기화 때 한 번만 만든다.
-    private let baseSteps: [Step]
+    /// 진도를 뺀 스텝 원본. 언어를 바꾸면 다시 만든다 — 예제·빈칸·과제가 갈아타므로
+    /// 요약 문구가 달라진다.
+    private var baseSteps: [Step]
 
     public private(set) var transcript: ConsoleTranscript = .empty
     public private(set) var resultSet: ResultSet?
@@ -147,7 +148,11 @@ public final class LessonModel {
         self.content = content
         self.runFactory = runFactory
         self.onOpenEditor = onOpenEditor
-        self.baseSteps = content.blocks.enumerated().map { index, block in
+        self.baseSteps = LessonModel.steps(of: content)
+    }
+
+    private static func steps(of content: LessonContent) -> [Step] {
+        content.blocks.enumerated().map { index, block in
             Step(
                 id: block.id,
                 index: index,
@@ -179,6 +184,35 @@ public final class LessonModel {
 
     public var blocks: [LessonBlock] { content.blocks }
     public var language: LanguageID { content.language }
+    /// 이 레슨을 풀 수 있는 언어들. 하나뿐이면 화면이 선택을 그리지 않는다.
+    public var languages: [LanguageID] { content.languages }
+
+    // MARK: - 풀이 언어
+
+    /// 풀이 언어를 바꾼다 — {#lesson-language-picker}.
+    ///
+    /// **개념·퀴즈·돌아보기는 그대로 두고 예제·빈칸·과제만 갈아탄다.** 그래서 퀴즈 선택과
+    /// 회고 답변은 살리고, 빈칸 답과 실행 결과는 지운다: 빈칸 답은 갈아탄 언어의 코드에
+    /// 대한 것이 아니고, 콘솔에 남은 출력은 이제 화면에 없는 코드가 낸 것이다. 남겨 두면
+    /// 학습자가 지금 보고 있는 코드가 그 결과를 냈다고 읽는다.
+    ///
+    /// 선언되지 않은 언어는 무시한다 — 화면이 못 고르게 하지만 모델도 스스로를 지킨다.
+    public func selectLanguage(_ languageID: LanguageID) {
+        guard languageID != content.language, content.languages.contains(languageID) else {
+            return
+        }
+        content.language = languageID
+        baseSteps = LessonModel.steps(of: content)
+
+        blankEntries = [:]
+        blankChecked = false
+        transcript = .empty
+        resultSet = nil
+        diagnostics = []
+        runState = .idle
+        // 블록 수와 순서는 언어와 무관하므로 보고 있던 자리는 지킨다.
+        activeIndex = min(activeIndex, max(0, baseSteps.count - 1))
+    }
     public var presenter: GradeResult.Presenter { LessonPresentation.presenter(for: language) }
 
     /// 헤더의 `Swift · 레슨 07 / 24`.

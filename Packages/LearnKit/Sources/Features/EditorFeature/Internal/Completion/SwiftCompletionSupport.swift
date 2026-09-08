@@ -64,9 +64,15 @@ enum SwiftCompletionSupport {
     }
 
     /// 후보 종류별 SF Symbol. **색은 여기서 정하지 않는다** — 이 화면은 무채색이다.
+    ///
+    /// 전부 "글자 하나를 사각형에 담은" 배지 계열(`v.square`, `s.square`, ...)이다 —
+    /// `design/AlgorithmLesson.dc.html` 의 완성 팝업 시안이 종류를 `fn` 같은 텍스트
+    /// 배지로 그린다. `.method`/`.function`/`.constructor` 만 예전에 SF Symbol
+    /// `"function"`(𝑓(𝑥) 곡선 아이콘)을 썼는데, 그 배지 계열에서 혼자 이질적이었다 —
+    /// `f.square` 로 맞춘다.
     static func symbolName(for kind: CompletionCandidate.Kind) -> String {
         switch kind {
-        case .method, .function, .constructor: "function"
+        case .method, .function, .constructor: "f.square"
         case .variable, .property, .field: "v.square"
         case .class, .struct, .interface: "s.square"
         case .enum, .enumMember: "e.square"

@@ -73,7 +73,7 @@ public enum LessonParser {
     }
 
     /// 블록에 나타난 언어를 **처음 나온 순서대로**. 그 순서가 화면의 언어 선택 순서가 된다.
-    static func orderedLanguages(in blocks: [LessonBlock]) -> [LanguageID] {
+    public static func orderedLanguages(in blocks: [LessonBlock]) -> [LanguageID] {
         var ordered: [LanguageID] = []
         for case .some(let language) in blocks.map(\.language) where !ordered.contains(language) {
             ordered.append(language)

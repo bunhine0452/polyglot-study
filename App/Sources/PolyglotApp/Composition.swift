@@ -130,6 +130,27 @@ final class Composition {
     /// 다르게 세면 안 된다.
     private(set) lazy var tracks: TracksModel = makeTracks()
 
+    /// 연습장. 채점이 없으므로 DB 도 진도도 필요 없다 — 파일은 디스크에 직접 산다.
+    ///
+    /// SQL 연습장에는 **SQL 트랙의 시드를 그대로 물린다.** 학습자가 레슨에서 익힌
+    /// 쇼핑몰 스키마를 연습장에서 다시 배우게 하지 않는다. 시드를 굽지 못하면 nil 이고,
+    /// 그러면 `WITH` 절로 데이터를 직접 만드는 질의만 돈다(연습장 시작 코드가 그 사실을
+    /// 주석으로 말한다).
+    /// 시드는 **모델을 만들 때 한 번 굽고 값으로 잡는다.** 클로저가 `Composition` 을
+    /// 붙들면 `@MainActor` 격리를 넘어야 하는데 공급자는 `@Sendable` 이라 넘지 못한다.
+    /// `URL?` 하나만 캡처하면 그 문제가 사라진다.
+    private(set) lazy var scratch: ScratchModel = {
+        let seed = scratchSQLSeed()
+        return ScratchModel(seedDatabaseProvider: { seed })
+    }()
+
+    /// SQL 연습장의 시드. 실패는 삼킨다 — 여기서는 시드가 없어도 화면이 성립한다
+    /// (레슨의 과제와 다른 점이다. 저쪽은 참조 질의가 시드를 요구하므로 던진다).
+    private func scratchSQLSeed() -> URL? {
+        guard let pack = library.pack(PackID("polyglot-sql")) else { return nil }
+        return try? seedDatabase(for: pack)
+    }
+
     private func makeTracks() -> TracksModel {
         guard case .success(let db) = database else {
             return TracksModel(

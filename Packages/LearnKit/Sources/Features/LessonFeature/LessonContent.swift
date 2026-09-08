@@ -8,6 +8,9 @@ internal import Foundation
 /// 콘텐츠 팩을 `LessonParser` 로 실제로 파싱한다. 화면이 못 그리는 레슨은 팩이 깨진
 /// 레슨이라는 뜻이고, 그 사실이 여기서 에러로 드러나야 한다.
 public nonisolated struct LessonContent: Sendable {
+    /// 이 레슨이 든 팩. 진도가 `(PackID, LessonID)` 로 저장되므로 화면이 진도를 쓰려면
+    /// 이 값이 있어야 한다.
+    public var packID: PackID
     public var document: LessonDocument
     /// 매니페스트의 제목. 산문에서 뽑지 않는다 — 목록 화면과 같은 문자열이어야 한다.
     public var title: String
@@ -23,6 +26,7 @@ public nonisolated struct LessonContent: Sendable {
     public var starterSource: String?
 
     public init(
+        packID: PackID,
         document: LessonDocument,
         title: String,
         trackName: String,
@@ -33,6 +37,7 @@ public nonisolated struct LessonContent: Sendable {
         starterSource: String? = nil,
         language: LanguageID? = nil
     ) {
+        self.packID = packID
         self.document = document
         self.language = language ?? document.primaryLanguage
         self.title = title
@@ -52,6 +57,8 @@ public nonisolated struct LessonContent: Sendable {
     public var blocks: [LessonBlock] { document.blocks(for: language) }
     /// 이 레슨을 풀 수 있는 언어들 — 선택 UI 가 그리는 목록.
     public var languages: [LanguageID] { document.languages }
+    /// 진도가 매달리는 참조.
+    public var ref: LessonRef { LessonRef(packID: packID, lessonID: document.stableID) }
 
     /// 팩에서 레슨 하나를 읽어 화면이 쓸 형태로 조립한다.
     ///
@@ -65,6 +72,7 @@ public nonisolated struct LessonContent: Sendable {
         let document = try pack.lesson(lessonID)
         let siblings = pack.manifest.lessons(for: entry.primaryLanguage)
         return LessonContent(
+            packID: pack.manifest.packID,
             document: document,
             title: entry.title,
             trackName: trackName(for: entry.primaryLanguage),

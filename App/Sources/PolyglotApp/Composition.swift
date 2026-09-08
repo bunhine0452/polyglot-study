@@ -183,7 +183,33 @@ final class Composition {
         guard let pack = library.pack(ref.packID) else {
             throw CompositionError.packUnavailable(ref.packID)
         }
-        return try LessonModel(pack: pack, lessonID: ref.lessonID, onOpenEditor: onOpenEditor)
+        return try LessonModel(
+            pack: pack, lessonID: ref.lessonID, onOpenEditor: onOpenEditor,
+            recordBlock: progressRecorder())
+    }
+
+    /// 레슨 화면이 블록을 끝낼 때마다 진도를 적는다 — {#progress-per-lesson-not-language}.
+    ///
+    /// 스토어를 클로저 밖에서 값으로 꺼낸다. `@Sendable` 클로저 안에서 `self` 를 읽으면
+    /// `@MainActor` 격리를 넘게 된다(대시보드 픽스처가 같은 이유로 그렇게 한다).
+    private func progressRecorder() -> (@Sendable (LessonRef, LanguageID, Int) async -> Bool)? {
+        // DB 를 못 열었으면 아무것도 적지 않는다. 인메모리 페이크에 적으면 앱을 닫는
+        // 순간 사라지는데, 학습자는 저장된 줄 안다 — 그건 조용히 잃는 것보다 나쁘다.
+        guard case .success(let db) = database else { return nil }
+        let store = db.lessonProgressStore
+        return { ref, languageID, blockIndex in
+            do {
+                _ = try await store.completeBlock(
+                    packID: ref.packID,
+                    lessonID: ref.lessonID,
+                    languageID: languageID,
+                    blockIndex: blockIndex,
+                    at: EpochMillis(Int64(Date().timeIntervalSince1970 * 1000)))
+                return true
+            } catch {
+                return false
+            }
+        }
     }
 
     /// 레슨의 `@Task` 블록 하나를 에디터 화면으로. 헤더 문구는 이미 열려 있는 레슨에서

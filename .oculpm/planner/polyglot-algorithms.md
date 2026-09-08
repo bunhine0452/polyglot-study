@@ -19,7 +19,7 @@ owner: claude-code
 - [x] Example·Blank·Task 를 언어별로 반복 가능하게 하고 Concept·Quiz·Reflection 은 공용으로 둔다 — 완료: 한 레슨에 Rust·Python 두 벌이 담기고 순서 위반이 여전히 throw {#block-language-variants}
 - [x] 매니페스트 레슨 엔트리를 language 단수에서 languages 배열로 — 완료: 깨진 매니페스트(선언한 언어에 과제가 빠진 경우)가 고유 에러로 실패 {#manifest-languages-plural}
 - [x] 레슨 화면에 풀이 언어 선택을 붙이고 고른 언어를 기억한다 — 완료: 언어를 바꾸면 예제·빈칸·과제만 갈아타고 개념·시각화는 그대로 {#lesson-language-picker}
-- [ ] 진도를 레슨 단위로 남기고 어떤 언어로 풀었는지는 부가 기록으로 — 완료: 언어를 바꿔도 완료 표시가 유지된다 {#progress-per-lesson-not-language}
+- [x] 진도를 레슨 단위로 남기고 어떤 언어로 풀었는지는 부가 기록으로 — 완료: 언어를 바꿔도 완료 표시가 유지된다 {#progress-per-lesson-not-language}
 
 ## 시각화 {#visualization}
 - [x] 프레임 모델 스키마 v1 — 장면 셋(배열·그래프·표)으로 네 계열을 덮는다. 트리는 좌표를 저작한 그래프다 — 완료: 네 계열 표본이 각각 파싱되고 프레임마다 자막이 강제된다 {#frame-model-schema}
@@ -55,4 +55,5 @@ owner: claude-code
 | 2026-09-08T13:45:28+09:00 | #lesson-language-picker | claude-code | ☐→x |  | 언어가 하나면 아예 안 그린다. 바꾸면 예제·빈칸·과제만 갈아타고 개념·퀴즈·돌아보기와 보던 블록 자리는 유지, 빈칸 답·실행 결과는 지운다(다른 코드의 것이라). 신규 테스트 5건 |
 | 2026-09-08T15:00:07+09:00 | #algorithms-rust-lessons | claude-code | ☐→x |  | lessongen import 로 손으로 써서 비용 $0. packtool validate 네 단계 32편 실패 0건 — 96개 블록이 실제로 컴파일·실행된다 |
 | 2026-09-08T15:20:38+09:00 | #algorithms-visuals | claude-code | ☐→x |  | 32편 전부에 사이드카와 @Visualize. 배열 12·그래프 14(트리 포함)·표 6. 프로젝트 디코더로 32/32 통과, 각 프레임이 자막을 갖고 DP 는 from 으로 "어느 칸에서 왔는가" 를 보인다 |
+| 2026-09-08T15:36:52+09:00 | #progress-per-lesson-not-language | claude-code | ☐→x | .oculpm/journal/20260908/Features_to_add/1536_feature_lesson-progress-recording.md | 계획보다 컸다 — completeBlock 호출처가 한 곳도 없어 진도 저장 자체가 없었다. advance 가 떠난 블록을 적고, 새로 만든 "레슨 마치기" 가 마지막 블록을 적는다. 어떤 언어로 풀었는지가 함께 간다 |
 <!-- oculpm:plan-log end -->

@@ -138,16 +138,31 @@ public final class LessonModel {
         (@Sendable (LanguageID, RunRequest) -> AsyncThrowingStream<RunEvent, any Error>)?
     private let onOpenEditor: ((TaskBlock) -> Void)?
 
+    /// 블록 하나를 끝냈다고 저장소에 적는다. `nil` 이면 아무것도 적지 않는다 —
+    /// 목 데이터를 만들지 않는 이 저장소의 습관대로, 진도를 쓰지 않는 테스트는 그냥 안 준다.
+    ///
+    /// **어떤 언어로 풀었는지가 함께 간다**({#progress-per-lesson-not-language}) — 진도는
+    /// 레슨 단위이지만 "무엇으로 풀었나" 는 남겨야 나중에 복습 카드를 그 언어로 낼 수 있다.
+    ///
+    /// 기본 인자 값으로 클로저를 주지 않는 이유는 `runFactory` 와 같다(위 주석 참고).
+    private let recordBlock: (@Sendable (LessonRef, LanguageID, Int) async -> Bool)?
+
+    /// 진도 쓰기가 실패했다. **조용히 넘어가지 않는다** — 학습자가 끝낸 블록이 사라진
+    /// 것을 모르면 다음에 열었을 때 진도가 되돌아가 있다.
+    public private(set) var progressFailed = false
+
     public init(
         content: LessonContent,
         runFactory: (
             @Sendable (LanguageID, RunRequest) -> AsyncThrowingStream<RunEvent, any Error>
         )? = nil,
-        onOpenEditor: ((TaskBlock) -> Void)? = nil
+        onOpenEditor: ((TaskBlock) -> Void)? = nil,
+        recordBlock: (@Sendable (LessonRef, LanguageID, Int) async -> Bool)? = nil
     ) {
         self.content = content
         self.runFactory = runFactory
         self.onOpenEditor = onOpenEditor
+        self.recordBlock = recordBlock
         self.baseSteps = LessonModel.steps(of: content)
     }
 
@@ -171,12 +186,14 @@ public final class LessonModel {
         runFactory: (
             @Sendable (LanguageID, RunRequest) -> AsyncThrowingStream<RunEvent, any Error>
         )? = nil,
-        onOpenEditor: ((TaskBlock) -> Void)? = nil
+        onOpenEditor: ((TaskBlock) -> Void)? = nil,
+        recordBlock: (@Sendable (LessonRef, LanguageID, Int) async -> Bool)? = nil
     ) throws(ContentPackError) {
         self.init(
             content: try LessonContent.load(pack: pack, lessonID: lessonID),
             runFactory: runFactory,
-            onOpenEditor: onOpenEditor
+            onOpenEditor: onOpenEditor,
+            recordBlock: recordBlock
         )
     }
 
@@ -266,8 +283,32 @@ public final class LessonModel {
 
     public func advance() {
         guard canAdvance else { return }
+        let finished = activeIndex
         activeIndex += 1
         resetTransientState()
+        record(finished)
+    }
+
+    /// 마지막 블록의 "레슨 마치기". 여기가 없으면 **레슨이 끝나는 길이 없다** —
+    /// `advance()` 는 마지막 블록에서 아무 일도 하지 않으므로 그 블록은 영영 기록되지
+    /// 않고, 여섯 블록이 다 차야 `completed` 로 전이하는 진도가 영원히 `inProgress` 다.
+    public var finishTitle: String? { canAdvance ? nil : "레슨 마치기" }
+
+    public func finish() {
+        guard !canAdvance else { return }
+        record(activeIndex)
+    }
+
+    /// 블록 하나를 끝냈다고 적는다. 화면은 기다리지 않는다 — 저장이 늦다고 다음 블록으로
+    /// 넘어가는 것을 막으면 학습이 저장소 속도에 묶인다.
+    private func record(_ blockIndex: Int) {
+        guard let recordBlock else { return }
+        let ref = content.ref
+        let language = content.language
+        Task { [weak self] in
+            let ok = await recordBlock(ref, language, blockIndex)
+            if !ok { self?.progressFailed = true }
+        }
     }
 
     /// 접힌 행의 "다시 보기". 앞으로는 못 간다 — 스텝바가 진도를 뜻해야 하기 때문이다.

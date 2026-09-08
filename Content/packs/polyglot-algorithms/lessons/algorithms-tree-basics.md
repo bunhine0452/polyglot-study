@@ -6,6 +6,10 @@
 각 정점이 자식을 최대 둘까지만 가지고, 그 둘을 왼쪽/오른쪽으로 구분하는 트리를 이진 트리(binary tree)라고 한다. 자식 수를 둘로 제한하면 구현이 훨씬 단순해지고, 다음 레슨들에서 볼 순회·탐색이 전부 '왼쪽을 볼까, 오른쪽을 볼까'라는 하나의 질문으로 정리된다.
 
 Rust에서 이진 트리는 노드 구조체와 `Option<Box<Node>>` 로 표현한다. `Box` 는 힙에 노드를 두고 그 자리를 가리키는 포인터를 저장한다 — 이게 없으면 `Node` 안에 `Node` 를 담는 셈이라 컴파일러가 타입의 크기를 정할 수 없다. `Option` 은 자식이 없을 수 있다는 것, 즉 `None` 이 바로 '거기서 트리가 끝난다'는 뜻이 된다.
+
+@Visualize(id: tree-basics, frames: visuals/tree-basics.json) {
+트리 표현이 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: tree-basics-example, language: rust, expected: expected/algorithms-tree-basics.txt) {

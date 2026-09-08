@@ -4,6 +4,10 @@
 한 패스가 끝나면 맨 끝 자리는 확정된다. 그래서 다음 패스는 그 앞자리까지만 보면 된다. 바깥 반복은 최대 n-1번 돌고, 각 바깥 반복마다 안쪽 반복이 최대 n-1번 비교한다. 곱하면 대략 n * n 번 비교이므로 O(n^2) 이다.
 
 배열이 이미 정렬돼 있으면 어떤 패스에서도 교환이 한 번도 일어나지 않는다. 이 사실을 이용해 **한 패스 동안 교환이 없었으면 그 자리에서 멈추는 것**이 조기 종료다. 이미 정렬된 입력이면 딱 한 패스, O(n) 만에 끝난다 — 최선의 경우다.
+
+@Visualize(id: bubble-sort, frames: visuals/bubble-sort.json) {
+버블 정렬이 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: bubble-sort-example, language: rust, expected: expected/algorithms-bubble-sort.txt) {

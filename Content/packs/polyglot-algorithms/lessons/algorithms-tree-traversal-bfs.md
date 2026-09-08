@@ -8,6 +8,10 @@ BFS와 마찬가지로 큐를 쓴다. 루트를 큐에 넣고 시작해서, 큐�
 결과를 층별로 묶고 싶다면 요령이 하나 필요하다. 한 층을 처리하기 **직전에** 큐의 길이를 재 두면, 그 개수만큼이 정확히 지금 층이다. 그 개수만큼만 꺼내고 (꺼내면서 생기는 자식들은 다음 층이니 큐에 남겨 두고) 나면 한 층이 끝난다.
 
 재귀 기반 순회와 큐 기반 순회는 방문 순서 자체가 다르다. 전위 순회는 루트 -> 왼쪽 서브트리 전부 -> 오른쪽 서브트리 전부이니 같은 층이라도 서로 멀리 떨어져 나올 수 있다. 레벨 순회는 언제나 얕은 정점부터, 같은 깊이는 왼쪽에서 오른쪽 순서로 나온다.
+
+@Visualize(id: tree-traversal-bfs, frames: visuals/tree-traversal-bfs.json) {
+트리의 레벨 순회가 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: tree-traversal-bfs-example, language: rust, expected: expected/algorithms-tree-traversal-bfs.txt) {

@@ -6,6 +6,10 @@
 이제 구간 `[l, r]` (양끝 포함) 의 합은 `prefix[r + 1] - prefix[l]` 이다. `prefix[r + 1]` 은 `xs[0..=r]` 전체의 합이고 `prefix[l]` 은 그중 앞부분 `xs[0..l]` 의 합이므로, 빼면 딱 `xs[l..=r]` 만 남는다.
 
 prefix 배열을 만드는 데 O(n), 이후 질의 하나는 뺄셈 한 번 O(1) 이다. 질의가 q 번이면 총 O(n + q) — 매번 새로 더하는 O(n·q) 보다 q 가 커질수록 압도적으로 유리하다.
+
+@Visualize(id: prefix-sum, frames: visuals/prefix-sum.json) {
+프리픽스 합이 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: prefix-sum-example, language: rust, expected: expected/algorithms-prefix-sum.txt) {

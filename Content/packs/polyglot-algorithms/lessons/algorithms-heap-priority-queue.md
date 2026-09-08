@@ -8,6 +8,10 @@
 추출은 루트(최솟값)를 꺼내는 것이다. 루트를 빼면 트리 모양이 무너지므로, 배열의 마지막 값을 루트 자리로 옮겨 모양을 다시 완전 이진 트리로 만든다. 그 값은 대개 힙 속성에 맞지 않으니 두 자식 중 더 작은 쪽과 비교해 자리를 바꾸며 아래로 내려간다. 이것이 **sift-down** 이다.
 
 25편에서 이진 탐색 트리는 값을 넣는 순서에 따라 한쪽으로 늘어져 높이가 O(n)까지 나빠질 수 있다는 것을 봤다. 힙은 그런 일이 없다 — 삽입이 항상 다음 빈 자리(배열 맨 끝)에서 시작하므로 트리 모양이 완전 이진 트리라는 것 자체가 절대 깨지지 않는다. 원소가 n개면 높이는 항상 `⌊log2 n⌋` 이고, sift-up과 sift-down은 그 높이만큼만 움직이므로 삽입과 추출 모두 O(log n) 이다.
+
+@Visualize(id: heap-priority-queue, frames: visuals/heap-priority-queue.json) {
+힙과 우선순위 큐가 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: heap-priority-queue-example, language: rust, expected: expected/algorithms-heap-priority-queue.txt) {

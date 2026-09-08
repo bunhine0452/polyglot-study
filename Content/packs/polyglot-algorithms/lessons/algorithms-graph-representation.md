@@ -6,6 +6,10 @@
 인접 행렬은 정점 V개에 대해 V×V 크기의 표를 만들어 `mat[u][v]` 가 참이면 u와 v 사이에 간선이 있다는 뜻으로 쓰는 방식이다. 정점이 몇 개든 항상 V^2 칸을 차지하므로 메모리는 O(V^2) 다 — 간선이 얼마나 적든 상관없다. 대신 'u와 v 사이에 간선이 있는가' 를 묻는 질문에 표의 한 칸만 보면 되니 O(1) 이다. 인접 리스트로 같은 질문에 답하려면 u의 이웃 목록을 끝까지 훑어야 할 수 있어 O(degree(u)) 가 든다.
 
 그래서 정점 수에 비해 간선이 적은 희소 그래프라면 인접 리스트가, 정점 수가 작거나 간선이 촘촘한 그래프이거나 간선 존재 여부를 자주 물어야 한다면 인접 행렬이 유리하다.
+
+@Visualize(id: graph-representation, frames: visuals/graph-representation.json) {
+그래프 표현이 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: graph-representation-example, language: rust, expected: expected/algorithms-graph-representation.txt) {

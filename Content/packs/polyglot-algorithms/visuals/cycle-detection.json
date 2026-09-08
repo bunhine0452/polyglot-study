@@ -1,0 +1,276 @@
+{
+  "schemaVersion": 1,
+  "id": "cycle-detection",
+  "kind": "graph",
+  "nodes": [
+    {
+      "id": "0",
+      "label": "0",
+      "x": 100,
+      "y": 0
+    },
+    {
+      "id": "1",
+      "label": "1",
+      "x": 220,
+      "y": 60
+    },
+    {
+      "id": "2",
+      "label": "2",
+      "x": 100,
+      "y": 120
+    },
+    {
+      "id": "3",
+      "label": "3",
+      "x": 250,
+      "y": 180
+    }
+  ],
+  "edges": [
+    {
+      "from": "0",
+      "to": "1",
+      "directed": true
+    },
+    {
+      "from": "1",
+      "to": "2",
+      "directed": true
+    },
+    {
+      "from": "2",
+      "to": "0",
+      "directed": true
+    },
+    {
+      "from": "2",
+      "to": "3",
+      "directed": true
+    }
+  ],
+  "frames": [
+    {
+      "caption": "0에 진입합니다. 상태를 '방문 중'으로 표시합니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "1에 진입합니다. 호출 스택: [0, 1].",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "current"
+        },
+        {
+          "id": "1",
+          "role": "current"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "2에 진입합니다. 호출 스택: [0, 1, 2].",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "current"
+        },
+        {
+          "id": "1",
+          "role": "current"
+        },
+        {
+          "id": "2",
+          "role": "current"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "current"
+        },
+        {
+          "from": "1",
+          "to": "2",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "2의 이웃 0을 봅니다. 0은 지금 '방문 중'(스택에 있음) 상태 — 역방향 간선이므로 사이클을 발견합니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "current"
+        },
+        {
+          "id": "1",
+          "role": "current"
+        },
+        {
+          "id": "2",
+          "role": "current"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "current"
+        },
+        {
+          "from": "1",
+          "to": "2",
+          "role": "current"
+        },
+        {
+          "from": "2",
+          "to": "0",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "2의 다음 이웃 3에 진입합니다. 3은 리프라 바로 완료됩니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "current"
+        },
+        {
+          "id": "1",
+          "role": "current"
+        },
+        {
+          "id": "2",
+          "role": "current"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "current"
+        },
+        {
+          "from": "1",
+          "to": "2",
+          "role": "current"
+        },
+        {
+          "from": "2",
+          "to": "0",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "3",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "2가 모든 이웃을 다 봤으니 완료합니다. 이어서 1, 0도 차례로 완료합니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "0",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "3",
+          "role": "visited"
+        }
+      ]
+    },
+    {
+      "caption": "역방향 간선 2→0을 하나 발견했으므로 사이클 있음 = true 입니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "0",
+          "role": "settled"
+        },
+        {
+          "from": "2",
+          "to": "3",
+          "role": "visited"
+        }
+      ]
+    }
+  ]
+}

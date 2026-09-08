@@ -16,6 +16,10 @@
 추가 메모리도 차이가 크다. 버블·선택·삽입·퀵은 원본 배열 안에서 값을 맞바꾸며 정렬하는 제자리(in-place) 정렬이라 추가 배열이 거의 필요 없다(퀵은 재귀 호출 스택만큼은 쓴다). 병합 정렬은 두 절반을 합칠 때마다 새 Vec 을 만들기 때문에 O(n) 만큼의 추가 메모리가 항상 필요하다 — 메모리가 빠듯한 환경에서는 이 점이 병합 정렬을 불리하게 만든다.
 
 정리하면: 입력이 작거나(n이 수십 개 이하) 이미 정렬에 가깝다면 삽입 정렬이 구현도 간단하고 실제로 빠르다. 입력이 크고 정렬 상태를 모른다면 O(n log n)을 보장하는 병합 정렬이나 퀵 정렬을 쓴다. 안정성이 꼭 필요하면(동점자 순서를 지켜야 하면) 병합 정렬을, 추가 메모리를 아끼고 평균 성능이 중요하면 퀵 정렬을 고른다.
+
+@Visualize(id: sorting-comparison, frames: visuals/sorting-comparison.json) {
+정렬 다섯 가지 비교가 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: sorting-comparison-example, language: rust, expected: expected/algorithms-sorting-comparison.txt) {

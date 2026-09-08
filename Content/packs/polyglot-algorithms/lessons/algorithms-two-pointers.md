@@ -8,6 +8,10 @@
 왜 이렇게 옮겨도 답을 놓치지 않을까? `lo` 를 올리는 순간, `xs[lo]` 와 그보다 작거나 같은 인덱스를 가진 값들과 현재 `hi` 의 조합은 이미 다 확인했거나(더 큰 합이었거나) 애초에 불가능하다 — 정렬돼 있으므로 `xs[lo]` 보다 작은 값과 `xs[hi]` 를 더해봐야 지금 합보다 작거나 같아서 더더욱 target 에 못 미친다. 그래서 `lo` 를 그 자리에 버려도 안전하다. `hi` 를 내리는 것도 대칭적으로 안전하다.
 
 매 반복마다 `lo` 가 오르거나 `hi` 가 내려가고, 두 포인터는 서로를 향해서만 움직이므로 전체 반복은 배열 길이를 넘지 않는다. O(n) 이다.
+
+@Visualize(id: two-pointers, frames: visuals/two-pointers.json) {
+투 포인터가 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: two-pointers-example, language: rust, expected: expected/algorithms-two-pointers.txt) {

@@ -6,6 +6,10 @@
 분할이 끝나면 피벗은 이미 최종 자리에 있다. 이제 피벗 왼쪽 구간과 오른쪽 구간을 각각 재귀로 정렬하면 전체가 정렬된다. 분할이 매번 절반씩 균형 있게 나뉘면 병합 정렬과 같은 이유로 평균 O(n log n) 이 된다.
 
 문제는 분할이 한쪽으로 완전히 치우칠 때다. 이미 정렬된 배열에 마지막 원소를 피벗으로 고르면, 피벗은 항상 그 구간에서 가장 큰 값이라 모든 값이 피벗보다 작은 쪽에 몰린다 — 구간이 매번 1개씩만 줄어들어 n + (n-1) + ... + 1 번 비교하게 되고, 이것이 최악의 경우 O(n^2) 이다.
+
+@Visualize(id: quick-sort, frames: visuals/quick-sort.json) {
+퀵 정렬이 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: quick-sort-example, language: rust, expected: expected/algorithms-quick-sort.txt) {

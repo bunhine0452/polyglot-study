@@ -1,0 +1,455 @@
+{
+  "schemaVersion": 1,
+  "id": "bfs",
+  "kind": "graph",
+  "nodes": [
+    {
+      "id": "0",
+      "label": "0",
+      "x": 200,
+      "y": 0
+    },
+    {
+      "id": "1",
+      "label": "1",
+      "x": 100,
+      "y": 100
+    },
+    {
+      "id": "2",
+      "label": "2",
+      "x": 300,
+      "y": 100
+    },
+    {
+      "id": "3",
+      "label": "3",
+      "x": 100,
+      "y": 200
+    },
+    {
+      "id": "4",
+      "label": "4",
+      "x": 300,
+      "y": 200
+    },
+    {
+      "id": "5",
+      "label": "5",
+      "x": 200,
+      "y": 300
+    },
+    {
+      "id": "6",
+      "label": "6",
+      "x": 200,
+      "y": 400
+    }
+  ],
+  "edges": [
+    {
+      "from": "0",
+      "to": "1"
+    },
+    {
+      "from": "0",
+      "to": "2"
+    },
+    {
+      "from": "1",
+      "to": "3"
+    },
+    {
+      "from": "2",
+      "to": "3"
+    },
+    {
+      "from": "2",
+      "to": "4"
+    },
+    {
+      "from": "3",
+      "to": "5"
+    },
+    {
+      "from": "4",
+      "to": "5"
+    },
+    {
+      "from": "5",
+      "to": "6"
+    }
+  ],
+  "frames": [
+    {
+      "caption": "시작 정점 0을 큐에 넣습니다. 아직 아무것도 처리하지 않았습니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "frontier"
+        }
+      ]
+    },
+    {
+      "caption": "0을 꺼내 처리합니다(거리 0). 이웃 1, 2를 큐에 넣습니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "current"
+        },
+        {
+          "id": "1",
+          "role": "frontier"
+        },
+        {
+          "id": "2",
+          "role": "frontier"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "current"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "1을 꺼내 처리합니다(거리 1). 0은 이미 방문 완료, 3을 새로 큐에 넣습니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "current"
+        },
+        {
+          "id": "2",
+          "role": "frontier"
+        },
+        {
+          "id": "3",
+          "role": "frontier"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "2를 꺼내 처리합니다(거리 1). 3은 이미 큐에 있어 건너뛰고, 4를 새로 큐에 넣습니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "current"
+        },
+        {
+          "id": "3",
+          "role": "frontier"
+        },
+        {
+          "id": "4",
+          "role": "frontier"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "3을 꺼내 처리합니다(거리 2). 1, 2는 이미 방문 완료, 5를 큐에 넣습니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "current"
+        },
+        {
+          "id": "4",
+          "role": "frontier"
+        },
+        {
+          "id": "5",
+          "role": "frontier"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "5",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "4를 꺼내 처리합니다(거리 2). 5는 이미 큐에 있어 새 간선 없이 넘어갑니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "current"
+        },
+        {
+          "id": "5",
+          "role": "frontier"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "5",
+          "role": "visited"
+        }
+      ]
+    },
+    {
+      "caption": "5를 꺼내 처리합니다(거리 3). 3, 4는 방문 완료, 6을 큐에 넣습니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        },
+        {
+          "id": "5",
+          "role": "current"
+        },
+        {
+          "id": "6",
+          "role": "frontier"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "5",
+          "role": "visited"
+        },
+        {
+          "from": "5",
+          "to": "6",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "6을 꺼내 처리합니다(거리 4). 큐가 비어 BFS가 끝납니다 — 거리가 0,1,1,2,2,3,4로 절대 줄지 않고 늘어나기만 했습니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        },
+        {
+          "id": "5",
+          "role": "visited"
+        },
+        {
+          "id": "6",
+          "role": "visited"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "5",
+          "role": "visited"
+        },
+        {
+          "from": "4",
+          "to": "5",
+          "role": "visited"
+        },
+        {
+          "from": "5",
+          "to": "6",
+          "role": "visited"
+        }
+      ]
+    }
+  ]
+}

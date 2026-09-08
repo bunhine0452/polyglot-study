@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "quick-sort",
+  "kind": "array",
+  "values": [5, 2, 8, 1, 9, 3],
+  "frames": [
+    {
+      "caption": "마지막 값 3을 피벗으로 삼습니다. i는 '피벗보다 작은 값이 들어갈 다음 자리'를 가리키며 0에서 시작합니다.",
+      "values": [5, 2, 8, 1, 9, 3],
+      "pointers": [{ "name": "피벗", "index": 5 }, { "name": "i", "index": 0 }]
+    },
+    {
+      "caption": "xs[0]=5는 피벗보다 커서 건너뛰고, xs[1]=2는 피벗(3)보다 작아 i(0)와 자리를 바꿉니다. i가 한 칸 옮겨갑니다.",
+      "values": [2, 5, 8, 1, 9, 3],
+      "pointers": [{ "name": "피벗", "index": 5 }, { "name": "i", "index": 1 }, { "name": "j", "index": 1 }],
+      "segments": [{ "role": "highlighted", "start": 0, "end": 0 }]
+    },
+    {
+      "caption": "xs[2]=8은 건너뛰고, xs[3]=1은 피벗보다 작아 i(1)와 자리를 바꿉니다.",
+      "values": [2, 1, 8, 5, 9, 3],
+      "pointers": [{ "name": "피벗", "index": 5 }, { "name": "i", "index": 2 }, { "name": "j", "index": 3 }],
+      "segments": [{ "role": "highlighted", "start": 0, "end": 1 }]
+    },
+    {
+      "caption": "xs[4]=9도 피벗보다 커 건너뜁니다. 검사가 끝났습니다 — 피벗보다 작은 값은 모두 앞으로 모였습니다.",
+      "values": [2, 1, 8, 5, 9, 3],
+      "pointers": [{ "name": "피벗", "index": 5 }, { "name": "i", "index": 2 }],
+      "segments": [{ "role": "highlighted", "start": 0, "end": 1 }]
+    },
+    {
+      "caption": "피벗을 i 자리(2번)로 옮깁니다. 이제 왼쪽은 모두 피벗보다 작고, 오른쪽은 모두 크거나 같습니다.",
+      "values": [2, 1, 3, 5, 9, 8],
+      "pointers": [{ "name": "피벗 위치", "index": 2 }],
+      "segments": [{ "role": "highlighted", "start": 0, "end": 1 }, { "role": "highlighted", "start": 2, "end": 2 }, { "role": "excluded", "start": 3, "end": 5 }]
+    }
+  ]
+}

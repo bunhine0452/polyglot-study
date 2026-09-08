@@ -4,6 +4,10 @@
 점화식 자체는 메모이제이션과 똑같다. `fib` 라면 `table[i] = table[i-1] + table[i-2]` 다. 차이는 이 값을 재귀 호출로 얻는 게 아니라, 반복문으로 `i` 를 0부터 순서대로 늘려가며 **이미 채워진 이전 칸을 읽어서** 채운다는 것이다. `table[i]` 를 채울 차례가 됐을 때 `table[i-1]` 과 `table[i-2]` 는 이미 계산이 끝나 있다.
 
 같은 문제를 두 방향에서 풀었을 뿐이니 결과는 메모이제이션과 정확히 같다. 다만 타뷸레이션은 재귀 호출이 없어서 **호출 스택이 쌓이지 않는다** — 아무리 큰 `n` 이어도 스택 오버플로우를 걱정할 필요가 없고, 함수 호출 오버헤드도 없다. 대신 표의 어떤 칸을 쓸지, 채우는 순서를 스스로 결정해야 한다는 점이 메모이제이션과 다르다.
+
+@Visualize(id: dp-tabulation, frames: visuals/dp-tabulation.json) {
+타뷸레이션이 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: dp-tabulation-example, language: rust, expected: expected/algorithms-dp-tabulation.txt) {

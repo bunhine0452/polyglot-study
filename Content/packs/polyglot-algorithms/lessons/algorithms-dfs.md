@@ -6,6 +6,10 @@
 같은 일을 재귀 없이도 할 수 있다. 이번엔 `Vec` 을 스택처럼 써서 직접 관리한다. 큐 대신 스택을 쓴다는 것 말고는 BFS 와 골격이 비슷하다 — 다만 큐는 넣은 순서대로 꺼내고(FIFO), 스택은 넣은 것의 반대 순서로 꺼낸다(LIFO). 그 차이 하나가 방문 순서를 완전히 바꿔놓는다.
 
 같은 정점에서 시작해도 BFS 는 가까운 정점부터 층층이 넓게 퍼지고, DFS 는 한 갈래를 끝까지 파고든 다음에야 옆 갈래로 넘어간다. 그래서 같은 그래프, 같은 시작점이라도 두 탐색이 정점을 만나는 순서는 보통 다르다.
+
+@Visualize(id: dfs, frames: visuals/dfs.json) {
+깊이 우선 탐색(DFS)이 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: dfs-example, language: rust, expected: expected/algorithms-dfs.txt) {

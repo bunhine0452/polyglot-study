@@ -8,6 +8,10 @@
 그래서 상태를 셋으로 나눈다. **미방문**(아직 안 봄), **방문 중**(지금 이 정점에서 시작한 DFS가 아직 안 끝남 — 현재 경로 위에 있음), **방문 완료**(이 정점 아래는 다 탐색이 끝남). 이웃이 방문 중 상태면 역방향 간선(back edge)이고, 이것이 사이클의 증거다. 이웃이 방문 완료 상태면 그냥 다른 경로에서 이미 처리된 것뿐이니 지나쳐도 된다.
 
 무방향 그래프에서는 이 규칙을 그대로 쓰면 안 된다. 정점 u에서 v로 갔다가, v에서 다시 u를 보는 간선은 방금 타고 온 그 간선을 반대로 보는 것뿐이다. u는 아직 방문 중이니 매번 사이클로 잡힌다. 그래서 무방향 그래프에서는 방금 온 부모 정점만은 예외로 두고 검사해야 한다.
+
+@Visualize(id: cycle-detection, frames: visuals/cycle-detection.json) {
+사이클 탐지가 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: cycle-detection-example, language: rust, expected: expected/algorithms-cycle-detection.txt) {

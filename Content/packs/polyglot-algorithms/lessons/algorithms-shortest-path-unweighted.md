@@ -6,6 +6,10 @@ BFS는 방문 순서만으로도 쓸모가 있지만, 각 정점까지의 거리
 가중치가 없는 그래프에서는 이 방식이 항상 최단 경로를 준다. BFS는 레벨 0, 레벨 1, 레벨 2 순서로 정점을 하나도 빠짐없이 방문한 다음에야 다음 레벨로 넘어가기 때문에, 어떤 정점이 처음 방문되는 순간의 거리는 더 줄어들 수 없는 최솟값이다 — 나중에 다른 경로로 그 정점에 도달해도 거리가 같거나 더 길 수밖에 없으므로 이미 기록된 dist 와 parent 를 덮어쓸 필요가 없다.
 
 목표 정점에서 parent 를 하나씩 거슬러 올라가면 시작 정점까지의 경로가 거꾸로 나온다. 이걸 뒤집으면 시작 정점부터 목표 정점까지의 순서가 된다.
+
+@Visualize(id: shortest-path-unweighted, frames: visuals/shortest-path-unweighted.json) {
+가중치 없는 최단 경로가 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: shortest-path-unweighted-example, language: rust, expected: expected/algorithms-shortest-path-unweighted.txt) {

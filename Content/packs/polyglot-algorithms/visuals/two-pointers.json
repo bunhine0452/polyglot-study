@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "two-pointers",
+  "kind": "array",
+  "values": [1, 2, 4, 6, 8, 9, 12, 14, 17, 20],
+  "frames": [
+    {
+      "caption": "정렬된 배열에서 합이 16이 되는 두 값을 찾습니다. lo는 맨 앞, hi는 맨 뒤에서 시작합니다.",
+      "pointers": [{ "name": "lo", "index": 0 }, { "name": "hi", "index": 9 }],
+      "segments": [{ "role": "highlighted", "start": 0, "end": 9 }]
+    },
+    {
+      "caption": "1단계: xs[lo]=1, xs[hi]=20, 합=21 — 목표보다 큽니다. 합을 줄이려고 hi를 한 칸 당깁니다.",
+      "pointers": [{ "name": "lo", "index": 0 }, { "name": "hi", "index": 9 }]
+    },
+    {
+      "caption": "2단계: xs[lo]=1, xs[hi]=17, 합=18 — 여전히 큽니다. hi를 또 당깁니다.",
+      "pointers": [{ "name": "lo", "index": 0 }, { "name": "hi", "index": 8 }]
+    },
+    {
+      "caption": "3단계: xs[lo]=1, xs[hi]=14, 합=15 — 이번엔 작습니다. 합을 키우려고 lo를 한 칸 밉니다.",
+      "pointers": [{ "name": "lo", "index": 0 }, { "name": "hi", "index": 7 }]
+    },
+    {
+      "caption": "4단계: xs[lo]=2, xs[hi]=14, 합=16 — 목표와 같습니다. (1, 7) 을 찾았습니다.",
+      "pointers": [{ "name": "lo", "index": 1 }, { "name": "hi", "index": 7 }],
+      "segments": [{ "role": "excluded", "start": 0, "end": 0 }, { "role": "excluded", "start": 8, "end": 9 }, { "role": "highlighted", "start": 1, "end": 1 }, { "role": "highlighted", "start": 7, "end": 7 }]
+    }
+  ]
+}

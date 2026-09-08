@@ -1,0 +1,351 @@
+{
+  "schemaVersion": 1,
+  "id": "topological-sort",
+  "kind": "graph",
+  "nodes": [
+    {
+      "id": "0",
+      "label": "0",
+      "x": 150,
+      "y": 0
+    },
+    {
+      "id": "1",
+      "label": "1",
+      "x": 50,
+      "y": 80
+    },
+    {
+      "id": "2",
+      "label": "2",
+      "x": 250,
+      "y": 80
+    },
+    {
+      "id": "3",
+      "label": "3",
+      "x": 150,
+      "y": 160
+    },
+    {
+      "id": "4",
+      "label": "4",
+      "x": 150,
+      "y": 240
+    }
+  ],
+  "edges": [
+    {
+      "from": "0",
+      "to": "1",
+      "directed": true
+    },
+    {
+      "from": "0",
+      "to": "2",
+      "directed": true
+    },
+    {
+      "from": "1",
+      "to": "3",
+      "directed": true
+    },
+    {
+      "from": "2",
+      "to": "3",
+      "directed": true
+    },
+    {
+      "from": "3",
+      "to": "4",
+      "directed": true
+    }
+  ],
+  "frames": [
+    {
+      "caption": "0에 진입합니다. 호출 스택: [0].",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "0의 이웃 1로 내려갑니다. 호출 스택: [0, 1].",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "current"
+        },
+        {
+          "id": "1",
+          "role": "current"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "1의 이웃 3으로 내려갑니다. 호출 스택: [0, 1, 3].",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "current"
+        },
+        {
+          "id": "1",
+          "role": "current"
+        },
+        {
+          "id": "3",
+          "role": "current"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "current"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "3의 이웃 4로 내려갑니다. 4는 더 갈 곳이 없어 바로 완료되고 후위 순서에 추가됩니다: [4].",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "current"
+        },
+        {
+          "id": "1",
+          "role": "current"
+        },
+        {
+          "id": "3",
+          "role": "current"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "current"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "current"
+        },
+        {
+          "from": "3",
+          "to": "4",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "4가 끝났으니 3도 완료합니다: [4, 3]. 1도 이웃을 다 봤으니 완료합니다: [4, 3, 1].",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "current"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "current"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "4",
+          "role": "visited"
+        }
+      ]
+    },
+    {
+      "caption": "0의 다음 이웃 2로 내려갑니다. 호출 스택: [0, 2].",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "current"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "current"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "2의 이웃 3은 이미 완료 상태라 건너뜁니다. 2도 완료합니다: [4,3,1,2]. 0도 완료합니다: [4,3,1,2,0].",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "visited"
+        },
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "3",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "3",
+          "role": "visited"
+        }
+      ]
+    },
+    {
+      "caption": "후위 순서 [4,3,1,2,0]을 뒤집으면 위상 정렬 [0,2,1,3,4] — 모든 간선이 앞에서 뒤로만 향합니다.",
+      "nodeStates": [
+        {
+          "id": "0",
+          "role": "settled"
+        },
+        {
+          "id": "1",
+          "role": "settled"
+        },
+        {
+          "id": "2",
+          "role": "settled"
+        },
+        {
+          "id": "3",
+          "role": "settled"
+        },
+        {
+          "id": "4",
+          "role": "settled"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "0",
+          "to": "1",
+          "role": "settled"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "settled"
+        },
+        {
+          "from": "3",
+          "to": "4",
+          "role": "settled"
+        },
+        {
+          "from": "0",
+          "to": "2",
+          "role": "settled"
+        },
+        {
+          "from": "2",
+          "to": "3",
+          "role": "settled"
+        }
+      ]
+    }
+  ]
+}

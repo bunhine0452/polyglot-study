@@ -6,6 +6,10 @@
 BFS로 하든 DFS로 하든 나오는 개수와 각 정점이 속하는 그룹은 똑같다. 한 정점에서 출발해 간선을 따라 도달할 수 있는 정점의 집합은 탐색 순서와 무관하게 그래프 구조 자체로 정해지는 값이기 때문이다 — 큐를 쓰든 스택을 쓰든 "이 정점에서 갈 수 있는 곳"이라는 사실은 바뀌지 않는다.
 
 전체 시간은 얼마나 걸릴까? 여러 번 탐색을 새로 시작해도, 이미 방문한 정점은 다시 열어보지 않는다. 그러니 모든 연결 요소를 합쳐도 결국 정점 하나와 간선 하나를 딱 한 번씩만 들여다본다 — O(V + E) 다.
+
+@Visualize(id: connected-components, frames: visuals/connected-components.json) {
+연결 요소가 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: connected-components-example, language: rust, expected: expected/algorithms-connected-components.txt) {

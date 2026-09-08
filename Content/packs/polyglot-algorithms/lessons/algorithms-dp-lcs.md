@@ -6,6 +6,10 @@
 배낭 문제와 마찬가지로 대각선(`dp[i-1][j-1]`) 과 위·왼쪽(`dp[i-1][j]`, `dp[i][j-1]`) 세 칸만 보면 되고, 표를 왼쪽 위부터 채우면 필요한 값은 항상 먼저 채워져 있다.
 
 길이만 구하는 것과 실제 문자열을 복원하는 것은 다르다. 표를 다 채운 뒤 오른쪽 아래(`dp[n][m]`) 에서 시작해 거꾸로 되짚어간다. `a[i-1] == b[j-1]` 이면 그 글자를 결과에 넣고 대각선(`i-1, j-1`) 으로 이동한다. 다르면 `dp[i-1][j]` 와 `dp[i][j-1]` 중 더 큰 값이 있던 방향으로 이동한다. `(0, 0)` 에 닿을 때까지 반복하고, 모아둔 글자를 뒤집으면 LCS 문자열이 된다.
+
+@Visualize(id: dp-lcs, frames: visuals/dp-lcs.json) {
+최장 공통 부분 수열(LCS)이 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: dp-lcs-example, language: rust, expected: expected/algorithms-dp-lcs.txt) {

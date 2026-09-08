@@ -4,6 +4,10 @@
 최악의 경우(완전히 거꾸로 정렬된 입력)는 매번 앞부분 전체를 밀어야 해서 버블·선택 정렬과 같은 O(n^2) 이다. 하지만 **이미 정렬에 가까운 입력**이라면 다르다 — key 가 제자리 바로 앞에 있을 가능성이 높으니 `xs[j - 1] > key` 조건이 금방 거짓이 되어 안쪽 while 이 한두 번만 돌고 멈춘다. 입력이 완전히 정렬돼 있으면 안쪽 while 이 아예 한 번도 안 돌아서 O(n)이 된다. 입력의 정렬 상태에 따라 실제 걸리는 시간이 달라진다는 뜻에서 삽입 정렬을 적응 정렬(adaptive)이라고 부른다.
 
 세 O(n^2) 정렬은 '다음에 무엇을 비교할지'가 다르다. 버블 정렬은 이웃 두 칸만 보고, 선택 정렬은 남은 구간 전체를 다 훑어야 다음 값을 정할 수 있고, 삽입 정렬은 이미 정렬된 앞부분과 비교하며 알맞은 자리를 찾는다. 이 차이가 이미 정렬된 입력을 만났을 때의 반응을 갈라놓는다.
+
+@Visualize(id: insertion-sort, frames: visuals/insertion-sort.json) {
+삽입 정렬이 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: insertion-sort-example, language: rust, expected: expected/algorithms-insertion-sort.txt) {

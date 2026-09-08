@@ -6,6 +6,10 @@
 1차원 DP가 "바로 앞 한두 칸" 을 참고했다면, 2차원 DP는 "바로 위 칸과 바로 왼쪽 칸" 이라는 두 방향을 참고한다 — 축이 두 개니까 이전 상태도 두 방향에서 온다. 첫 행(`r == 0`)은 위칸이 없으니 왼쪽에서만, 첫 열(`c == 0`)은 왼쪽칸이 없으니 위에서만 올 수 있다는 경계 처리만 따로 해주면 나머지는 규칙 하나로 끝난다.
 
 표를 왼쪽 위부터 행 우선(또는 열 우선)으로 채워나가면, `dp[r][c]` 를 채울 때 필요한 `dp[r-1][c]` 와 `dp[r][c-1]` 은 이미 채워져 있다.
+
+@Visualize(id: dp-2d-grid, frames: visuals/dp-2d-grid.json) {
+2차원 DP이 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: dp-2d-grid-example, language: rust, expected: expected/algorithms-dp-2d-grid.txt) {

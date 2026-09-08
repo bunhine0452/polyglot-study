@@ -6,6 +6,10 @@
 반으로 나누는 깊이는 log n 이다(n을 계속 절반으로 줄여 1까지 가려면 log n 번 나눠야 한다). 각 깊이에서는 그 깊이에 있는 모든 병합 호출이 처리하는 원소 수를 다 더하면 항상 n개다 — 즉 깊이 하나당 O(n) 이 든다. 깊이가 log n개니까 전체는 O(n log n) 이다.
 
 병합할 때 왼쪽과 오른쪽 값이 같으면 **왼쪽을 먼저 고른다**(`<=`). 왼쪽 절반은 원래 배열에서 더 앞쪽에 있던 원소들이므로, 같은 값이면 항상 원래 순서대로 결과에 들어간다 — 그래서 병합 정렬은 안정 정렬이다.
+
+@Visualize(id: merge-sort, frames: visuals/merge-sort.json) {
+병합 정렬이 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: merge-sort-example, language: rust, expected: expected/algorithms-merge-sort.txt) {

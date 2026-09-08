@@ -4,6 +4,10 @@
 첫 번째 자리를 원한다면 규칙을 바꾼다. `xs[mid] == target` 이어도 멈추지 않고 **왼쪽으로 계속 줄인다** — 더 이른 자리가 있는지 확인해야 하기 때문이다. `xs[mid] >= target` 이면 `hi = mid`, 아니면 `lo = mid + 1` 로 둔다. 이렇게 하면 `lo` 는 target 이상인 첫 자리(하한, lower bound)에서 멈춘다. 마지막 자리를 원한다면 반대로 `xs[mid] <= target` 일 때 `lo = mid + 1` 로 오른쪽을 밀어붙인다 — 이러면 target 보다 큰 첫 자리(상한, upper bound)가 나오고, 그 바로 앞자리가 마지막 자리다.
 
 회전된 정렬 배열은 다르다. 오름차순 배열을 어느 지점에서 잘라 앞뒤를 바꿔 붙인 모양이라 전체는 정렬돼 있지 않지만 **끊긴 지점은 하나뿐**이다. 그래서 `lo` 와 `mid` 사이, 또는 `mid` 와 `hi` 사이 둘 중 하나는 반드시 정렬돼 있다. `xs[lo] <= xs[mid]` 면 왼쪽 절반이 정렬된 것이고, 아니면 오른쪽 절반이 정렬된 것이다. 정렬된 절반의 범위 안에 target 이 들어가면 그쪽을 계속 탐색하고, 아니면 반대쪽을 탐색한다 — 매번 후보가 절반으로 줄어드는 것은 똑같다.
+
+@Visualize(id: binary-search-variants, frames: visuals/binary-search-variants.json) {
+이진 탐색 응용이 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: binary-search-variants-example, language: rust, expected: expected/algorithms-binary-search-variants.txt) {

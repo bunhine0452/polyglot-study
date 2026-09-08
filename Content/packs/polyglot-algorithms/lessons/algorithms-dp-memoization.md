@@ -6,6 +6,10 @@
 메모이제이션은 여전히 위(큰 문제)에서 아래(작은 부분 문제)로 내려가는 방식이라 **하향식(top-down)** 이다. 재귀 구조는 그대로 두고 캐시만 끼워 넣는다는 점이 다음 편의 타뷸레이션과 다른 점이다.
 
 캐시 덕분에 각 입력값은 딱 한 번만 실제로 계산된다. `fib(n)` 을 계산하는 서로 다른 입력은 `0` 부터 `n` 까지 `n + 1` 가지뿐이므로, 호출 횟수가 지수(대략 `2^n`)에서 선형(`O(n)`)으로 떨어진다.
+
+@Visualize(id: dp-memoization, frames: visuals/dp-memoization.json) {
+메모이제이션이 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: dp-memoization-example, language: rust, expected: expected/algorithms-dp-memoization.txt) {

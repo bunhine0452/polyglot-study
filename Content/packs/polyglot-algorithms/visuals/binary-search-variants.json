@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "binary-search-variants",
+  "kind": "array",
+  "values": [1, 3, 3, 3, 5, 7, 9],
+  "frames": [
+    {
+      "caption": "정렬된 배열 [1,3,3,3,5,7,9]에서 3의 첫 번째 자리를 찾습니다. 후보는 0번부터 6번까지입니다.",
+      "pointers": [{ "name": "lo", "index": 0 }],
+      "segments": [{ "role": "highlighted", "start": 0, "end": 6 }]
+    },
+    {
+      "caption": "가운데 xs[3] = 3 — target 과 같지만 멈추지 않습니다. 더 이른 자리가 있을 수 있으니 hi 를 3으로 당겨 왼쪽만 남깁니다.",
+      "pointers": [{ "name": "lo", "index": 0 }, { "name": "mid", "index": 3 }],
+      "segments": [{ "role": "highlighted", "start": 0, "end": 6 }]
+    },
+    {
+      "caption": "후보가 [0,3)으로 줄었습니다. 가운데 xs[1] = 3 — 또 같지만 역시 멈추지 않고 hi 를 1로 당깁니다.",
+      "pointers": [{ "name": "lo", "index": 0 }, { "name": "mid", "index": 1 }, { "name": "hi", "index": 3 }],
+      "segments": [{ "role": "excluded", "start": 3, "end": 6 }, { "role": "highlighted", "start": 0, "end": 2 }]
+    },
+    {
+      "caption": "후보가 [0,1) 하나로 줄었습니다. xs[0] = 1 은 target 보다 작으니 이번엔 lo 를 1로 밀어붙입니다.",
+      "pointers": [{ "name": "lo", "index": 0 }, { "name": "mid", "index": 0 }, { "name": "hi", "index": 1 }],
+      "segments": [{ "role": "excluded", "start": 1, "end": 6 }, { "role": "highlighted", "start": 0, "end": 0 }]
+    },
+    {
+      "caption": "lo 와 hi 가 1로 같아져 반복이 끝났습니다. xs[1] = 3 이 target 과 같으므로 이 자리가 첫 위치입니다.",
+      "pointers": [{ "name": "첫 위치", "index": 1 }],
+      "segments": [{ "role": "excluded", "start": 0, "end": 0 }, { "role": "excluded", "start": 2, "end": 6 }, { "role": "highlighted", "start": 1, "end": 1 }]
+    }
+  ]
+}

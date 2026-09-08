@@ -6,6 +6,10 @@
 `i`번째 물건을 처리할 때 두 선택지가 있다. **안 담으면** 가치는 `dp[i-1][cap]` 그대로다. **담으면** 그 물건의 무게만큼 한도가 줄어든 상태에서 나머지를 채운 값에 이 물건의 가치를 더한다 — `dp[i-1][cap - weight] + value` 다(단, 물건 무게가 `cap` 보다 크면 애초에 담을 수 없다). 둘 중 더 큰 값이 `dp[i][cap]` 이다.
 
 여기서 순서가 중요하다. `dp[i][cap]` 이 참조하는 것은 항상 `dp[i-1][...]` — **한 줄 위**, 즉 이 물건을 아직 고려하지 않았던 상태다. 그래서 표를 물건 번호 순서(`i = 1, 2, 3, ...`)로 한 줄씩 채우면, 같은 물건을 두 번 담는 일이 생기지 않는다. 만약 표를 1차원으로 줄여서 같은 줄에서 갱신한다면 무게를 **큰 값에서 작은 값으로** 거꾸로 훑어야 하는데, 이 편에서는 2차원 표로 그 문제 자체를 피한다.
+
+@Visualize(id: dp-knapsack, frames: visuals/dp-knapsack.json) {
+0/1 배낭 문제가 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: dp-knapsack-example, language: rust, expected: expected/algorithms-dp-knapsack.txt) {

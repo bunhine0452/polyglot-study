@@ -6,6 +6,10 @@
 집 도둑: 일렬로 늘어선 집을 털 때 이웃한 두 집을 동시에 털 수 없다는 제약이 있다. `i`번째 집까지 봤을 때 최댓값은 두 가지 중 하나다 — **이 집을 안 턴다**(`dp[i-1]` 그대로), 또는 **이 집을 턴다**(`dp[i-2]` 에 이 집 값을 더함, 바로 앞 집은 건드릴 수 없으니까). 둘 중 큰 쪽을 고른다: `dp[i] = max(dp[i-1], dp[i-2] + values[i-1])`.
 
 두 문제 모두 "이 칸의 답이 바로 앞 한두 칸에서 어떻게 나오는가" 를 점화식으로 세우는 게 전부다. 계단 오르기는 선택지를 **더하고**(경우의 수), 집 도둑은 선택지 중 **고른다**(최댓값) — 문제가 묻는 것이 "몇 가지냐" 인지 "최댓값이 얼마냐" 인지에 따라 점화식의 연산이 달라진다는 것이 이번 편의 핵심이다.
+
+@Visualize(id: dp-1d-problems, frames: visuals/dp-1d-problems.json) {
+1차원 DP 응용이 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: dp-1d-problems-example, language: rust, expected: expected/algorithms-dp-1d-problems.txt) {

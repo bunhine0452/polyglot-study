@@ -6,6 +6,10 @@ BFS는 간선에 가중치가 없을 때 최단 거리를 구했다 — 간선 �
 구체적으로는 이렇게 진행한다. 시작 정점의 거리를 0, 나머지는 무한대로 둔다. 매 라운드마다 미확정 정점 중 거리가 가장 짧은 정점 u를 고르고 확정한다. 그다음 u의 이웃 v마다, u를 거쳐 가는 거리(dist[u] + 가중치)가 지금까지 알려진 dist[v]보다 짧으면 갱신한다 — 이것이 거리 갱신(relaxation)이다.
 
 우선순위 큐를 쓰면 가장 짧은 정점을 매번 로그 시간에 고를 수 있지만, 아직 배우지 않았다. 여기서는 매 라운드마다 미확정 정점을 처음부터 끝까지 훑어 최솟값을 찾는다 — 라운드당 O(V), 정점이 V개니 전체 O(V²)다. 정점 수가 많지 않다면 이걸로 충분하다.
+
+@Visualize(id: dijkstra, frames: visuals/dijkstra.json) {
+다익스트라가 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: dijkstra-example, language: rust, expected: expected/algorithms-dijkstra.txt) {

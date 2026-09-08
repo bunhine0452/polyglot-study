@@ -6,6 +6,10 @@
 방문 표시(Vec<bool>)는 정점을 큐에 넣는 그 순간 바로 해야 한다. 꺼낼 때 표시하면, 아직 큐 안에 있는 같은 정점이 다른 이웃을 처리하는 동안 또 큐에 들어갈 수 있다 — 결과적으로 같은 정점이 여러 번 방문되고, 사이클이 있는 그래프에서는 큐가 계속 불어나 끝나지 않는다.
 
 인접 리스트에서 정점 하나의 이웃을 보는 데 걸리는 시간과, 각 간선을 정확히 두 번(양 끝에서 한 번씩) 보는 것을 합치면 전체 시간은 O(정점 수 + 간선 수)다.
+
+@Visualize(id: bfs, frames: visuals/bfs.json) {
+너비 우선 탐색(BFS)이 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: bfs-example, language: rust, expected: expected/algorithms-bfs.txt) {

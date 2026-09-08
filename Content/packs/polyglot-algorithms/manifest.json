@@ -162,164 +162,164 @@
       "sha256" : "7a8995378921826f9ac0ddac19e19e6d216baa154559bb1d83cc9c73573baa24"
     },
     {
-      "bytes" : 5322,
+      "bytes" : 5447,
       "path" : "lessons/algorithms-bfs.md",
-      "sha256" : "8cac3a0584d088bcf4a3569f11e0e01410b6defea0abad54f91b7be9cbf7f8ff"
+      "sha256" : "8a53547031b004334d969f3e28a7ad8adffdf05114eebad1c9fb0c17374bb8dc"
     },
     {
-      "bytes" : 5338,
+      "bytes" : 5496,
       "path" : "lessons/algorithms-binary-search-variants.md",
-      "sha256" : "1cbdeb1b528854e42e2f7e99baa4e5300e5f439fd8bc4fe6a7bbe367f49a1352"
+      "sha256" : "16a9368672c160ee85be851a85603c2843e76de03df37dfc53f36a52da138db1"
     },
     {
-      "bytes" : 4214,
+      "bytes" : 4347,
       "path" : "lessons/algorithms-binary-search.md",
-      "sha256" : "50f2a2cf2254a5b4769d4d4bea5886de33d6c3389bfa8c450db03d2007f7183c"
+      "sha256" : "6adcfeae31d1e2a90068901e503033ac89df342a3f53b1f2118154460df73875"
     },
     {
-      "bytes" : 10737,
+      "bytes" : 10895,
       "path" : "lessons/algorithms-bst-delete-and-balance.md",
-      "sha256" : "e5fb9618293f0f803851211c5ede24f24c41dbc20269b89ca07b3eca8d6b7f71"
+      "sha256" : "c8304e9ef28ed039f9ea1cb604475c5c99b7817ac63d0c6383217efaf6da2472"
     },
     {
-      "bytes" : 6640,
+      "bytes" : 6760,
       "path" : "lessons/algorithms-bst.md",
-      "sha256" : "ab08a1b43a10d01a12adc89e9f6a178662833e855206d75f97ceaa0b83fec81d"
+      "sha256" : "80170765e7dba62cb665946bcdd0846cf03400b06074f1303ec973707d63dd3a"
     },
     {
-      "bytes" : 4109,
+      "bytes" : 4238,
       "path" : "lessons/algorithms-bubble-sort.md",
-      "sha256" : "20cd025d2f3e1fde6e71873e2d27fba3f78e947485eb5d447b9101e049df171e"
+      "sha256" : "b45ba2f9047b1506226553465d1ffab98f50a31416b91651d24423679dae170b"
     },
     {
-      "bytes" : 5876,
+      "bytes" : 6023,
       "path" : "lessons/algorithms-connected-components.md",
-      "sha256" : "014d3bb85884032410969411184f8ad73e8edc7bfe6bf4e8bc91746e5cdc9eda"
+      "sha256" : "d9a5e65ba8b10ef6452d1f0f5c52b1b46c473a505ebcfb9f0291d14be8819794"
     },
     {
-      "bytes" : 6158,
+      "bytes" : 6298,
       "path" : "lessons/algorithms-cycle-detection.md",
-      "sha256" : "38a8f9bd6e9601698bc5122a0888d3a086f7e7ee55d940fc44861a79718a8c29"
+      "sha256" : "ceefa0cf0444b53b5823e7a1e178cf5d79f09daaa8c426c9d7091d0403fae118"
     },
     {
-      "bytes" : 5664,
+      "bytes" : 5789,
       "path" : "lessons/algorithms-dfs.md",
-      "sha256" : "323f23c113583233cb0d8da8d057088f6d64798455b33d3706f778b261f10d56"
+      "sha256" : "f59aa4995cba597d05ace7933863a0247679aaf868f69dab2fb7ab8a99ac80c2"
     },
     {
-      "bytes" : 7165,
+      "bytes" : 7290,
       "path" : "lessons/algorithms-dijkstra.md",
-      "sha256" : "37d4b1333dd7e2ec446439191381606eeb2ac8ea0ece48c25bc077ea6018433b"
+      "sha256" : "55e6573bf6f3b5e33955617cfd79a71c3603e35d6f7529a756afa755e4c85ad4"
     },
     {
-      "bytes" : 5771,
+      "bytes" : 5910,
       "path" : "lessons/algorithms-dp-1d-problems.md",
-      "sha256" : "2be62f22ab566cdb7376d0b94372bb1ec57c4e8a54f77fbc882a2f13ccb9be91"
+      "sha256" : "41308ff1c0888d932776f68bae0da03252c71318baa95155b13d4ea13f7140e1"
     },
     {
-      "bytes" : 5112,
+      "bytes" : 5236,
       "path" : "lessons/algorithms-dp-2d-grid.md",
-      "sha256" : "9c75ab259e26f48d361837aaed74b196bd98ff774bb6105e28b27c466339b85b"
+      "sha256" : "545c1cd3d4bd4fd6a2a4bd7bec19af1da643b40e521e46a2a746d3a09ba54a69"
     },
     {
-      "bytes" : 5670,
+      "bytes" : 5803,
       "path" : "lessons/algorithms-dp-knapsack.md",
-      "sha256" : "403ccc278b3ef159414441fe9116b50765cda0bbe2f0d22995c97401a9e43507"
+      "sha256" : "c395033ea38c9840803ecd4b03005642d6306085b8b5c8d5c84347786ca627c0"
     },
     {
-      "bytes" : 5913,
+      "bytes" : 6051,
       "path" : "lessons/algorithms-dp-lcs.md",
-      "sha256" : "05b92bcc3191059b0a7644fca3403f2ba5e4b419a0e155a62907a9221622a3df"
+      "sha256" : "92c8caf0a6c28460b2fc8b76138c88af4ef0d366724dcff8d7d3bc7095e25a9c"
     },
     {
-      "bytes" : 5523,
+      "bytes" : 5663,
       "path" : "lessons/algorithms-dp-memoization.md",
-      "sha256" : "5b7f3b73afc5236dcb4c9afd8234f7d58279d3724b8d16de730317f57b36f546"
+      "sha256" : "26d0c375ff75cdcc2e61e0177691b45d083e2927b777664430516505ae7c99c3"
     },
     {
-      "bytes" : 4675,
+      "bytes" : 4810,
       "path" : "lessons/algorithms-dp-tabulation.md",
-      "sha256" : "ee98093ff4c6f6e2b3400ba13639c54f977484abe94f474325938d9f132da38e"
+      "sha256" : "c06781ee95c0f037f8831715b61c609ea7979d9a4d21880215f76f2311196ad0"
     },
     {
-      "bytes" : 5182,
+      "bytes" : 5332,
       "path" : "lessons/algorithms-graph-representation.md",
-      "sha256" : "899a1ceba16c09c3adbe52027b759f889e8d4dd3b0852a20497bf5192fc662c5"
+      "sha256" : "db9c09727be277f5514b2dc4c335c5d6006d6b939699f203526489b2493f7cfe"
     },
     {
-      "bytes" : 6772,
+      "bytes" : 6927,
       "path" : "lessons/algorithms-heap-priority-queue.md",
-      "sha256" : "df31a5da139277fb23c332c8dddd86ee0abaa120db13ed99610e04e61d3bb01e"
+      "sha256" : "776732c9761d3f4d749df55683f83fa99f9376dd0abcacd0865b76a175f722f2"
+    },
+    {
+      "bytes" : 4549,
+      "path" : "lessons/algorithms-insertion-sort.md",
+      "sha256" : "76af052d1fc05f577585c4ebeaba76fcfc7efc29bce027c329f513b559f03b0c"
+    },
+    {
+      "bytes" : 5237,
+      "path" : "lessons/algorithms-merge-sort.md",
+      "sha256" : "cac077b87718067c09add28114874a89fd993c94f9502ae3366abe59dc907120"
     },
     {
       "bytes" : 4414,
-      "path" : "lessons/algorithms-insertion-sort.md",
-      "sha256" : "c62ebb36430063c260956b34166dede43c798abfc8b8e381f9bbb92e18652645"
-    },
-    {
-      "bytes" : 5110,
-      "path" : "lessons/algorithms-merge-sort.md",
-      "sha256" : "f130b4ee239abcd8460bfcbd8ec77f504f3a018b3ba5cf2e45359fde6ccd13ac"
-    },
-    {
-      "bytes" : 4284,
       "path" : "lessons/algorithms-prefix-sum.md",
-      "sha256" : "dcc17e4159cf3d662f7bfae5d0df3cbb97ffdaff34191b845924f27e3c431b13"
+      "sha256" : "be74e0fe33c6226e43b4b897b959db2ddf4afca31ead799fee88973c11993bc0"
     },
     {
-      "bytes" : 5167,
+      "bytes" : 5291,
       "path" : "lessons/algorithms-quick-sort.md",
-      "sha256" : "c21c944924e021defd6783ebccdad8bb4fc39ced120e056226afb0f278a94028"
+      "sha256" : "3fad470e511156a76b3cd798c4d7a9de5840b2b29fc18cdcc45807b438d1e8a4"
     },
     {
-      "bytes" : 4378,
+      "bytes" : 4510,
       "path" : "lessons/algorithms-recursion-basics.md",
-      "sha256" : "9f5e03c424ea848ae782cf85fcb89e3f09d44058f7237bca347f397d532c5720"
+      "sha256" : "cecfe98d6db86b7c3a1fde2a31efa70a3a3a2a5364bd8c74b4f8ac76e1fb900b"
     },
     {
-      "bytes" : 4617,
+      "bytes" : 4752,
       "path" : "lessons/algorithms-selection-sort.md",
-      "sha256" : "e2f7b0bc462b67451e0aa3896b147aa8b2c891e24357e12959bdd875dd935b44"
+      "sha256" : "05f97c7ccb8dc0e96ca189db328e73e0aaf6fe7c0be0011a4366f7651c7344f1"
     },
     {
-      "bytes" : 5880,
+      "bytes" : 6052,
       "path" : "lessons/algorithms-shortest-path-unweighted.md",
-      "sha256" : "bfff047195f17f17b2e67a3b084b6ebbe31423ae99f0afc25a85a04c5991f433"
+      "sha256" : "b5221f002faa44f1ca882b67813b9f12b1136fd314fa515e0a309b2d15e26ff9"
     },
     {
-      "bytes" : 5375,
+      "bytes" : 5519,
       "path" : "lessons/algorithms-sliding-window.md",
-      "sha256" : "6bd8f29917dae051da7590d558d3a69a0d0ced54eaf758840e4cb17f0a7f37d1"
+      "sha256" : "c3d96109a44f3a53e9321e5800bfad928c3dea9096a63fc469b5d5f9b99a3efd"
     },
     {
-      "bytes" : 6324,
+      "bytes" : 6481,
       "path" : "lessons/algorithms-sorting-comparison.md",
-      "sha256" : "d0c52598d1edfe1a0835c3f2250ea6bed23cf2266cb4bab009c705c32f8563b8"
+      "sha256" : "2c3fc5133b8cc541d43dce060f73f30fa4a9f83ba064232918e8e35b3698d334"
     },
     {
-      "bytes" : 5921,
+      "bytes" : 6060,
       "path" : "lessons/algorithms-topological-sort.md",
-      "sha256" : "0e8d666671716ea4115c7acafe2f29b0decdd45a23034c61f8b6a54c03cec964"
+      "sha256" : "5eac8de1296fc570a6f5d74b9b42d0332b4104528dc113596fc6c2b7de510953"
     },
     {
-      "bytes" : 5810,
+      "bytes" : 5939,
       "path" : "lessons/algorithms-tree-basics.md",
-      "sha256" : "7fea6cdfb50a0ceeda41af2c92be14a3892961914459b91afbe73ccfca5c4fbf"
+      "sha256" : "5f6eac171a2c954d7ce60781aecdf6f3c67167bcd889b554348352dd18e7433a"
     },
     {
-      "bytes" : 6719,
+      "bytes" : 6872,
       "path" : "lessons/algorithms-tree-traversal-bfs.md",
-      "sha256" : "c31ab8b908944af9a3faf5e297d86e55e03364ff4861346a23aa8d209fbe3b0b"
+      "sha256" : "9cfa2af13e2885539de4294dc1a225db8282ecfaa983a7031e76bde2853926e3"
     },
     {
-      "bytes" : 6790,
+      "bytes" : 6933,
       "path" : "lessons/algorithms-tree-traversal-dfs.md",
-      "sha256" : "5da47b8eef7c1835c3c9cbf02c1bda457a9e40fb6fff440cd404f0c95a3db6f3"
+      "sha256" : "ead0eff6d214be638ad384eab1eb1a3b396eb7a9d8bb721bdf4c95055c231e80"
     },
     {
-      "bytes" : 5567,
+      "bytes" : 5698,
       "path" : "lessons/algorithms-two-pointers.md",
-      "sha256" : "279f6a18f231eb477873e32e257c92dd8ee97c89f4a8de2335a1c4bff759d261"
+      "sha256" : "4a92ad29c9ff791e52d94895aa0c9b8f8d3597ffea05c39a6c25ce7c5dca40d7"
     },
     {
       "bytes" : 497,
@@ -805,6 +805,166 @@
       "bytes" : 833,
       "path" : "tests/algorithms-two-pointers.rs",
       "sha256" : "17b095f402c760a5dbb2571b84ce2eed18de4d7f8f6085758c67ca6b21c5e2e4"
+    },
+    {
+      "bytes" : 8296,
+      "path" : "visuals/bfs.json",
+      "sha256" : "02f6f88ca3acbfbfaccd378fffbc31981085e30ff8844567552d7ee83a02f375"
+    },
+    {
+      "bytes" : 1888,
+      "path" : "visuals/binary-search-variants.json",
+      "sha256" : "25f7e32b8cadae4e2bd23f7b47461425662a69c6712833d169e9946a35bb93a4"
+    },
+    {
+      "bytes" : 1870,
+      "path" : "visuals/binary-search.json",
+      "sha256" : "f6c2acbc4e59a381712729534a40e313dda16cde6381b20dec406ef6384cf52a"
+    },
+    {
+      "bytes" : 15625,
+      "path" : "visuals/bst-delete-and-balance.json",
+      "sha256" : "25b30d136525966726c162a24d27a7d0ad56c4a90bf4c6903f639a26ff646afb"
+    },
+    {
+      "bytes" : 9970,
+      "path" : "visuals/bst.json",
+      "sha256" : "8e9ddaa423d05921384e0d1987a48e32e8eadbc31b35327187e7da644d2c4413"
+    },
+    {
+      "bytes" : 1484,
+      "path" : "visuals/bubble-sort.json",
+      "sha256" : "eb78464c43c76365599bcea5a3d94e5969f7539e65751e5fc77ed9d6ac43ef41"
+    },
+    {
+      "bytes" : 4931,
+      "path" : "visuals/connected-components.json",
+      "sha256" : "d45836be7f65e64d08ac0f2ce37bf7bbf1d3ec4d9fac9a61de82c63c9bd3bb18"
+    },
+    {
+      "bytes" : 5053,
+      "path" : "visuals/cycle-detection.json",
+      "sha256" : "0082934c3c8010e4a6129ff4f1a6132c87d977d05851cd5b786b29e32f7c4f24"
+    },
+    {
+      "bytes" : 7446,
+      "path" : "visuals/dfs.json",
+      "sha256" : "910d6d7c05e29e332aa661480c22e96f673fed3f91b41a5f8488cf0c478eb62e"
+    },
+    {
+      "bytes" : 7967,
+      "path" : "visuals/dijkstra.json",
+      "sha256" : "93df19f701c89704869a3a534be691c2b175fd0eed7eedaf38de09ab81e50488"
+    },
+    {
+      "bytes" : 9386,
+      "path" : "visuals/dp-1d-problems.json",
+      "sha256" : "84285527bd08c29b84414240639fc85676e7cce2bfe6c37a437f3dd562dfd06b"
+    },
+    {
+      "bytes" : 9375,
+      "path" : "visuals/dp-2d-grid.json",
+      "sha256" : "76cc5b2133b042eb0991d33b51dd898b6a979768c2bbdef0b57cc585e600d465"
+    },
+    {
+      "bytes" : 16334,
+      "path" : "visuals/dp-knapsack.json",
+      "sha256" : "82bfe4c1bf299eac312b7486bec70dc43573b2a91f2828333bcedf95ca9b6536"
+    },
+    {
+      "bytes" : 30410,
+      "path" : "visuals/dp-lcs.json",
+      "sha256" : "12b4d50be71a269a01e3b39b286dd5aa2b68260be8b772cdd5364270808ce98b"
+    },
+    {
+      "bytes" : 5779,
+      "path" : "visuals/dp-memoization.json",
+      "sha256" : "7dd3499c0ba0469743867984175db19ea03aa1239f10e4c032ba4a71c9c0f7b6"
+    },
+    {
+      "bytes" : 7757,
+      "path" : "visuals/dp-tabulation.json",
+      "sha256" : "c3ef7d549186866646f0a18430af2213fd22dbd27ac92834a239cf349431ef92"
+    },
+    {
+      "bytes" : 4564,
+      "path" : "visuals/graph-representation.json",
+      "sha256" : "a31d2681e059bc5f64e54b61c72a77700867dbc5d5c43051269e4ee495953a39"
+    },
+    {
+      "bytes" : 10240,
+      "path" : "visuals/heap-priority-queue.json",
+      "sha256" : "981192cbf5163f3480b6771765570f84a086c9b2220dc2752b9293427638d639"
+    },
+    {
+      "bytes" : 1570,
+      "path" : "visuals/insertion-sort.json",
+      "sha256" : "ffdd3c65edf1da179cdaa4399e70aca3516bc9787bcac3c605fb9eb876c7befd"
+    },
+    {
+      "bytes" : 2710,
+      "path" : "visuals/merge-sort.json",
+      "sha256" : "5674c7f96901cf7a5726fd6999b2fa1ec947d98c065d12f8fb44328c55d65b3b"
+    },
+    {
+      "bytes" : 1481,
+      "path" : "visuals/prefix-sum.json",
+      "sha256" : "55705dfe99365140e6437c2e51bc00b369c96eab74b142180cd4440349f8234e"
+    },
+    {
+      "bytes" : 1919,
+      "path" : "visuals/quick-sort.json",
+      "sha256" : "3950e7752370870a9d8aa6b2d8cfd36ade0de4c048de41619e1d4e85bba64335"
+    },
+    {
+      "bytes" : 2066,
+      "path" : "visuals/recursion-basics.json",
+      "sha256" : "68cd5d4b200d7e0af8252d5ba4db2f19c88561eaceb23281f707b711cbf2a4e9"
+    },
+    {
+      "bytes" : 1725,
+      "path" : "visuals/selection-sort.json",
+      "sha256" : "1c427e8149a5c24c2cf211cc58078521faf23597d0d3b468e077c76e07cbaf88"
+    },
+    {
+      "bytes" : 6700,
+      "path" : "visuals/shortest-path-unweighted.json",
+      "sha256" : "d7a26445e06dc7050a93ea051c60b0546eecb58b5f1d7565aecef4d891d15533"
+    },
+    {
+      "bytes" : 1516,
+      "path" : "visuals/sliding-window.json",
+      "sha256" : "3b0f73a8c68985acafea27f4741051d59152f1bb8cd490c793473c550e7c55a6"
+    },
+    {
+      "bytes" : 1781,
+      "path" : "visuals/sorting-comparison.json",
+      "sha256" : "658b533e5d97b858638b9d0802ac5f886efeeb1481b82590d8b342a7fd7a908c"
+    },
+    {
+      "bytes" : 6458,
+      "path" : "visuals/topological-sort.json",
+      "sha256" : "70f9a52000ba94795fc695124570851331ee9c1fa29beb63186784c980432b14"
+    },
+    {
+      "bytes" : 5278,
+      "path" : "visuals/tree-basics.json",
+      "sha256" : "73eaaac1b685a3cb2cbcca836e9152d8f067b689cbaf7ad451a8ec1ac424c535"
+    },
+    {
+      "bytes" : 5910,
+      "path" : "visuals/tree-traversal-bfs.json",
+      "sha256" : "99c259a5fadfcbaac986b07121c14820c2624673f242b8319dd6687bf3c7a684"
+    },
+    {
+      "bytes" : 6935,
+      "path" : "visuals/tree-traversal-dfs.json",
+      "sha256" : "9ea8b0d1c382503a7d7563f091ee9bb05340b2bd1c3d8a3fe345b397d1f9f9fd"
+    },
+    {
+      "bytes" : 1495,
+      "path" : "visuals/two-pointers.json",
+      "sha256" : "d2df5c548268cd09e69d69e0e67137a474bcf298b7bfc7b769d8f9914dcc05f7"
     }
   ],
   "generatedAt" : "2026-09-08T05:00:00Z",

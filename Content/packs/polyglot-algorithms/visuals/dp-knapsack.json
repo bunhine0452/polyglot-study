@@ -1,0 +1,818 @@
+{
+  "schemaVersion": 1,
+  "id": "dp-knapsack",
+  "kind": "table",
+  "rowHeaders": [
+    "없음 (i=0)",
+    "1번 (무게2, 가치3)",
+    "2번 (무게3, 가치4)",
+    "3번 (무게4, 가치5)"
+  ],
+  "columnHeaders": [
+    "cap=0",
+    "cap=1",
+    "cap=2",
+    "cap=3",
+    "cap=4",
+    "cap=5"
+  ],
+  "frames": [
+    {
+      "caption": "물건이 하나도 없으면(i=0) 무게 한도가 얼마든 담을 가치는 0입니다. 무게 한도가 0(cap=0)이면 어떤 물건도 못 담으니 그 역시 항상 0입니다.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        }
+      ]
+    },
+    {
+      "caption": "1번 물건(무게2, 가치3)을 고려합니다. dp[1][2]: 안 담으면 위 칸 dp[0][2]=0, 담으면 왼쪽 위 칸 dp[0][0]=0+가치3=3. 큰 쪽인 3을 고릅니다.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "value": 3,
+          "role": "current",
+          "from": [
+            {
+              "row": 0,
+              "column": 2
+            },
+            {
+              "row": 0,
+              "column": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "1번 물건(무게2, 가치3)을 고려합니다. dp[1][5]: 안 담으면 위 칸 dp[0][5]=0, 담으면 왼쪽 위 칸 dp[0][3]=0+가치3=3. 큰 쪽인 3을 고릅니다. 1번 물건 처리 후 행: [0, 0, 3, 3, 3, 3].",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 4,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 5,
+          "value": 3,
+          "role": "current",
+          "from": [
+            {
+              "row": 0,
+              "column": 5
+            },
+            {
+              "row": 0,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "2번 물건(무게3, 가치4)을 고려합니다. dp[2][3]: 안 담으면 위 칸 dp[1][3]=3, 담으면 왼쪽 위 칸 dp[1][0]=0+가치4=4. 큰 쪽인 4를 고릅니다.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 4,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 5,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "value": 4,
+          "role": "current",
+          "from": [
+            {
+              "row": 1,
+              "column": 3
+            },
+            {
+              "row": 1,
+              "column": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "2번 물건(무게3, 가치4)을 고려합니다. dp[2][5]: 안 담으면 위 칸 dp[1][5]=3, 담으면 왼쪽 위 칸 dp[1][2]=3+가치4=7. 큰 쪽인 7을 고릅니다. 2번 물건 처리 후 행: [0, 0, 3, 4, 4, 7].",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 4,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 5,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "value": 4,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 4,
+          "value": 4,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 5,
+          "value": 7,
+          "role": "current",
+          "from": [
+            {
+              "row": 1,
+              "column": 5
+            },
+            {
+              "row": 1,
+              "column": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "3번 물건(무게4, 가치5)을 고려합니다. dp[3][4]: 안 담으면 위 칸 dp[2][4]=4, 담으면 왼쪽 위 칸 dp[2][0]=0+가치5=5. 큰 쪽인 5를 고릅니다.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 4,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 5,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "value": 4,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 4,
+          "value": 4,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 5,
+          "value": 7,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 1,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 2,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 3,
+          "value": 4,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 4,
+          "value": 5,
+          "role": "current",
+          "from": [
+            {
+              "row": 2,
+              "column": 4
+            },
+            {
+              "row": 2,
+              "column": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "caption": "3번 물건(무게4, 가치5)을 고려합니다. dp[3][5]: 안 담으면 위 칸 dp[2][5]=7, 담으면 왼쪽 위 칸 dp[2][1]=0+가치5=5. 큰 쪽인 7을 고릅니다. 3번 물건 처리 후 행: [0, 0, 3, 4, 5, 7]. 최대 가치: 7.",
+      "cells": [
+        {
+          "row": 0,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 1,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 2,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 3,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 4,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 0,
+          "column": 5,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 2,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 3,
+          "column": 0,
+          "value": 0,
+          "role": "base"
+        },
+        {
+          "row": 1,
+          "column": 1,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 2,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 3,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 4,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 1,
+          "column": 5,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 1,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 2,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 3,
+          "value": 4,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 4,
+          "value": 4,
+          "role": "filled"
+        },
+        {
+          "row": 2,
+          "column": 5,
+          "value": 7,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 1,
+          "value": 0,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 2,
+          "value": 3,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 3,
+          "value": 4,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 4,
+          "value": 5,
+          "role": "filled"
+        },
+        {
+          "row": 3,
+          "column": 5,
+          "value": 7,
+          "role": "current",
+          "from": [
+            {
+              "row": 2,
+              "column": 5
+            },
+            {
+              "row": 2,
+              "column": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

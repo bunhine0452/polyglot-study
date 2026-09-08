@@ -1,0 +1,352 @@
+{
+  "schemaVersion": 1,
+  "id": "tree-traversal-dfs",
+  "kind": "graph",
+  "nodes": [
+    {
+      "id": "1",
+      "label": "1",
+      "x": 200,
+      "y": 0
+    },
+    {
+      "id": "2",
+      "label": "2",
+      "x": 100,
+      "y": 100
+    },
+    {
+      "id": "3",
+      "label": "3",
+      "x": 300,
+      "y": 100
+    },
+    {
+      "id": "4",
+      "label": "4",
+      "x": 50,
+      "y": 200
+    },
+    {
+      "id": "5",
+      "label": "5",
+      "x": 150,
+      "y": 200
+    }
+  ],
+  "edges": [
+    {
+      "from": "1",
+      "to": "2"
+    },
+    {
+      "from": "1",
+      "to": "3"
+    },
+    {
+      "from": "2",
+      "to": "4"
+    },
+    {
+      "from": "2",
+      "to": "5"
+    }
+  ],
+  "frames": [
+    {
+      "caption": "1에 진입합니다. 전위 순회는 자식보다 먼저 기록하므로 지금 1을 적습니다: 전위=[1].",
+      "nodeStates": [
+        {
+          "id": "1",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "왼쪽 자식 2로 내려가 진입합니다. 전위=[1, 2].",
+      "nodeStates": [
+        {
+          "id": "1",
+          "role": "current"
+        },
+        {
+          "id": "2",
+          "role": "current"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "1",
+          "to": "2",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "2의 왼쪽 자식 4에 진입합니다. 전위=[1,2,4]. 4는 자식이 없어 왼쪽·자기·오른쪽이 한 점에서 겹칩니다 — 중위=[4], 후위=[4] 모두 지금 기록됩니다.",
+      "nodeStates": [
+        {
+          "id": "1",
+          "role": "current"
+        },
+        {
+          "id": "2",
+          "role": "current"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "1",
+          "to": "2",
+          "role": "current"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "4를 마치고 2로 돌아옵니다. 중위는 왼쪽을 다 본 다음 자신을 적으므로 지금 2를 기록합니다: 중위=[4, 2].",
+      "nodeStates": [
+        {
+          "id": "1",
+          "role": "current"
+        },
+        {
+          "id": "2",
+          "role": "current"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "1",
+          "to": "2",
+          "role": "current"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "visited"
+        }
+      ]
+    },
+    {
+      "caption": "2의 오른쪽 자식 5에 진입합니다. 전위=[1,2,4,5]. 5도 리프라 중위=[4,2,5], 후위=[4,5] 모두 지금 기록됩니다.",
+      "nodeStates": [
+        {
+          "id": "1",
+          "role": "current"
+        },
+        {
+          "id": "2",
+          "role": "current"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        },
+        {
+          "id": "5",
+          "role": "visited"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "1",
+          "to": "2",
+          "role": "current"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "5",
+          "role": "current"
+        }
+      ]
+    },
+    {
+      "caption": "2의 양쪽 자식을 다 봤으니 후위는 지금 2를 기록합니다: 후위=[4,5,2]. 2를 마치고 1로 돌아옵니다.",
+      "nodeStates": [
+        {
+          "id": "1",
+          "role": "current"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        },
+        {
+          "id": "5",
+          "role": "visited"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "1",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "5",
+          "role": "visited"
+        }
+      ]
+    },
+    {
+      "caption": "1의 왼쪽(2)을 다 봤으니 중위는 지금 1을 기록합니다: 중위=[4,2,5,1].",
+      "nodeStates": [
+        {
+          "id": "1",
+          "role": "current"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        },
+        {
+          "id": "5",
+          "role": "visited"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "1",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "5",
+          "role": "visited"
+        }
+      ]
+    },
+    {
+      "caption": "1의 오른쪽 자식 3에 진입합니다. 전위=[1,2,4,5,3]. 3도 리프라 중위=[4,2,5,1,3], 후위=[4,5,2,3] 모두 지금 기록됩니다.",
+      "nodeStates": [
+        {
+          "id": "1",
+          "role": "current"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        },
+        {
+          "id": "5",
+          "role": "visited"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "1",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "current"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "5",
+          "role": "visited"
+        }
+      ]
+    },
+    {
+      "caption": "1의 양쪽 자식을 다 봤으니 후위는 마지막으로 1을 기록합니다: 후위=[4,5,2,3,1]. 전위 [1,2,4,5,3], 중위 [4,2,5,1,3], 후위 [4,5,2,3,1] — 셋 다 완성됐습니다.",
+      "nodeStates": [
+        {
+          "id": "1",
+          "role": "visited"
+        },
+        {
+          "id": "2",
+          "role": "visited"
+        },
+        {
+          "id": "3",
+          "role": "visited"
+        },
+        {
+          "id": "4",
+          "role": "visited"
+        },
+        {
+          "id": "5",
+          "role": "visited"
+        }
+      ],
+      "edgeStates": [
+        {
+          "from": "1",
+          "to": "2",
+          "role": "visited"
+        },
+        {
+          "from": "1",
+          "to": "3",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "4",
+          "role": "visited"
+        },
+        {
+          "from": "2",
+          "to": "5",
+          "role": "visited"
+        }
+      ]
+    }
+  ]
+}

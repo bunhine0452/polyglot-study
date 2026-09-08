@@ -8,6 +8,10 @@
 우리가 원하는 건 그 반대 — 출발점이 도착점보다 먼저 오는 순서다. 그러니 후위 순서를 통째로 뒤집으면 된다. 뒤집힌 순서에서는 모든 간선 u -> v 에 대해 u가 v보다 앞에 온다. 이게 위상 정렬이다.
 
 같은 DAG라도 위상 정렬 결과가 하나만 있는 건 아니다. 서로 선행 관계가 없는 정점들 (둘 중 어느 쪽도 다른 쪽보다 먼저일 필요가 없는 경우) 은 어느 순서로 놓아도 된다. DFS가 어떤 이웃부터 방문하느냐에 따라 다른, 그러나 똑같이 유효한 순서가 나올 수 있다.
+
+@Visualize(id: topological-sort, frames: visuals/topological-sort.json) {
+위상 정렬이 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: topological-sort-example, language: rust, expected: expected/algorithms-topological-sort.txt) {

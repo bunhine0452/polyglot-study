@@ -8,6 +8,10 @@
 **후위 순회(postorder)**: 왼쪽 -> 오른쪽 -> 루트. 자식을 모두 본 다음에야 자기 자신을 기록한다. 노드를 삭제하거나 트리 크기를 셀 때, 자식의 결과가 필요한 계산에 유용하다 — 실제로 사이클 탐지·위상 정렬에서 본 '완료 순서'가 바로 후위 순회였다.
 
 셋 다 코드 모양은 거의 같다. 재귀 호출 두 번(왼쪽, 오른쪽)과 '지금 노드를 기록한다'는 동작 하나를 어떤 순서로 배치하느냐만 다르다. 재귀 호출 자체는 항상 '왼쪽 먼저, 오른쪽 다음'이고, 기록하는 위치만 앞/중간/뒤로 옮겨 다닌다.
+
+@Visualize(id: tree-traversal-dfs, frames: visuals/tree-traversal-dfs.json) {
+트리 순회가 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: tree-traversal-dfs-example, language: rust, expected: expected/algorithms-tree-traversal-dfs.txt) {

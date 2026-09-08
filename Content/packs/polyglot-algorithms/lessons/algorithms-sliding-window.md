@@ -4,6 +4,10 @@
 창의 크기가 고정이 아니라 조건에 따라 늘었다 줄었다 해야 할 때도 있다. 예를 들어 '합이 target 이상이 되는 가장 짧은 구간'을 찾는다면, 오른쪽 끝을 늘려가며 조건을 만족할 때까지 원소를 더하고, 일단 만족하면 왼쪽 끝을 줄여가며 더 짧게 만들 수 있는지 본다. 오른쪽과 왼쪽 두 포인터가 각각 앞으로만 움직이므로 이것도 O(n) 이다.
 
 이 가변 윈도우는 사실 투 포인터의 한 형태다 — 다만 두 포인터가 서로를 향해 좁혀오는 게 아니라 둘 다 오른쪽으로만 움직인다는 점이 다르다. 그리고 창 합을 더하고 빼며 갱신하는 것은 프리픽스 합 배열에서 prefix[r] - prefix[l] 을 매번 새로 계산하는 대신, 이전에 구해둔 값에 차이만 반영하는 것과 같은 생각이다.
+
+@Visualize(id: sliding-window, frames: visuals/sliding-window.json) {
+슬라이딩 윈도우가 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: sliding-window-example, language: rust, expected: expected/algorithms-sliding-window.txt) {

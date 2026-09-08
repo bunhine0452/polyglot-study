@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "merge-sort",
+  "kind": "array",
+  "values": [2, 5, 8, 1, 6, 7],
+  "frames": [
+    {
+      "caption": "왼쪽 [2,5,8]과 오른쪽 [1,6,7]은 이미 각각 정렬돼 있습니다. 양쪽 맨 앞 값부터 비교해 하나로 합칩니다.",
+      "pointers": [{ "name": "i", "index": 0 }, { "name": "j", "index": 3 }],
+      "segments": [{ "role": "highlighted", "start": 0, "end": 2 }, { "role": "highlighted", "start": 3, "end": 5 }]
+    },
+    {
+      "caption": "왼쪽 2와 오른쪽 1을 비교합니다. 오른쪽이 작아 1을 고릅니다. 결과: [1]",
+      "pointers": [{ "name": "i", "index": 0 }, { "name": "j", "index": 4 }],
+      "segments": [{ "role": "excluded", "start": 3, "end": 3 }, { "role": "highlighted", "start": 0, "end": 2 }, { "role": "highlighted", "start": 4, "end": 5 }]
+    },
+    {
+      "caption": "왼쪽 2와 오른쪽 6을 비교합니다. 왼쪽이 작아 2를 고릅니다. 결과: [1, 2]",
+      "pointers": [{ "name": "i", "index": 1 }, { "name": "j", "index": 4 }],
+      "segments": [{ "role": "excluded", "start": 0, "end": 0 }, { "role": "excluded", "start": 3, "end": 3 }, { "role": "highlighted", "start": 1, "end": 2 }, { "role": "highlighted", "start": 4, "end": 5 }]
+    },
+    {
+      "caption": "왼쪽 5와 오른쪽 6을 비교합니다. 왼쪽이 작아 5를 고릅니다. 결과: [1, 2, 5]",
+      "pointers": [{ "name": "i", "index": 2 }, { "name": "j", "index": 4 }],
+      "segments": [{ "role": "excluded", "start": 0, "end": 1 }, { "role": "excluded", "start": 3, "end": 3 }, { "role": "highlighted", "start": 2, "end": 2 }, { "role": "highlighted", "start": 4, "end": 5 }]
+    },
+    {
+      "caption": "왼쪽 8과 오른쪽 6을 비교합니다. 오른쪽이 작아 6을 고릅니다. 결과: [1, 2, 5, 6]",
+      "pointers": [{ "name": "i", "index": 2 }, { "name": "j", "index": 5 }],
+      "segments": [{ "role": "excluded", "start": 0, "end": 1 }, { "role": "excluded", "start": 3, "end": 4 }, { "role": "highlighted", "start": 2, "end": 2 }, { "role": "highlighted", "start": 5, "end": 5 }]
+    },
+    {
+      "caption": "왼쪽 8과 오른쪽 7을 비교합니다. 오른쪽이 작아 7을 고릅니다. 오른쪽이 이제 바닥났습니다. 결과: [1, 2, 5, 6, 7]",
+      "pointers": [{ "name": "i", "index": 2 }],
+      "segments": [{ "role": "excluded", "start": 0, "end": 1 }, { "role": "excluded", "start": 3, "end": 5 }, { "role": "highlighted", "start": 2, "end": 2 }]
+    },
+    {
+      "caption": "오른쪽이 바닥났으니 남은 왼쪽 값을 그대로 이어붙입니다. 병합 결과: [1, 2, 5, 6, 7, 8]",
+      "segments": [{ "role": "highlighted", "start": 0, "end": 5 }]
+    }
+  ]
+}

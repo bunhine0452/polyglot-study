@@ -37,7 +37,7 @@ owner: claude-code
 ## 콘텐츠 {#content}
 - [x] 32편 아웃라인 — 정렬·탐색 12, 그래프 8, 트리 6, DP 6 — 완료: 각 편에 시각화 대상 장면이 지정돼 있다 {#algorithms-outline}
 - [x] Rust 풀이로 32편 생성 — 완료: packtool validate 통과하고 모든 과제의 테스트가 실제로 돈다 {#algorithms-rust-lessons}
-- [ ] 32편의 시각화 사이드카 — 완료: 모든 레슨이 프레임을 갖고 자막이 왜를 설명한다 {#algorithms-visuals}
+- [x] 32편의 시각화 사이드카 — 완료: 모든 레슨이 프레임을 갖고 자막이 왜를 설명한다 {#algorithms-visuals}
 
 <!-- oculpm:plan-log begin v1 -->
 | 시각 | 항목 | 에이전트 | 변화 | 일지 | 메모 |
@@ -54,4 +54,5 @@ owner: claude-code
 | 2026-09-08T13:15:10+09:00 | #frame-player-view | claude-code | ☐→x | .oculpm/journal/20260908/Features_to_add/1314_feature_visualize-directive-and-player.md | VisualPlayerState(순수 값 타입) + 장면 뷰 셋. 키보드로 앞뒤·처음/끝·재생 토글. DesignSystem 이 아니라 LessonFeature 에 둔다 — DesignSystem 은 ContentKit 을 의존하지 않는 콘텐츠 무관 계층 |
 | 2026-09-08T13:45:28+09:00 | #lesson-language-picker | claude-code | ☐→x |  | 언어가 하나면 아예 안 그린다. 바꾸면 예제·빈칸·과제만 갈아타고 개념·퀴즈·돌아보기와 보던 블록 자리는 유지, 빈칸 답·실행 결과는 지운다(다른 코드의 것이라). 신규 테스트 5건 |
 | 2026-09-08T15:00:07+09:00 | #algorithms-rust-lessons | claude-code | ☐→x |  | lessongen import 로 손으로 써서 비용 $0. packtool validate 네 단계 32편 실패 0건 — 96개 블록이 실제로 컴파일·실행된다 |
+| 2026-09-08T15:20:38+09:00 | #algorithms-visuals | claude-code | ☐→x |  | 32편 전부에 사이드카와 @Visualize. 배열 12·그래프 14(트리 포함)·표 6. 프로젝트 디코더로 32/32 통과, 각 프레임이 자막을 갖고 DP 는 from 으로 "어느 칸에서 왔는가" 를 보인다 |
 <!-- oculpm:plan-log end -->

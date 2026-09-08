@@ -8,6 +8,10 @@
 가운데는 `lo + (hi - lo) / 2` 로 구한다. `(lo + hi) / 2` 는 두 값이 클 때 덧셈이 먼저 넘칠 수 있다.
 
 원소가 1000개면 열 번, 100만 개면 스무 번이면 끝난다. 이것이 O(log n) 이다.
+
+@Visualize(id: binary-search, frames: visuals/binary-search.json) {
+이진 탐색이 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: binary-search-example, language: rust, expected: expected/algorithms-binary-search.txt) {

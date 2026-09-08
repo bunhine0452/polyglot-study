@@ -4,6 +4,10 @@
 함수를 호출하면 그 호출은 콜 스택에 새 프레임으로 쌓인다. `sum_to(4)` 가 `sum_to(3)` 을 부르면 `sum_to(4)` 는 그 결과를 기다리며 스택에 남아 있고, `sum_to(3)` 이 다시 `sum_to(2)` 를 부르며 스택이 계속 쌓인다. 이 쌓임은 베이스 케이스(`sum_to(0)`)에 닿아야 멈춘다. 베이스 케이스가 값을 반환하면 그제서야 스택이 하나씩 풀리기 시작한다 — 가장 나중에 쌓인 호출부터 거꾸로 반환값을 돌려주며 원래 호출까지 거슬러 올라온다.
 
 베이스 케이스가 빠지면 이 쌓임이 멈추지 않는다. 콜 스택의 크기는 고정돼 있어서, 반환 없이 호출만 계속 쌓이면 결국 공간이 바닥나 프로그램이 '스택 오버플로우'로 강제 종료된다. 재귀 함수를 짤 때 베이스 케이스부터 정하는 것이 그래서 중요하다.
+
+@Visualize(id: recursion-basics, frames: visuals/recursion-basics.json) {
+재귀가 어떻게 도는지 한 단계씩 봅니다.
+}
 }
 
 @Example(id: recursion-basics-example, language: rust, expected: expected/algorithms-recursion-basics.txt) {

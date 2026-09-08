@@ -88,6 +88,10 @@ private struct RootView: View {
                 TracksView(model: composition.tracks, onOpen: open)
             case .review:
                 reviewScreen
+            case .scratch:
+                // 채점이 없는 자유 실행 화면. 레슨의 에디터와 같은 실행기를 타지만
+                // 숨은 테스트도 제출도 없다.
+                ScratchView(model: composition.scratch)
             case .toolchain:
                 // 목 데이터가 아니라 RunnerKit 의 ToolchainProbe 가 이 머신을 실제로 훑은 결과.
                 OnboardingView(model: composition.onboarding)

@@ -5,9 +5,9 @@ import Testing
 
 @Suite("앱 셸 · 내비게이션")
 struct ShellDestinationTests {
-    @Test("최상위 목적지는 정확히 4개, 디자인 순서 그대로")
+    @Test("최상위 목적지는 정확히 5개, 디자인 순서 그대로")
     func fourDestinationsInOrder() {
-        #expect(ShellDestination.allCases.map(\.title) == ["오늘", "트랙", "복습", "툴체인"])
+        #expect(ShellDestination.allCases.map(\.title) == ["오늘", "트랙", "복습", "연습장", "툴체인"])
     }
 
     @Test("설정은 목적지가 아니다 — 푸터 크롬이다")
@@ -17,7 +17,7 @@ struct ShellDestinationTests {
 
     @Test("rawValue 는 저장·복원용 안정 키다")
     func stableRawValues() {
-        #expect(ShellDestination.allCases.map(\.rawValue) == ["today", "tracks", "review", "toolchain"])
+        #expect(ShellDestination.allCases.map(\.rawValue) == ["today", "tracks", "review", "scratch", "toolchain"])
         #expect(ShellDestination(rawValue: "review") == .review)
         #expect(ShellDestination(rawValue: "settings") == nil)
     }

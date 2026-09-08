@@ -355,6 +355,8 @@ public final class EditorModel {
         case .swift: try SwiftLanguageModule().makeRunner()
         case .python: try PythonLanguageModule().makeRunner()
         case .sql: InProcessRunner()
+        case .rust: try RustLanguageModule().makeRunner()
+        case .cpp: try CppLanguageModule().makeRunner()
         default: throw RunFailure.backend("실행기가 없는 언어: \(language.rawValue)")
         }
     }

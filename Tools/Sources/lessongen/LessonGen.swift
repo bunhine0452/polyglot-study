@@ -18,6 +18,9 @@ struct LessonGen: AsyncParsableCommand {
             생성물은 사람이 리뷰한 뒤에 커밋합니다 — 이 도구는 파일을 쓰는 데서 멈춥니다.
             """,
         version: "0.3.0",
-        subcommands: [OutlineCommand.self, LessonCommand.self, RepairCommand.self]
+        subcommands: [
+            OutlineCommand.self, LessonCommand.self,
+            RepairCommand.self, ImportCommand.self,
+        ]
     )
 }

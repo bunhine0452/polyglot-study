@@ -1,0 +1,4 @@
+score = 10
+*scorePtr = 10
+score 변경 후 = 20
+nothing 은 아무것도 가리키지 않는다

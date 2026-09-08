@@ -1,0 +1,571 @@
+{
+  "generatorModel" : "claude-opus-5 (hand-authored)",
+  "language" : "rust",
+  "lessons" : [
+    {
+      "concepts" : [
+        "fn main",
+        "println!",
+        "{} 자리 표시자",
+        "//"
+      ],
+      "estimatedMinutes" : 15,
+      "objectives" : [
+        "fn main 을 정의하고 println! 으로 문자열을 출력할 수 있다",
+        "println! 의 {} 자리에 값을 끼워 출력할 수 있다",
+        "// 로 주석을 달아 실행에 영향이 없음을 확인할 수 있다"
+      ],
+      "ordinal" : 1,
+      "prerequisites" : [
+
+      ],
+      "stableID" : "rust.hello-and-println",
+      "summary" : "러스트 프로그램이 어떻게 시작하고 무엇을 찍는지 확인한다. fn main 과 println! 의 중괄호 자리 표시자를 직접 써 본다.",
+      "title" : "첫 실행: println! 과 주석"
+    },
+    {
+      "concepts" : [
+        "let",
+        "mut",
+        "불변이 기본",
+        "E0384"
+      ],
+      "estimatedMinutes" : 20,
+      "objectives" : [
+        "let 으로 값을 묶고 println! 으로 확인할 수 있다",
+        "mut 없이 재대입하면 컴파일 오류가 난다는 것을 확인하고 그 오류를 읽을 수 있다",
+        "mut 를 붙여 값을 바꿀 수 있다"
+      ],
+      "ordinal" : 2,
+      "prerequisites" : [
+        "rust.hello-and-println"
+      ],
+      "stableID" : "rust.let-and-mut",
+      "summary" : "러스트는 기본이 불변이다. let 으로 묶고 mut 를 붙여야 바뀐다 — 그 차이를 컴파일 오류로 직접 만난다.",
+      "title" : "값을 담는 법: let 과 mut"
+    },
+    {
+      "concepts" : [
+        "i32",
+        "f64",
+        "bool",
+        "타입 추론",
+        "as"
+      ],
+      "estimatedMinutes" : 20,
+      "objectives" : [
+        "i32·f64·bool 값을 선언하고 연산할 수 있다",
+        "타입 표기를 생략했을 때 추론되는 타입을 설명할 수 있다",
+        "정수 나눗셈과 실수 나눗셈의 결과 차이를 예측할 수 있다"
+      ],
+      "ordinal" : 3,
+      "prerequisites" : [
+        "rust.let-and-mut"
+      ],
+      "stableID" : "rust.scalar-types-and-inference",
+      "summary" : "i32·f64·bool 을 다루고, 러스트가 타입을 어떻게 추론하는지, 언제 명시해야 하는지 본다.",
+      "title" : "숫자와 불리언: 타입과 추론"
+    },
+    {
+      "concepts" : [
+        "String",
+        "&str",
+        "push_str",
+        "슬라이스"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "String::from 과 문자열 리터럴의 차이를 설명할 수 있다",
+        "push_str 과 + 로 문자열을 잇을 수 있다",
+        "len 과 슬라이스로 문자열의 일부를 얻을 수 있다"
+      ],
+      "ordinal" : 4,
+      "prerequisites" : [
+        "rust.scalar-types-and-inference"
+      ],
+      "stableID" : "rust.strings-and-slices",
+      "summary" : "러스트에는 문자열이 둘이다. 소유하는 String 과 빌려 보는 &str 을 구분하는 첫걸음.",
+      "title" : "문자열: String 과 &str"
+    },
+    {
+      "concepts" : [
+        "fn",
+        "->",
+        "식과 문",
+        "return"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "인자와 반환 타입을 갖춘 fn 을 정의할 수 있다",
+        "세미콜론 없는 마지막 식이 반환값이 된다는 것을 설명할 수 있다",
+        "return 을 써서 일찍 반환할 수 있다"
+      ],
+      "ordinal" : 5,
+      "prerequisites" : [
+        "rust.scalar-types-and-inference"
+      ],
+      "stableID" : "rust.functions-and-return",
+      "summary" : "인자와 반환 타입을 적는 법, 그리고 러스트에서 마지막 식이 반환값이 되는 규칙.",
+      "title" : "함수: fn 과 반환값"
+    },
+    {
+      "concepts" : [
+        "if",
+        "else",
+        "while",
+        "loop",
+        "break"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "if·else if·else 로 분기할 수 있다",
+        "if 를 식으로 써서 let 에 대입할 수 있다",
+        "while 과 loop 로 반복하고 break 로 빠져나올 수 있다"
+      ],
+      "ordinal" : 6,
+      "prerequisites" : [
+        "rust.functions-and-return"
+      ],
+      "stableID" : "rust.control-flow-if-loop",
+      "summary" : "조건과 반복. if 가 식이라는 점과 loop 가 값을 반환할 수 있다는 점이 다른 언어와 다르다.",
+      "title" : "흐름 제어: if 와 loop·while"
+    },
+    {
+      "concepts" : [
+        "for",
+        "..",
+        "..=",
+        "enumerate"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "for 와 범위(a..b)로 정해진 횟수만큼 반복할 수 있다",
+        "배열을 for 로 순회할 수 있다",
+        "enumerate 로 인덱스와 값을 함께 얻을 수 있다"
+      ],
+      "ordinal" : 7,
+      "prerequisites" : [
+        "rust.control-flow-if-loop"
+      ],
+      "stableID" : "rust.for-and-ranges",
+      "summary" : "러스트의 for 는 반복자를 돈다. 범위와 배열을 도는 가장 흔한 형태를 익힌다.",
+      "title" : "반복: for 와 범위"
+    },
+    {
+      "concepts" : [
+        "소유권",
+        "move",
+        "Copy",
+        "clone",
+        "E0382"
+      ],
+      "estimatedMinutes" : 35,
+      "objectives" : [
+        "String 을 다른 변수에 대입한 뒤 원래 변수를 쓰면 컴파일 오류가 난다는 것을 확인할 수 있다",
+        "이동과 복사(Copy)가 갈리는 기준을 타입으로 설명할 수 있다",
+        "clone 으로 깊은 복사를 만들 수 있다"
+      ],
+      "ordinal" : 8,
+      "prerequisites" : [
+        "rust.strings-and-slices"
+      ],
+      "stableID" : "rust.ownership-move",
+      "summary" : "러스트의 중심 개념. 값 하나에 소유자는 하나이고, 대입은 복사가 아니라 이동일 수 있다.",
+      "title" : "소유권: 이동(move)"
+    },
+    {
+      "concepts" : [
+        "&",
+        "&mut",
+        "빌림 검사기",
+        "E0499"
+      ],
+      "estimatedMinutes" : 35,
+      "objectives" : [
+        "& 로 값을 빌려 함수에 넘길 수 있다",
+        "&mut 로 빌린 값을 함수 안에서 바꿀 수 있다",
+        "가변 참조가 둘이면 컴파일 오류가 난다는 것을 확인할 수 있다"
+      ],
+      "ordinal" : 9,
+      "prerequisites" : [
+        "rust.ownership-move"
+      ],
+      "stableID" : "rust.borrowing-references",
+      "summary" : "소유권을 넘기지 않고 값을 쓰는 법. 불변 참조는 여럿, 가변 참조는 하나라는 규칙을 확인한다.",
+      "title" : "빌리기: & 와 &mut"
+    },
+    {
+      "concepts" : [
+        "Vec",
+        "vec!",
+        "push",
+        "인덱스"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "Vec::new 와 vec! 로 벡터를 만들 수 있다",
+        "push 로 원소를 더하고 인덱스로 꺼낼 수 있다",
+        "for 로 벡터를 순회하며 합을 구할 수 있다"
+      ],
+      "ordinal" : 10,
+      "prerequisites" : [
+        "rust.for-and-ranges",
+        "rust.borrowing-references"
+      ],
+      "stableID" : "rust.vectors",
+      "summary" : "크기가 변하는 목록. push·인덱스·순회와 함께 빌림 규칙이 실제로 어떻게 걸리는지 본다.",
+      "title" : "벡터: Vec<T>"
+    },
+    {
+      "concepts" : [
+        "struct",
+        "impl",
+        "&self",
+        "연관 함수"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "필드를 가진 struct 를 정의하고 인스턴스를 만들 수 있다",
+        "impl 블록에 메서드를 정의하고 호출할 수 있다",
+        "연관 함수(new)로 생성자를 만들 수 있다"
+      ],
+      "ordinal" : 11,
+      "prerequisites" : [
+        "rust.functions-and-return",
+        "rust.borrowing-references"
+      ],
+      "stableID" : "rust.structs",
+      "summary" : "자신만의 타입을 만들고 메서드를 붙인다.",
+      "title" : "구조체: struct 와 impl"
+    },
+    {
+      "concepts" : [
+        "enum",
+        "match",
+        "연관 값",
+        "_ 와일드카드"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "연관 값을 가진 enum 을 정의할 수 있다",
+        "match 로 모든 변형을 처리할 수 있다",
+        "경우를 빠뜨리면 컴파일 오류가 난다는 것을 확인할 수 있다"
+      ],
+      "ordinal" : 12,
+      "prerequisites" : [
+        "rust.structs"
+      ],
+      "stableID" : "rust.enums-and-match",
+      "summary" : "값이 여러 모양 중 하나일 때. match 가 모든 경우를 강제한다는 점이 요점이다.",
+      "title" : "열거형과 match"
+    },
+    {
+      "concepts" : [
+        "Option",
+        "Some",
+        "None",
+        "if let",
+        "unwrap_or"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "Option<T> 를 반환하는 함수를 쓸 수 있다",
+        "match 와 if let 으로 Some·None 을 가를 수 있다",
+        "unwrap_or 로 기본값을 줄 수 있다"
+      ],
+      "ordinal" : 13,
+      "prerequisites" : [
+        "rust.enums-and-match"
+      ],
+      "stableID" : "rust.option",
+      "summary" : "러스트에는 null 이 없다. 없음을 타입으로 표현하는 Option 을 다룬다.",
+      "title" : "없을 수도 있는 값: Option<T>"
+    },
+    {
+      "concepts" : [
+        "Result",
+        "Ok",
+        "Err",
+        "?"
+      ],
+      "estimatedMinutes" : 35,
+      "objectives" : [
+        "Result 를 반환하는 함수를 정의할 수 있다",
+        "match 로 Ok·Err 를 가를 수 있다",
+        "? 로 오류를 호출자에게 전파할 수 있다"
+      ],
+      "ordinal" : 14,
+      "prerequisites" : [
+        "rust.option"
+      ],
+      "stableID" : "rust.result-and-error",
+      "summary" : "오류를 값으로 다룬다. ? 연산자로 전파하는 법까지.",
+      "title" : "실패할 수 있는 일: Result<T, E>"
+    },
+    {
+      "concepts" : [
+        "HashMap",
+        "insert",
+        "get",
+        "entry",
+        "or_insert"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "HashMap 에 값을 넣고 get 으로 꺼낼 수 있다",
+        "entry API 로 개수를 셀 수 있다",
+        "순회 순서가 보장되지 않아 정렬해야 한다는 것을 설명할 수 있다"
+      ],
+      "ordinal" : 15,
+      "prerequisites" : [
+        "rust.vectors",
+        "rust.option"
+      ],
+      "stableID" : "rust.hashmap",
+      "summary" : "이름표로 값을 찾는 자료구조. 순회 순서가 보장되지 않는다는 함정을 함께 다룬다.",
+      "title" : "키로 찾는 자료: HashMap"
+    },
+    {
+      "concepts" : [
+        "iter",
+        "map",
+        "filter",
+        "collect"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "iter 와 map 으로 각 원소를 변환할 수 있다",
+        "filter 로 조건에 맞는 것만 남길 수 있다",
+        "collect 로 결과를 Vec 으로 거둘 수 있다"
+      ],
+      "ordinal" : 16,
+      "prerequisites" : [
+        "rust.vectors"
+      ],
+      "stableID" : "rust.iterators-map-filter",
+      "summary" : "반복자를 이어 붙여 변환한다. 게으르다는 성질과 collect 로 거둔다는 점.",
+      "title" : "반복자: map 과 filter"
+    },
+    {
+      "concepts" : [
+        "sum",
+        "count",
+        "fold",
+        "find",
+        "any"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "sum 과 count 로 반복자를 값으로 접을 수 있다",
+        "fold 로 임의의 누적을 만들 수 있다",
+        "find 와 any 로 조건 검사를 할 수 있다"
+      ],
+      "ordinal" : 17,
+      "prerequisites" : [
+        "rust.iterators-map-filter"
+      ],
+      "stableID" : "rust.iterator-consumers",
+      "summary" : "반복자를 값 하나로 접는 방법들.",
+      "title" : "반복자 소비: sum·fold·find"
+    },
+    {
+      "concepts" : [
+        "&[T]",
+        "&str",
+        "deref 강제",
+        "부분 슬라이스"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "&[T] 를 받는 함수를 정의하고 Vec 과 배열 둘 다 넘길 수 있다",
+        "&str 을 받는 함수가 String 도 받는 이유를 설명할 수 있다",
+        "슬라이스로 부분 구간을 넘길 수 있다"
+      ],
+      "ordinal" : 18,
+      "prerequisites" : [
+        "rust.vectors",
+        "rust.strings-and-slices"
+      ],
+      "stableID" : "rust.slices-and-borrowed-params",
+      "summary" : "&Vec<T> 대신 &[T] 를 받으면 더 넓게 쓰인다 — 빌림을 설계에 쓰는 첫 연습.",
+      "title" : "슬라이스를 받는 함수"
+    },
+    {
+      "concepts" : [
+        "<T>",
+        "제네릭 struct",
+        "트레이트 경계"
+      ],
+      "estimatedMinutes" : 35,
+      "objectives" : [
+        "제네릭 함수를 정의하고 여러 타입으로 호출할 수 있다",
+        "제네릭 struct 를 정의할 수 있다",
+        "트레이트 경계가 왜 필요한지 컴파일 오류로 설명할 수 있다"
+      ],
+      "ordinal" : 19,
+      "prerequisites" : [
+        "rust.structs",
+        "rust.iterator-consumers"
+      ],
+      "stableID" : "rust.generics",
+      "summary" : "같은 코드를 여러 타입에 쓴다.",
+      "title" : "제네릭: 타입을 매개변수로"
+    },
+    {
+      "concepts" : [
+        "trait",
+        "impl for",
+        "기본 구현",
+        "impl Trait"
+      ],
+      "estimatedMinutes" : 35,
+      "objectives" : [
+        "트레이트를 정의하고 타입에 구현할 수 있다",
+        "기본 구현을 제공할 수 있다",
+        "impl Trait 으로 트레이트를 받는 함수를 쓸 수 있다"
+      ],
+      "ordinal" : 20,
+      "prerequisites" : [
+        "rust.generics"
+      ],
+      "stableID" : "rust.traits",
+      "summary" : "여러 타입이 같은 능력을 갖도록 묶는다.",
+      "title" : "트레이트: 공통 능력의 약속"
+    },
+    {
+      "concepts" : [
+        "derive",
+        "Debug",
+        "{:?}",
+        "Display",
+        "fmt"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "derive 로 Debug·Clone·PartialEq 를 얻을 수 있다",
+        "{:?} 와 {} 의 차이를 설명할 수 있다",
+        "Display 를 구현해 사람이 읽을 출력을 만들 수 있다"
+      ],
+      "ordinal" : 21,
+      "prerequisites" : [
+        "rust.traits"
+      ],
+      "stableID" : "rust.derive-and-display",
+      "summary" : "자주 쓰는 트레이트를 자동으로 얻고, 사람이 읽을 출력을 직접 만든다.",
+      "title" : "파생과 출력: derive 와 Display"
+    },
+    {
+      "concepts" : [
+        "|x|",
+        "캡처",
+        "sort_by_key",
+        "move"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "클로저를 정의해 변수에 담고 호출할 수 있다",
+        "클로저가 바깥 변수를 캡처하는 것을 확인할 수 있다",
+        "클로저를 sort_by_key 같은 곳에 넘길 수 있다"
+      ],
+      "ordinal" : 22,
+      "prerequisites" : [
+        "rust.iterators-map-filter"
+      ],
+      "stableID" : "rust.closures",
+      "summary" : "값을 캡처하는 익명 함수. 반복자와 함께 쓸 때 가장 자주 만난다.",
+      "title" : "클로저: 환경을 담는 함수"
+    },
+    {
+      "concepts" : [
+        "'a",
+        "수명",
+        "E0106",
+        "댕글링"
+      ],
+      "estimatedMinutes" : 35,
+      "objectives" : [
+        "참조를 반환하는 함수에 수명 표기가 필요한 이유를 설명할 수 있다",
+        "'a 를 붙여 두 참조 중 하나를 반환하는 함수를 쓸 수 있다",
+        "댕글링 참조가 컴파일 단계에서 막히는 것을 확인할 수 있다"
+      ],
+      "ordinal" : 23,
+      "prerequisites" : [
+        "rust.borrowing-references",
+        "rust.slices-and-borrowed-params"
+      ],
+      "stableID" : "rust.lifetimes-basics",
+      "summary" : "참조가 얼마나 오래 유효한지 컴파일러에게 말해 주는 문법. 최소한만 다룬다.",
+      "title" : "수명의 기초: 왜 'a 가 필요한가"
+    },
+    {
+      "concepts" : [
+        "mod",
+        "pub",
+        "use",
+        "경로"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "mod 로 코드를 묶을 수 있다",
+        "pub 으로 바깥에 공개할 항목을 고를 수 있다",
+        "use 로 경로를 줄여 쓸 수 있다"
+      ],
+      "ordinal" : 24,
+      "prerequisites" : [
+        "rust.structs"
+      ],
+      "stableID" : "rust.modules",
+      "summary" : "한 파일 안에서 모듈로 묶고 공개 범위를 정한다.",
+      "title" : "코드 나누기: mod 와 pub"
+    },
+    {
+      "concepts" : [
+        "#[test]",
+        "assert!",
+        "assert_eq!",
+        "#[cfg(test)]"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "#[test] 함수를 쓰고 assert_eq! 로 검사할 수 있다",
+        "실패한 테스트의 출력에서 기대와 실제를 읽을 수 있다",
+        "경계값 테스트를 스스로 하나 더 쓸 수 있다"
+      ],
+      "ordinal" : 25,
+      "prerequisites" : [
+        "rust.functions-and-return",
+        "rust.result-and-error"
+      ],
+      "stableID" : "rust.testing-with-assert",
+      "summary" : "러스트에 내장된 테스트. 이 트랙의 과제가 채점되는 방식이기도 하다.",
+      "title" : "테스트: #[test] 와 assert"
+    },
+    {
+      "concepts" : [
+        "split_whitespace",
+        "HashMap",
+        "sort_by",
+        "Result"
+      ],
+      "estimatedMinutes" : 40,
+      "objectives" : [
+        "문자열을 단어로 나누고 HashMap 으로 빈도를 셀 수 있다",
+        "빈도 내림차순·단어 오름차순으로 정렬할 수 있다",
+        "빈 입력과 잘못된 인자를 Result 로 다룰 수 있다"
+      ],
+      "ordinal" : 26,
+      "prerequisites" : [
+        "rust.hashmap",
+        "rust.closures",
+        "rust.result-and-error",
+        "rust.testing-with-assert"
+      ],
+      "stableID" : "rust.capstone-word-count",
+      "summary" : "트랙에서 배운 것을 한데 모은다 — 문자열 분해, HashMap 집계, 정렬, 오류 처리.",
+      "title" : "종합 과제: 단어 빈도 세기"
+    }
+  ],
+  "schemaVersion" : 1,
+  "trackSummary" : "println! 한 줄에서 시작해 소유권·빌림·수명이라는 러스트의 중심 개념을 컴파일 오류로 직접 만나며 익히고, 열거형·Option·Result 로 실패를 값으로 다루는 법을 거쳐 제네릭·트레이트·반복자까지 나아간다. 마지막에는 단어 빈도 분석기를 직접 만든다. 모든 레슨에서 코드를 실행해 결과로 확인한다.",
+  "trackTitle" : "Rust 입문: 소유권으로 배우는 안전한 프로그래밍"
+}

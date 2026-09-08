@@ -1,0 +1,4 @@
+Hello, Rust
+Hello, Rust!
+길이(바이트): 12
+앞 5글자: Hello

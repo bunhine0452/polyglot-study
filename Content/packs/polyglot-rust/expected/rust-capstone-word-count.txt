@@ -1,0 +1,7 @@
+the: 3
+fox: 2
+brown: 1
+dog: 1
+lazy: 1
+quick: 1
+오류: 입력이 비어 있습니다

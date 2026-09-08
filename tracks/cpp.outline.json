@@ -1,0 +1,560 @@
+{
+  "generatorModel" : "claude-opus-5 (hand-authored)",
+  "language" : "cpp",
+  "lessons" : [
+    {
+      "concepts" : [
+        "main",
+        "std::cout",
+        "<<",
+        "std::endl"
+      ],
+      "estimatedMinutes" : 15,
+      "objectives" : [
+        "main 을 정의하고 std::cout 으로 문자열을 출력할 수 있다",
+        "<< 로 여러 값을 이어 출력할 수 있다",
+        "// 로 주석을 달아 실행에 영향이 없음을 확인할 수 있다"
+      ],
+      "ordinal" : 1,
+      "prerequisites" : [
+
+      ],
+      "stableID" : "cpp.hello-and-cout",
+      "summary" : "C++ 프로그램이 어떻게 시작하고 무엇을 찍는지 확인한다.",
+      "title" : "첫 실행: cout 과 주석"
+    },
+    {
+      "concepts" : [
+        "int",
+        "double",
+        "bool",
+        "auto"
+      ],
+      "estimatedMinutes" : 20,
+      "objectives" : [
+        "int·double·bool 변수를 선언하고 출력할 수 있다",
+        "정수 나눗셈과 실수 나눗셈의 결과 차이를 예측할 수 있다",
+        "auto 로 타입을 추론시킬 수 있다"
+      ],
+      "ordinal" : 2,
+      "prerequisites" : [
+        "cpp.hello-and-cout"
+      ],
+      "stableID" : "cpp.variables-and-types",
+      "summary" : "int·double·bool·char 를 선언하고 값을 다룬다.",
+      "title" : "변수와 기본 타입"
+    },
+    {
+      "concepts" : [
+        "const",
+        "&",
+        "const 참조"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "const 로 상수를 선언하고 재대입이 막히는 것을 확인할 수 있다",
+        "참조(&)로 변수에 다른 이름을 붙일 수 있다",
+        "const 참조로 읽기 전용 별명을 만들 수 있다"
+      ],
+      "ordinal" : 3,
+      "prerequisites" : [
+        "cpp.variables-and-types"
+      ],
+      "stableID" : "cpp.const-and-references",
+      "summary" : "바뀌면 안 되는 값과, 값을 복사하지 않고 가리키는 법.",
+      "title" : "const 와 참조"
+    },
+    {
+      "concepts" : [
+        "std::cin",
+        ">>",
+        "setprecision",
+        "fixed"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "std::cin 으로 값을 읽을 수 있다",
+        "setprecision 으로 소수 자릿수를 고정할 수 있다",
+        "출력 형식이 대조에 왜 중요한지 설명할 수 있다"
+      ],
+      "ordinal" : 4,
+      "prerequisites" : [
+        "cpp.variables-and-types"
+      ],
+      "stableID" : "cpp.io-and-formatting",
+      "summary" : "값을 읽고, 자릿수를 정해 출력한다.",
+      "title" : "입출력과 서식"
+    },
+    {
+      "concepts" : [
+        "if",
+        "else",
+        "switch",
+        "case",
+        "break"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "if·else if·else 로 분기할 수 있다",
+        "switch 로 값에 따라 갈라질 수 있다",
+        "break 를 빠뜨리면 다음 case 로 흘러가는 것을 확인할 수 있다"
+      ],
+      "ordinal" : 5,
+      "prerequisites" : [
+        "cpp.variables-and-types"
+      ],
+      "stableID" : "cpp.control-flow",
+      "summary" : "조건에 따라 갈라지는 실행.",
+      "title" : "흐름 제어: if 와 switch"
+    },
+    {
+      "concepts" : [
+        "for",
+        "while",
+        "do-while",
+        "continue"
+      ],
+      "estimatedMinutes" : 25,
+      "objectives" : [
+        "for 로 정해진 횟수만큼 반복할 수 있다",
+        "while 과 do-while 의 차이를 설명할 수 있다",
+        "continue 와 break 로 반복을 조절할 수 있다"
+      ],
+      "ordinal" : 6,
+      "prerequisites" : [
+        "cpp.control-flow"
+      ],
+      "stableID" : "cpp.loops",
+      "summary" : "정해진 횟수와 조건 반복.",
+      "title" : "반복: for 와 while"
+    },
+    {
+      "concepts" : [
+        "함수 선언",
+        "값 전달",
+        "참조 전달",
+        "기본 인자"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "인자와 반환 타입을 갖춘 함수를 정의할 수 있다",
+        "값 전달과 참조 전달의 차이를 확인할 수 있다",
+        "기본 인자를 줄 수 있다"
+      ],
+      "ordinal" : 7,
+      "prerequisites" : [
+        "cpp.loops"
+      ],
+      "stableID" : "cpp.functions",
+      "summary" : "코드를 묶어 재사용한다.",
+      "title" : "함수: 선언과 정의"
+    },
+    {
+      "concepts" : [
+        "std::vector",
+        "push_back",
+        "size",
+        "범위 기반 for"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "vector 를 만들고 push_back 으로 원소를 더할 수 있다",
+        "인덱스와 size 로 원소를 다룰 수 있다",
+        "범위 기반 for 로 순회할 수 있다"
+      ],
+      "ordinal" : 8,
+      "prerequisites" : [
+        "cpp.functions"
+      ],
+      "stableID" : "cpp.vector-basics",
+      "summary" : "크기가 변하는 배열.",
+      "title" : "벡터: std::vector"
+    },
+    {
+      "concepts" : [
+        "std::string",
+        "substr",
+        "find",
+        "length"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "string 을 만들고 + 로 이을 수 있다",
+        "length·substr·find 로 부분을 다룰 수 있다",
+        "문자 하나씩 순회할 수 있다"
+      ],
+      "ordinal" : 9,
+      "prerequisites" : [
+        "cpp.vector-basics"
+      ],
+      "stableID" : "cpp.strings",
+      "summary" : "텍스트를 다룬다.",
+      "title" : "문자열: std::string"
+    },
+    {
+      "concepts" : [
+        "const 참조",
+        "출력 매개변수",
+        "복사 비용"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "const std::vector<int>& 를 받는 함수를 쓸 수 있다",
+        "참조로 받은 값을 함수 안에서 바꿀 수 있다",
+        "언제 const 참조를 쓰는지 설명할 수 있다"
+      ],
+      "ordinal" : 10,
+      "prerequisites" : [
+        "cpp.vector-basics",
+        "cpp.const-and-references"
+      ],
+      "stableID" : "cpp.pass-by-reference",
+      "summary" : "큰 값을 복사하지 않고 넘기는 관용구.",
+      "title" : "참조로 넘기기와 const 참조"
+    },
+    {
+      "concepts" : [
+        "struct",
+        "멤버",
+        "초기화",
+        "멤버 함수"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "필드를 가진 struct 를 정의하고 초기화할 수 있다",
+        "struct 를 함수에 넘기고 돌려받을 수 있다",
+        "멤버 함수를 정의할 수 있다"
+      ],
+      "ordinal" : 11,
+      "prerequisites" : [
+        "cpp.functions"
+      ],
+      "stableID" : "cpp.structs",
+      "summary" : "관련된 값을 묶는다.",
+      "title" : "구조체: struct"
+    },
+    {
+      "concepts" : [
+        "class",
+        "public",
+        "private",
+        "생성자"
+      ],
+      "estimatedMinutes" : 35,
+      "objectives" : [
+        "class 를 정의하고 private 멤버를 만들 수 있다",
+        "생성자로 초기화할 수 있다",
+        "getter 로 내부 값을 읽게 할 수 있다"
+      ],
+      "ordinal" : 12,
+      "prerequisites" : [
+        "cpp.structs"
+      ],
+      "stableID" : "cpp.classes-and-encapsulation",
+      "summary" : "public 과 private 로 내부를 감춘다.",
+      "title" : "클래스와 캡슐화"
+    },
+    {
+      "concepts" : [
+        "std::map",
+        "operator[]",
+        "find",
+        "count"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "map 에 값을 넣고 꺼낼 수 있다",
+        "count·find 로 존재를 검사할 수 있다",
+        "map 순회가 키 순서로 나온다는 것을 확인할 수 있다"
+      ],
+      "ordinal" : 13,
+      "prerequisites" : [
+        "cpp.strings",
+        "cpp.vector-basics"
+      ],
+      "stableID" : "cpp.maps",
+      "summary" : "이름표로 값을 찾는다. 정렬 순서가 보장된다는 점이 요점.",
+      "title" : "키로 찾는 자료: std::map"
+    },
+    {
+      "concepts" : [
+        "<algorithm>",
+        "sort",
+        "find",
+        "count"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "sort 로 벡터를 정렬할 수 있다",
+        "비교 함수를 넘겨 정렬 기준을 바꿀 수 있다",
+        "find 와 count 로 원소를 찾을 수 있다"
+      ],
+      "ordinal" : 14,
+      "prerequisites" : [
+        "cpp.vector-basics",
+        "cpp.pass-by-reference"
+      ],
+      "stableID" : "cpp.algorithms-sort-find",
+      "summary" : "<algorithm> 의 기본 도구들.",
+      "title" : "알고리즘: sort 와 find"
+    },
+    {
+      "concepts" : [
+        "[](){}",
+        "캡처 목록",
+        "비교자"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "람다를 정의해 변수에 담고 호출할 수 있다",
+        "캡처 목록으로 바깥 변수를 가져올 수 있다",
+        "sort 의 비교자로 람다를 넘길 수 있다"
+      ],
+      "ordinal" : 15,
+      "prerequisites" : [
+        "cpp.algorithms-sort-find"
+      ],
+      "stableID" : "cpp.lambdas",
+      "summary" : "알고리즘에 넘길 짧은 함수를 그 자리에서 만든다.",
+      "title" : "람다: 이름 없는 함수"
+    },
+    {
+      "concepts" : [
+        "std::optional",
+        "value_or",
+        "throw",
+        "try-catch"
+      ],
+      "estimatedMinutes" : 35,
+      "objectives" : [
+        "std::optional 을 반환하는 함수를 쓸 수 있다",
+        "has_value 와 value_or 로 값을 다룰 수 있다",
+        "throw 와 try-catch 로 예외를 다룰 수 있다"
+      ],
+      "ordinal" : 16,
+      "prerequisites" : [
+        "cpp.classes-and-encapsulation"
+      ],
+      "stableID" : "cpp.optional-and-error",
+      "summary" : "std::optional 로 없음을 표현하고 예외로 실패를 알린다.",
+      "title" : "없을 수도 있는 값과 오류"
+    },
+    {
+      "concepts" : [
+        "template",
+        "typename",
+        "함수 템플릿",
+        "클래스 템플릿"
+      ],
+      "estimatedMinutes" : 35,
+      "objectives" : [
+        "함수 템플릿을 정의하고 여러 타입으로 호출할 수 있다",
+        "클래스 템플릿을 정의할 수 있다",
+        "템플릿 오류 메시지를 읽고 원인을 짚을 수 있다"
+      ],
+      "ordinal" : 17,
+      "prerequisites" : [
+        "cpp.classes-and-encapsulation"
+      ],
+      "stableID" : "cpp.templates",
+      "summary" : "같은 코드를 여러 타입에 쓴다.",
+      "title" : "템플릿: 타입을 매개변수로"
+    },
+    {
+      "concepts" : [
+        "operator==",
+        "operator+",
+        "operator<<"
+      ],
+      "estimatedMinutes" : 35,
+      "objectives" : [
+        "operator== 를 정의해 두 객체를 비교할 수 있다",
+        "operator+ 를 정의할 수 있다",
+        "operator<< 로 출력 형식을 정할 수 있다"
+      ],
+      "ordinal" : 18,
+      "prerequisites" : [
+        "cpp.classes-and-encapsulation"
+      ],
+      "stableID" : "cpp.operator-overloading",
+      "summary" : "자신의 타입에 + 나 == 를 붙인다.",
+      "title" : "연산자 오버로딩"
+    },
+    {
+      "concepts" : [
+        "포인터",
+        "*",
+        "&",
+        "nullptr"
+      ],
+      "estimatedMinutes" : 35,
+      "objectives" : [
+        "포인터를 선언하고 * 와 & 로 값을 오갈 수 있다",
+        "nullptr 를 검사해 역참조를 피할 수 있다",
+        "포인터와 참조의 차이를 설명할 수 있다"
+      ],
+      "ordinal" : 19,
+      "prerequisites" : [
+        "cpp.pass-by-reference"
+      ],
+      "stableID" : "cpp.pointers-and-nullptr",
+      "summary" : "주소를 담는 변수. 참조와 무엇이 다른지.",
+      "title" : "포인터와 nullptr"
+    },
+    {
+      "concepts" : [
+        "new",
+        "delete",
+        "RAII",
+        "소멸자"
+      ],
+      "estimatedMinutes" : 35,
+      "objectives" : [
+        "new 와 delete 로 메모리를 다룰 수 있다",
+        "해제를 빠뜨리면 새는 것을 설명할 수 있다",
+        "RAII 가 무엇을 보장하는지 설명할 수 있다"
+      ],
+      "ordinal" : 20,
+      "prerequisites" : [
+        "cpp.pointers-and-nullptr",
+        "cpp.classes-and-encapsulation"
+      ],
+      "stableID" : "cpp.dynamic-memory-and-raii",
+      "summary" : "new/delete 의 위험과, 그것을 없애는 C++ 의 답.",
+      "title" : "동적 메모리와 RAII"
+    },
+    {
+      "concepts" : [
+        "unique_ptr",
+        "make_unique",
+        "shared_ptr",
+        "move"
+      ],
+      "estimatedMinutes" : 35,
+      "objectives" : [
+        "unique_ptr 로 소유권을 하나로 묶을 수 있다",
+        "make_unique 로 안전하게 만들 수 있다",
+        "shared_ptr 이 언제 필요한지 설명할 수 있다"
+      ],
+      "ordinal" : 21,
+      "prerequisites" : [
+        "cpp.dynamic-memory-and-raii"
+      ],
+      "stableID" : "cpp.smart-pointers",
+      "summary" : "소유권을 타입으로 표현해 해제를 자동으로 만든다.",
+      "title" : "스마트 포인터: unique_ptr 과 shared_ptr"
+    },
+    {
+      "concepts" : [
+        "상속",
+        "virtual",
+        "override",
+        "가상 소멸자"
+      ],
+      "estimatedMinutes" : 35,
+      "objectives" : [
+        "기반 클래스를 상속하는 파생 클래스를 만들 수 있다",
+        "virtual 함수를 재정의할 수 있다",
+        "가상 소멸자가 왜 필요한지 설명할 수 있다"
+      ],
+      "ordinal" : 22,
+      "prerequisites" : [
+        "cpp.classes-and-encapsulation"
+      ],
+      "stableID" : "cpp.inheritance-and-virtual",
+      "summary" : "공통 인터페이스로 여러 구현을 다룬다.",
+      "title" : "상속과 가상 함수"
+    },
+    {
+      "concepts" : [
+        "<numeric>",
+        "accumulate",
+        "transform",
+        "begin/end"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "accumulate 로 합을 구할 수 있다",
+        "transform 으로 각 원소를 변환할 수 있다",
+        "반복자 구간(begin·end)의 뜻을 설명할 수 있다"
+      ],
+      "ordinal" : 23,
+      "prerequisites" : [
+        "cpp.lambdas"
+      ],
+      "stableID" : "cpp.range-based-algorithms",
+      "summary" : "반복자 기반 알고리즘으로 값을 접고 바꾼다.",
+      "title" : "순회와 누적: accumulate 와 transform"
+    },
+    {
+      "concepts" : [
+        "ofstream",
+        "ifstream",
+        "getline",
+        "is_open"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "ofstream 으로 파일에 쓸 수 있다",
+        "ifstream 과 getline 으로 줄 단위로 읽을 수 있다",
+        "파일 열기 실패를 검사할 수 있다"
+      ],
+      "ordinal" : 24,
+      "prerequisites" : [
+        "cpp.strings",
+        "cpp.optional-and-error"
+      ],
+      "stableID" : "cpp.file-io",
+      "summary" : "텍스트를 읽고 쓴다.",
+      "title" : "파일 입출력"
+    },
+    {
+      "concepts" : [
+        "단위 검사",
+        "경계값",
+        "기대와 실제"
+      ],
+      "estimatedMinutes" : 30,
+      "objectives" : [
+        "기대값과 실제값을 비교하는 검사를 쓸 수 있다",
+        "경계값을 스스로 하나 더 검사할 수 있다",
+        "실패한 검사의 출력에서 원인을 읽을 수 있다"
+      ],
+      "ordinal" : 25,
+      "prerequisites" : [
+        "cpp.functions",
+        "cpp.optional-and-error"
+      ],
+      "stableID" : "cpp.testing-with-assert",
+      "summary" : "작은 검사를 직접 써서 코드를 확인한다. 이 트랙의 과제가 채점되는 방식이기도 하다.",
+      "title" : "테스트로 확인하기"
+    },
+    {
+      "concepts" : [
+        "std::map",
+        "sort",
+        "람다",
+        "substr"
+      ],
+      "estimatedMinutes" : 40,
+      "objectives" : [
+        "텍스트를 단어로 나누고 map 으로 빈도를 셀 수 있다",
+        "빈도 내림차순·단어 오름차순으로 정렬할 수 있다",
+        "빈 입력을 안전하게 다룰 수 있다"
+      ],
+      "ordinal" : 26,
+      "prerequisites" : [
+        "cpp.maps",
+        "cpp.lambdas",
+        "cpp.range-based-algorithms",
+        "cpp.testing-with-assert"
+      ],
+      "stableID" : "cpp.capstone-text-stats",
+      "summary" : "트랙에서 배운 것을 한데 모은다 — 파일 읽기, 문자열 분해, map 집계, 정렬.",
+      "title" : "종합 과제: 텍스트 통계"
+    }
+  ],
+  "schemaVersion" : 1,
+  "trackSummary" : "cout 한 줄에서 시작해 값·참조·const 로 데이터를 다루는 법을 익히고, vector·string·map 과 표준 알고리즘을 거쳐 클래스·템플릿·상속으로 나아간다. 포인터와 RAII, 스마트 포인터로 자원의 수명을 이해한 뒤 마지막에 텍스트 통계 프로그램을 직접 만든다. 모든 레슨에서 코드를 실행해 결과로 확인한다.",
+  "trackTitle" : "C++ 입문: 값과 참조, 그리고 자원의 수명"
+}

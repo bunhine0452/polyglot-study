@@ -1,0 +1,27 @@
+# polyglot stableids v1
+rust-borrowing-references	rust	lessons/rust-borrowing-references.md
+rust-capstone-word-count	rust	lessons/rust-capstone-word-count.md
+rust-closures	rust	lessons/rust-closures.md
+rust-control-flow-if-loop	rust	lessons/rust-control-flow-if-loop.md
+rust-derive-and-display	rust	lessons/rust-derive-and-display.md
+rust-enums-and-match	rust	lessons/rust-enums-and-match.md
+rust-for-and-ranges	rust	lessons/rust-for-and-ranges.md
+rust-functions-and-return	rust	lessons/rust-functions-and-return.md
+rust-generics	rust	lessons/rust-generics.md
+rust-hashmap	rust	lessons/rust-hashmap.md
+rust-hello-and-println	rust	lessons/rust-hello-and-println.md
+rust-iterator-consumers	rust	lessons/rust-iterator-consumers.md
+rust-iterators-map-filter	rust	lessons/rust-iterators-map-filter.md
+rust-let-and-mut	rust	lessons/rust-let-and-mut.md
+rust-lifetimes-basics	rust	lessons/rust-lifetimes-basics.md
+rust-modules	rust	lessons/rust-modules.md
+rust-option	rust	lessons/rust-option.md
+rust-ownership-move	rust	lessons/rust-ownership-move.md
+rust-result-and-error	rust	lessons/rust-result-and-error.md
+rust-scalar-types-and-inference	rust	lessons/rust-scalar-types-and-inference.md
+rust-slices-and-borrowed-params	rust	lessons/rust-slices-and-borrowed-params.md
+rust-strings-and-slices	rust	lessons/rust-strings-and-slices.md
+rust-structs	rust	lessons/rust-structs.md
+rust-testing-with-assert	rust	lessons/rust-testing-with-assert.md
+rust-traits	rust	lessons/rust-traits.md
+rust-vectors	rust	lessons/rust-vectors.md

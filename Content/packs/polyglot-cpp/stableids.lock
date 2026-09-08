@@ -1,0 +1,27 @@
+# polyglot stableids v1
+cpp-algorithms-sort-find	cpp	lessons/cpp-algorithms-sort-find.md
+cpp-capstone-text-stats	cpp	lessons/cpp-capstone-text-stats.md
+cpp-classes-and-encapsulation	cpp	lessons/cpp-classes-and-encapsulation.md
+cpp-const-and-references	cpp	lessons/cpp-const-and-references.md
+cpp-control-flow	cpp	lessons/cpp-control-flow.md
+cpp-dynamic-memory-and-raii	cpp	lessons/cpp-dynamic-memory-and-raii.md
+cpp-file-io	cpp	lessons/cpp-file-io.md
+cpp-functions	cpp	lessons/cpp-functions.md
+cpp-hello-and-cout	cpp	lessons/cpp-hello-and-cout.md
+cpp-inheritance-and-virtual	cpp	lessons/cpp-inheritance-and-virtual.md
+cpp-io-and-formatting	cpp	lessons/cpp-io-and-formatting.md
+cpp-lambdas	cpp	lessons/cpp-lambdas.md
+cpp-loops	cpp	lessons/cpp-loops.md
+cpp-maps	cpp	lessons/cpp-maps.md
+cpp-operator-overloading	cpp	lessons/cpp-operator-overloading.md
+cpp-optional-and-error	cpp	lessons/cpp-optional-and-error.md
+cpp-pass-by-reference	cpp	lessons/cpp-pass-by-reference.md
+cpp-pointers-and-nullptr	cpp	lessons/cpp-pointers-and-nullptr.md
+cpp-range-based-algorithms	cpp	lessons/cpp-range-based-algorithms.md
+cpp-smart-pointers	cpp	lessons/cpp-smart-pointers.md
+cpp-strings	cpp	lessons/cpp-strings.md
+cpp-structs	cpp	lessons/cpp-structs.md
+cpp-templates	cpp	lessons/cpp-templates.md
+cpp-testing-with-assert	cpp	lessons/cpp-testing-with-assert.md
+cpp-variables-and-types	cpp	lessons/cpp-variables-and-types.md
+cpp-vector-basics	cpp	lessons/cpp-vector-basics.md

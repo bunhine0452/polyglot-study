@@ -1,0 +1,4 @@
+maxOf(3, 5) = 5
+maxOf(2.5, 1.5) = 2.5
+intBox: 42
+strBox: 안녕

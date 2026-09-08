@@ -1,0 +1,14 @@
+range: 0
+range: 1
+range: 2
+range: 3
+range: 4
+inclusive: 1
+inclusive: 2
+inclusive: 3
+value: 10
+value: 20
+value: 30
+[0] = 10
+[1] = 20
+[2] = 30

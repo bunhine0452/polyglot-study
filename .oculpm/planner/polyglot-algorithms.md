@@ -18,7 +18,7 @@ owner: claude-code
 ## 레슨 다국어 {#multi-language-lesson}
 - [x] Example·Blank·Task 를 언어별로 반복 가능하게 하고 Concept·Quiz·Reflection 은 공용으로 둔다 — 완료: 한 레슨에 Rust·Python 두 벌이 담기고 순서 위반이 여전히 throw {#block-language-variants}
 - [x] 매니페스트 레슨 엔트리를 language 단수에서 languages 배열로 — 완료: 깨진 매니페스트(선언한 언어에 과제가 빠진 경우)가 고유 에러로 실패 {#manifest-languages-plural}
-- [ ] 레슨 화면에 풀이 언어 선택을 붙이고 고른 언어를 기억한다 — 완료: 언어를 바꾸면 예제·빈칸·과제만 갈아타고 개념·시각화는 그대로 {#lesson-language-picker}
+- [x] 레슨 화면에 풀이 언어 선택을 붙이고 고른 언어를 기억한다 — 완료: 언어를 바꾸면 예제·빈칸·과제만 갈아타고 개념·시각화는 그대로 {#lesson-language-picker}
 - [ ] 진도를 레슨 단위로 남기고 어떤 언어로 풀었는지는 부가 기록으로 — 완료: 언어를 바꿔도 완료 표시가 유지된다 {#progress-per-lesson-not-language}
 
 ## 시각화 {#visualization}
@@ -36,7 +36,7 @@ owner: claude-code
 
 ## 콘텐츠 {#content}
 - [x] 32편 아웃라인 — 정렬·탐색 12, 그래프 8, 트리 6, DP 6 — 완료: 각 편에 시각화 대상 장면이 지정돼 있다 {#algorithms-outline}
-- [ ] Rust 풀이로 32편 생성 — 완료: packtool validate 통과하고 모든 과제의 테스트가 실제로 돈다 {#algorithms-rust-lessons}
+- [x] Rust 풀이로 32편 생성 — 완료: packtool validate 통과하고 모든 과제의 테스트가 실제로 돈다 {#algorithms-rust-lessons}
 - [ ] 32편의 시각화 사이드카 — 완료: 모든 레슨이 프레임을 갖고 자막이 왜를 설명한다 {#algorithms-visuals}
 
 <!-- oculpm:plan-log begin v1 -->
@@ -52,4 +52,6 @@ owner: claude-code
 | 2026-09-08T13:05:08+09:00 | #visuals-authoring-check | claude-code | ☐→x | .oculpm/journal/20260908/Features_to_add/1304_feature_manifest-languages-plural.md | VisualsStage 를 구조 단계에 얹었다 — 검증기를 새로 쓰지 않고 VisualFrameSet 디코더를 그대로 태운다. 파일명과 id 불일치도 잡는다. visuals/ 없는 팩은 무영향(실제 팩 5종 확인). PackValidate 54건 통과 |
 | 2026-09-08T13:15:02+09:00 | #visualize-directive | claude-code | ☐→x | .oculpm/journal/20260908/Features_to_add/1314_feature_visualize-directive-and-player.md | @Concept 의 선택적 하위 디렉티브로. 블록 7개는 불가 — LessonBlockSequence.count 가 전역이라 기존 122편이 영원히 미완료가 된다. visuals/ 를 등록 디렉터리로 넣어 미등록 사이드카는 설치 거부 |
 | 2026-09-08T13:15:10+09:00 | #frame-player-view | claude-code | ☐→x | .oculpm/journal/20260908/Features_to_add/1314_feature_visualize-directive-and-player.md | VisualPlayerState(순수 값 타입) + 장면 뷰 셋. 키보드로 앞뒤·처음/끝·재생 토글. DesignSystem 이 아니라 LessonFeature 에 둔다 — DesignSystem 은 ContentKit 을 의존하지 않는 콘텐츠 무관 계층 |
+| 2026-09-08T13:45:28+09:00 | #lesson-language-picker | claude-code | ☐→x |  | 언어가 하나면 아예 안 그린다. 바꾸면 예제·빈칸·과제만 갈아타고 개념·퀴즈·돌아보기와 보던 블록 자리는 유지, 빈칸 답·실행 결과는 지운다(다른 코드의 것이라). 신규 테스트 5건 |
+| 2026-09-08T15:00:07+09:00 | #algorithms-rust-lessons | claude-code | ☐→x |  | lessongen import 로 손으로 써서 비용 $0. packtool validate 네 단계 32편 실패 0건 — 96개 블록이 실제로 컴파일·실행된다 |
 <!-- oculpm:plan-log end -->

@@ -1,0 +1,11 @@
+sum_to(4) 호출
+  sum_to(3) 호출
+    sum_to(2) 호출
+      sum_to(1) 호출
+        sum_to(0) 호출
+        베이스 케이스: 0
+      sum_to(1) 반환: 1
+    sum_to(2) 반환: 3
+  sum_to(3) 반환: 6
+sum_to(4) 반환: 10
+합계: 10

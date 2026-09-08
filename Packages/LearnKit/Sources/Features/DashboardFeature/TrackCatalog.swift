@@ -68,6 +68,16 @@ public enum TrackCatalog {
         .language(.swift, name: "Swift", lessonTotal: 24, pack: "polyglot-swift"),
         .language(.rust, name: "Rust", lessonTotal: 26, pack: "polyglot-rust"),
         .language(.cpp, name: "C++", lessonTotal: 26, pack: "polyglot-cpp"),
+        // 언어와 1:1 이 아닌 첫 트랙 — {#track-descriptor-pack-id} 가 이걸 위해 있었다.
+        // 지금은 Rust 로만 풀지만 레슨 하나가 여러 언어의 풀이를 담을 수 있고
+        // ({#block-language-variants}), 그때도 트랙은 하나다.
+        TrackDescriptor(
+            trackID: TrackID("algorithms"),
+            languageID: .rust,
+            packID: PackID("polyglot-algorithms"),
+            name: "알고리즘",
+            lessonTotal: 32
+        ),
         .language(LanguageID("go"), name: "Go", lessonTotal: 20, pack: nil),
         .language(LanguageID("java"), name: "Java", lessonTotal: 24, pack: nil),
         .language(LanguageID("nextjs"), name: "Next.js", lessonTotal: 18, pack: nil),
